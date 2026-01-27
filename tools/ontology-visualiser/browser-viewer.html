@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OAA Ontology Visualiser</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; }
+  header { background: #1a1d27; padding: 12px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid #2a2d37; }
+  header h1 { font-size: 16px; font-weight: 600; color: #9dfff5; }
+  header .stats { font-size: 13px; color: #888; margin-left: auto; }
+  .toolbar { background: #1a1d27; padding: 8px 24px; display: flex; gap: 8px; border-bottom: 1px solid #2a2d37; }
+  .toolbar button, .toolbar label { background: #2a2d37; border: 1px solid #3a3d47; color: #ccc; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  .toolbar button:hover, .toolbar label:hover { background: #3a3d47; color: #fff; }
+  .toolbar button.active { background: #017c75; border-color: #017c75; color: #fff; }
+  .toolbar input[type="file"] { display: none; }
+  .toolbar select { background: #2a2d37; border: 1px solid #3a3d47; color: #ccc; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+  #graph-container { flex: 1; position: relative; }
+  #network { width: 100%; height: 100%; }
+  #drop-zone { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; z-index: 10; }
+  #drop-zone.hidden { display: none; }
+  #drop-zone .drop-area { border: 2px dashed #3a3d47; border-radius: 16px; padding: 60px 80px; text-align: center; transition: border-color 0.2s; }
+  #drop-zone .drop-area.dragover { border-color: #9dfff5; background: rgba(157,255,245,0.05); }
+  #drop-zone h2 { font-size: 20px; color: #9dfff5; margin-bottom: 8px; }
+  #drop-zone p { color: #888; font-size: 14px; }
+  #drop-zone .formats { color: #666; font-size: 12px; margin-top: 12px; }
+  .sidebar { position: absolute; right: 0; top: 0; bottom: 0; width: 320px; background: #1a1d27; border-left: 1px solid #2a2d37; padding: 16px; overflow-y: auto; z-index: 5; transform: translateX(100%); transition: transform 0.2s; }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar h3 { font-size: 14px; color: #9dfff5; margin-bottom: 12px; }
+  .sidebar .field { margin-bottom: 10px; }
+  .sidebar .field-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+  .sidebar .field-value { font-size: 13px; color: #e0e0e0; margin-top: 2px; word-break: break-word; }
+  .sidebar .close-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; color: #888; cursor: pointer; font-size: 18px; }
+  .legend { position: absolute; bottom: 16px; left: 16px; background: #1a1d27; border: 1px solid #2a2d37; border-radius: 8px; padding: 12px; z-index: 5; font-size: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>OAA Ontology Visualiser</h1>
+  <span id="file-name" style="font-size:13px; color:#666;"></span>
+  <span class="stats" id="stats"></span>
+</header>
+
+<div class="toolbar">
+  <label for="file-input">Open JSON File</label>
+  <input type="file" id="file-input" accept=".json,.jsonld">
+  <button id="btn-physics" class="active" onclick="togglePhysics()">Physics</button>
+  <select id="layout-select" onchange="changeLayout()">
+    <option value="physics">Force-directed</option>
+    <option value="hierarchical">Hierarchical</option>
+    <option value="circular">Circular</option>
+  </select>
+  <button onclick="fitGraph()">Fit View</button>
+  <button onclick="exportPNG()">Export PNG</button>
+  <button id="btn-sidebar" onclick="toggleSidebar()">Details</button>
+</div>
+
+<div id="graph-container">
+  <div id="drop-zone">
+    <div class="drop-area" id="drop-area">
+      <h2>Drop JSON Ontology Here</h2>
+      <p>or click "Open JSON File" above</p>
+      <div class="formats">Supports: JSON-LD, Registry Entry, UniRegistry, @graph, Agent Registry</div>
+    </div>
+  </div>
+  <div id="network"></div>
+  <div class="sidebar" id="sidebar">
+    <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+    <h3>Node Details</h3>
+    <div id="node-details"><p style="color:#666">Click a node to see details</p></div>
+  </div>
+  <div class="legend" id="legend" style="display:none;"></div>
+</div>
+
+<script>
+let network = null;
+let physicsEnabled = true;
+let currentData = null;
+
+// Entity type colors
+const TYPE_COLORS = {
+  'class': '#4CAF50',
+  'core': '#4CAF50',
+  'framework': '#2196F3',
+  'supporting': '#FF9800',
+  'agent': '#E91E63',
+  'external': '#9E9E9E',
+  'layer': '#00BCD4',
+  'concept': '#9C27B0',
+  'default': '#017c75'
+};
+
+// Relationship colors
+const EDGE_COLORS = {
+  'subClassOf': '#888',
+  'inheritance': '#888',
+  'relationship': '#4CAF50',
+  'binding': '#FF9800',
+  'value_chain': '#2196F3',
+  'default': '#555'
+};
+
+// File input handler
+document.getElementById('file-input').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) loadFile(file);
+});
+
+// Drag and drop
+const dropArea = document.getElementById('drop-area');
+const dropZone = document.getElementById('drop-zone');
+
+['dragenter', 'dragover'].forEach(evt => {
+  dropArea.addEventListener(evt, e => { e.preventDefault(); dropArea.classList.add('dragover'); });
+});
+['dragleave', 'drop'].forEach(evt => {
+  dropArea.addEventListener(evt, e => { e.preventDefault(); dropArea.classList.remove('dragover'); });
+});
+dropArea.addEventListener('drop', e => {
+  const file = e.dataTransfer.files[0];
+  if (file) loadFile(file);
+});
+
+function loadFile(file) {
+  document.getElementById('file-name').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      currentData = data;
+      const parsed = parseOntology(data, file.name);
+      renderGraph(parsed);
+      dropZone.classList.add('hidden');
+    } catch (err) {
+      alert('Failed to parse JSON: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function parseOntology(data, source) {
+  const nodes = [];
+  const edges = [];
+  const seen = new Set();
+
+  function addNode(id, label, type, description, properties) {
+    if (seen.has(id)) return;
+    seen.add(id);
+    nodes.push({
+      id, label: label || id,
+      entityType: type || 'default',
+      description: description || '',
+      properties: properties || {}
+    });
+  }
+
+  function addEdge(from, to, label, type) {
+    edges.push({ from, to, label: label || '', edgeType: type || 'relationship' });
+  }
+
+  // Format 1: Agent registry (agents array)
+  if (data.agents) {
+    data.agents.forEach(agent => {
+      addNode(agent.id, agent.name || agent.id, 'agent', agent.purpose || agent.description, agent);
+      if (agent.dependencies) {
+        agent.dependencies.forEach(dep => {
+          addEdge(agent.id, dep, 'depends on', 'binding');
+        });
+      }
+      if (agent.layer) {
+        const layerId = 'layer:' + agent.layer;
+        addNode(layerId, agent.layer, 'layer', 'Agent layer');
+        addEdge(agent.id, layerId, 'in layer', 'binding');
+      }
+    });
+  }
+
+  // Format 2: JSON-LD with classes
+  if (data.classes || data['@graph']) {
+    const classes = data.classes || data['@graph'] || [];
+    (Array.isArray(classes) ? classes : []).forEach(cls => {
+      const id = cls['@id'] || cls.id || cls.name;
+      const label = cls['rdfs:label'] || cls.label || cls.name || id;
+      const desc = cls['rdfs:comment'] || cls.description || '';
+      const type = cls.entityType || cls.type || 'class';
+      if (id) addNode(id, label, type, desc, cls.properties || cls);
+
+      // Inheritance
+      const parent = cls['rdfs:subClassOf'] || cls.subClassOf || cls.parentClass;
+      if (parent) {
+        const parentId = typeof parent === 'object' ? (parent['@id'] || parent.id) : parent;
+        if (parentId) { addNode(parentId, parentId, 'class', ''); addEdge(id, parentId, 'subClassOf', 'inheritance'); }
+      }
+    });
+
+    // Relationships
+    const rels = data.relationships || data.properties || [];
+    (Array.isArray(rels) ? rels : []).forEach(rel => {
+      const source = rel.source || rel.domain || rel.from;
+      const target = rel.target || rel.range || rel.to;
+      const label = rel.label || rel.name || rel['rdfs:label'] || '';
+      if (source && target) addEdge(source, target, label, 'relationship');
+    });
+  }
+
+  // Format 3: Registry entry
+  if (data.registryEntry) {
+    const re = data.registryEntry;
+    const name = re.name || re.ontologyName || source;
+    addNode('root', name, 'core', re.description || re.summary || '');
+
+    if (re.summary && re.summary.entities) {
+      re.summary.entities.forEach(ent => {
+        const id = ent.id || ent.name;
+        addNode(id, ent.name || id, ent.entityType || 'class', ent.description || '', ent);
+        addEdge('root', id, 'contains', 'relationship');
+      });
+    }
+    if (re.summary && re.summary.relationships) {
+      re.summary.relationships.forEach(rel => {
+        if (rel.source && rel.target) addEdge(rel.source, rel.target, rel.label || rel.name || '', 'relationship');
+      });
+    }
+  }
+
+  // Format 4: UniRegistry (ontologyDefinition)
+  if (data.ontologyDefinition) {
+    const od = data.ontologyDefinition;
+    addNode('root', od.name || source, 'core', od.description || '');
+    if (od.entities) {
+      od.entities.forEach(ent => {
+        const id = ent.id || ent.name;
+        addNode(id, ent.name || id, ent.entityType || 'class', ent.description || '', ent);
+        addEdge('root', id, 'defines', 'relationship');
+      });
+    }
+    if (od.relationships) {
+      od.relationships.forEach(rel => {
+        if (rel.source && rel.target) addEdge(rel.source, rel.target, rel.label || '', 'relationship');
+      });
+    }
+  }
+
+  // Format 5: Generic — walk top-level keys as entities
+  if (nodes.length === 0) {
+    addNode('root', source, 'core', 'Root');
+    for (const [key, val] of Object.entries(data)) {
+      if (key.startsWith('@') || key.startsWith('$')) continue;
+      if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+        addNode(key, val.name || val.label || key, val.entityType || val.type || 'concept', val.description || '');
+        addEdge('root', key, 'contains', 'relationship');
+        // Second level
+        for (const [k2, v2] of Object.entries(val)) {
+          if (typeof v2 === 'object' && v2 !== null && !Array.isArray(v2) && !k2.startsWith('@')) {
+            const childId = key + '.' + k2;
+            addNode(childId, v2.name || v2.label || k2, v2.entityType || 'supporting', v2.description || '');
+            addEdge(key, childId, k2, 'relationship');
+          }
+        }
+      } else if (Array.isArray(val)) {
+        val.forEach((item, i) => {
+          if (typeof item === 'object' && item !== null) {
+            const id = item.id || item.name || key + '_' + i;
+            addNode(id, item.name || item.label || id, item.entityType || item.type || 'class', item.description || '', item);
+            addEdge('root', id, key, 'relationship');
+          }
+        });
+      }
+    }
+  }
+
+  return { nodes, edges, name: data.name || data.ontologyName || source };
+}
+
+function renderGraph(parsed) {
+  const visNodes = parsed.nodes.map(n => ({
+    id: n.id,
+    label: n.label,
+    color: { background: TYPE_COLORS[n.entityType] || TYPE_COLORS.default, border: '#222', highlight: { background: '#9dfff5', border: '#017c75' } },
+    font: { color: '#e0e0e0', size: 13 },
+    shape: n.entityType === 'agent' ? 'star' : n.entityType === 'layer' ? 'box' : 'dot',
+    size: n.entityType === 'agent' ? 25 : n.entityType === 'core' ? 30 : 20,
+    title: n.description || n.label,
+    _data: n
+  }));
+
+  const visEdges = parsed.edges.map(e => ({
+    from: e.from,
+    to: e.to,
+    label: e.label,
+    color: { color: EDGE_COLORS[e.edgeType] || EDGE_COLORS.default, highlight: '#9dfff5' },
+    font: { color: '#666', size: 10, strokeWidth: 0 },
+    arrows: 'to',
+    dashes: e.edgeType === 'inheritance',
+    width: e.edgeType === 'binding' ? 2 : 1,
+    smooth: { type: 'cubicBezier' }
+  }));
+
+  const container = document.getElementById('network');
+  const data = { nodes: new vis.DataSet(visNodes), edges: new vis.DataSet(visEdges) };
+
+  const options = {
+    physics: { enabled: physicsEnabled, barnesHut: { gravitationalConstant: -3000, springLength: 150 } },
+    interaction: { hover: true, tooltipDelay: 200 },
+    nodes: { borderWidth: 2 },
+    edges: { smooth: { type: 'cubicBezier', forceDirection: 'none' } },
+    layout: {}
+  };
+
+  network = new vis.Network(container, data, options);
+
+  // Click handler for sidebar
+  network.on('click', function(params) {
+    if (params.nodes.length > 0) {
+      const nodeId = params.nodes[0];
+      const node = visNodes.find(n => n.id === nodeId);
+      if (node) showNodeDetails(node._data);
+    }
+  });
+
+  // Update stats
+  document.getElementById('stats').textContent =
+    `${parsed.nodes.length} nodes | ${parsed.edges.length} edges | ${parsed.name}`;
+
+  // Build legend
+  buildLegend(parsed.nodes);
+}
+
+function showNodeDetails(node) {
+  const sidebar = document.getElementById('sidebar');
+  const details = document.getElementById('node-details');
+  sidebar.classList.add('open');
+
+  let html = '';
+  html += field('ID', node.id);
+  html += field('Label', node.label);
+  html += field('Type', node.entityType);
+  if (node.description) html += field('Description', node.description);
+
+  // Show all properties
+  if (node.properties && typeof node.properties === 'object') {
+    for (const [k, v] of Object.entries(node.properties)) {
+      if (['id', 'name', 'label', 'description', 'entityType', 'type'].includes(k)) continue;
+      const val = typeof v === 'object' ? JSON.stringify(v, null, 2) : v;
+      html += field(k, val);
+    }
+  }
+
+  details.innerHTML = html;
+}
+
+function field(label, value) {
+  return `<div class="field"><div class="field-label">${label}</div><div class="field-value">${value}</div></div>`;
+}
+
+function buildLegend(nodes) {
+  const types = [...new Set(nodes.map(n => n.entityType))];
+  const legend = document.getElementById('legend');
+  legend.style.display = 'block';
+  legend.innerHTML = types.map(t =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${TYPE_COLORS[t] || TYPE_COLORS.default}"></div>${t}</div>`
+  ).join('');
+}
+
+function togglePhysics() {
+  physicsEnabled = !physicsEnabled;
+  document.getElementById('btn-physics').classList.toggle('active');
+  if (network) network.setOptions({ physics: { enabled: physicsEnabled } });
+}
+
+function changeLayout() {
+  const layout = document.getElementById('layout-select').value;
+  if (!network) return;
+  const opts = { layout: {} };
+  if (layout === 'hierarchical') {
+    opts.layout = { hierarchical: { direction: 'UD', sortMethod: 'hubsize', levelSeparation: 120 } };
+    opts.physics = { enabled: false };
+  } else if (layout === 'circular') {
+    opts.physics = { enabled: false };
+    // vis.js doesn't have built-in circular — use physics briefly then freeze
+    opts.physics = { enabled: true, barnesHut: { gravitationalConstant: -1000, centralGravity: 0.8, springLength: 100 } };
+    setTimeout(() => { if (network) network.setOptions({ physics: { enabled: false } }); }, 2000);
+  } else {
+    opts.physics = { enabled: physicsEnabled };
+  }
+  network.setOptions(opts);
+}
+
+function fitGraph() {
+  if (network) network.fit({ animation: true });
+}
+
+function exportPNG() {
+  if (!network) return;
+  const canvas = document.querySelector('#network canvas');
+  if (canvas) {
+    const link = document.createElement('a');
+    link.download = 'ontology-graph.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+</script>
+</body>
+</html>
