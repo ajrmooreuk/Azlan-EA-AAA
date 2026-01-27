@@ -272,9 +272,11 @@ function parseOntology(data, source) {
     if (od.relationships) {
       od.relationships.forEach(rel => {
         const label = rel['rdfs:label'] || rel.name || rel.label || '';
-        // rdfs:domain / rdfs:range (single values)
-        const domain = rel['rdfs:domain'] || rel.source || rel.domain;
-        const range = rel['rdfs:range'] || rel.target || rel.range;
+        // rdfs:domain / rdfs:range (single string values)
+        let domain = rel['rdfs:domain'] || rel.source;
+        let range = rel['rdfs:range'] || rel.target;
+        if (typeof domain !== 'string') domain = null;
+        if (typeof range !== 'string') range = null;
         if (domain && range) {
           if (!seen.has(domain)) addNode(domain, domain.replace(/.*[:#]/, ''), 'external', '');
           if (!seen.has(range)) addNode(range, range.replace(/.*[:#]/, ''), 'external', '');
