@@ -58,6 +58,8 @@
   <button onclick="fitGraph()">Fit View</button>
   <button onclick="exportPNG()">Export PNG</button>
   <button id="btn-sidebar" onclick="toggleSidebar()">Details</button>
+  <span style="border-left:1px solid #3a3d47; height:24px;"></span>
+  <button onclick="loadFromGitHub()">Load from GitHub</button>
 </div>
 
 <div id="graph-container">
@@ -65,7 +67,7 @@
     <div class="drop-area" id="drop-area">
       <h2>Drop JSON Ontology Here</h2>
       <p>or click "Open JSON File" above</p>
-      <div class="formats">Supports: JSON-LD, Registry Entry, UniRegistry, @graph, Agent Registry</div>
+      <div class="formats">Supports: JSON-LD, Registry Entry, UniRegistry, @graph, Agent Registry<br>Or use "Load from GitHub" to fetch from a private repo</div>
     </div>
   </div>
   <div id="network"></div>
@@ -516,6 +518,48 @@ function exportPNG() {
 
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
+}
+
+// --- GitHub API integration ---
+function loadFromGitHub() {
+  let pat = sessionStorage.getItem('gh_pat');
+  if (!pat) {
+    pat = prompt('Enter GitHub Personal Access Token (stored in session only):');
+    if (!pat) return;
+    sessionStorage.setItem('gh_pat', pat);
+  }
+  const path = prompt('Enter repo path: owner/repo/path/to/file.json\nExample: ajrmooreuk/PF-Core-BAIV/PBS/ONTOLOGIES/my-ontology.json');
+  if (!path) return;
+
+  const parts = path.split('/');
+  if (parts.length < 3) { alert('Format: owner/repo/path/to/file.json'); return; }
+  const owner = parts[0];
+  const repo = parts[1];
+  const filePath = parts.slice(2).join('/');
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+
+  document.getElementById('file-name').textContent = `Loading ${filePath}...`;
+  fetch(url, { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3.raw' } })
+    .then(res => {
+      if (!res.ok) throw new Error(`GitHub API ${res.status}: ${res.statusText}`);
+      return res.json();
+    })
+    .then(data => {
+      currentData = data;
+      document.getElementById('file-name').textContent = filePath;
+      const parsed = parseOntology(data, filePath.split('/').pop());
+      if (parsed.nodes.length === 0) {
+        alert('No nodes parsed. Keys: ' + Object.keys(data).join(', '));
+        return;
+      }
+      renderGraph(parsed);
+      dropZone.classList.add('hidden');
+    })
+    .catch(err => {
+      if (err.message.includes('401')) { sessionStorage.removeItem('gh_pat'); }
+      alert('GitHub load failed: ' + err.message);
+      document.getElementById('file-name').textContent = '';
+    });
 }
 </script>
 </body>
