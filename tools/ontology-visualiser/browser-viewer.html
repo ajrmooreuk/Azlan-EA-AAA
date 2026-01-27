@@ -246,7 +246,52 @@ function parseOntology(data, source) {
     }
   }
 
-  // Format 5: Generic — walk top-level keys as entities
+  // Format 5: PF Ontology (entities array with @id, relationships with domainIncludes/rangeIncludes)
+  if (data.entities && Array.isArray(data.entities)) {
+    const ontName = (data.metadata && data.metadata.name) || data.name || source;
+    data.entities.forEach(ent => {
+      const id = ent['@id'] || ent.id || ent.name;
+      const label = ent.name || ent.label || ent['rdfs:label'] || id;
+      const desc = ent.description || ent['rdfs:comment'] || '';
+      const type = ent.entityType || (ent['@type'] || '').replace(/.*:/, '') || 'class';
+      if (id) addNode(id, label, type.toLowerCase(), desc, ent);
+
+      // Schema.org base type inheritance
+      if (ent.schemaOrgBase) {
+        addNode(ent.schemaOrgBase, ent.schemaOrgBase.replace('schema:', ''), 'external', 'schema.org type');
+        addEdge(id, ent.schemaOrgBase, 'extends', 'inheritance');
+      }
+    });
+
+    // PF relationships: domainIncludes/rangeIncludes arrays
+    if (data.relationships && Array.isArray(data.relationships)) {
+      data.relationships.forEach(rel => {
+        const label = rel.name || rel.label || rel['@id'] || '';
+        const domains = rel.domainIncludes || (rel.domain ? [rel.domain] : []);
+        const ranges = rel.rangeIncludes || (rel.range ? [rel.range] : []);
+        domains.forEach(d => {
+          ranges.forEach(r => {
+            // Ensure both nodes exist
+            if (!seen.has(d)) addNode(d, d.replace(/.*:/, ''), 'external', '');
+            if (!seen.has(r)) addNode(r, r.replace(/.*:/, ''), 'external', '');
+            addEdge(d, r, label, rel.linkedOntology ? 'binding' : 'relationship');
+          });
+        });
+      });
+    }
+
+    // Dependencies from metadata
+    if (data.metadata && data.metadata.dependencies) {
+      const rootId = data['@id'] || 'root';
+      addNode(rootId, ontName, 'core', data.metadata.description || '');
+      data.metadata.dependencies.forEach(dep => {
+        addNode(dep, dep.replace(/.*:/, ''), 'external', 'Dependency');
+        addEdge(rootId, dep, 'depends on', 'binding');
+      });
+    }
+  }
+
+  // Format 6: Generic — walk top-level keys as entities
   if (nodes.length === 0) {
     addNode('root', source, 'core', 'Root');
     for (const [key, val] of Object.entries(data)) {
