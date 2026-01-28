@@ -8,17 +8,20 @@
   "oaaVersion": "5.0.0",
   "namespace": "https://platformcore.io/ontology/vsom/",
   "prefix": "vsom:",
-  "status": "pending-review",
+  "status": "partial-compliance",
   "complianceStatus": {
-    "gate1": "pending",
-    "gate2": "pending",
-    "gate2b": "pending",
-    "gate2c": "pending",
-    "gate3": "pending",
-    "gate4": "pending",
-    "gate5": "pending",
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "fail",
     "gate6": "pass"
   },
+  "validationDate": "2026-01-28",
+  "gatesPassed": 6,
+  "gatesFailed": 1,
   "artifacts": {
     "ontology": "../foundation-ont/vsom-ont/PFC-OAA-VE-ONT1-VSOM-definition.jsonld",
     "alternateFormat": "../foundation-ont/vsom-ont/w4m_vsom_ontology_v1.0.json",
@@ -26,7 +29,7 @@
     "visualGuide": "../foundation-ont/vsom-ont/w4m_vsom_visual_guide_v1.0.md",
     "testData": null,
     "glossary": null,
-    "validationReport": null
+    "validationReport": "../unified-registry/validation-reports/VSOM-OAA-v5-Validation-Report.md"
   },
   "dependencies": [],
   "dependents": [
@@ -39,5 +42,5 @@
   "maintainer": "Azlan EA-AAA",
   "created": "2026-01-28",
   "lastModified": "2026-01-28",
-  "notes": "[OAA-PENDING] Requires full OAA v5.0.0 validation via WORKFLOW D"
+  "notes": "WORKFLOW D validated 2026-01-28. G5 FAIL: Needs test data (60-20-10-10 distribution). All other gates PASS."
 }
