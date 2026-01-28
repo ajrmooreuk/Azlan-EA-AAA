@@ -1,0 +1,43 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-VSOM-001",
+  "name": "VSOM Ontology",
+  "description": "Vision-Strategy-Objectives-Measures ontology for strategic alignment and planning",
+  "version": "1.0.0",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/vsom/",
+  "prefix": "vsom:",
+  "status": "pending-review",
+  "complianceStatus": {
+    "gate1": "pending",
+    "gate2": "pending",
+    "gate2b": "pending",
+    "gate2c": "pending",
+    "gate3": "pending",
+    "gate4": "pending",
+    "gate5": "pending",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "../foundation-ont/vsom-ont/PFC-OAA-VE-ONT1-VSOM-definition.jsonld",
+    "alternateFormat": "../foundation-ont/vsom-ont/w4m_vsom_ontology_v1.0.json",
+    "documentation": "../foundation-ont/vsom-ont/PFC-OAA-VE-ONT1-VSOM-README.md",
+    "visualGuide": "../foundation-ont/vsom-ont/w4m_vsom_visual_guide_v1.0.md",
+    "testData": null,
+    "glossary": null,
+    "validationReport": null
+  },
+  "dependencies": [],
+  "dependents": [
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-VP-001",
+    "Entry-ONT-EFS-001"
+  ],
+  "layer": "LAYER 1: STRATEGY",
+  "domain": "Strategic Planning",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-01-28",
+  "notes": "[OAA-PENDING] Requires full OAA v5.0.0 validation via WORKFLOW D"
+}
