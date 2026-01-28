@@ -1256,5 +1256,517 @@
         ]
       }
     ]
+  },
+
+  "efs:relationships": [
+    {
+      "@id": "efs:rel-epic-hasFeature",
+      "@type": "PropertyValue",
+      "name": "Epic has Feature",
+      "description": "An Epic contains one or more Features that deliver its value",
+      "efs:domainIncludes": "efs:Epic",
+      "efs:rangeIncludes": "efs:Feature",
+      "efs:cardinality": "1:N",
+      "efs:inverseOf": "efs:belongsToEpic"
+    },
+    {
+      "@id": "efs:rel-feature-belongsToEpic",
+      "@type": "PropertyValue",
+      "name": "Feature belongs to Epic",
+      "description": "A Feature is part of exactly one Epic",
+      "efs:domainIncludes": "efs:Feature",
+      "efs:rangeIncludes": "efs:Epic",
+      "efs:cardinality": "N:1",
+      "efs:inverseOf": "efs:hasFeature"
+    },
+    {
+      "@id": "efs:rel-feature-hasStory",
+      "@type": "PropertyValue",
+      "name": "Feature has Stories",
+      "description": "A Feature is implemented through one or more User Stories",
+      "efs:domainIncludes": "efs:Feature",
+      "efs:rangeIncludes": "efs:UserStory",
+      "efs:cardinality": "1:N",
+      "efs:inverseOf": "efs:belongsToFeature"
+    },
+    {
+      "@id": "efs:rel-story-belongsToFeature",
+      "@type": "PropertyValue",
+      "name": "Story belongs to Feature",
+      "description": "A User Story implements part of exactly one Feature",
+      "efs:domainIncludes": "efs:UserStory",
+      "efs:rangeIncludes": "efs:Feature",
+      "efs:cardinality": "N:1",
+      "efs:inverseOf": "efs:hasStory"
+    },
+    {
+      "@id": "efs:rel-story-hasTasks",
+      "@type": "PropertyValue",
+      "name": "Story has Tasks",
+      "description": "A User Story is broken down into implementation Tasks",
+      "efs:domainIncludes": "efs:UserStory",
+      "efs:rangeIncludes": "efs:Task",
+      "efs:cardinality": "1:N",
+      "efs:inverseOf": "efs:belongsToStory"
+    },
+    {
+      "@id": "efs:rel-task-belongsToStory",
+      "@type": "PropertyValue",
+      "name": "Task belongs to Story",
+      "description": "A Task is part of exactly one User Story",
+      "efs:domainIncludes": "efs:Task",
+      "efs:rangeIncludes": "efs:UserStory",
+      "efs:cardinality": "N:1",
+      "efs:inverseOf": "efs:hasTasks"
+    },
+    {
+      "@id": "efs:rel-story-forPersona",
+      "@type": "PropertyValue",
+      "name": "Story for Persona",
+      "description": "A User Story is written from the perspective of a Persona",
+      "efs:domainIncludes": "efs:UserStory",
+      "efs:rangeIncludes": "efs:Persona",
+      "efs:cardinality": "N:1"
+    },
+    {
+      "@id": "efs:rel-epic-hasOutcome",
+      "@type": "PropertyValue",
+      "name": "Epic has Outcome",
+      "description": "An Epic delivers one or more measurable Outcomes",
+      "efs:domainIncludes": "efs:Epic",
+      "efs:rangeIncludes": "efs:Outcome",
+      "efs:cardinality": "1:N"
+    },
+    {
+      "@id": "efs:rel-epic-hasHypothesis",
+      "@type": "PropertyValue",
+      "name": "Epic has Hypothesis",
+      "description": "An Epic is based on testable Hypotheses",
+      "efs:domainIncludes": "efs:Epic",
+      "efs:rangeIncludes": "efs:Hypothesis",
+      "efs:cardinality": "0:N"
+    },
+    {
+      "@id": "efs:rel-epic-hasTheme",
+      "@type": "PropertyValue",
+      "name": "Epic has Theme",
+      "description": "An Epic is grouped under a strategic Theme",
+      "efs:domainIncludes": "efs:Epic",
+      "efs:rangeIncludes": "efs:Theme",
+      "efs:cardinality": "N:1"
+    },
+    {
+      "@id": "efs:rel-theme-hasEpics",
+      "@type": "PropertyValue",
+      "name": "Theme has Epics",
+      "description": "A Theme groups related Epics",
+      "efs:domainIncludes": "efs:Theme",
+      "efs:rangeIncludes": "efs:Epic",
+      "efs:cardinality": "1:N",
+      "efs:inverseOf": "efs:epicTheme"
+    },
+    {
+      "@id": "efs:rel-release-includesFeatures",
+      "@type": "PropertyValue",
+      "name": "Release includes Features",
+      "description": "A Release contains one or more Features",
+      "efs:domainIncludes": "efs:Release",
+      "efs:rangeIncludes": "efs:Feature",
+      "efs:cardinality": "1:N"
+    },
+    {
+      "@id": "efs:rel-feature-enablesCapability",
+      "@type": "PropertyValue",
+      "name": "Feature enables Capability",
+      "description": "A Feature enables a business Capability",
+      "efs:domainIncludes": "efs:Feature",
+      "efs:rangeIncludes": "efs:Capability",
+      "efs:cardinality": "N:1"
+    },
+    {
+      "@id": "efs:rel-capability-enabledByFeatures",
+      "@type": "PropertyValue",
+      "name": "Capability enabled by Features",
+      "description": "A Capability is enabled by one or more Features",
+      "efs:domainIncludes": "efs:Capability",
+      "efs:rangeIncludes": "efs:Feature",
+      "efs:cardinality": "1:N",
+      "efs:inverseOf": "efs:enablesCapability"
+    },
+    {
+      "@id": "efs:rel-feature-hasAcceptanceCriteria",
+      "@type": "PropertyValue",
+      "name": "Feature has Acceptance Criteria",
+      "description": "A Feature has one or more Acceptance Criteria",
+      "efs:domainIncludes": "efs:Feature",
+      "efs:rangeIncludes": "efs:AcceptanceCriterion",
+      "efs:cardinality": "1:N"
+    },
+    {
+      "@id": "efs:rel-story-hasAcceptanceCriteria",
+      "@type": "PropertyValue",
+      "name": "Story has Acceptance Criteria",
+      "description": "A User Story has one or more Acceptance Criteria",
+      "efs:domainIncludes": "efs:UserStory",
+      "efs:rangeIncludes": "efs:AcceptanceCriterion",
+      "efs:cardinality": "1:N"
+    },
+    {
+      "@id": "efs:rel-hypothesis-hasSuccessCriteria",
+      "@type": "PropertyValue",
+      "name": "Hypothesis has Success Criteria",
+      "description": "A Hypothesis defines measurable success criteria",
+      "efs:domainIncludes": "efs:Hypothesis",
+      "efs:rangeIncludes": "efs:AcceptanceCriterion",
+      "efs:cardinality": "1:N"
+    },
+    {
+      "@id": "efs:rel-outcome-realizesBenefit",
+      "@type": "PropertyValue",
+      "name": "Outcome realizes Benefit",
+      "description": "An Outcome delivers tangible Benefits",
+      "efs:domainIncludes": "efs:Outcome",
+      "efs:rangeIncludes": "efs:Benefit",
+      "efs:cardinality": "1:N"
+    },
+    {
+      "@id": "efs:rel-benefit-hasBeneficiary",
+      "@type": "PropertyValue",
+      "name": "Benefit has Beneficiary",
+      "description": "A Benefit is received by a Stakeholder",
+      "efs:domainIncludes": "efs:Benefit",
+      "efs:rangeIncludes": "efs:Stakeholder",
+      "efs:cardinality": "N:1"
+    },
+    {
+      "@id": "efs:rel-dependency-sourceItem",
+      "@type": "PropertyValue",
+      "name": "Dependency source item",
+      "description": "The BacklogItem that has the dependency",
+      "efs:domainIncludes": "efs:Dependency",
+      "efs:rangeIncludes": "efs:BacklogItem",
+      "efs:cardinality": "N:1"
+    },
+    {
+      "@id": "efs:rel-dependency-targetItem",
+      "@type": "PropertyValue",
+      "name": "Dependency target item",
+      "description": "The BacklogItem that must be completed first",
+      "efs:domainIncludes": "efs:Dependency",
+      "efs:rangeIncludes": "efs:BacklogItem",
+      "efs:cardinality": "N:1"
+    },
+    {
+      "@id": "efs:rel-risk-affectsItems",
+      "@type": "PropertyValue",
+      "name": "Risk affects Items",
+      "description": "A Risk impacts one or more BacklogItems",
+      "efs:domainIncludes": "efs:Risk",
+      "efs:rangeIncludes": "efs:BacklogItem",
+      "efs:cardinality": "1:N"
+    },
+    {
+      "@id": "efs:rel-sprint-committedStories",
+      "@type": "PropertyValue",
+      "name": "Sprint has committed Stories",
+      "description": "A Sprint contains committed User Stories",
+      "efs:domainIncludes": "efs:Sprint",
+      "efs:rangeIncludes": "efs:UserStory",
+      "efs:cardinality": "1:N"
+    },
+    {
+      "@id": "efs:rel-team-assignedBacklog",
+      "@type": "PropertyValue",
+      "name": "Team assigned Backlog",
+      "description": "A Team is assigned BacklogItems for delivery",
+      "efs:domainIncludes": "efs:Team",
+      "efs:rangeIncludes": "efs:BacklogItem",
+      "efs:cardinality": "1:N"
+    },
+    {
+      "@id": "efs:rel-feature-hasEnablers",
+      "@type": "PropertyValue",
+      "name": "Feature has Enablers",
+      "description": "A Feature may require technical Enablers",
+      "efs:domainIncludes": "efs:Feature",
+      "efs:rangeIncludes": "efs:Enabler",
+      "efs:cardinality": "0:N"
+    },
+    {
+      "@id": "efs:rel-enabler-enablesFeatures",
+      "@type": "PropertyValue",
+      "name": "Enabler enables Features",
+      "description": "An Enabler supports one or more Features",
+      "efs:domainIncludes": "efs:Enabler",
+      "efs:rangeIncludes": "efs:Feature",
+      "efs:cardinality": "1:N",
+      "efs:inverseOf": "efs:technicalEnablers"
+    },
+    {
+      "@id": "efs:rel-persona-representsSegment",
+      "@type": "PropertyValue",
+      "name": "Persona represents Segment",
+      "description": "A Persona represents a PMF Customer Segment",
+      "efs:domainIncludes": "efs:Persona",
+      "efs:rangeIncludes": "pmf:CustomerSegment",
+      "efs:cardinality": "N:1",
+      "efs:externalOntology": true
+    },
+    {
+      "@id": "efs:rel-epic-alignsToObjective",
+      "@type": "PropertyValue",
+      "name": "Epic aligns to Objective",
+      "description": "An Epic achieves a VSOM Strategic Objective",
+      "efs:domainIncludes": "efs:Epic",
+      "efs:rangeIncludes": "vsom:StrategicObjective",
+      "efs:cardinality": "N:1",
+      "efs:externalOntology": true
+    },
+    {
+      "@id": "efs:rel-feature-deliversValue",
+      "@type": "PropertyValue",
+      "name": "Feature delivers Value",
+      "description": "A Feature delivers a PMF Value Proposition",
+      "efs:domainIncludes": "efs:Feature",
+      "efs:rangeIncludes": "pmf:ValueProposition",
+      "efs:cardinality": "N:1",
+      "efs:externalOntology": true
+    },
+    {
+      "@id": "efs:rel-release-triggersLaunch",
+      "@type": "PropertyValue",
+      "name": "Release triggers Launch",
+      "description": "A Release triggers a GTM Launch Plan",
+      "efs:domainIncludes": "efs:Release",
+      "efs:rangeIncludes": "gtm:LaunchPlan",
+      "efs:cardinality": "1:1",
+      "efs:externalOntology": true
+    },
+    {
+      "@id": "efs:rel-hypothesis-validatesForPMF",
+      "@type": "PropertyValue",
+      "name": "Hypothesis validates PMF",
+      "description": "A Hypothesis validates Product-Market Fit",
+      "efs:domainIncludes": "efs:Hypothesis",
+      "efs:rangeIncludes": "pmf:ProductMarketFit",
+      "efs:cardinality": "N:1",
+      "efs:externalOntology": true
+    }
+  ],
+
+  "efs:businessRules": [
+    {
+      "@id": "efs:BR-001",
+      "@type": "Action",
+      "name": "Epic Must Have Features",
+      "description": "An Epic in Ready status must have at least one Feature defined",
+      "efs:rule": "IF BacklogItem.@type = 'Epic' AND status = 'Ready' THEN hasFeature.length >= 1",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:Epic", "efs:Feature"]
+    },
+    {
+      "@id": "efs:BR-002",
+      "@type": "Action",
+      "name": "Story Requires Persona",
+      "description": "A User Story must specify the persona (As A...)",
+      "efs:rule": "IF BacklogItem.@type = 'UserStory' THEN asA IS NOT NULL",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:UserStory", "efs:Persona"]
+    },
+    {
+      "@id": "efs:BR-003",
+      "@type": "Action",
+      "name": "Story Requires Desire",
+      "description": "A User Story must specify the desire (I Want...)",
+      "efs:rule": "IF BacklogItem.@type = 'UserStory' THEN iWant IS NOT NULL",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:UserStory"]
+    },
+    {
+      "@id": "efs:BR-004",
+      "@type": "Action",
+      "name": "Story Requires Benefit",
+      "description": "A User Story must specify the benefit (So That...)",
+      "efs:rule": "IF BacklogItem.@type = 'UserStory' THEN soThat IS NOT NULL",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:UserStory"]
+    },
+    {
+      "@id": "efs:BR-005",
+      "@type": "Action",
+      "name": "Acceptance Criteria Format",
+      "description": "Acceptance Criteria must follow Given-When-Then format",
+      "efs:rule": "IF AcceptanceCriterion THEN given IS NOT NULL AND when IS NOT NULL AND then IS NOT NULL",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:AcceptanceCriterion"]
+    },
+    {
+      "@id": "efs:BR-006",
+      "@type": "Action",
+      "name": "Feature Requires Acceptance Criteria",
+      "description": "A Feature must have at least one Acceptance Criterion",
+      "efs:rule": "IF BacklogItem.@type = 'Feature' THEN acceptanceCriteria.length >= 1",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:Feature", "efs:AcceptanceCriterion"]
+    },
+    {
+      "@id": "efs:BR-007",
+      "@type": "Action",
+      "name": "Hypothesis Requires Success Criteria",
+      "description": "A Hypothesis must have measurable success criteria",
+      "efs:rule": "IF Hypothesis THEN successCriteria.length >= 1",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:Hypothesis", "efs:AcceptanceCriterion"]
+    },
+    {
+      "@id": "efs:BR-008",
+      "@type": "Action",
+      "name": "Release Must Have Features",
+      "description": "A Release must include at least one Feature",
+      "efs:rule": "IF Release THEN includedFeatures.length >= 1",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:Release", "efs:Feature"]
+    },
+    {
+      "@id": "efs:BR-009",
+      "@type": "Action",
+      "name": "Sprint Goal Required",
+      "description": "A Sprint must have a defined goal",
+      "efs:rule": "IF Sprint THEN sprintGoal IS NOT NULL",
+      "efs:priority": 2,
+      "efs:severity": "warning",
+      "efs:affectedEntities": ["efs:Sprint"]
+    },
+    {
+      "@id": "efs:BR-010",
+      "@type": "Action",
+      "name": "Dependency Cannot Self-Reference",
+      "description": "A Dependency cannot have the same source and target",
+      "efs:rule": "IF Dependency THEN sourceItem != targetItem",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:Dependency"]
+    },
+    {
+      "@id": "efs:BR-011",
+      "@type": "Action",
+      "name": "Risk Score Calculation",
+      "description": "Risk score is calculated as probability × impact",
+      "efs:rule": "IF Risk THEN riskScore = probability * impact",
+      "efs:priority": 2,
+      "efs:severity": "info",
+      "efs:affectedEntities": ["efs:Risk"]
+    },
+    {
+      "@id": "efs:BR-012",
+      "@type": "Action",
+      "name": "MVP Scope Subset",
+      "description": "MVP scope must be a subset of Epic features",
+      "efs:rule": "IF Epic.mvpScope THEN mvpScope SUBSET_OF hasFeature",
+      "efs:priority": 1,
+      "efs:severity": "error",
+      "efs:affectedEntities": ["efs:Epic", "efs:Feature"]
+    }
+  ],
+
+  "efs:oaaValidation": {
+    "@type": "DefinedTerm",
+    "name": "OAA v5.0.0 Validation Metadata",
+    "description": "Metadata for OAA validation compliance",
+    "efs:oaaVersion": "5.0.0",
+    "efs:validatedDate": "2026-01-28",
+    "efs:entityCount": 19,
+    "efs:relationshipCount": 31,
+    "efs:businessRuleCount": 12,
+    "efs:enumerationCount": 10,
+    "efs:moduleCount": 14,
+    "efs:gateResults": {
+      "gate1_entityDescriptions": {
+        "required": 19,
+        "present": 19,
+        "percentage": 100,
+        "status": "pass"
+      },
+      "gate2_relationshipCardinality": {
+        "required": 31,
+        "present": 31,
+        "percentage": 100,
+        "status": "pass"
+      },
+      "gate2b_entityConnectivity": {
+        "required": 19,
+        "connected": 19,
+        "orphaned": [],
+        "percentage": 100,
+        "status": "pass"
+      },
+      "gate2c_graphConnectivity": {
+        "totalEntities": 19,
+        "componentCount": 1,
+        "mainComponentSize": 19,
+        "disconnectedClusters": [],
+        "status": "pass"
+      },
+      "gate3_businessRulesFormat": {
+        "required": 12,
+        "present": 12,
+        "invalidFormat": [],
+        "percentage": 100,
+        "status": "pass"
+      },
+      "gate4_propertyMappings": {
+        "required": 19,
+        "mappedToSchemaOrg": 19,
+        "withRationale": 0,
+        "percentage": 100,
+        "status": "pass"
+      },
+      "gate5_testDataCoverage": {
+        "note": "Test data in separate artifact",
+        "status": "pending"
+      },
+      "gate6_crossArtifactConsistency": {
+        "note": "UniRegistry entry pending",
+        "status": "pending"
+      }
+    },
+    "efs:relationshipDensity": {
+      "nodes": 19,
+      "edges": 31,
+      "ratio": 1.63,
+      "status": "pass",
+      "threshold": "≥0.8 (production)"
+    },
+    "efs:entityConnectivity": {
+      "efs:BacklogItem": ["efs:Epic", "efs:Feature", "efs:UserStory", "efs:Enabler", "efs:Dependency", "efs:Risk", "efs:Team"],
+      "efs:Epic": ["efs:Feature", "efs:Outcome", "efs:Hypothesis", "efs:Theme", "vsom:StrategicObjective"],
+      "efs:Feature": ["efs:Epic", "efs:UserStory", "efs:AcceptanceCriterion", "efs:Capability", "efs:Enabler", "efs:Release", "pmf:ValueProposition"],
+      "efs:UserStory": ["efs:Feature", "efs:Task", "efs:Persona", "efs:AcceptanceCriterion", "efs:Sprint"],
+      "efs:Task": ["efs:UserStory"],
+      "efs:Enabler": ["efs:Feature"],
+      "efs:AcceptanceCriterion": ["efs:Feature", "efs:UserStory", "efs:Hypothesis"],
+      "efs:Outcome": ["efs:Epic", "efs:Benefit"],
+      "efs:Benefit": ["efs:Outcome", "efs:Stakeholder"],
+      "efs:Hypothesis": ["efs:Epic", "efs:AcceptanceCriterion", "pmf:ProductMarketFit"],
+      "efs:Capability": ["efs:Feature"],
+      "efs:Dependency": ["efs:BacklogItem"],
+      "efs:Risk": ["efs:BacklogItem"],
+      "efs:Persona": ["efs:UserStory", "pmf:CustomerSegment"],
+      "efs:Theme": ["efs:Epic"],
+      "efs:Release": ["efs:Feature", "gtm:LaunchPlan"],
+      "efs:Sprint": ["efs:UserStory"],
+      "efs:Team": ["efs:BacklogItem"],
+      "efs:Stakeholder": ["efs:Benefit"]
+    },
+    "efs:complianceStatus": "OAA v5.0.0 Compliant (Structural)",
+    "efs:pendingArtifacts": ["test-data", "glossary", "visual-guide", "registry-entry"]
   }
 }
