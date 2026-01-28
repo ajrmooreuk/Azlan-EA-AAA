@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'tools/ontology-visualiser/browser-viewer.html'
+      - 'tools/ontology-visualiser/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -31,7 +31,10 @@ jobs:
 
       - name: Prepare site
         run: |
-          mkdir -p _site
+          mkdir -p _site/tools/ontology-visualiser
+          # Copy all visualiser files
+          cp -r tools/ontology-visualiser/* _site/tools/ontology-visualiser/
+          # Also create root index pointing to visualiser
           cp tools/ontology-visualiser/browser-viewer.html _site/index.html
 
       - name: Upload artifact
