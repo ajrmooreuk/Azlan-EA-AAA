@@ -1,6 +1,6 @@
 # EFS Lineage Specification
 
-**Version:** 1.0.0
+**Version:** 3.0.0
 **Date:** 2026-01-28
 **Status:** DRAFT
 **OAA Compliant:** v5.0.0
@@ -47,9 +47,9 @@ VSOM/VSEM → OKR/KPI (Context) → Value Proposition → ICP/Personas/Pains/Gai
 │  │  ┌───────────────┐    ┌───────────────┐                                 │   │
 │  │  │   IC / RRR    │◄──►│  ORG Context  │ ──────► (back to VSOM)          │   │
 │  │  │ Ideal Customer│    │  Org Alignment│                                 │   │
-│  │  │ Revenue       │    └───────────────┘                                 │   │
-│  │  │ Retention     │                                                      │   │
-│  │  │ Referral      │                                                      │   │
+│  │  │ Roles         │    └───────────────┘                                 │   │
+│  │  │ RACI          │                                                      │   │
+│  │  │ RBAC          │                                                      │   │
 │  │  └───────────────┘                                                      │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 │                                    │                                            │
@@ -118,12 +118,12 @@ The core value definition layer - derived via OKR and Context.
 | Component | Description | Relationship to VSOM |
 |-----------|-------------|----------------------|
 | **IC (Ideal Customer)** | Who receives the value | Aligns to strategic customer segments |
-| **RRR (Revenue, Retention, Referral)** | Business value metrics | Maps to strategic KPIs |
+| **RRR (Roles, RACI, RBAC)** | Functional business roles and accountabilities | Maps to C-Suite and organizational roles |
 | **ORG Context** | Organizational alignment | Direct relationship back to VSOM |
 
 **Key Insight:** Value Proposition is the pivot point that:
 - Receives strategic direction from VSOM via OKR/KPI context
-- Enables IC/RRR metrics for business validation
+- Enables IC/RRR to define functional roles, responsibilities (RACI), and access control (RBAC)
 - Maintains ORG Context alignment back to VSOM
 - Defines the customer-facing outputs (ICP, Personas, Pains, Gains, Benefits)
 
@@ -186,7 +186,7 @@ flowchart TB
     subgraph L3["LAYER 3: Value Proposition"]
         VP[Value Proposition]
         IC[IC: Ideal Customer]
-        RRR[RRR: Revenue/Retention/Referral]
+        RRR[RRR: Roles/RACI/RBAC]
         ORG[ORG Context]
         VP --> IC
         VP --> RRR
@@ -252,7 +252,7 @@ flowchart TB
 |----------------|-----------|--------------|-------------|
 | Objective | Value Proposition | `providesContextFor` | N:M |
 | Key Result | Value Proposition | `validates` | N:M |
-| KPI | RRR Metrics | `measures` | 1:N |
+| KPI | RRR (Roles/RACI/RBAC) | `measures` | 1:N |
 
 ### 5.3 Value Proposition → ICP/PMF Layer
 
@@ -295,15 +295,16 @@ The Ideal Customer and business metrics component of Value Proposition.
 │                         │                                   │
 │                         ▼                                   │
 │  ┌─────────────────────────────────────────────────────┐   │
-│  │  RRR (Revenue, Retention, Referral)                  │   │
+│  │  RRR (Roles, RACI, RBAC)                             │   │
 │  │                                                       │   │
-│  │  Revenue:   How this creates/increases revenue       │   │
-│  │  Retention: How this keeps customers engaged         │   │
-│  │  Referral:  How this drives word-of-mouth growth     │   │
+│  │  Roles:  Functional business roles (C-Suite, etc.)   │   │
+│  │  RACI:   Responsible, Accountable, Consulted,        │   │
+│  │          Informed - accountability matrix            │   │
+│  │  RBAC:   Role-Based Access Control - permissions     │   │
 │  └─────────────────────────────────────────────────────┘   │
 │                         │                                   │
 │                         ▼                                   │
-│              Relates to VSOM Strategic KPIs                 │
+│              Relates to VSOM Organizational Structure       │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -501,7 +502,7 @@ flowchart LR
 
 | Rule ID | Rule | Severity |
 |---------|------|----------|
-| LR-007 | Epics SHOULD have RRR metrics defined | Warning |
+| LR-007 | Epics SHOULD have RRR (Role/RACI/RBAC) accountability defined | Warning |
 | LR-008 | Features SHOULD link to KPIs | Warning |
 | LR-009 | Value Propositions SHOULD have ORG Context | Warning |
 
@@ -525,7 +526,7 @@ flowchart TB
     subgraph VP["Value Proposition Layer"]
         VPS[VP: Seamless Shopping Experience]
         IC1[IC: Time-Conscious Shoppers]
-        RRR1[RRR: Revenue via Conversion]
+        RRR1[RRR: CMO Role Accountability]
         ORG1[ORG: E-commerce Initiative]
     end
 
@@ -601,7 +602,8 @@ flowchart TB
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0.0 | 2026-01-28 | OAA v5.0.0 | Initial lineage specification with 5-layer model |
+| 3.0.0 | 2026-01-28 | OAA v5.0.0 | Corrected RRR definition: Roles/RACI/RBAC (not Revenue/Retention/Referral). RRR defines functional business roles and their accountabilities, modelled for C-Suite roles. |
 
 ---
 
-*Specification Version: 1.0.0 | OAA v5.0.0 Compliant | Part of EFS Ontology Suite*
+*Specification Version: 3.0.0 | OAA v5.0.0 Compliant | Part of EFS Ontology Suite*

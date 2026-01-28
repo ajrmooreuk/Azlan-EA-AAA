@@ -27,7 +27,7 @@ flowchart TB
         VP[Value<br/>Proposition]
         subgraph IC_RRR["IC/RRR"]
             IC[Ideal Customer]
-            RRR[Revenue/Retention/Referral]
+            RRR[Roles/RACI/RBAC]
         end
         subgraph ORG_CTX["ORG Context"]
             ORG[Organizational<br/>Alignment]
@@ -417,4 +417,4 @@ flowchart TB
 
 ---
 
-*Diagrams Version: 1.0.0 | Part of EFS Lineage Specification*
+*Diagrams Version: 3.0.0 | Part of EFS Lineage Specification v3.0.0*
