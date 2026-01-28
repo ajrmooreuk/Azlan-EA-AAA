@@ -36,6 +36,17 @@
   .legend { position: absolute; bottom: 16px; left: 16px; background: #1a1d27; border: 1px solid #2a2d37; border-radius: 8px; padding: 12px; z-index: 5; font-size: 12px; }
   .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
   .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .audit-panel { position: absolute; left: 0; top: 0; bottom: 0; width: 340px; background: #1a1d27; border-right: 1px solid #2a2d37; padding: 16px; overflow-y: auto; z-index: 6; transform: translateX(-100%); transition: transform 0.2s; }
+  .audit-panel.open { transform: translateX(0); }
+  .audit-panel h3 { font-size: 14px; color: #9dfff5; margin-bottom: 12px; }
+  .audit-panel .close-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; color: #888; cursor: pointer; font-size: 18px; }
+  .audit-section { margin-bottom: 16px; }
+  .audit-section h4 { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .audit-item { font-size: 12px; color: #ccc; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-bottom: 2px; }
+  .audit-item:hover { background: #2a2d37; color: #fff; }
+  .audit-badge { display: inline-block; background: #2a2d37; border: 1px solid #3a3d47; color: #ccc; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 6px; }
+  .audit-badge.warn { background: #553016; border-color: #834a22; color: #ffb48e; }
+  .audit-badge.ok { background: #166534; border-color: #15803d; color: #86efac; }
 </style>
 </head>
 <body>
@@ -58,6 +69,7 @@
   <button onclick="fitGraph()">Fit View</button>
   <button onclick="exportPNG()">Export PNG</button>
   <button id="btn-sidebar" onclick="toggleSidebar()">Details</button>
+  <button id="btn-audit" onclick="toggleAudit()">Audit</button>
   <span style="border-left:1px solid #3a3d47; height:24px;"></span>
   <button onclick="loadFromGitHub()">Load from GitHub</button>
 </div>
@@ -77,43 +89,36 @@
     <div id="node-details"><p style="color:#666">Click a node to see details</p></div>
   </div>
   <div class="legend" id="legend" style="display:none;"></div>
+  <div class="audit-panel" id="audit-panel">
+    <button class="close-btn" onclick="toggleAudit()">&times;</button>
+    <h3>Graph Audit</h3>
+    <div id="audit-content"><p style="color:#666">Load a graph to see audit results</p></div>
+  </div>
 </div>
 
 <script>
 let network = null;
 let physicsEnabled = true;
 let currentData = null;
+let lastAudit = null;
 
-// Entity type colors
 const TYPE_COLORS = {
-  'class': '#4CAF50',
-  'core': '#4CAF50',
-  'framework': '#2196F3',
-  'supporting': '#FF9800',
-  'agent': '#E91E63',
-  'external': '#9E9E9E',
-  'layer': '#00BCD4',
-  'concept': '#9C27B0',
-  'default': '#017c75'
+  'class': '#4CAF50', 'core': '#4CAF50', 'framework': '#2196F3',
+  'supporting': '#FF9800', 'agent': '#E91E63', 'external': '#9E9E9E',
+  'layer': '#00BCD4', 'concept': '#9C27B0', 'default': '#017c75'
 };
 
-// Relationship colors
 const EDGE_COLORS = {
-  'subClassOf': '#888',
-  'inheritance': '#888',
-  'relationship': '#4CAF50',
-  'binding': '#FF9800',
-  'value_chain': '#2196F3',
-  'default': '#555'
+  'subClassOf': '#888', 'inheritance': '#888', 'relationship': '#4CAF50',
+  'binding': '#FF9800', 'value_chain': '#2196F3', 'default': '#555'
 };
 
-// File input handler
+// --- File input & drag-drop ---
 document.getElementById('file-input').addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (file) loadFile(file);
 });
 
-// Drag and drop
 const dropArea = document.getElementById('drop-area');
 const dropZone = document.getElementById('drop-zone');
 
@@ -149,35 +154,40 @@ function loadFile(file) {
   reader.readAsText(file);
 }
 
+// --- Fix 1: Unified format detection ---
+function detectFormat(data) {
+  if (data.agents && Array.isArray(data.agents)) return 'agent-registry';
+  if (data.registryEntry) return 'registry-entry';
+  if (data.ontologyDefinition) return 'uni-registry';
+  if (data.entities && Array.isArray(data.entities)) return 'pf-ontology';
+  if (data.classes || data['@graph']) return 'jsonld';
+  return 'generic';
+}
+
 function parseOntology(data, source) {
   const nodes = [];
   const edges = [];
   const seen = new Set();
+  const diagnostics = { format: '', stubNodes: [], orphanEdges: [] };
 
   function addNode(id, label, type, description, properties) {
     if (seen.has(id)) return;
     seen.add(id);
-    nodes.push({
-      id, label: label || id,
-      entityType: type || 'default',
-      description: description || '',
-      properties: properties || {}
-    });
+    nodes.push({ id, label: label || id, entityType: type || 'default', description: description || '', properties: properties || {} });
   }
 
   function addEdge(from, to, label, type) {
     edges.push({ from, to, label: label || '', edgeType: type || 'relationship' });
   }
 
-  // Format 1: Agent registry (agents array)
-  if (data.agents) {
+  const format = detectFormat(data);
+  diagnostics.format = format;
+
+  // --- Parse by detected format (mutually exclusive) ---
+  if (format === 'agent-registry') {
     data.agents.forEach(agent => {
       addNode(agent.id, agent.name || agent.id, 'agent', agent.purpose || agent.description, agent);
-      if (agent.dependencies) {
-        agent.dependencies.forEach(dep => {
-          addEdge(agent.id, dep, 'depends on', 'binding');
-        });
-      }
+      if (agent.dependencies) agent.dependencies.forEach(dep => addEdge(agent.id, dep, 'depends on', 'binding'));
       if (agent.layer) {
         const layerId = 'layer:' + agent.layer;
         addNode(layerId, agent.layer, 'layer', 'Agent layer');
@@ -186,40 +196,10 @@ function parseOntology(data, source) {
     });
   }
 
-  // Format 2: JSON-LD with classes
-  if (data.classes || data['@graph']) {
-    const classes = data.classes || data['@graph'] || [];
-    (Array.isArray(classes) ? classes : []).forEach(cls => {
-      const id = cls['@id'] || cls.id || cls.name;
-      const label = cls['rdfs:label'] || cls.label || cls.name || id;
-      const desc = cls['rdfs:comment'] || cls.description || '';
-      const type = cls.entityType || cls.type || 'class';
-      if (id) addNode(id, label, type, desc, cls.properties || cls);
-
-      // Inheritance
-      const parent = cls['rdfs:subClassOf'] || cls.subClassOf || cls.parentClass;
-      if (parent) {
-        const parentId = typeof parent === 'object' ? (parent['@id'] || parent.id) : parent;
-        if (parentId) { addNode(parentId, parentId, 'class', ''); addEdge(id, parentId, 'subClassOf', 'inheritance'); }
-      }
-    });
-
-    // Relationships
-    const rels = data.relationships || data.properties || [];
-    (Array.isArray(rels) ? rels : []).forEach(rel => {
-      const source = rel.source || rel.domain || rel.from;
-      const target = rel.target || rel.range || rel.to;
-      const label = rel.label || rel.name || rel['rdfs:label'] || '';
-      if (source && target) addEdge(source, target, label, 'relationship');
-    });
-  }
-
-  // Format 3: Registry entry
-  if (data.registryEntry) {
+  else if (format === 'registry-entry') {
     const re = data.registryEntry;
     const name = re.name || re.ontologyName || source;
     addNode('root', name, 'core', re.description || re.summary || '');
-
     if (re.summary && re.summary.entities) {
       re.summary.entities.forEach(ent => {
         const id = ent.id || ent.name;
@@ -234,47 +214,37 @@ function parseOntology(data, source) {
     }
   }
 
-  // Format 4: UniRegistry (ontologyDefinition with @graph and/or entities)
-  if (data.ontologyDefinition) {
+  else if (format === 'uni-registry') {
     const od = data.ontologyDefinition;
     const ontName = (data.registryMetadata && data.registryMetadata.name) || od.name || source;
     const ontDesc = (data.registryMetadata && data.registryMetadata.description) || od.description || '';
 
-    // @graph array (RDF-style classes with rdfs:label, rdfs:subClassOf)
     const graph = od['@graph'] || [];
-    if (graph.length > 0) {
-      graph.forEach(cls => {
-        const id = cls['@id'] || cls.id;
-        const label = cls['rdfs:label'] || cls.name || cls.label || id;
-        const desc = cls['rdfs:comment'] || cls.description || '';
-        if (id) addNode(id, label, 'class', desc, cls);
-
-        // Inheritance via rdfs:subClassOf
-        const parent = cls['rdfs:subClassOf'];
-        if (parent) {
-          const parentId = typeof parent === 'object' ? (parent['@id'] || parent.id) : parent;
-          if (parentId) {
-            if (!seen.has(parentId)) addNode(parentId, parentId.replace(/.*[:#]/, ''), 'external', 'schema.org / base type');
-            addEdge(id, parentId, 'subClassOf', 'inheritance');
-          }
+    graph.forEach(cls => {
+      const id = cls['@id'] || cls.id;
+      const label = cls['rdfs:label'] || cls.name || cls.label || id;
+      const desc = cls['rdfs:comment'] || cls.description || '';
+      if (id) addNode(id, label, 'class', desc, cls);
+      const parent = cls['rdfs:subClassOf'];
+      if (parent) {
+        const parentId = typeof parent === 'object' ? (parent['@id'] || parent.id) : parent;
+        if (parentId) {
+          if (!seen.has(parentId)) addNode(parentId, parentId.replace(/.*[:#]/, ''), 'external', 'schema.org / base type');
+          addEdge(id, parentId, 'subClassOf', 'inheritance');
         }
-      });
-    }
+      }
+    });
 
-    // Plain entities array
     if (od.entities) {
       od.entities.forEach(ent => {
         const id = ent['@id'] || ent.id || ent.name;
-        const label = ent.name || ent['rdfs:label'] || id;
-        addNode(id, label, ent.entityType || 'class', ent.description || '', ent);
+        addNode(id, ent.name || ent['rdfs:label'] || id, ent.entityType || 'class', ent.description || '', ent);
       });
     }
 
-    // Relationships: support rdfs:domain/rdfs:range AND domainIncludes/rangeIncludes AND source/target
     if (od.relationships) {
       od.relationships.forEach(rel => {
         const label = rel['rdfs:label'] || rel.name || rel.label || '';
-        // rdfs:domain / rdfs:range (single string values)
         let domain = rel['rdfs:domain'] || rel.source;
         let range = rel['rdfs:range'] || rel.target;
         if (typeof domain !== 'string') domain = null;
@@ -284,7 +254,6 @@ function parseOntology(data, source) {
           if (!seen.has(range)) addNode(range, range.replace(/.*[:#]/, ''), 'external', '');
           addEdge(domain, range, label, 'relationship');
         }
-        // domainIncludes / rangeIncludes (arrays)
         const domains = rel.domainIncludes;
         const ranges = rel.rangeIncludes;
         if (domains && ranges) {
@@ -299,15 +268,12 @@ function parseOntology(data, source) {
       });
     }
 
-    // Add ontology root node if we have a name
     if (ontName && nodes.length > 0) {
-      const rootId = data['@id'] || 'ont:root';
-      addNode(rootId, ontName, 'core', ontDesc);
+      addNode(data['@id'] || 'ont:root', ontName, 'core', ontDesc);
     }
   }
 
-  // Format 5: PF Ontology (entities array with @id, relationships with domainIncludes/rangeIncludes)
-  if (data.entities && Array.isArray(data.entities)) {
+  else if (format === 'pf-ontology') {
     const ontName = (data.metadata && data.metadata.name) || data.name || source;
     data.entities.forEach(ent => {
       const id = ent['@id'] || ent.id || ent.name;
@@ -315,15 +281,12 @@ function parseOntology(data, source) {
       const desc = ent.description || ent['rdfs:comment'] || '';
       const type = ent.entityType || (ent['@type'] || '').replace(/.*:/, '') || 'class';
       if (id) addNode(id, label, type.toLowerCase(), desc, ent);
-
-      // Schema.org base type inheritance
       if (ent.schemaOrgBase) {
         addNode(ent.schemaOrgBase, ent.schemaOrgBase.replace('schema:', ''), 'external', 'schema.org type');
         addEdge(id, ent.schemaOrgBase, 'extends', 'inheritance');
       }
     });
 
-    // PF relationships: domainIncludes/rangeIncludes arrays
     if (data.relationships && Array.isArray(data.relationships)) {
       data.relationships.forEach(rel => {
         const label = rel.name || rel.label || rel['@id'] || '';
@@ -331,7 +294,6 @@ function parseOntology(data, source) {
         const ranges = rel.rangeIncludes || (rel.range ? [rel.range] : []);
         domains.forEach(d => {
           ranges.forEach(r => {
-            // Ensure both nodes exist
             if (!seen.has(d)) addNode(d, d.replace(/.*:/, ''), 'external', '');
             if (!seen.has(r)) addNode(r, r.replace(/.*:/, ''), 'external', '');
             addEdge(d, r, label, rel.linkedOntology ? 'binding' : 'relationship');
@@ -340,7 +302,6 @@ function parseOntology(data, source) {
       });
     }
 
-    // Dependencies from metadata
     if (data.metadata && data.metadata.dependencies) {
       const rootId = data['@id'] || 'root';
       addNode(rootId, ontName, 'core', data.metadata.description || '');
@@ -351,15 +312,36 @@ function parseOntology(data, source) {
     }
   }
 
-  // Format 6: Generic — walk top-level keys as entities
-  if (nodes.length === 0) {
+  else if (format === 'jsonld') {
+    const classes = data.classes || data['@graph'] || [];
+    (Array.isArray(classes) ? classes : []).forEach(cls => {
+      const id = cls['@id'] || cls.id || cls.name;
+      const label = cls['rdfs:label'] || cls.label || cls.name || id;
+      const desc = cls['rdfs:comment'] || cls.description || '';
+      const type = cls.entityType || cls.type || 'class';
+      if (id) addNode(id, label, type, desc, cls.properties || cls);
+      const parent = cls['rdfs:subClassOf'] || cls.subClassOf || cls.parentClass;
+      if (parent) {
+        const parentId = typeof parent === 'object' ? (parent['@id'] || parent.id) : parent;
+        if (parentId) { addNode(parentId, parentId, 'class', ''); addEdge(id, parentId, 'subClassOf', 'inheritance'); }
+      }
+    });
+    const rels = data.relationships || data.properties || [];
+    (Array.isArray(rels) ? rels : []).forEach(rel => {
+      const src = rel.source || rel.domain || rel.from;
+      const tgt = rel.target || rel.range || rel.to;
+      const label = rel.label || rel.name || rel['rdfs:label'] || '';
+      if (src && tgt) addEdge(src, tgt, label, 'relationship');
+    });
+  }
+
+  else { // generic
     addNode('root', source, 'core', 'Root');
     for (const [key, val] of Object.entries(data)) {
       if (key.startsWith('@') || key.startsWith('$')) continue;
       if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
         addNode(key, val.name || val.label || key, val.entityType || val.type || 'concept', val.description || '');
         addEdge('root', key, 'contains', 'relationship');
-        // Second level
         for (const [k2, v2] of Object.entries(val)) {
           if (typeof v2 === 'object' && v2 !== null && !Array.isArray(v2) && !k2.startsWith('@')) {
             const childId = key + '.' + k2;
@@ -379,52 +361,199 @@ function parseOntology(data, source) {
     }
   }
 
-  return { nodes, edges, name: data.name || data.ontologyName || source };
+  // --- Fix 2: Edge validation — ensure all edge endpoints exist ---
+  edges.forEach(e => {
+    if (!seen.has(e.from)) {
+      addNode(e.from, e.from.replace(/.*[:#]/, ''), 'external', 'Auto-created stub (missing reference)');
+      diagnostics.stubNodes.push(e.from);
+    }
+    if (!seen.has(e.to)) {
+      addNode(e.to, e.to.replace(/.*[:#]/, ''), 'external', 'Auto-created stub (missing reference)');
+      diagnostics.stubNodes.push(e.to);
+    }
+  });
+
+  return { nodes, edges, name: data.name || data.ontologyName || source, diagnostics };
 }
 
-function renderGraph(parsed) {
-  const visNodes = parsed.nodes.map(n => ({
-    id: n.id,
-    label: n.label,
-    color: { background: TYPE_COLORS[n.entityType] || TYPE_COLORS.default, border: '#222', highlight: { background: '#9dfff5', border: '#017c75' } },
-    font: { color: '#e0e0e0', size: 13 },
-    shape: n.entityType === 'agent' ? 'star' : n.entityType === 'layer' ? 'box' : 'dot',
-    size: n.entityType === 'agent' ? 25 : n.entityType === 'core' ? 30 : 20,
-    title: n.description || n.label,
-    _data: n
-  }));
+// --- Fix 4 & 5: Graph audit ---
+function auditGraph(parsed) {
+  const nodeIds = new Set(parsed.nodes.map(n => n.id));
+  const edgeSet = new Map(); // nodeId -> { in: count, out: count }
+  nodeIds.forEach(id => edgeSet.set(id, { in: 0, out: 0 }));
+  parsed.edges.forEach(e => {
+    if (edgeSet.has(e.from)) edgeSet.get(e.from).out++;
+    if (edgeSet.has(e.to)) edgeSet.get(e.to).in++;
+  });
 
+  // Isolated nodes (zero edges)
+  const isolated = parsed.nodes.filter(n => {
+    const counts = edgeSet.get(n.id);
+    return counts && counts.in === 0 && counts.out === 0;
+  });
+
+  // Connected components via BFS
+  const adj = new Map();
+  nodeIds.forEach(id => adj.set(id, []));
+  parsed.edges.forEach(e => {
+    if (adj.has(e.from)) adj.get(e.from).push(e.to);
+    if (adj.has(e.to)) adj.get(e.to).push(e.from);
+  });
+  const visited = new Set();
+  const components = [];
+  nodeIds.forEach(id => {
+    if (visited.has(id)) return;
+    const component = [];
+    const queue = [id];
+    while (queue.length > 0) {
+      const cur = queue.shift();
+      if (visited.has(cur)) continue;
+      visited.add(cur);
+      component.push(cur);
+      (adj.get(cur) || []).forEach(nb => { if (!visited.has(nb)) queue.push(nb); });
+    }
+    components.push(component);
+  });
+  components.sort((a, b) => b.length - a.length);
+
+  return {
+    format: parsed.diagnostics.format,
+    totalNodes: parsed.nodes.length,
+    totalEdges: parsed.edges.length,
+    isolated,
+    components,
+    stubNodes: parsed.diagnostics.stubNodes,
+    mainComponentSize: components.length > 0 ? components[0].length : 0,
+    disconnectedCount: components.length - 1
+  };
+}
+
+function renderAuditPanel(audit) {
+  lastAudit = audit;
+  const el = document.getElementById('audit-content');
+  let html = '';
+
+  // Summary
+  html += `<div class="audit-section"><h4>Summary</h4>`;
+  html += `<div class="audit-item">Format: <strong>${audit.format}</strong></div>`;
+  html += `<div class="audit-item">${audit.totalNodes} nodes, ${audit.totalEdges} edges</div>`;
+  html += `<div class="audit-item">Connected components: ${audit.components.length} `;
+  html += audit.disconnectedCount === 0
+    ? `<span class="audit-badge ok">Fully connected</span>`
+    : `<span class="audit-badge warn">${audit.disconnectedCount} disconnected</span>`;
+  html += `</div>`;
+  html += `<div class="audit-item">Main component: ${audit.mainComponentSize} nodes</div>`;
+  html += `</div>`;
+
+  // Stub nodes
+  if (audit.stubNodes.length > 0) {
+    html += `<div class="audit-section"><h4>Auto-created stubs <span class="audit-badge warn">${audit.stubNodes.length}</span></h4>`;
+    audit.stubNodes.forEach(id => {
+      html += `<div class="audit-item" onclick="focusNode('${id.replace(/'/g, "\\'")}')">${id}</div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Isolated nodes
+  if (audit.isolated.length > 0) {
+    html += `<div class="audit-section"><h4>Isolated nodes (silos) <span class="audit-badge warn">${audit.isolated.length}</span></h4>`;
+    audit.isolated.forEach(n => {
+      html += `<div class="audit-item" onclick="focusNode('${n.id.replace(/'/g, "\\'")}')">${n.label} <span style="color:#666">(${n.entityType})</span></div>`;
+    });
+    html += `</div>`;
+  }
+
+  // Disconnected components (skip the main one)
+  if (audit.components.length > 1) {
+    html += `<div class="audit-section"><h4>Disconnected clusters</h4>`;
+    audit.components.slice(1).forEach((comp, i) => {
+      const preview = comp.slice(0, 3).join(', ') + (comp.length > 3 ? '...' : '');
+      html += `<div class="audit-item" onclick="focusNodes(${JSON.stringify(comp)})">Cluster ${i + 1}: ${comp.length} nodes — ${preview}</div>`;
+    });
+    html += `</div>`;
+  }
+
+  if (audit.stubNodes.length === 0 && audit.isolated.length === 0 && audit.disconnectedCount === 0) {
+    html += `<div class="audit-section"><div class="audit-item" style="color:#86efac;">Graph is fully connected with no issues.</div></div>`;
+  }
+
+  el.innerHTML = html;
+}
+
+function focusNode(id) {
+  if (network) { network.selectNodes([id]); network.focus(id, { scale: 1.5, animation: true }); }
+}
+
+function focusNodes(ids) {
+  if (network) { network.selectNodes(ids); network.fit({ nodes: ids, animation: true }); }
+}
+
+// --- Rendering ---
+function renderGraph(parsed) {
+  // Fix 5: detect silos for visual highlighting
+  const audit = auditGraph(parsed);
+  renderAuditPanel(audit);
+  const siloNodeIds = new Set();
+  audit.isolated.forEach(n => siloNodeIds.add(n.id));
+  if (audit.components.length > 1) {
+    audit.components.slice(1).forEach(comp => comp.forEach(id => siloNodeIds.add(id)));
+  }
+
+  const visNodes = parsed.nodes.map(n => {
+    const isSilo = siloNodeIds.has(n.id);
+    return {
+      id: n.id,
+      label: n.label,
+      color: {
+        background: TYPE_COLORS[n.entityType] || TYPE_COLORS.default,
+        border: isSilo ? '#FF9800' : '#222',
+        highlight: { background: '#9dfff5', border: '#017c75' }
+      },
+      borderWidth: isSilo ? 3 : 2,
+      borderWidthSelected: 4,
+      shapeProperties: { borderDashes: isSilo ? [6, 3] : false },
+      font: { color: '#e0e0e0', size: 13 },
+      shape: n.entityType === 'agent' ? 'star' : n.entityType === 'layer' ? 'box' : 'dot',
+      size: n.entityType === 'agent' ? 25 : n.entityType === 'core' ? 30 : 20,
+      title: n.description || n.label,
+      _data: n
+    };
+  });
+
+  // Fix 3: improved edge rendering
   const visEdges = parsed.edges.map(e => ({
     from: e.from,
     to: e.to,
     label: e.label,
     color: { color: EDGE_COLORS[e.edgeType] || EDGE_COLORS.default, highlight: '#9dfff5' },
-    font: { color: '#666', size: 10, strokeWidth: 0 },
+    font: { color: '#888', size: 10, strokeWidth: 2, strokeColor: '#0f1117' },
     arrows: 'to',
     dashes: e.edgeType === 'inheritance',
-    width: e.edgeType === 'binding' ? 2 : 1,
-    smooth: { type: 'cubicBezier' }
+    width: e.edgeType === 'binding' ? 2.5 : 1.5,
+    smooth: { type: 'continuous', roundness: 0.3 }
   }));
 
   const container = document.getElementById('network');
   const data = { nodes: new vis.DataSet(visNodes), edges: new vis.DataSet(visEdges) };
 
   const options = {
-    physics: { enabled: physicsEnabled, barnesHut: { gravitationalConstant: -3000, springLength: 150 } },
+    physics: {
+      enabled: physicsEnabled,
+      stabilization: { iterations: 200 },
+      barnesHut: { gravitationalConstant: -3000, springLength: 150 }
+    },
     interaction: { hover: true, tooltipDelay: 200 },
     nodes: { borderWidth: 2 },
-    edges: { smooth: { type: 'cubicBezier', forceDirection: 'none' } },
+    edges: { smooth: { type: 'continuous', roundness: 0.3 } },
     layout: {}
   };
 
   network = new vis.Network(container, data, options);
 
-  // Fit after stabilization
   network.once('stabilizationIterationsDone', function() {
     network.fit({ animation: true });
   });
 
-  // Click handler for sidebar
   network.on('click', function(params) {
     if (params.nodes.length > 0) {
       const nodeId = params.nodes[0];
@@ -433,11 +562,9 @@ function renderGraph(parsed) {
     }
   });
 
-  // Update stats
   document.getElementById('stats').textContent =
-    `${parsed.nodes.length} nodes | ${parsed.edges.length} edges | ${parsed.name}`;
+    `${parsed.nodes.length} nodes | ${parsed.edges.length} edges | ${parsed.name} [${parsed.diagnostics.format}]`;
 
-  // Build legend
   buildLegend(parsed.nodes);
 }
 
@@ -452,7 +579,6 @@ function showNodeDetails(node) {
   html += field('Type', node.entityType);
   if (node.description) html += field('Description', node.description);
 
-  // Show all properties
   if (node.properties && typeof node.properties === 'object') {
     for (const [k, v] of Object.entries(node.properties)) {
       if (['id', 'name', 'label', 'description', 'entityType', 'type'].includes(k)) continue;
@@ -491,8 +617,6 @@ function changeLayout() {
     opts.layout = { hierarchical: { direction: 'UD', sortMethod: 'hubsize', levelSeparation: 120 } };
     opts.physics = { enabled: false };
   } else if (layout === 'circular') {
-    opts.physics = { enabled: false };
-    // vis.js doesn't have built-in circular — use physics briefly then freeze
     opts.physics = { enabled: true, barnesHut: { gravitationalConstant: -1000, centralGravity: 0.8, springLength: 100 } };
     setTimeout(() => { if (network) network.setOptions({ physics: { enabled: false } }); }, 2000);
   } else {
@@ -518,6 +642,10 @@ function exportPNG() {
 
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
+}
+
+function toggleAudit() {
+  document.getElementById('audit-panel').classList.toggle('open');
 }
 
 // --- GitHub API integration ---
