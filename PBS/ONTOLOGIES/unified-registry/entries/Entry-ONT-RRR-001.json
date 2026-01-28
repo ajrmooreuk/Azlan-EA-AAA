@@ -1,0 +1,48 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-RRR-001",
+  "name": "RRR Ontology (Roles/RACI/RBAC)",
+  "description": "Defines functional business roles (C-Suite, Line Managers), RACI accountability matrix, and Role-Based Access Control patterns",
+  "version": "3.0.0",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/rrr/",
+  "prefix": "rrr:",
+  "status": "partial-compliance",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pending",
+    "gate2c": "pending",
+    "gate3": "pending",
+    "gate4": "pending",
+    "gate5": "pending",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "../foundation-ont/rrr-ont/pf-roles-raci-rbac-ontology-v3.0.0.jsonld",
+    "documentation": "../foundation-ont/rrr-ont/README-ROLES-RACI-RBAC-v3.0.0.md",
+    "visualGuide": "../foundation-ont/rrr-ont/RRR_RACI_RBAC_Ontology_Visual_Guide.md",
+    "glossary": "../foundation-ont/rrr-ont/pf-roles-raci-rbac-glossary-v3.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "roles": "Functional business roles including C-Suite (CEO, COO, CFO, CMO, CTO, CIO, CHRO) and operational roles",
+    "raci": "Responsible, Accountable, Consulted, Informed accountability matrix",
+    "rbac": "Role-Based Access Control permission model"
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001"
+  ],
+  "dependents": [
+    "Entry-ONT-VP-001",
+    "Entry-ONT-EFS-001"
+  ],
+  "layer": "LAYER 3: VALUE DEFINITION",
+  "domain": "Organizational Governance",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-01-28",
+  "notes": "Most mature ontology in the ecosystem. Requires connectivity validation and test data generation."
+}
