@@ -26,13 +26,40 @@
   #drop-zone h2 { font-size: 20px; color: #9dfff5; margin-bottom: 8px; }
   #drop-zone p { color: #888; font-size: 14px; }
   #drop-zone .formats { color: #666; font-size: 12px; margin-top: 12px; }
-  .sidebar { position: absolute; right: 0; top: 0; bottom: 0; width: 320px; background: #1a1d27; border-left: 1px solid #2a2d37; padding: 16px; overflow-y: auto; z-index: 5; transform: translateX(100%); transition: transform 0.2s; }
+  .sidebar { position: absolute; right: 0; top: 0; bottom: 0; width: 380px; background: #1a1d27; border-left: 1px solid #2a2d37; padding: 16px; overflow-y: auto; z-index: 5; transform: translateX(100%); transition: transform 0.2s; }
   .sidebar.open { transform: translateX(0); }
   .sidebar h3 { font-size: 14px; color: #9dfff5; margin-bottom: 12px; }
   .sidebar .field { margin-bottom: 10px; }
   .sidebar .field-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
   .sidebar .field-value { font-size: 13px; color: #e0e0e0; margin-top: 2px; word-break: break-word; }
   .sidebar .close-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; color: #888; cursor: pointer; font-size: 18px; }
+  .sidebar-tabs { display: flex; gap: 4px; margin-bottom: 12px; border-bottom: 1px solid #2a2d37; padding-bottom: 8px; }
+  .sidebar-tab { background: none; border: none; color: #888; padding: 6px 12px; cursor: pointer; font-size: 12px; border-radius: 4px; }
+  .sidebar-tab:hover { color: #ccc; background: #2a2d37; }
+  .sidebar-tab.active { color: #9dfff5; background: #2a2d37; }
+  .connection-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-bottom: 4px; background: #22252f; }
+  .connection-item:hover { background: #2a2d37; }
+  .connection-arrow { color: #666; font-size: 14px; }
+  .connection-label { color: #9dfff5; font-size: 11px; flex-shrink: 0; }
+  .connection-node { color: #e0e0e0; }
+  .conn-section { margin-bottom: 12px; }
+  .conn-section h4 { font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 6px; }
+  .prop-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 8px; background: #22252f; border-radius: 4px; margin-bottom: 4px; font-size: 12px; }
+  .prop-name { color: #e0e0e0; }
+  .prop-type { color: #888; font-size: 11px; }
+  .prop-required { color: #FF9800; font-size: 10px; margin-left: 4px; }
+  .data-instance { background: #22252f; border-radius: 6px; padding: 10px; margin-bottom: 8px; font-size: 12px; }
+  .data-instance-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #2a2d37; }
+  .data-instance-id { color: #9dfff5; font-weight: 500; }
+  .data-instance-type { font-size: 10px; padding: 2px 6px; border-radius: 8px; }
+  .data-instance-type.typical { background: #166534; color: #86efac; }
+  .data-instance-type.edge { background: #1e40af; color: #93c5fd; }
+  .data-instance-type.boundary { background: #854d0e; color: #fcd34d; }
+  .data-instance-type.invalid { background: #7f1d1d; color: #fca5a5; }
+  .data-row { display: flex; gap: 8px; margin-bottom: 4px; }
+  .data-key { color: #888; min-width: 80px; }
+  .data-value { color: #e0e0e0; word-break: break-all; }
+  .no-data { color: #666; font-size: 12px; font-style: italic; padding: 12px; text-align: center; }
   .legend { position: absolute; bottom: 16px; left: 16px; background: #1a1d27; border: 1px solid #2a2d37; border-radius: 8px; padding: 12px; z-index: 5; font-size: 12px; }
   .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
   .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
@@ -72,6 +99,7 @@
   <button id="btn-audit" onclick="toggleAudit()">Audit</button>
   <span style="border-left:1px solid #3a3d47; height:24px;"></span>
   <button onclick="loadFromGitHub()">Load from GitHub</button>
+  <button onclick="loadTestDataFile()">+ Test Data</button>
 </div>
 
 <div id="graph-container">
@@ -85,8 +113,17 @@
   <div id="network"></div>
   <div class="sidebar" id="sidebar">
     <button class="close-btn" onclick="toggleSidebar()">&times;</button>
-    <h3>Node Details</h3>
-    <div id="node-details"><p style="color:#666">Click a node to see details</p></div>
+    <h3 id="sidebar-title">Node Details</h3>
+    <div class="sidebar-tabs" id="sidebar-tabs">
+      <button class="sidebar-tab active" onclick="switchTab('details')">Details</button>
+      <button class="sidebar-tab" onclick="switchTab('connections')">Connections</button>
+      <button class="sidebar-tab" onclick="switchTab('schema')">Schema</button>
+      <button class="sidebar-tab" onclick="switchTab('data')">Data</button>
+    </div>
+    <div id="tab-details" class="tab-content"><p style="color:#666">Click a node to see details</p></div>
+    <div id="tab-connections" class="tab-content" style="display:none;"></div>
+    <div id="tab-schema" class="tab-content" style="display:none;"></div>
+    <div id="tab-data" class="tab-content" style="display:none;"></div>
   </div>
   <div class="legend" id="legend" style="display:none;"></div>
   <div class="audit-panel" id="audit-panel">
@@ -101,6 +138,8 @@ let network = null;
 let physicsEnabled = true;
 let currentData = null;
 let lastAudit = null;
+let lastParsed = null;
+let currentNodeId = null;
 
 const TYPE_COLORS = {
   'class': '#4CAF50', 'core': '#4CAF50', 'framework': '#2196F3',
@@ -490,6 +529,8 @@ function focusNodes(ids) {
 
 // --- Rendering ---
 function renderGraph(parsed) {
+  lastParsed = parsed; // Store for connections/schema/data tabs
+
   // Fix 5: detect silos for visual highlighting
   const audit = auditGraph(parsed);
   renderAuditPanel(audit);
@@ -562,6 +603,18 @@ function renderGraph(parsed) {
     }
   });
 
+  // Double-click to focus and drill into connections
+  network.on('doubleClick', function(params) {
+    if (params.nodes.length > 0) {
+      const nodeId = params.nodes[0];
+      const node = visNodes.find(n => n.id === nodeId);
+      if (node) {
+        showNodeDetails(node._data);
+        switchTab('connections');
+      }
+    }
+  });
+
   document.getElementById('stats').textContent =
     `${parsed.nodes.length} nodes | ${parsed.edges.length} edges | ${parsed.name} [${parsed.diagnostics.format}]`;
 
@@ -570,24 +623,273 @@ function renderGraph(parsed) {
 
 function showNodeDetails(node) {
   const sidebar = document.getElementById('sidebar');
-  const details = document.getElementById('node-details');
   sidebar.classList.add('open');
+  currentNodeId = node.id;
 
-  let html = '';
-  html += field('ID', node.id);
-  html += field('Label', node.label);
-  html += field('Type', node.entityType);
-  if (node.description) html += field('Description', node.description);
+  document.getElementById('sidebar-title').textContent = node.label || node.id;
+
+  // Details tab
+  let detailsHtml = '';
+  detailsHtml += field('ID', node.id);
+  detailsHtml += field('Label', node.label);
+  detailsHtml += field('Type', node.entityType);
+  if (node.description) detailsHtml += field('Description', node.description);
 
   if (node.properties && typeof node.properties === 'object') {
     for (const [k, v] of Object.entries(node.properties)) {
-      if (['id', 'name', 'label', 'description', 'entityType', 'type'].includes(k)) continue;
+      if (['id', 'name', 'label', 'description', 'entityType', 'type', '@id', '@type', 'properties'].includes(k)) continue;
       const val = typeof v === 'object' ? JSON.stringify(v, null, 2) : v;
-      html += field(k, val);
+      detailsHtml += field(k, val);
+    }
+  }
+  document.getElementById('tab-details').innerHTML = detailsHtml;
+
+  // Connections tab
+  renderConnectionsTab(node.id);
+
+  // Schema tab
+  renderSchemaTab(node);
+
+  // Data tab
+  renderDataTab(node.id);
+
+  // Reset to details tab
+  switchTab('details');
+}
+
+function renderConnectionsTab(nodeId) {
+  if (!lastParsed) return;
+
+  const incoming = lastParsed.edges.filter(e => e.to === nodeId);
+  const outgoing = lastParsed.edges.filter(e => e.from === nodeId);
+
+  let html = '';
+
+  // Outgoing connections
+  html += `<div class="conn-section"><h4>Outgoing (${outgoing.length})</h4>`;
+  if (outgoing.length === 0) {
+    html += '<p class="no-data">No outgoing connections</p>';
+  } else {
+    outgoing.forEach(e => {
+      const targetNode = lastParsed.nodes.find(n => n.id === e.to);
+      const targetLabel = targetNode ? targetNode.label : e.to;
+      html += `<div class="connection-item" onclick="navigateToNode('${e.to.replace(/'/g, "\\'")}')">
+        <span class="connection-arrow">→</span>
+        <span class="connection-label">${e.label || 'relates to'}</span>
+        <span class="connection-node">${targetLabel}</span>
+      </div>`;
+    });
+  }
+  html += '</div>';
+
+  // Incoming connections
+  html += `<div class="conn-section"><h4>Incoming (${incoming.length})</h4>`;
+  if (incoming.length === 0) {
+    html += '<p class="no-data">No incoming connections</p>';
+  } else {
+    incoming.forEach(e => {
+      const sourceNode = lastParsed.nodes.find(n => n.id === e.from);
+      const sourceLabel = sourceNode ? sourceNode.label : e.from;
+      html += `<div class="connection-item" onclick="navigateToNode('${e.from.replace(/'/g, "\\'")}')">
+        <span class="connection-arrow">←</span>
+        <span class="connection-label">${e.label || 'relates to'}</span>
+        <span class="connection-node">${sourceLabel}</span>
+      </div>`;
+    });
+  }
+  html += '</div>';
+
+  // Summary
+  const total = incoming.length + outgoing.length;
+  html += `<div class="conn-section"><h4>Summary</h4>`;
+  html += `<div style="font-size:12px; color:#ccc;">Total connections: ${total}</div>`;
+  if (total === 0) {
+    html += `<div style="font-size:12px; color:#FF9800; margin-top:4px;">This node is isolated (no edges)</div>`;
+  }
+  html += '</div>';
+
+  document.getElementById('tab-connections').innerHTML = html;
+}
+
+function renderSchemaTab(node) {
+  let html = '';
+  const props = node.properties || {};
+
+  // Extract schema properties
+  const schemaProps = props.properties || props.attributes || [];
+
+  if (Array.isArray(schemaProps) && schemaProps.length > 0) {
+    html += '<div class="conn-section"><h4>Properties</h4>';
+    schemaProps.forEach(p => {
+      const name = p.name || p['@id'] || p.id || 'unknown';
+      const type = p.type || p.dataType || p['@type'] || p.range || 'any';
+      const required = p.required || p.minCount > 0;
+      html += `<div class="prop-row">
+        <span class="prop-name">${name}${required ? '<span class="prop-required">*</span>' : ''}</span>
+        <span class="prop-type">${type}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Check for inline property definitions in the entity itself
+  const inlineProps = [];
+  for (const [k, v] of Object.entries(props)) {
+    if (['id', 'name', 'label', 'description', 'entityType', 'type', '@id', '@type', 'properties', 'attributes', 'schemaOrgBase'].includes(k)) continue;
+    if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+      inlineProps.push({ name: k, type: typeof v, value: v });
     }
   }
 
-  details.innerHTML = html;
+  if (inlineProps.length > 0) {
+    html += '<div class="conn-section"><h4>Attributes</h4>';
+    inlineProps.forEach(p => {
+      html += `<div class="prop-row">
+        <span class="prop-name">${p.name}</span>
+        <span class="prop-type">${p.type}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Schema.org mapping
+  if (props.schemaOrgBase) {
+    html += '<div class="conn-section"><h4>Schema.org Base</h4>';
+    html += `<div style="font-size:12px; color:#9dfff5;">${props.schemaOrgBase}</div>`;
+    html += '</div>';
+  }
+
+  if (!schemaProps.length && !inlineProps.length && !props.schemaOrgBase) {
+    html = '<p class="no-data">No schema information available for this entity</p>';
+  }
+
+  document.getElementById('tab-schema').innerHTML = html;
+}
+
+function renderDataTab(nodeId) {
+  let html = '';
+
+  // Look for test data in currentData
+  const testData = findTestData(nodeId);
+
+  if (testData.length === 0) {
+    html = '<p class="no-data">No data instances found for this entity.<br><br>Load an ontology with testData or instances to see sample values.</p>';
+  } else {
+    html += `<div style="font-size:11px; color:#888; margin-bottom:12px;">${testData.length} instance(s) found</div>`;
+    testData.forEach((instance, idx) => {
+      const instanceType = instance._dataType || 'typical';
+      html += `<div class="data-instance">
+        <div class="data-instance-header">
+          <span class="data-instance-id">${instance.id || instance['@id'] || instance.name || 'Instance ' + (idx + 1)}</span>
+          <span class="data-instance-type ${instanceType}">${instanceType}</span>
+        </div>`;
+
+      for (const [k, v] of Object.entries(instance)) {
+        if (k === '_dataType' || k === '_entityType') continue;
+        const displayVal = typeof v === 'object' ? JSON.stringify(v) : v;
+        html += `<div class="data-row">
+          <span class="data-key">${k}</span>
+          <span class="data-value">${displayVal}</span>
+        </div>`;
+      }
+      html += '</div>';
+    });
+  }
+
+  document.getElementById('tab-data').innerHTML = html;
+}
+
+function findTestData(entityId) {
+  if (!currentData) return [];
+
+  const results = [];
+
+  // Check various test data locations
+  const testDataSources = [
+    currentData.testData,
+    currentData.testInstances,
+    currentData.instances,
+    currentData.sampleData,
+    currentData.data,
+    currentData.ontologyDefinition?.testData,
+    currentData.registryEntry?.testData
+  ];
+
+  for (const source of testDataSources) {
+    if (!source) continue;
+
+    // If source is an object with entity keys
+    if (typeof source === 'object' && !Array.isArray(source)) {
+      // Check for exact match or partial match
+      for (const [key, instances] of Object.entries(source)) {
+        if (key === entityId || key.toLowerCase() === entityId.toLowerCase() ||
+            entityId.includes(key) || key.includes(entityId)) {
+          if (Array.isArray(instances)) {
+            instances.forEach(inst => {
+              results.push({ ...inst, _entityType: key, _dataType: inst.testCategory || inst.dataType || 'typical' });
+            });
+          } else if (typeof instances === 'object') {
+            results.push({ ...instances, _entityType: key, _dataType: instances.testCategory || 'typical' });
+          }
+        }
+      }
+    }
+
+    // If source is an array, filter by entityType
+    if (Array.isArray(source)) {
+      source.forEach(inst => {
+        const instType = inst.entityType || inst['@type'] || inst.type || '';
+        if (instType === entityId || instType.includes(entityId) || entityId.includes(instType)) {
+          results.push({ ...inst, _dataType: inst.testCategory || inst.dataType || 'typical' });
+        }
+      });
+    }
+  }
+
+  // Also check 60-20-10-10 distribution structure
+  const distributions = ['typical', 'edge', 'boundary', 'invalid'];
+  for (const dist of distributions) {
+    const distData = currentData[dist] || currentData.testData?.[dist];
+    if (distData && typeof distData === 'object') {
+      for (const [key, instances] of Object.entries(distData)) {
+        if (key === entityId || key.toLowerCase() === entityId.toLowerCase()) {
+          if (Array.isArray(instances)) {
+            instances.forEach(inst => results.push({ ...inst, _entityType: key, _dataType: dist }));
+          }
+        }
+      }
+    }
+  }
+
+  return results.slice(0, 10); // Limit to 10 instances for display
+}
+
+function navigateToNode(nodeId) {
+  if (!network || !lastParsed) return;
+
+  // Find the node
+  const node = lastParsed.nodes.find(n => n.id === nodeId);
+  if (!node) return;
+
+  // Focus on the node in the graph
+  network.selectNodes([nodeId]);
+  network.focus(nodeId, { scale: 1.5, animation: true });
+
+  // Update sidebar
+  showNodeDetails(node);
+}
+
+function switchTab(tabName) {
+  // Update tab buttons
+  document.querySelectorAll('.sidebar-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === tabName);
+  });
+
+  // Update tab content
+  ['details', 'connections', 'schema', 'data'].forEach(name => {
+    const el = document.getElementById('tab-' + name);
+    if (el) el.style.display = name === tabName ? 'block' : 'none';
+  });
 }
 
 function field(label, value) {
@@ -642,6 +944,57 @@ function exportPNG() {
 
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Load supplementary test data file to merge with current ontology
+function loadTestDataFile() {
+  if (!currentData) {
+    alert('Load an ontology first, then add test data.');
+    return;
+  }
+
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const testData = JSON.parse(ev.target.result);
+
+        // Merge test data into currentData
+        if (testData.testData) {
+          currentData.testData = { ...currentData.testData, ...testData.testData };
+        } else if (testData.instances || testData.sampleData) {
+          currentData.testData = testData.instances || testData.sampleData;
+        } else if (Array.isArray(testData)) {
+          currentData.testData = currentData.testData || {};
+          testData.forEach(inst => {
+            const entityType = inst.entityType || inst['@type'] || 'unknown';
+            if (!currentData.testData[entityType]) currentData.testData[entityType] = [];
+            currentData.testData[entityType].push(inst);
+          });
+        } else {
+          // Assume the entire object is test data organized by entity
+          currentData.testData = { ...currentData.testData, ...testData };
+        }
+
+        // If a node is selected, refresh the data tab
+        if (currentNodeId) {
+          renderDataTab(currentNodeId);
+        }
+
+        alert('Test data loaded successfully! Click on entities to see their data in the Data tab.');
+      } catch (err) {
+        alert('Failed to parse test data: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
 }
 
 function toggleAudit() {
