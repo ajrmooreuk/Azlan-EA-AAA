@@ -94,6 +94,7 @@
     <option value="circular">Circular</option>
   </select>
   <button onclick="fitGraph()">Fit View</button>
+  <button onclick="resetGraph()">Reset</button>
   <button onclick="exportPNG()">Export PNG</button>
   <button id="btn-sidebar" onclick="toggleSidebar()">Details</button>
   <button id="btn-audit" onclick="toggleAudit()">Audit</button>
@@ -929,6 +930,28 @@ function changeLayout() {
 
 function fitGraph() {
   if (network) network.fit({ animation: true });
+}
+
+function resetGraph() {
+  if (!currentData) return;
+
+  // Re-parse from original data
+  const fileName = document.getElementById('file-name').textContent || 'reset';
+  const parsed = parseOntology(currentData, fileName);
+
+  // Re-render (triggers stabilization back to equilibrium)
+  renderGraph(parsed);
+
+  // Close panels
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('audit-panel').classList.remove('open');
+
+  // Reset physics toggle state
+  physicsEnabled = true;
+  document.getElementById('btn-physics').classList.add('active');
+
+  // Reset layout dropdown
+  document.getElementById('layout-select').value = 'physics';
 }
 
 function exportPNG() {
