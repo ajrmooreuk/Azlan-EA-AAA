@@ -1,0 +1,64 @@
+---
+title: ALZ MVP Balanced Scorecard Strategy Map
+---
+flowchart TB
+    subgraph Financial["💰 FINANCIAL PERSPECTIVE"]
+        F1["3-Year ROI Achievement"]
+        F2["GWM Hosting Cost Offset"]
+        F3["Platform Cost Efficiency"]
+    end
+    
+    subgraph Customer["👥 CUSTOMER PERSPECTIVE"]
+        C1["Time-to-Value
+        Improvement"]
+        C2["Client Project
+        Platform Utilisation"]
+        C3["Quality of
+        Deliverables"]
+    end
+    
+    subgraph Process["⚙️ INTERNAL PROCESS PERSPECTIVE"]
+        P1["MVP Delivery
+        8-12 Weeks"]
+        P2["Compliance Score
+        80%+"]
+        P3["Policy Compliance
+        95%+"]
+        P4["DevSecOps
+        Maturity"]
+    end
+    
+    subgraph Learning["📚 LEARNING & GROWTH PERSPECTIVE"]
+        L1["Team Cloud
+        Skills Development"]
+        L2["IaC/DevOps
+        Capability"]
+        L3["AI/ML Platform
+        Knowledge"]
+    end
+    
+    L1 --> P1
+    L2 --> P1
+    L2 --> P4
+    L3 --> C1
+    
+    P1 --> C2
+    P2 --> C3
+    P3 --> C3
+    P4 --> C1
+    
+    C1 --> F1
+    C2 --> F1
+    C3 --> F1
+    P1 --> F2
+    P3 --> F3
+    
+    classDef finStyle fill:#1a5f1a,stroke:#fff,stroke-width:2px,color:#fff
+    classDef custStyle fill:#2d5a87,stroke:#fff,stroke-width:2px,color:#fff
+    classDef procStyle fill:#8b4513,stroke:#fff,stroke-width:2px,color:#fff
+    classDef learnStyle fill:#4a235a,stroke:#fff,stroke-width:2px,color:#fff
+    
+    class F1,F2,F3 finStyle
+    class C1,C2,C3 custStyle
+    class P1,P2,P3,P4 procStyle
+    class L1,L2,L3 learnStyle
