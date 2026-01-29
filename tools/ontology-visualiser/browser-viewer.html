@@ -108,7 +108,7 @@
     <div class="drop-area" id="drop-area">
       <h2>Drop JSON Ontology Here</h2>
       <p>or click "Open JSON File" above</p>
-      <div class="formats">Supports: JSON-LD, Registry Entry, UniRegistry, @graph, Agent Registry<br>Or use "Load from GitHub" to fetch from a private repo</div>
+      <div class="formats">Supports: OAA v5.0.0 (hasDefinedTerm), JSON-LD, UniRegistry, Registry Entry, Agent Registry<br>Or use "Load from GitHub" to fetch from a private repo</div>
     </div>
   </div>
   <div id="network"></div>
@@ -200,6 +200,7 @@ function detectFormat(data) {
   if (data.registryEntry) return 'registry-entry';
   if (data.ontologyDefinition) return 'uni-registry';
   if (data.entities && Array.isArray(data.entities)) return 'pf-ontology';
+  if (data.hasDefinedTerm && Array.isArray(data.hasDefinedTerm)) return 'jsonld-definedterm';
   if (data.classes || data['@graph']) return 'jsonld';
   return 'generic';
 }
@@ -349,6 +350,82 @@ function parseOntology(data, source) {
         addNode(dep, dep.replace(/.*:/, ''), 'external', 'Dependency');
         addEdge(rootId, dep, 'depends on', 'binding');
       });
+    }
+  }
+
+  else if (format === 'jsonld-definedterm') {
+    // OAA v5.0.0 / EFS-style JSON-LD with hasDefinedTerm array
+    const ontName = data.name || data['rdfs:label'] || data['@id'] || source;
+    const ontDesc = data.description || data['rdfs:comment'] || '';
+
+    // Parse entities from hasDefinedTerm
+    data.hasDefinedTerm.forEach(term => {
+      const id = term['@id'] || term.name;
+      const label = term.name || term['rdfs:label'] || id;
+      const desc = term.description || term['rdfs:comment'] || '';
+      const termType = term['@type'] || term.type || 'Class';
+      const entityType = termType.toLowerCase().includes('property') ? 'supporting' : 'class';
+
+      if (id) addNode(id, label, entityType, desc, term);
+
+      // Handle rdfs:subClassOf (inheritance)
+      const parent = term['rdfs:subClassOf'];
+      if (parent) {
+        const parentId = typeof parent === 'object' ? (parent['@id'] || parent.id) : parent;
+        if (parentId) {
+          if (!seen.has(parentId)) {
+            addNode(parentId, parentId.replace(/.*[:#]/, ''), 'external', 'schema.org / base type');
+          }
+          addEdge(id, parentId, 'subClassOf', 'inheritance');
+        }
+      }
+
+      // Handle schema:domainIncludes for properties
+      const domains = term['schema:domainIncludes'] || term.domainIncludes;
+      const ranges = term['schema:rangeIncludes'] || term.rangeIncludes;
+      if (domains || ranges) {
+        const domainList = Array.isArray(domains) ? domains : (domains ? [domains] : []);
+        const rangeList = Array.isArray(ranges) ? ranges : (ranges ? [ranges] : []);
+
+        domainList.forEach(d => {
+          const domainId = typeof d === 'object' ? (d['@id'] || d.id) : d;
+          if (domainId) {
+            if (!seen.has(domainId)) addNode(domainId, domainId.replace(/.*[:#]/, ''), 'class', '');
+            addEdge(domainId, id, 'has property', 'relationship');
+          }
+        });
+
+        rangeList.forEach(r => {
+          const rangeId = typeof r === 'object' ? (r['@id'] || r.id) : r;
+          if (rangeId) {
+            if (!seen.has(rangeId)) addNode(rangeId, rangeId.replace(/.*[:#]/, ''), 'external', '');
+            addEdge(id, rangeId, 'range', 'relationship');
+          }
+        });
+      }
+    });
+
+    // Parse explicit relationships if present
+    if (data.relationships && Array.isArray(data.relationships)) {
+      data.relationships.forEach(rel => {
+        const label = rel.name || rel['rdfs:label'] || rel['@id'] || '';
+        const domains = rel.domainIncludes || (rel.domain ? [rel.domain] : []);
+        const ranges = rel.rangeIncludes || (rel.range ? [rel.range] : []);
+        (Array.isArray(domains) ? domains : [domains]).forEach(d => {
+          (Array.isArray(ranges) ? ranges : [ranges]).forEach(r => {
+            if (d && r) {
+              if (!seen.has(d)) addNode(d, d.replace(/.*[:#]/, ''), 'class', '');
+              if (!seen.has(r)) addNode(r, r.replace(/.*[:#]/, ''), 'class', '');
+              addEdge(d, r, label, 'relationship');
+            }
+          });
+        });
+      });
+    }
+
+    // Add root node for ontology
+    if (ontName && nodes.length > 0) {
+      addNode(data['@id'] || 'ont:root', ontName.replace(/.*[:#]/, ''), 'core', ontDesc);
     }
   }
 
