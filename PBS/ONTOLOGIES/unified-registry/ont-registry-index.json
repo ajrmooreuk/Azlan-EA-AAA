@@ -12,21 +12,27 @@
       "@id": "Entry-ONT-VSOM-001",
       "name": "VSOM Ontology",
       "namespace": "vsom:",
-      "status": "pending-review",
+      "status": "partial-compliance",
+      "gatesPassed": 6,
+      "gatesFailed": 1,
+      "validatedDate": "2026-01-28",
       "path": "./entries/Entry-ONT-VSOM-001.json"
     },
     {
       "@id": "Entry-ONT-RRR-001",
       "name": "RRR Ontology (Roles/RACI/RBAC)",
       "namespace": "rrr:",
-      "status": "partial-compliance",
+      "status": "pending-review",
       "path": "./entries/Entry-ONT-RRR-001.json"
     },
     {
       "@id": "Entry-ONT-OKR-001",
       "name": "OKR Ontology",
       "namespace": "okr:",
-      "status": "pending-review",
+      "status": "partial-compliance",
+      "gatesPassed": 5,
+      "gatesFailed": 2,
+      "validatedDate": "2026-01-28",
       "path": "./entries/Entry-ONT-OKR-001.json"
     },
     {
@@ -47,7 +53,10 @@
       "@id": "Entry-ONT-EFS-001",
       "name": "EFS Ontology (Epics/Features/Stories)",
       "namespace": "efs:",
-      "status": "partial-compliance",
+      "status": "near-compliance",
+      "gatesPassed": 6,
+      "gatesFailed": 1,
+      "validatedDate": "2026-01-28",
       "path": "./entries/Entry-ONT-EFS-001.json"
     }
   ],
@@ -64,8 +73,14 @@
   "statistics": {
     "totalOntologies": 6,
     "compliant": 0,
+    "nearCompliance": 1,
     "partialCompliance": 2,
-    "pendingReview": 4,
+    "pendingReview": 3,
     "deprecated": 0
+  },
+  "validationSummary": {
+    "validated": 3,
+    "validatedOntologies": ["VSOM", "OKR", "EFS"],
+    "remainingForReview": ["RRR", "PMF/GTM", "Value Proposition"]
   }
 }

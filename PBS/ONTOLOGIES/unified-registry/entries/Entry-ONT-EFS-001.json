@@ -8,17 +8,20 @@
   "oaaVersion": "5.0.0",
   "namespace": "https://platformcore.io/ontology/efs/",
   "prefix": "efs:",
-  "status": "partial-compliance",
+  "status": "near-compliance",
   "complianceStatus": {
     "gate1": "pass",
     "gate2": "pass",
-    "gate2b": "pending",
+    "gate2b": "pass",
     "gate2c": "pass",
-    "gate3": "pending",
+    "gate3": "pass",
     "gate4": "pass",
-    "gate5": "pending",
+    "gate5": "fail",
     "gate6": "pass"
   },
+  "validationDate": "2026-01-28",
+  "gatesPassed": 6,
+  "gatesFailed": 1,
   "artifacts": {
     "ontology": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/efs-ontology.jsonld",
     "interfaces": [
@@ -31,7 +34,7 @@
     "lineageDiagrams": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/efs-lineage-diagrams-v3.0.0.md",
     "architecture": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/efs-architecture.mermaid",
     "schemaMappings": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/schema-mappings (1).md",
-    "validationReport": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/EFS-OAA-v5-Validation-Report.md",
+    "validationReport": "../unified-registry/validation-reports/EFS-OAA-v5-Validation-Report-v3.0.0.md",
     "visualGuide": null,
     "glossary": null,
     "testData": null
@@ -65,5 +68,5 @@
   "maintainer": "Azlan EA-AAA",
   "created": "2026-01-28",
   "lastModified": "2026-01-28",
-  "notes": "Most comprehensive ontology. Has validation report. Needs entity connectivity check, business rules, and test data generation."
+  "notes": "WORKFLOW D validated 2026-01-28. Most comprehensive ontology with 19 entities, 31 relationships, 12 business rules. G5 FAIL: Needs test data (60-20-10-10). Has complete lineage model, interfaces, and architecture docs."
 }
