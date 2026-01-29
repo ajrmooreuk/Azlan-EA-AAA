@@ -1,0 +1,1 @@
+#Architecture leverage PF-Core Arch and PFI- and Azlan is a stream of work around Azure and Micrososft specific stack and may have cross over with AIRL but is Micrososft Cloud platforms specific, Azure, power Platform and  M365 with an Agentic layer.
