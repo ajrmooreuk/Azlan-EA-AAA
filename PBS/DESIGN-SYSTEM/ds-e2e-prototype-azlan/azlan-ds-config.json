@@ -27,33 +27,40 @@
 
   "brandSwitching": {
     "enabled": true,
+    "mechanism": "figma-file-url",
+    "envVarName": "DS_ACTIVE_BRAND",
+    "note": "DS_ACTIVE_BRAND points to Figma file URL - extraction pipeline pulls tokens from that source",
     "supportedBrands": [
       {
         "brandId": "baiv",
         "brandName": "Be AI Visible",
-        "tokensFile": "baiv-tokens.css",
-        "providerFile": "baiv-tokens.tsx",
+        "figmaFileKey": "bXCyfNwzc8Z9kEeFIeIB8C",
+        "figmaFileUrl": "https://www.figma.com/design/bXCyfNwzc8Z9kEeFIeIB8C",
         "active": true
       },
       {
         "brandId": "w4m",
         "brandName": "Work4Me",
-        "tokensFile": "w4m-tokens.css",
-        "providerFile": "w4m-tokens.tsx",
+        "figmaFileKey": "${W4M_FIGMA_FILE_KEY}",
+        "figmaFileUrl": "${W4M_FIGMA_FILE_URL}",
         "active": false,
-        "status": "placeholder"
+        "status": "configure-when-available"
       },
       {
         "brandId": "azlan-pfc",
         "brandName": "Azlan PFC",
-        "tokensFile": "azlan-pfc-tokens.css",
-        "providerFile": "azlan-pfc-tokens.tsx",
+        "figmaFileKey": "${AZLAN_PFC_FIGMA_FILE_KEY}",
+        "figmaFileUrl": "${AZLAN_PFC_FIGMA_FILE_URL}",
         "active": false,
-        "status": "placeholder"
+        "status": "configure-when-available"
       }
     ],
-    "switchMechanism": "env-variable",
-    "envVarName": "DS_ACTIVE_BRAND"
+    "extractionPipeline": {
+      "shared": true,
+      "note": "Same extraction pipeline for all brands - just switch Figma source URL",
+      "outputPath": "./tokens/",
+      "outputFormat": ["css", "tsx"]
+    }
   },
 
   "supabaseConfig": {

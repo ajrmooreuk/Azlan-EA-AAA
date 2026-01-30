@@ -229,35 +229,50 @@ export default function App({ children }) {
 
 ## 5. Brand Switching Configuration
 
+Brand switching = pointing to different **Figma file URLs**. Same extraction pipeline, different source.
+
 ```json
 {
   "DS_ACTIVE_BRAND": "baiv",
-  "supportedBrands": {
+  "brands": {
     "baiv": {
-      "tokens": "./tokens/baiv-tokens.css",
-      "provider": "./tokens/baiv-tokens.tsx"
+      "figmaFileUrl": "https://www.figma.com/design/bXCyfNwzc8Z9kEeFIeIB8C"
     },
     "w4m": {
-      "tokens": "./tokens/w4m-tokens.css",
-      "provider": "./tokens/w4m-tokens.tsx",
-      "status": "placeholder"
+      "figmaFileUrl": "${W4M_FIGMA_FILE_URL}"
     },
     "azlan-pfc": {
-      "tokens": "./tokens/azlan-pfc-tokens.css",
-      "provider": "./tokens/azlan-pfc-tokens.tsx",
-      "status": "placeholder"
+      "figmaFileUrl": "${AZLAN_PFC_FIGMA_FILE_URL}"
     }
   }
 }
 ```
 
-To test brand switching:
+To switch brands:
 ```bash
-# Switch to W4M brand
-DS_ACTIVE_BRAND=w4m npm run dev
+# Set active brand (points extraction to that Figma file)
+DS_ACTIVE_BRAND=baiv    # Uses BAIV Figma file
+DS_ACTIVE_BRAND=w4m     # Uses W4M Figma file (when configured)
 
-# Switch back to BAIV
-DS_ACTIVE_BRAND=baiv npm run dev
+# Run extraction - pulls tokens from DS_ACTIVE_BRAND Figma source
+npm run extract-tokens
+
+# Output goes to same ./tokens/ directory
+# Same pipeline, different source
+```
+
+```mermaid
+flowchart LR
+    ENV["DS_ACTIVE_BRAND=w4m"]
+    ENV --> FIGMA_URL["W4M Figma File URL"]
+    FIGMA_URL --> EXTRACT["MCP Extraction Pipeline"]
+    EXTRACT --> TOKENS["./tokens/
+    brand-tokens.css
+    brand-tokens.tsx"]
+
+    style ENV fill:#fffad1,stroke:#cec528
+    style EXTRACT fill:#feedeb,stroke:#e84e1c
+    style TOKENS fill:#c5fff5,stroke:#019587
 ```
 
 ---
