@@ -645,31 +645,43 @@ function auditGraph(parsed) {
 function validateOAAv5(data, parsed) {
   const gates = [];
 
+  // === CORE GATES (G1-G4) - Required for compliance ===
+
   // GATE 1: Schema Structure
   gates.push(validateG1SchemaStructure(data));
 
   // GATE 2: Relationship Cardinality
   gates.push(validateG2RelationshipCardinality(data));
 
-  // GATE 2B: Entity Connectivity
+  // GATE 2B: Entity Connectivity (sub-gate of G2)
   gates.push(validateG2BEntityConnectivity(parsed));
 
-  // GATE 2C: Graph Connectivity
+  // GATE 2C: Graph Connectivity (sub-gate of G2)
   gates.push(validateG2CGraphConnectivity(parsed));
+
+  // GATE 3: Business Rules (IF-THEN format)
+  gates.push(validateG3BusinessRules(data));
 
   // GATE 4: Semantic Consistency
   gates.push(validateG4SemanticConsistency(data, parsed));
 
-  // GATE 5: Completeness
-  gates.push(validateG5Completeness(data, parsed));
+  // === ADVISORY GATES (G5-G6) - Recommendations only ===
 
-  // GATE 6: UniRegistry Format (if applicable)
-  gates.push(validateG6UniRegistry(data));
+  // GATE 5: Completeness (advisory)
+  const g5 = validateG5Completeness(data, parsed);
+  g5.advisory = true;
+  gates.push(g5);
 
-  // Calculate overall status
-  const failCount = gates.filter(g => g.status === 'fail').length;
-  const warnCount = gates.filter(g => g.status === 'warn').length;
-  const passCount = gates.filter(g => g.status === 'pass').length;
+  // GATE 6: UniRegistry Format (advisory, if applicable)
+  const g6 = validateG6UniRegistry(data);
+  g6.advisory = true;
+  gates.push(g6);
+
+  // Calculate overall status (only core gates G1-G4 affect pass/fail)
+  const coreGates = gates.filter(g => !g.advisory && !g.skipped);
+  const failCount = coreGates.filter(g => g.status === 'fail').length;
+  const warnCount = coreGates.filter(g => g.status === 'warn').length;
+  const passCount = coreGates.filter(g => g.status === 'pass').length;
 
   let overall = 'pass';
   if (failCount > 0) overall = 'fail';
@@ -678,7 +690,7 @@ function validateOAAv5(data, parsed) {
   return {
     gates,
     overall,
-    summary: { pass: passCount, warn: warnCount, fail: failCount }
+    summary: { pass: passCount, warn: warnCount, fail: failCount, advisory: gates.filter(g => g.advisory).length }
   };
 }
 
@@ -867,6 +879,64 @@ function validateG2CGraphConnectivity(parsed) {
   };
 }
 
+// GATE 3: Business Rules - IF-THEN format validation
+function validateG3BusinessRules(data) {
+  const issues = [];
+  const warnings = [];
+
+  // Find business rules in various locations
+  const businessRules = data.businessRules || data.rules ||
+                        (data.ontologyDefinition && data.ontologyDefinition.businessRules) || [];
+
+  if (businessRules.length === 0) {
+    // No business rules defined - this is a warning, not failure
+    return {
+      gate: 'G3: Business Rules',
+      status: 'warn',
+      issues: [],
+      warnings: ['No business rules defined'],
+      detail: 'Consider adding IF-THEN business rules'
+    };
+  }
+
+  // Validate IF-THEN format
+  const ifThenPattern = /^IF\s+.+\s+THEN\s+.+$/i;
+  const expressionPattern = /^[A-Za-z_][A-Za-z0-9_.]*\s*(==|!=|>|<|>=|<=|&&|\|\||\s+AND\s+|\s+OR\s+)/i;
+
+  let compliantCount = 0;
+  businessRules.forEach((rule, i) => {
+    const ruleName = rule.name || rule.id || `Rule ${i + 1}`;
+    const ruleText = rule.expression || rule.rule || rule.description || '';
+
+    // Check for IF-THEN format
+    if (ifThenPattern.test(ruleText)) {
+      compliantCount++;
+    } else if (expressionPattern.test(ruleText)) {
+      // Has a logical expression but not in IF-THEN format
+      warnings.push(`${ruleName}: has expression but not IF-THEN format`);
+    } else if (ruleText.trim() === '') {
+      issues.push(`${ruleName}: empty rule expression`);
+    } else {
+      warnings.push(`${ruleName}: convert to IF-THEN format`);
+    }
+
+    // Check for severity
+    if (!rule.severity) {
+      warnings.push(`${ruleName}: missing severity (error/warning/info)`);
+    }
+  });
+
+  const pct = businessRules.length > 0 ? Math.round((compliantCount / businessRules.length) * 100) : 0;
+
+  return {
+    gate: 'G3: Business Rules',
+    status: issues.length > 0 ? 'fail' : (pct < 80 ? 'warn' : 'pass'),
+    issues,
+    warnings: warnings.slice(0, 5),
+    detail: `${pct}% rules in IF-THEN format (${compliantCount}/${businessRules.length})`
+  };
+}
+
 // GATE 4: Semantic Consistency - naming conventions, descriptions
 function validateG4SemanticConsistency(data, parsed) {
   const issues = [];
@@ -1017,12 +1087,15 @@ function renderOAACompliancePanel(validation) {
     validation.overall === 'pass' ? '#86efac' :
     validation.overall === 'warn' ? '#ffb48e' : '#fca5a5'
   };">${statusText}</div>`;
-  html += `<div style="font-size:11px; color:#888; margin-top:4px;">${validation.summary.pass} pass | ${validation.summary.warn} warn | ${validation.summary.fail} fail</div>`;
+  html += `<div style="font-size:11px; color:#888; margin-top:4px;">Core gates (G1-G4): ${validation.summary.pass} pass | ${validation.summary.warn} warn | ${validation.summary.fail} fail</div>`;
   html += '</div>';
 
-  // Individual gates
+  // Core gates section
+  html += '<div style="margin-bottom:8px; font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.5px;">Core Gates (Required)</div>';
+
+  // Individual core gates
   validation.gates.forEach(g => {
-    if (g.skipped) return; // Skip non-applicable gates
+    if (g.skipped || g.advisory) return; // Skip non-applicable and advisory gates
 
     html += `<div class="gate-result ${g.status}">`;
     html += `<div class="gate-name">${g.gate} <span class="audit-badge ${g.status}">${g.status.toUpperCase()}</span></div>`;
@@ -1050,6 +1123,28 @@ function renderOAACompliancePanel(validation) {
 
     html += '</div>';
   });
+
+  // Advisory gates section
+  const advisoryGates = validation.gates.filter(g => g.advisory && !g.skipped);
+  if (advisoryGates.length > 0) {
+    html += '<div style="margin-top:16px; margin-bottom:8px; font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.5px;">Advisory Gates (Recommendations)</div>';
+
+    advisoryGates.forEach(g => {
+      html += `<div class="gate-result ${g.status}" style="opacity:0.7;">`;
+      html += `<div class="gate-name">${g.gate} <span style="font-size:10px; color:#666;">ADVISORY</span></div>`;
+      html += `<div class="gate-detail">${g.detail}</div>`;
+
+      if (g.warnings && g.warnings.length > 0) {
+        html += '<div class="gate-items">';
+        g.warnings.slice(0, 2).forEach(warn => {
+          html += `<div style="color:#888;">• ${warn}</div>`;
+        });
+        html += '</div>';
+      }
+
+      html += '</div>';
+    });
+  }
 
   el.innerHTML = html;
 
@@ -1733,22 +1828,28 @@ function buildOAAPrompt(ontology, validation) {
   // Build detailed prompt with OAA v5.0.0 requirements
   let prompt = `You are the OAA (Ontology Architect Agent) v5.0.0.
 
-Upgrade this ontology to pass ALL OAA v5.0.0 compliance gates.
+Upgrade this ontology to pass ALL OAA v5.0.0 core compliance gates (G1-G4).
 
-## OAA v5.0.0 Quality Gates (ALL must pass at 100%)
+## OAA v5.0.0 Core Gates (REQUIRED - must pass at 100%)
 
 | Gate | Requirement |
 |------|-------------|
 | G1 | Schema Structure: Valid JSON-LD with @context, @id, entities |
-| G2 | Relationship Cardinality: All relationships have domainIncludes/rangeIncludes |
+| G2 | Relationship Cardinality: All relationships have domainIncludes/rangeIncludes with cardinality |
 | G2B | Entity Connectivity: EVERY entity must participate in ≥1 relationship |
 | G2C | Graph Connectivity: All entities form a SINGLE connected component |
+| G3 | Business Rules: IF-THEN format with severity levels |
 | G4 | Semantic Consistency: All entities have descriptions (≥20 chars) |
+
+## Advisory Gates (Recommended but not required for compliance)
+
+| Gate | Requirement |
+|------|-------------|
 | G5 | Completeness: Version, metadata, edge-to-node ratio ≥0.8 |
 | G6 | UniRegistry Format: If applicable, valid registry structure |
 
 ## Current Compliance Status
-${issues.length > 0 ? issues.join('\n') : 'No critical issues, but validate and enhance.'}`;
+${issues.length > 0 ? issues.filter(i => !i.includes('G5:') && !i.includes('G6:')).join('\n') : 'No critical issues, but validate and enhance.'}`;
 
   // Add specific orphaned entities if any
   if (orphanedEntities.length > 0) {
