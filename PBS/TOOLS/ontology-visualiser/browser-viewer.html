@@ -1649,31 +1649,89 @@ function runOAAUpgrade() {
 
 function buildOAAPrompt(ontology, validation) {
   const issues = [];
+  const orphanedEntities = [];
+  const missingDescriptions = [];
+
   validation.gates.forEach(g => {
-    if (g.status === 'fail') issues.push(`FAIL: ${g.gate} - ${g.detail}`);
-    if (g.status === 'warn') issues.push(`WARN: ${g.gate} - ${g.detail}`);
+    if (g.status === 'fail') {
+      issues.push(`FAIL: ${g.gate} - ${g.detail}`);
+      // Collect orphaned entities from G2B
+      if (g.gate.includes('2B') && g.orphaned) {
+        orphanedEntities.push(...g.orphaned);
+      }
+    }
+    if (g.status === 'warn') {
+      issues.push(`WARN: ${g.gate} - ${g.detail}`);
+      // Collect missing descriptions from G4
+      if (g.gate.includes('G4') && g.warnings) {
+        g.warnings.forEach(w => {
+          if (w.includes('missing description')) {
+            const match = w.match(/^([^:]+):/);
+            if (match) missingDescriptions.push(match[1]);
+          }
+        });
+      }
+    }
   });
 
-  const prompt = `You are the OAA (Ontology Architect Agent) v5.0.0.
+  // Build detailed prompt with OAA v5.0.0 requirements
+  let prompt = `You are the OAA (Ontology Architect Agent) v5.0.0.
 
-I have an ontology that needs to be upgraded to pass OAA v5.0.0 compliance.
+Upgrade this ontology to pass ALL OAA v5.0.0 compliance gates.
 
-## Current Compliance Issues
-${issues.length > 0 ? issues.join('\n') : 'No issues detected, but please validate and enhance.'}
+## OAA v5.0.0 Quality Gates (ALL must pass at 100%)
+
+| Gate | Requirement |
+|------|-------------|
+| G1 | Schema Structure: Valid JSON-LD with @context, @id, entities |
+| G2 | Relationship Cardinality: All relationships have domainIncludes/rangeIncludes |
+| G2B | Entity Connectivity: EVERY entity must participate in ≥1 relationship |
+| G2C | Graph Connectivity: All entities form a SINGLE connected component |
+| G4 | Semantic Consistency: All entities have descriptions (≥20 chars) |
+| G5 | Completeness: Version, metadata, edge-to-node ratio ≥0.8 |
+| G6 | UniRegistry Format: If applicable, valid registry structure |
+
+## Current Compliance Status
+${issues.length > 0 ? issues.join('\n') : 'No critical issues, but validate and enhance.'}`;
+
+  // Add specific orphaned entities if any
+  if (orphanedEntities.length > 0) {
+    prompt += `
+
+## CRITICAL: Orphaned Entities (G2B FAIL)
+These entities have ZERO relationships and MUST be connected:
+${orphanedEntities.map(e => `- ${e}`).join('\n')}
+
+For EACH orphaned entity, add at least one relationship where it appears as:
+- domainIncludes (source) OR
+- rangeIncludes (target)`;
+  }
+
+  // Add missing descriptions if any
+  if (missingDescriptions.length > 0) {
+    prompt += `
+
+## Missing Descriptions (G4)
+Add descriptions (≥20 characters) for:
+${missingDescriptions.slice(0, 10).map(e => `- ${e}`).join('\n')}${missingDescriptions.length > 10 ? `\n... and ${missingDescriptions.length - 10} more` : ''}`;
+  }
+
+  prompt += `
 
 ## Current Ontology
 \`\`\`json
 ${JSON.stringify(ontology, null, 2)}
 \`\`\`
 
-## Task
-1. Analyze the ontology structure
-2. Fix any compliance issues (especially entity connectivity - every entity must participate in at least one relationship)
-3. Ensure relationships have proper domainIncludes/rangeIncludes
-4. Add missing descriptions where needed
-5. Output the upgraded ontology as valid JSON
+## Required Output Format
+Produce a compliant ontology with:
+1. All entities connected via relationships (no orphans)
+2. Relationships with proper domainIncludes/rangeIncludes arrays
+3. Descriptions for all entities (≥20 characters each)
+4. Cardinality notation on relationships (e.g., "1..*", "0..1")
+5. Single connected graph (all entities reachable from any other)
 
-Output ONLY the upgraded JSON, no explanations.`;
+Output ONLY valid JSON. No explanations, no markdown, no code blocks.`;
 
   return prompt;
 }
