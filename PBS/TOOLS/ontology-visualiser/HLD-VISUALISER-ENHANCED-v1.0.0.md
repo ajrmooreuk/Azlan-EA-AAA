@@ -481,13 +481,264 @@ const tokenMapping = {
 
 ## Decision Points
 
-| # | Decision | Options | Recommendation |
-|---|----------|---------|----------------|
-| D1 | Storage architecture | A (Supabase-First) / B (Hybrid) / C (Central) | **A** - Simpler, proven pattern |
-| D2 | Validation location | Browser / Edge Function / Both | **Both** - Quick client check, authoritative server |
-| D3 | Theming source | Figma MCP / Pre-built CSS / Both | **Both** - MCP for sync, fallback CSS |
-| D4 | Graph library | vis.js (current) / D3 / Cytoscape | **vis.js** - Already integrated, sufficient |
+| # | Decision | Options | Resolution |
+|---|----------|---------|------------|
+| D1 | Storage architecture | A (Supabase-First) / B (Hybrid) / C (Central) | **A** - Supabase-First |
+| D2 | Validation location | Browser / Edge Function / Both | **Both** - Client + server |
+| D3 | Theming source | Figma MCP / Pre-built CSS / Both | **Both** - MCP primary, CSS fallback |
+| D4 | Graph library | vis.js (current) / D3 / Cytoscape | **vis.js** - Already integrated |
 | D5 | Tier navigation | Separate views / Inline expansion / Both | **Both** - Flexibility |
+| D6 | Multi-tenancy | Per-PFI Supabase / Shared with RLS | **Shared** - PFC distributes to PFIs |
+| D7 | Compliance enforcement | Block / Allow with warning | **Allow + Recommend** - Non-blocking |
+| D8 | Branding control | Open / RBAC-restricted | **RBAC** - Admins only |
+
+---
+
+## Governance Model (RESOLVED)
+
+### PFC → PFI Arbitration
+
+```mermaid
+flowchart TB
+    subgraph PFC["PF-CORE (Central)"]
+        CONFIG["Core Config"]
+        VALIDATOR["OAA v5.0.0 Validator"]
+        REGISTRY["Master Registry"]
+    end
+
+    subgraph DIST["Distribution"]
+        SYNC["Config Sync"]
+    end
+
+    subgraph PFI1["PFI-BAIV"]
+        DS1["BAIV Design System"]
+        ENV1["dev / test / prod"]
+    end
+
+    subgraph PFI2["PFI-W4M"]
+        DS2["W4M Design System"]
+        ENV2["dev / test / prod"]
+    end
+
+    subgraph PFI3["PFI-Azlan"]
+        DS3["Azlan Design System"]
+        ENV3["dev / test / prod"]
+    end
+
+    PFC -->|"arbitrates"| DIST
+    DIST --> PFI1
+    DIST --> PFI2
+    DIST --> PFI3
+
+    style PFC fill:#e2f7ff,stroke:#00a4bf,stroke-width:3px
+    style DIST fill:#fffad1,stroke:#cec528
+    style PFI1 fill:#f0e7fe,stroke:#6f0eb0
+    style PFI2 fill:#f0e7fe,stroke:#6f0eb0
+    style PFI3 fill:#f0e7fe,stroke:#6f0eb0
+```
+
+**Key Principles:**
+- **One PF-Core config** distributed to all sub-platform PFIs
+- **Each PFI** owns its design system (Figma file)
+- **PFC arbitrates** validation rules, PFI handles execution
+- **Visualiser** = PFC core capability, theming = PFI customization
+
+---
+
+## RBAC & Branding Control
+
+### Default Behavior
+
+| Role | Can View | Can Upload Ontology | Can Change PFI/Brand |
+|------|----------|---------------------|----------------------|
+| Viewer | ✓ | ✗ | ✗ |
+| Editor | ✓ | ✓ | ✗ |
+| Admin | ✓ | ✓ | ✓ |
+
+### Brand Switching (RBAC-Protected)
+
+```sql
+-- RLS policy: Only admins can modify pfi_config
+CREATE POLICY "Admins can modify PFI config"
+ON pfi_config
+FOR UPDATE
+USING (
+    auth.jwt() ->> 'role' = 'admin'
+);
+
+-- Default PFI loaded on startup
+CREATE TABLE pfi_config (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    pfi_id TEXT NOT NULL DEFAULT 'baiv',
+    figma_file_key TEXT,
+    is_default BOOLEAN DEFAULT false,
+    updated_by UUID REFERENCES auth.users(id),
+    updated_at TIMESTAMPTZ DEFAULT now()
+);
+```
+
+### UI Behavior
+
+- **Non-admins**: See current PFI branding, no switcher visible
+- **Admins**: See brand switcher dropdown, can select PFI
+- **Default PFI**: Configurable per deployment, defaults to primary brand
+
+---
+
+## Compliance Workflow (RESOLVED)
+
+### Allow + Recommend Approach
+
+```mermaid
+flowchart TB
+    UPLOAD["Upload Ontology"]
+    VALIDATE["Run OAA v5.0.0 Validator"]
+
+    subgraph RESULT["Validation Result"]
+        PASS["✓ Compliant"]
+        FAIL["⚠ Non-Compliant"]
+    end
+
+    subgraph ACTIONS["Non-Compliant Actions"]
+        STORE["Store anyway (flagged)"]
+        RECOMMEND["Recommend: Run OAA v5.0.0"]
+        REPORT["Show validation report"]
+    end
+
+    UPLOAD --> VALIDATE
+    VALIDATE --> PASS
+    VALIDATE --> FAIL
+    FAIL --> STORE
+    FAIL --> RECOMMEND
+    FAIL --> REPORT
+    PASS -->|"Store clean"| DB[(Registry)]
+    STORE -->|"Store with flag"| DB
+
+    style PASS fill:#c5fff5,stroke:#019587
+    style FAIL fill:#fffad1,stroke:#cec528
+    style RECOMMEND fill:#feedeb,stroke:#e84e1c
+```
+
+**Workflow:**
+1. User uploads ontology
+2. Validator checks against OAA v5.0.0 gates
+3. If non-compliant:
+   - **Allow storage** with `compliance_status = 'non-compliant'`
+   - **Show recommendation**: "Run OAA v5.0.0 agent to upgrade"
+   - **Display report**: Which gates failed
+4. Non-compliant ontologies visible but flagged in UI
+
+---
+
+## Environment Model (Dev/Test/Prod)
+
+### Version Flow
+
+```mermaid
+flowchart LR
+    subgraph DEV["Development"]
+        D_ONT["Ontology v1.2.0-dev"]
+        D_VAL["Validation: Optional"]
+    end
+
+    subgraph TEST["Testing"]
+        T_ONT["Ontology v1.2.0-rc1"]
+        T_VAL["Validation: Required"]
+    end
+
+    subgraph PROD["Production"]
+        P_ONT["Ontology v1.1.0"]
+        P_VAL["Validation: Enforced"]
+    end
+
+    DEV -->|"Promote"| TEST
+    TEST -->|"Release"| PROD
+
+    style DEV fill:#fffad1,stroke:#cec528
+    style TEST fill:#feedeb,stroke:#e84e1c
+    style PROD fill:#c5fff5,stroke:#019587
+```
+
+### Environment-Specific Rules
+
+| Environment | Compliance Required | OAA Version | Branding |
+|-------------|---------------------|-------------|----------|
+| **dev** | No (warnings only) | Any | Switchable |
+| **test** | Yes (must pass gates) | v5.0.0+ | Locked to target |
+| **prod** | Yes (enforced) | v5.0.0+ | Locked |
+
+### Database Schema Addition
+
+```sql
+-- Add environment column to ontologies
+ALTER TABLE ontologies ADD COLUMN environment TEXT DEFAULT 'dev'
+    CHECK (environment IN ('dev', 'test', 'prod'));
+
+-- Environment-specific validation
+CREATE OR REPLACE FUNCTION validate_for_environment()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Prod requires full compliance
+    IF NEW.environment = 'prod' AND NEW.compliance_status != 'compliant' THEN
+        RAISE EXCEPTION 'Production ontologies must be OAA v5.0.0 compliant';
+    END IF;
+
+    -- Test requires validation to have run
+    IF NEW.environment = 'test' AND NEW.validation_report IS NULL THEN
+        RAISE EXCEPTION 'Test ontologies must have validation report';
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_environment_rules
+    BEFORE INSERT OR UPDATE ON ontologies
+    FOR EACH ROW EXECUTE FUNCTION validate_for_environment();
+```
+
+---
+
+## Updated Architecture
+
+```mermaid
+flowchart TB
+    subgraph PFC["PF-CORE"]
+        VIS["Ontology Visualiser<br/>(Core Capability)"]
+        VAL["OAA v5.0.0 Validator"]
+        CONFIG["PFC Config"]
+    end
+
+    subgraph SUPABASE["Shared Supabase"]
+        ONT["ontologies<br/>+ environment column"]
+        TOKENS["design_tokens<br/>per PFI"]
+        RBAC["RLS Policies<br/>role-based access"]
+    end
+
+    subgraph PFI_LAYER["PFI Instances"]
+        subgraph BAIV["PFI-BAIV"]
+            B_DS["BAIV Figma"]
+            B_ENV["dev|test|prod"]
+        end
+        subgraph W4M["PFI-W4M"]
+            W_DS["W4M Figma"]
+            W_ENV["dev|test|prod"]
+        end
+    end
+
+    CONFIG -->|"distributes"| VIS
+    VIS --> ONT
+    VAL --> ONT
+    TOKENS --> VIS
+    B_DS -->|"MCP"| TOKENS
+    W_DS -->|"MCP"| TOKENS
+    RBAC --> ONT
+    RBAC --> TOKENS
+
+    style PFC fill:#e2f7ff,stroke:#00a4bf,stroke-width:3px
+    style SUPABASE fill:#c5fff5,stroke:#019587,stroke-width:2px
+    style PFI_LAYER fill:#f0e7fe,stroke:#6f0eb0,stroke-width:2px
+```
 
 ---
 
@@ -502,15 +753,25 @@ const tokenMapping = {
 
 ---
 
+## Resolved Questions
+
+| # | Question | Resolution |
+|---|----------|------------|
+| Q1 | Multi-tenancy | Shared Supabase with RLS. PFC config distributed to PFIs. |
+| Q2 | Compliance enforcement | Allow non-compliant + recommend OAA v5.0.0 upgrade |
+| Q3 | Branding control | RBAC-protected. Default PFI. Only admins can switch. |
+| Q4 | Environment handling | dev/test/prod with escalating validation requirements |
+
 ## Open Questions
 
-1. **Multi-tenancy**: Should each PFI have its own Supabase project, or share one with RLS?
-2. **Versioning**: How to handle ontology version conflicts across PFIs?
-3. **Compliance enforcement**: Block non-compliant uploads, or allow with warnings?
-4. **Graph performance**: At what scale (nodes/edges) do we need pagination/virtualization?
+1. **Graph performance**: At what scale (nodes/edges) do we need pagination/virtualization?
+2. **Version promotion**: Automated dev→test→prod pipeline, or manual?
+3. **Cross-PFI ontology sharing**: Can PFI-A reference ontologies from PFI-B?
+4. **Offline mode**: Cache strategy for disconnected usage?
 
 ---
 
-*HLD Version: 1.0.0*
+*HLD Version: 1.1.0*
 *Created: 2026-01-31*
-*Status: DRAFT - Awaiting Review*
+*Updated: 2026-01-31*
+*Status: DECISIONS RESOLVED - Ready for Phase 1*
