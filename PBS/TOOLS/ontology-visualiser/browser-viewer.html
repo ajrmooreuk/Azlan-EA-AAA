@@ -101,6 +101,34 @@
   .oaa-btn:hover { background: #019d94; }
   .oaa-btn-secondary { background: #2a2d37; border: 1px solid #3a3d47; }
   .oaa-btn-secondary:hover { background: #3a3d47; }
+  /* Ontology Library */
+  .library-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 420px; background: #1a1d27; border-left: 1px solid #2a2d37; padding: 16px; overflow-y: auto; z-index: 7; transform: translateX(100%); transition: transform 0.2s; }
+  .library-panel.open { transform: translateX(0); }
+  .library-panel h3 { font-size: 14px; color: #9dfff5; margin-bottom: 12px; }
+  .library-panel .close-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; color: #888; cursor: pointer; font-size: 18px; }
+  .library-category { margin-bottom: 16px; }
+  .library-category h4 { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .library-category h4:before { content: '📁'; font-size: 14px; }
+  .library-item { background: #22252f; border-radius: 6px; padding: 10px 12px; margin-bottom: 6px; cursor: pointer; transition: background 0.15s; }
+  .library-item:hover { background: #2a2d37; }
+  .library-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .library-item-name { color: #e0e0e0; font-weight: 500; font-size: 13px; }
+  .library-item-version { font-size: 11px; padding: 2px 6px; border-radius: 8px; background: #017c75; color: #fff; }
+  .library-item-meta { font-size: 11px; color: #666; display: flex; gap: 12px; }
+  .library-item-actions { display: flex; gap: 6px; margin-top: 8px; }
+  .library-item-actions button { font-size: 11px; padding: 4px 8px; }
+  .library-empty { color: #666; font-size: 12px; font-style: italic; padding: 16px; text-align: center; }
+  .library-input { width: 100%; background: #22252f; border: 1px solid #3a3d47; border-radius: 4px; padding: 8px 10px; color: #e0e0e0; font-size: 13px; margin-bottom: 12px; }
+  .library-input:focus { outline: none; border-color: #017c75; }
+  .library-select { width: 100%; background: #22252f; border: 1px solid #3a3d47; border-radius: 4px; padding: 8px 10px; color: #e0e0e0; font-size: 13px; margin-bottom: 12px; }
+  .library-form-group { margin-bottom: 12px; }
+  .library-form-group label { display: block; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .version-history { max-height: 200px; overflow-y: auto; }
+  .version-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: #22252f; border-radius: 4px; margin-bottom: 4px; font-size: 12px; }
+  .version-item:hover { background: #2a2d37; }
+  .version-item-info { color: #ccc; }
+  .version-item-date { color: #666; font-size: 11px; }
+  .save-success { background: rgba(22,101,52,0.3); border: 1px solid #15803d; color: #86efac; padding: 10px 12px; border-radius: 6px; margin-bottom: 12px; font-size: 12px; }
 </style>
 </head>
 <body>
@@ -130,7 +158,9 @@
   <button id="btn-sidebar" onclick="toggleSidebar()">Details</button>
   <button id="btn-audit" onclick="toggleAudit()">OAA Audit</button>
   <button id="btn-run-oaa" onclick="runOAAUpgrade()" style="display:none;" title="Generate Claude Code command to upgrade this ontology">Upgrade with OAA v5</button>
+  <button id="btn-save-library" onclick="showSaveToLibrary()" style="display:none;" title="Save compliant ontology to library">Save to Library</button>
   <span style="border-left:1px solid #3a3d47; height:24px;"></span>
+  <button onclick="toggleLibrary()">📚 Library</button>
   <button onclick="loadFromGitHub()">Load from GitHub</button>
   <button onclick="loadTestDataFile()">+ Test Data</button>
 </div>
@@ -175,6 +205,26 @@
     <h3>Run OAA v5.0.0 Upgrade</h3>
     <div id="oaa-modal-body"></div>
   </div>
+</div>
+
+<!-- Save to Library Modal -->
+<div id="save-library-modal" class="oaa-modal" style="display:none;">
+  <div class="oaa-modal-content" style="max-width:500px;">
+    <button class="close-btn" onclick="closeSaveLibraryModal()">&times;</button>
+    <h3>Save to Ontology Library</h3>
+    <div id="save-library-body"></div>
+  </div>
+</div>
+
+<!-- Ontology Library Panel -->
+<div class="library-panel" id="library-panel">
+  <button class="close-btn" onclick="toggleLibrary()">&times;</button>
+  <h3>📚 Ontology Library</h3>
+  <div style="margin-bottom:12px; display:flex; gap:8px;">
+    <button class="oaa-btn oaa-btn-secondary" onclick="exportLibrary()" style="font-size:11px; padding:6px 10px;">Export</button>
+    <button class="oaa-btn oaa-btn-secondary" onclick="importLibrary()" style="font-size:11px; padding:6px 10px;">Import</button>
+  </div>
+  <div id="library-content"><p class="library-empty">Loading library...</p></div>
 </div>
 
 <script>
@@ -1014,6 +1064,12 @@ function renderOAACompliancePanel(validation) {
   if (upgradeBtn) {
     upgradeBtn.style.display = validation.overall !== 'pass' ? 'inline-block' : 'none';
   }
+
+  // Show/hide save to library button (visible when compliant)
+  const saveBtn = document.getElementById('btn-save-library');
+  if (saveBtn) {
+    saveBtn.style.display = validation.overall === 'pass' ? 'inline-block' : 'none';
+  }
 }
 
 function renderAuditPanel(audit) {
@@ -1811,8 +1867,638 @@ document.addEventListener('click', (e) => {
 
 // Close modal on Escape key
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeOAAModal();
+  if (e.key === 'Escape') {
+    closeOAAModal();
+    closeSaveLibraryModal();
+  }
 });
+
+// ========================================
+// ONTOLOGY LIBRARY (IndexedDB)
+// ========================================
+
+let libraryDB = null;
+const DB_NAME = 'OntologyLibrary';
+const DB_VERSION = 1;
+
+// Default categories for organizing ontologies
+const DEFAULT_CATEGORIES = [
+  'pfc-ontologies',
+  'pfi-ontologies',
+  'domain-ontologies',
+  'custom'
+];
+
+// Initialize IndexedDB
+function initLibraryDB() {
+  return new Promise((resolve, reject) => {
+    if (libraryDB) { resolve(libraryDB); return; }
+
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onerror = () => reject(request.error);
+
+    request.onsuccess = () => {
+      libraryDB = request.result;
+      resolve(libraryDB);
+    };
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+
+      // Ontologies store - main storage
+      if (!db.objectStoreNames.contains('ontologies')) {
+        const ontologyStore = db.createObjectStore('ontologies', { keyPath: 'id', autoIncrement: true });
+        ontologyStore.createIndex('name', 'name', { unique: false });
+        ontologyStore.createIndex('category', 'category', { unique: false });
+        ontologyStore.createIndex('updated', 'updated', { unique: false });
+      }
+
+      // Version history store - audit trail
+      if (!db.objectStoreNames.contains('versions')) {
+        const versionStore = db.createObjectStore('versions', { keyPath: 'id', autoIncrement: true });
+        versionStore.createIndex('ontologyId', 'ontologyId', { unique: false });
+        versionStore.createIndex('timestamp', 'timestamp', { unique: false });
+      }
+    };
+  });
+}
+
+// Save ontology to library
+async function saveOntologyToLibrary(ontologyData, name, category, version, notes = '') {
+  const db = await initLibraryDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['ontologies', 'versions'], 'readwrite');
+    const ontologyStore = transaction.objectStore('ontologies');
+    const versionStore = transaction.objectStore('versions');
+
+    const now = new Date().toISOString();
+
+    // Check if ontology with same name exists in category
+    const index = ontologyStore.index('name');
+    const getRequest = index.getAll(name);
+
+    getRequest.onsuccess = () => {
+      const existing = getRequest.result.find(o => o.category === category);
+
+      if (existing) {
+        // Update existing - increment version
+        const oldVersion = existing.version;
+        const newVersion = incrementVersion(oldVersion);
+
+        // Save old version to history
+        versionStore.add({
+          ontologyId: existing.id,
+          version: oldVersion,
+          data: existing.data,
+          timestamp: existing.updated,
+          notes: `Auto-saved before upgrade to ${newVersion}`
+        });
+
+        // Update ontology
+        existing.data = ontologyData;
+        existing.version = version || newVersion;
+        existing.updated = now;
+        existing.compliance = validateOAAv5(ontologyData, parseOntology(ontologyData, name)).overall;
+
+        ontologyStore.put(existing);
+
+        transaction.oncomplete = () => resolve({
+          id: existing.id,
+          version: existing.version,
+          isUpdate: true,
+          previousVersion: oldVersion
+        });
+      } else {
+        // Create new
+        const newOntology = {
+          name: name,
+          category: category,
+          version: version || '1.0.0',
+          data: ontologyData,
+          created: now,
+          updated: now,
+          compliance: validateOAAv5(ontologyData, parseOntology(ontologyData, name)).overall
+        };
+
+        const addRequest = ontologyStore.add(newOntology);
+        addRequest.onsuccess = () => {
+          resolve({
+            id: addRequest.result,
+            version: newOntology.version,
+            isUpdate: false
+          });
+        };
+      }
+    };
+
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+// Increment semantic version
+function incrementVersion(version) {
+  const parts = version.split('.').map(Number);
+  if (parts.length === 3) {
+    parts[2]++; // Increment patch
+    return parts.join('.');
+  }
+  return version + '.1';
+}
+
+// Load ontology from library
+async function loadOntologyFromLibrary(id) {
+  const db = await initLibraryDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['ontologies'], 'readonly');
+    const store = transaction.objectStore('ontologies');
+    const request = store.get(id);
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+// Get all ontologies grouped by category
+async function getAllOntologies() {
+  const db = await initLibraryDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['ontologies'], 'readonly');
+    const store = transaction.objectStore('ontologies');
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+      const ontologies = request.result;
+      // Group by category
+      const grouped = {};
+      DEFAULT_CATEGORIES.forEach(cat => grouped[cat] = []);
+
+      ontologies.forEach(ont => {
+        const cat = ont.category || 'custom';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(ont);
+      });
+
+      // Sort each category by updated date (newest first)
+      Object.keys(grouped).forEach(cat => {
+        grouped[cat].sort((a, b) => new Date(b.updated) - new Date(a.updated));
+      });
+
+      resolve(grouped);
+    };
+    request.onerror = () => reject(request.error);
+  });
+}
+
+// Get version history for an ontology
+async function getVersionHistory(ontologyId) {
+  const db = await initLibraryDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['versions'], 'readonly');
+    const store = transaction.objectStore('versions');
+    const index = store.index('ontologyId');
+    const request = index.getAll(ontologyId);
+
+    request.onsuccess = () => {
+      const versions = request.result;
+      versions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      resolve(versions);
+    };
+    request.onerror = () => reject(request.error);
+  });
+}
+
+// Delete ontology from library
+async function deleteFromLibrary(id) {
+  const db = await initLibraryDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['ontologies', 'versions'], 'readwrite');
+    const ontologyStore = transaction.objectStore('ontologies');
+    const versionStore = transaction.objectStore('versions');
+
+    // Delete versions first
+    const versionIndex = versionStore.index('ontologyId');
+    const getVersions = versionIndex.getAll(id);
+
+    getVersions.onsuccess = () => {
+      getVersions.result.forEach(v => versionStore.delete(v.id));
+      ontologyStore.delete(id);
+    };
+
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+// Toggle library panel
+function toggleLibrary() {
+  const panel = document.getElementById('library-panel');
+  const isOpen = panel.classList.toggle('open');
+  if (isOpen) {
+    refreshLibraryPanel();
+  }
+}
+
+// Refresh library content
+async function refreshLibraryPanel() {
+  const content = document.getElementById('library-content');
+
+  try {
+    const grouped = await getAllOntologies();
+    let html = '';
+    let hasAny = false;
+
+    for (const [category, ontologies] of Object.entries(grouped)) {
+      if (ontologies.length === 0) continue;
+      hasAny = true;
+
+      const displayCategory = category.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      html += `<div class="library-category">
+        <h4>${displayCategory} (${ontologies.length})</h4>`;
+
+      ontologies.forEach(ont => {
+        const date = new Date(ont.updated).toLocaleDateString();
+        const complianceClass = ont.compliance === 'pass' ? 'ok' : (ont.compliance === 'warn' ? 'warn' : 'fail');
+        html += `
+          <div class="library-item" onclick="loadFromLibrary(${ont.id})">
+            <div class="library-item-header">
+              <span class="library-item-name">${escapeHtml(ont.name)}</span>
+              <span class="library-item-version">v${ont.version}</span>
+            </div>
+            <div class="library-item-meta">
+              <span class="audit-badge ${complianceClass}">${ont.compliance}</span>
+              <span>${date}</span>
+            </div>
+            <div class="library-item-actions" onclick="event.stopPropagation()">
+              <button class="oaa-btn oaa-btn-secondary" onclick="showVersionHistory(${ont.id}, '${escapeHtml(ont.name)}')">History</button>
+              <button class="oaa-btn oaa-btn-secondary" onclick="downloadOntology(${ont.id})">Download</button>
+              <button class="oaa-btn oaa-btn-secondary" onclick="deleteOntology(${ont.id})" style="color:#fca5a5;">Delete</button>
+            </div>
+          </div>`;
+      });
+
+      html += '</div>';
+    }
+
+    if (!hasAny) {
+      html = '<p class="library-empty">No ontologies saved yet.<br>Load an ontology and click "Save to Library" when it passes OAA v5.0.0 compliance.</p>';
+    }
+
+    content.innerHTML = html;
+  } catch (err) {
+    content.innerHTML = `<p class="library-empty" style="color:#fca5a5;">Error loading library: ${err.message}</p>`;
+  }
+}
+
+// Load ontology from library
+async function loadFromLibrary(id) {
+  try {
+    const ontology = await loadOntologyFromLibrary(id);
+    if (!ontology) {
+      alert('Ontology not found in library');
+      return;
+    }
+
+    currentData = ontology.data;
+    document.getElementById('file-name').textContent = `${ontology.name} (v${ontology.version})`;
+
+    const parsed = parseOntology(ontology.data, ontology.name);
+    if (parsed.nodes.length === 0) {
+      alert('No nodes parsed from saved ontology');
+      return;
+    }
+
+    renderGraph(parsed);
+    document.getElementById('drop-zone').classList.add('hidden');
+    toggleLibrary(); // Close library panel
+
+  } catch (err) {
+    alert('Error loading from library: ' + err.message);
+  }
+}
+
+// Show save to library modal
+function showSaveToLibrary() {
+  if (!currentData) {
+    alert('Load an ontology first');
+    return;
+  }
+
+  const modal = document.getElementById('save-library-modal');
+  const body = document.getElementById('save-library-body');
+
+  // Get current name and suggested version
+  const currentName = document.getElementById('file-name').textContent || 'Untitled Ontology';
+  const baseName = currentName.replace(/\.json$/i, '').replace(/ \(v[\d.]+\)$/, '');
+  const currentVersion = currentData['owl:versionInfo'] || currentData.version || '1.0.0';
+
+  // Determine suggested category
+  let suggestedCategory = 'custom';
+  if (baseName.toLowerCase().includes('pfc') || baseName.toLowerCase().includes('platform-foundation')) {
+    suggestedCategory = 'pfc-ontologies';
+  } else if (baseName.toLowerCase().includes('pfi')) {
+    suggestedCategory = 'pfi-ontologies';
+  }
+
+  body.innerHTML = `
+    <div class="library-form-group">
+      <label>Ontology Name</label>
+      <input type="text" id="save-ont-name" class="library-input" value="${escapeHtml(baseName)}" placeholder="e.g., ppm-schema">
+    </div>
+
+    <div class="library-form-group">
+      <label>Category / Folder</label>
+      <select id="save-ont-category" class="library-select">
+        ${DEFAULT_CATEGORIES.map(cat =>
+          `<option value="${cat}" ${cat === suggestedCategory ? 'selected' : ''}>${cat.replace(/-/g, ' ')}</option>`
+        ).join('')}
+      </select>
+    </div>
+
+    <div class="library-form-group">
+      <label>Version</label>
+      <input type="text" id="save-ont-version" class="library-input" value="${escapeHtml(currentVersion)}" placeholder="e.g., 1.0.0">
+    </div>
+
+    <div class="library-form-group">
+      <label>Notes (optional)</label>
+      <input type="text" id="save-ont-notes" class="library-input" placeholder="e.g., Upgraded to OAA v5.0.0 compliance">
+    </div>
+
+    <div id="save-result"></div>
+
+    <div style="margin-top:16px; display:flex; gap:8px;">
+      <button class="oaa-btn" onclick="doSaveToLibrary()">Save to Library</button>
+      <button class="oaa-btn oaa-btn-secondary" onclick="closeSaveLibraryModal()">Cancel</button>
+    </div>
+
+    <p style="color:#666; font-size:11px; margin-top:12px;">
+      Saving creates a versioned entry in your local browser storage with full audit trail.
+      Export the library for backup or sharing across devices.
+    </p>
+  `;
+
+  modal.style.display = 'flex';
+}
+
+// Close save library modal
+function closeSaveLibraryModal() {
+  document.getElementById('save-library-modal').style.display = 'none';
+}
+
+// Perform save to library
+async function doSaveToLibrary() {
+  const name = document.getElementById('save-ont-name').value.trim();
+  const category = document.getElementById('save-ont-category').value;
+  const version = document.getElementById('save-ont-version').value.trim();
+  const notes = document.getElementById('save-ont-notes').value.trim();
+  const resultDiv = document.getElementById('save-result');
+
+  if (!name) {
+    resultDiv.innerHTML = '<p style="color:#fca5a5; font-size:12px;">Name is required</p>';
+    return;
+  }
+
+  try {
+    const result = await saveOntologyToLibrary(currentData, name, category, version, notes);
+
+    resultDiv.innerHTML = `
+      <div class="save-success">
+        ✓ Saved ${result.isUpdate ? 'updated' : 'new'} ontology: <strong>${name}</strong> v${result.version}
+        ${result.isUpdate ? `<br><small>Previous version ${result.previousVersion} archived</small>` : ''}
+      </div>
+    `;
+
+    // Update file name display
+    document.getElementById('file-name').textContent = `${name} (v${result.version})`;
+
+    // Refresh library panel if open
+    if (document.getElementById('library-panel').classList.contains('open')) {
+      refreshLibraryPanel();
+    }
+
+    // Close modal after short delay
+    setTimeout(() => {
+      closeSaveLibraryModal();
+    }, 1500);
+
+  } catch (err) {
+    resultDiv.innerHTML = `<p style="color:#fca5a5; font-size:12px;">Error saving: ${err.message}</p>`;
+  }
+}
+
+// Show version history
+async function showVersionHistory(ontologyId, name) {
+  try {
+    const versions = await getVersionHistory(ontologyId);
+    const ontology = await loadOntologyFromLibrary(ontologyId);
+
+    const modal = document.getElementById('save-library-modal');
+    const body = document.getElementById('save-library-body');
+
+    let historyHtml = '';
+    if (versions.length === 0) {
+      historyHtml = '<p class="library-empty">No previous versions</p>';
+    } else {
+      historyHtml = '<div class="version-history">';
+      versions.forEach(v => {
+        const date = new Date(v.timestamp).toLocaleString();
+        historyHtml += `
+          <div class="version-item">
+            <div class="version-item-info">
+              <strong>v${v.version}</strong>
+              <div class="version-item-date">${date}</div>
+              ${v.notes ? `<div style="color:#888; font-size:10px;">${escapeHtml(v.notes)}</div>` : ''}
+            </div>
+            <button class="oaa-btn oaa-btn-secondary" onclick="restoreVersion(${v.id})" style="font-size:11px; padding:4px 8px;">Restore</button>
+          </div>`;
+      });
+      historyHtml += '</div>';
+    }
+
+    body.innerHTML = `
+      <h4 style="color:#e0e0e0; margin-bottom:12px;">${escapeHtml(name)}</h4>
+      <p style="color:#888; font-size:12px; margin-bottom:12px;">Current version: v${ontology.version}</p>
+      ${historyHtml}
+      <div style="margin-top:16px;">
+        <button class="oaa-btn oaa-btn-secondary" onclick="closeSaveLibraryModal()">Close</button>
+      </div>
+    `;
+
+    modal.style.display = 'flex';
+
+  } catch (err) {
+    alert('Error loading version history: ' + err.message);
+  }
+}
+
+// Restore a previous version
+async function restoreVersion(versionId) {
+  const db = await initLibraryDB();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(['versions'], 'readonly');
+    const store = transaction.objectStore('versions');
+    const request = store.get(versionId);
+
+    request.onsuccess = async () => {
+      const version = request.result;
+      if (version) {
+        // Load the old version data
+        currentData = version.data;
+        document.getElementById('file-name').textContent = `Restored v${version.version}`;
+
+        const parsed = parseOntology(version.data, `Restored v${version.version}`);
+        renderGraph(parsed);
+        document.getElementById('drop-zone').classList.add('hidden');
+        closeSaveLibraryModal();
+        toggleLibrary();
+      }
+    };
+  });
+}
+
+// Download ontology as JSON
+async function downloadOntology(id) {
+  try {
+    const ontology = await loadOntologyFromLibrary(id);
+    const blob = new Blob([JSON.stringify(ontology.data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${ontology.name}-v${ontology.version}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    alert('Error downloading: ' + err.message);
+  }
+}
+
+// Delete ontology
+async function deleteOntology(id) {
+  if (!confirm('Delete this ontology and its version history?')) return;
+
+  try {
+    await deleteFromLibrary(id);
+    refreshLibraryPanel();
+  } catch (err) {
+    alert('Error deleting: ' + err.message);
+  }
+}
+
+// Export entire library as JSON
+async function exportLibrary() {
+  try {
+    const db = await initLibraryDB();
+
+    const ontologies = await new Promise((resolve, reject) => {
+      const tx = db.transaction(['ontologies'], 'readonly');
+      const req = tx.objectStore('ontologies').getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+
+    const versions = await new Promise((resolve, reject) => {
+      const tx = db.transaction(['versions'], 'readonly');
+      const req = tx.objectStore('versions').getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+
+    const exportData = {
+      exportedAt: new Date().toISOString(),
+      version: '1.0',
+      ontologies,
+      versions
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ontology-library-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+  } catch (err) {
+    alert('Error exporting library: ' + err.message);
+  }
+}
+
+// Import library from JSON
+function importLibrary() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (evt) => {
+      try {
+        const importData = JSON.parse(evt.target.result);
+
+        if (!importData.ontologies || !Array.isArray(importData.ontologies)) {
+          throw new Error('Invalid library export format');
+        }
+
+        const db = await initLibraryDB();
+
+        // Import ontologies
+        const tx = db.transaction(['ontologies', 'versions'], 'readwrite');
+        const ontStore = tx.objectStore('ontologies');
+        const verStore = tx.objectStore('versions');
+
+        let imported = 0;
+        for (const ont of importData.ontologies) {
+          // Remove id to let IndexedDB auto-generate
+          const newOnt = { ...ont };
+          delete newOnt.id;
+          ontStore.add(newOnt);
+          imported++;
+        }
+
+        if (importData.versions) {
+          for (const ver of importData.versions) {
+            const newVer = { ...ver };
+            delete newVer.id;
+            verStore.add(newVer);
+          }
+        }
+
+        tx.oncomplete = () => {
+          alert(`Imported ${imported} ontologies`);
+          refreshLibraryPanel();
+        };
+
+      } catch (err) {
+        alert('Error importing library: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  input.click();
+}
+
+// Update Save to Library button visibility based on compliance
+function updateSaveLibraryButton(compliance) {
+  const btn = document.getElementById('btn-save-library');
+  if (btn) {
+    // Show save button when ontology is compliant (pass or warn)
+    btn.style.display = compliance === 'pass' ? 'inline-block' : 'none';
+  }
+}
+
+// Initialize library on page load
+initLibraryDB().catch(err => console.error('Failed to init library DB:', err));
 </script>
 </body>
 </html>
