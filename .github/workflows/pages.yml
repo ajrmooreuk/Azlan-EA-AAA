@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'tools/ontology-visualiser/**'
+      - 'PBS/TOOLS/ontology-visualiser/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -32,10 +33,13 @@ jobs:
       - name: Prepare site
         run: |
           mkdir -p _site/tools/ontology-visualiser
-          # Copy all visualiser files
-          cp -r tools/ontology-visualiser/* _site/tools/ontology-visualiser/
-          # Also create root index pointing to visualiser
-          cp tools/ontology-visualiser/browser-viewer.html _site/index.html
+          mkdir -p _site/PBS/TOOLS/ontology-visualiser
+          # Copy from PBS/TOOLS (primary location)
+          cp -r PBS/TOOLS/ontology-visualiser/* _site/PBS/TOOLS/ontology-visualiser/
+          # Also deploy to legacy path for backwards compatibility
+          cp -r PBS/TOOLS/ontology-visualiser/* _site/tools/ontology-visualiser/
+          # Create root index pointing to visualiser
+          cp PBS/TOOLS/ontology-visualiser/browser-viewer.html _site/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
