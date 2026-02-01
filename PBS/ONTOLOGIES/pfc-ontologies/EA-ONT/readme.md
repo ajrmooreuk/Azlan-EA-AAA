@@ -1,12 +1,24 @@
-# EA-ONT (Enterprise Architecture) - OAA v5.0.0 Compliant
+# EA-ONT (Enterprise Architecture) - Instance Data for PPM-ONT
 
-**Current Version:** 1.0.0
-**OAA Schema Version:** 5.0.0
-**Status:** Production
+**Status:** ON HOLD
+**OAA Schema Version:** N/A (uses PPM-ONT schema)
 
 ## Overview
 
-Enterprise Architecture ontology integrating Portfolio-Programme-Project Management with Vision-Strategy-Objectives-Metrics framework for strategic transformation planning and execution.
+Enterprise Architecture programme data representing **instance data population** for the PPM-ONT (Portfolio-Programme-Project Management) ontology. This is NOT a separate ontology - it provides dataset instances that conform to PPM-ONT schema.
+
+### Key Clarifications
+
+- **EA-Programme** = Data population conforming to PPM-ONT Programme entity
+- **Initiative** = Lifecycle stage BEFORE adoption as a Project (pre-project phase)
+- **StrategicPillar, PracticeArea** = Context entities that connect to other ontologies (ORG-ONT, VSOM-ONT)
+
+### Why ON HOLD
+
+The EA-ONT schema work is paused until:
+1. Connectivity to other ontologies is established (ORG-ONT, VSOM-ONT)
+2. Cross-ontology relationship patterns are defined
+3. Platform context requirements are clarified
 
 ## Files
 
