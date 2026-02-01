@@ -28,17 +28,40 @@ ORG-ONT
 
 ```
 ORG-CONTEXT/
-├── README.md                    # This file
-├── ORG-MAT-ONT/                 # Organization Maturity (migrated)
+├── README.md                           # This file (hub overview)
+├── README-org-context-ontology.md      # Detailed ontology documentation
+├── org-context-ontology-v1.0.1.json    # Core OrganizationContext ontology
+├── glossary-v1.0.0.json                # Terminology (JSON)
+├── glossary-v1.0.0.md                  # Terminology (Markdown)
+├── registry-entry-v3.0.0.json          # Registry entry
+├── test-data-v1.0.0.json               # Test data
+├── validation-report-v1.0.0.md         # Validation report
+├── CHANGELOG.md                        # Version history
+├── ORG-MAT-ONT/                        # Organization Maturity (migrated)
 │   ├── README.md
 │   └── org-maturity-v1.0.0-oaa-v5.json
-└── ont-competitor-ref-files/    # Competitive Analysis reference files
+└── ont-competitor-ref-files/           # Competitive Analysis reference files
     ├── pf-competitive-analysis-ontology (1).json
     ├── pf-competitive-analysis-glossary (1).md
     └── ...
 ```
 
 ## Contents
+
+### Core OrganizationContext Ontology
+
+| File | Version | Description |
+|------|---------|-------------|
+| `org-context-ontology-v1.0.1.json` | 1.0.1 | Core OrganizationContext ontology definition |
+| `glossary-v1.0.0.json` | 1.0.0 | Terminology definitions (JSON) |
+| `glossary-v1.0.0.md` | 1.0.0 | Terminology definitions (Markdown) |
+| `registry-entry-v3.0.0.json` | 3.0.0 | Registry v3.0 compliant entry |
+| `test-data-v1.0.0.json` | 1.0.0 | Test data (60-20-10-10 split) |
+| `validation-report-v1.0.0.md` | 1.0.0 | 5-gate validation results |
+| `CHANGELOG.md` | - | Version history |
+| `README-org-context-ontology.md` | - | Detailed ontology documentation |
+
+The core ontology defines: OrganizationContext, Product, Brand, ProductPortfolio, CompetitiveLandscape, Competitor, CompetitiveForce, Trend, MarketContext, MarketSegment, CustomerNeed, OrganizationMaturity.
 
 ### ORG-MAT-ONT (Organization Maturity)
 
@@ -86,10 +109,12 @@ Located in `ont-competitor-ref-files/`:
 
 ## Migration Notes
 
+- Core org-context-ontology files migrated from `PF-Core-BAIV/PBS/ONTOLOGIES/pfc-ontologies/pfc-ont-organisation/org-context-ontology/` on Feb 2026
 - Competitive analysis files migrated from `PF-Core-BAIV/PBS/ONTOLOGIES/pfc-ontologies/pfc-ont-competitive-analysis/` on Feb 2026
 - ORG-MAT-ONT migrated from standalone folder to ORG-CONTEXT on Feb 2026
 - ORG-CONTEXT serves as the hub connecting organizational context to domain ontologies
-- Files to be converted to OAA v5.0.0 JSON-LD format
+- BAIV README preserved as README-org-context-ontology.md (detailed ontology docs)
+- Core ontology v1.0.1 to be upgraded to OAA v5.0.0 JSON-LD format
 
 ---
 

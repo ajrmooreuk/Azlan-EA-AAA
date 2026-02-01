@@ -1,0 +1,913 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "baiv": "https://baiv.co.uk/ontology/",
+    "pf": "https://platform.framework/ontology/",
+    "ext": "https://platform.framework/ontology/external/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "Ontology",
+  "@id": "pf:ontology:org-context-v1",
+
+  "metadata": {
+    "name": "Organization Context Ontology",
+    "version": "1.0.1",
+    "status": "Draft",
+    "description": "Rich organizational context including products, brands, competitive landscape, market segments, and maturity levels. Value proposition details live in separate VSOM ontology.",
+    "dateCreated": "2026-01-20",
+    "dateModified": "2026-01-20",
+    "creator": "BAIV Platform Team",
+    "domain": "Organization Context",
+    "purpose": "Provide runtime context for agents to understand the organization's market position, competitive landscape, and capabilities",
+    "frameworkType": "Platform Framework (Domain-Agnostic)",
+    "dependencies": [
+      "pf:ontology:organization-v1",
+      "pf:ontology:competitive-analysis-v1",
+      "pf:ontology:value-proposition-v1"
+    ],
+    "note": "Value proposition DETAILS (pains, gains, solution, ICP) belong in the Value Proposition Ontology. This ontology only REFERENCES those value propositions."
+  },
+
+  "schemaOrgAlignment": {
+    "baseTypes": ["Organization", "Product", "Brand"],
+    "rationale": "Extends schema.org with market context and competitive intelligence classes",
+    "extensions": ["MarketSegment", "CustomerNeed", "CompetitiveForce", "Competitor", "Trend", "Maturity"]
+  },
+
+  "entities": [
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:OrganizationContext",
+      "name": "OrganizationContext",
+      "description": "Rich context container for an organization - links to all contextual sub-entities",
+      "properties": [
+        {
+          "name": "contextId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for this context",
+          "pattern": "ctx:[a-z0-9-]+",
+          "example": "ctx:foot-scientific"
+        },
+        {
+          "name": "organizationRef",
+          "type": "Reference",
+          "required": true,
+          "references": "pf:Organization",
+          "description": "Reference to the core organization entity"
+        },
+        {
+          "name": "products",
+          "type": "ItemList",
+          "required": false,
+          "items": "pf:Product",
+          "description": "Organization's products/services"
+        },
+        {
+          "name": "brands",
+          "type": "ItemList",
+          "required": false,
+          "items": "pf:Brand",
+          "description": "Organization's brands"
+        },
+        {
+          "name": "valuePropositionRefs",
+          "type": "ItemList",
+          "required": false,
+          "items": "Reference",
+          "references": "vsom:ValueProposition",
+          "description": "References to value propositions defined in Value Proposition Ontology. Can be brand-level or segment-level.",
+          "note": "Actual pains/gains/solution/ICP details live in the Value Proposition Ontology, not here."
+        },
+        {
+          "name": "productPortfolio",
+          "type": "Object",
+          "required": false,
+          "references": "pf:ProductPortfolio",
+          "description": "Full product/service portfolio structure"
+        },
+        {
+          "name": "competitiveLandscape",
+          "type": "Object",
+          "required": false,
+          "references": "pf:CompetitiveLandscape",
+          "description": "Competitive landscape context"
+        },
+        {
+          "name": "marketContext",
+          "type": "Object",
+          "required": false,
+          "references": "pf:MarketContext",
+          "description": "Market segments, geography, localization"
+        },
+        {
+          "name": "maturity",
+          "type": "Object",
+          "required": false,
+          "references": "pf:OrganizationMaturity",
+          "description": "Organization maturity across dimensions"
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:Product",
+      "name": "Product",
+      "schemaOrgBase": "schema:Product",
+      "description": "Product or service offered by the organization",
+      "properties": [
+        {
+          "name": "productId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": false,
+          "schemaOrgProperty": "schema:description"
+        },
+        {
+          "name": "category",
+          "type": "Text",
+          "required": false,
+          "schemaOrgProperty": "schema:category"
+        },
+        {
+          "name": "segment",
+          "type": "Text",
+          "required": false,
+          "description": "Product segment (e.g., 'work shoes' for Shoe Carnival)"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["active", "discontinued", "planned"]
+          }
+        },
+        {
+          "name": "valuePropositionRef",
+          "type": "Reference",
+          "required": false,
+          "references": "vsom:ValueProposition",
+          "description": "Reference to product/segment-level value proposition if different from brand-level"
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:Brand",
+      "name": "Brand",
+      "schemaOrgBase": "schema:Brand",
+      "description": "Brand owned by the organization",
+      "properties": [
+        {
+          "name": "brandId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:name"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "name": "isPrimaryBrand",
+          "type": "Boolean",
+          "required": true,
+          "default": false
+        },
+        {
+          "name": "valuePropositionRef",
+          "type": "Reference",
+          "required": false,
+          "references": "vsom:ValueProposition",
+          "description": "Reference to brand-level value proposition"
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:ProductPortfolio",
+      "name": "ProductPortfolio",
+      "description": "Structured view of organization's product/service offerings",
+      "properties": [
+        {
+          "name": "portfolioType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["single_product", "multi_product", "ecommerce", "service", "hybrid"]
+          }
+        },
+        {
+          "name": "productCount",
+          "type": "Number",
+          "required": false,
+          "description": "Approximate number of products (for e-commerce could be hundreds)"
+        },
+        {
+          "name": "segments",
+          "type": "ItemList",
+          "required": false,
+          "description": "Product segments (e.g., 'work shoes', 'athletic', 'casual')"
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:CompetitiveLandscape",
+      "name": "CompetitiveLandscape",
+      "description": "Competitive environment context",
+      "note": "Competitors can exist at multiple levels: platform (BAIV), client org, client's client",
+      "properties": [
+        {
+          "name": "competitors",
+          "type": "ItemList",
+          "required": false,
+          "items": "ext:Competitor",
+          "description": "Named competitors with strengths/weaknesses and strategic posture",
+          "maxItems": 10
+        },
+        {
+          "name": "competitiveForces",
+          "type": "ItemList",
+          "required": false,
+          "items": "ext:CompetitiveForce",
+          "description": "Porter-style forces (threat of entry, substitutes, buyer power, etc.)"
+        },
+        {
+          "name": "trends",
+          "type": "ItemList",
+          "required": false,
+          "items": "ext:Trend",
+          "description": "Macro trends (regulation, technology, economic, social)"
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ext:Competitor",
+      "name": "Competitor",
+      "description": "Named competitor organization with analysis",
+      "properties": [
+        {
+          "name": "organizationRef",
+          "type": "Reference",
+          "required": true,
+          "references": "pf:Organization",
+          "description": "Reference to competitor's organization entity"
+        },
+        {
+          "name": "competitorType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["direct", "indirect", "aspirational", "substitute"]
+          }
+        },
+        {
+          "name": "priority",
+          "type": "Number",
+          "required": true,
+          "constraints": {
+            "minimum": 1,
+            "maximum": 5
+          },
+          "description": "Priority ranking (1 = highest threat)"
+        },
+        {
+          "name": "strengths",
+          "type": "ItemList",
+          "required": false,
+          "description": "Competitor's key strengths"
+        },
+        {
+          "name": "weaknesses",
+          "type": "ItemList",
+          "required": false,
+          "description": "Competitor's key weaknesses"
+        },
+        {
+          "name": "strategicPosture",
+          "type": "Text",
+          "required": false,
+          "constraints": {
+            "enum": ["aggressive", "defensive", "expanding", "contracting", "stable"]
+          }
+        },
+        {
+          "name": "trackCitations",
+          "type": "Boolean",
+          "required": true,
+          "default": true,
+          "description": "Whether to track AI platform citations for this competitor"
+        },
+        {
+          "name": "trackRankings",
+          "type": "Boolean",
+          "required": true,
+          "default": true,
+          "description": "Whether to track search rankings for this competitor"
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ext:CompetitiveForce",
+      "name": "CompetitiveForce",
+      "description": "Porter-style competitive force",
+      "properties": [
+        {
+          "name": "forceType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "threat_of_new_entrants",
+              "threat_of_substitutes",
+              "bargaining_power_buyers",
+              "bargaining_power_suppliers",
+              "competitive_rivalry"
+            ]
+          }
+        },
+        {
+          "name": "intensity",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["low", "medium", "high"]
+          }
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "name": "keyFactors",
+          "type": "ItemList",
+          "required": false
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ext:Trend",
+      "name": "Trend",
+      "description": "Macro trend affecting the market",
+      "properties": [
+        {
+          "name": "trendType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["regulatory", "technological", "economic", "social", "environmental", "political"]
+          }
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "name": "impact",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["positive", "negative", "neutral", "uncertain"]
+          }
+        },
+        {
+          "name": "timeframe",
+          "type": "Text",
+          "required": false,
+          "constraints": {
+            "enum": ["immediate", "short_term", "medium_term", "long_term"]
+          }
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:MarketContext",
+      "name": "MarketContext",
+      "description": "Market segments, geography, and localization context",
+      "properties": [
+        {
+          "name": "marketSegments",
+          "type": "ItemList",
+          "required": false,
+          "items": "ext:MarketSegment",
+          "description": "Target industries, geos, customer segments"
+        },
+        {
+          "name": "customerNeeds",
+          "type": "ItemList",
+          "required": false,
+          "items": "ext:CustomerNeed",
+          "description": "Key jobs-to-be-done, pain points, value drivers - high level only, details in Value Prop ontology"
+        },
+        {
+          "name": "geographicScope",
+          "type": "ItemList",
+          "required": false,
+          "description": "Operating regions"
+        },
+        {
+          "name": "localization",
+          "type": "Object",
+          "required": false,
+          "description": "Localization requirements",
+          "properties": {
+            "baseCurrency": {
+              "type": "Text",
+              "description": "Base currency (USD, GBP, AUD, etc.)"
+            },
+            "baseGeography": {
+              "type": "Text",
+              "description": "Primary geography"
+            },
+            "languages": {
+              "type": "ItemList",
+              "description": "Supported languages"
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ext:MarketSegment",
+      "name": "MarketSegment",
+      "description": "Target market segment",
+      "properties": [
+        {
+          "name": "segmentId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "industry",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "name": "geography",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "Text",
+          "required": false
+        },
+        {
+          "name": "priority",
+          "type": "Text",
+          "required": false,
+          "constraints": {
+            "enum": ["primary", "secondary", "emerging"]
+          }
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "ext:CustomerNeed",
+      "name": "CustomerNeed",
+      "description": "High-level customer need identifier - detailed pains/gains live in Value Proposition Ontology",
+      "properties": [
+        {
+          "name": "needId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "needType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["job_to_be_done", "pain_point", "value_driver", "unmet_need"]
+          }
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "priority",
+          "type": "Text",
+          "required": false,
+          "constraints": {
+            "enum": ["critical", "high", "medium", "low"]
+          }
+        }
+      ]
+    },
+
+    {
+      "@type": "pf:EntityDefinition",
+      "@id": "pf:OrganizationMaturity",
+      "name": "OrganizationMaturity",
+      "description": "Organization maturity across multiple dimensions",
+      "properties": [
+        {
+          "name": "sizeMaturity",
+          "type": "Object",
+          "required": false,
+          "description": "Size maturity - financial and headcount",
+          "properties": {
+            "level": {
+              "type": "Number",
+              "constraints": {"minimum": 1, "maximum": 5}
+            },
+            "headcount": {
+              "type": "Number",
+              "description": "Approximate employee count"
+            },
+            "revenue": {
+              "type": "Number",
+              "description": "Approximate annual revenue"
+            },
+            "revenueCurrency": {
+              "type": "Text",
+              "default": "USD"
+            }
+          }
+        },
+        {
+          "name": "valueMaturity",
+          "type": "Number",
+          "required": false,
+          "constraints": {
+            "minimum": 1,
+            "maximum": 5
+          },
+          "description": "Value delivery maturity level"
+        },
+        {
+          "name": "marketingMaturity",
+          "type": "Object",
+          "required": false,
+          "description": "Marketing capability maturity",
+          "properties": {
+            "level": {
+              "type": "Number",
+              "constraints": {"minimum": 1, "maximum": 5}
+            },
+            "hasMarketingDirector": {
+              "type": "Boolean"
+            },
+            "marketingTeamSize": {
+              "type": "Number",
+              "description": "Number of people in marketing"
+            },
+            "functionalRoles": {
+              "type": "ItemList",
+              "description": "Marketing roles present (SEO, Content, Paid, Social, etc.)"
+            }
+          }
+        },
+        {
+          "name": "technologyMaturity",
+          "type": "Number",
+          "required": false,
+          "constraints": {
+            "minimum": 1,
+            "maximum": 5
+          },
+          "description": "Technology/digital maturity level"
+        },
+        {
+          "name": "complexityMaturity",
+          "type": "Number",
+          "required": false,
+          "constraints": {
+            "minimum": 1,
+            "maximum": 5
+          },
+          "description": "Complexity management maturity level"
+        },
+        {
+          "name": "aiMaturity",
+          "type": "Object",
+          "required": false,
+          "description": "AI-specific maturity (for BAIV context)",
+          "properties": {
+            "maturityLevel": {
+              "type": "Text",
+              "constraints": {
+                "enum": ["unaware", "exploring", "experimenting", "implementing", "optimizing"]
+              }
+            },
+            "aiToolsInUse": {
+              "type": "ItemList"
+            },
+            "aiVisibilityAwareness": {
+              "type": "Text",
+              "constraints": {
+                "enum": ["none", "low", "medium", "high"]
+              }
+            },
+            "currentAIStrategy": {
+              "type": "Text"
+            }
+          }
+        }
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@type": "Property",
+      "@id": "pf:hasContext",
+      "name": "Has Context",
+      "description": "Organization has rich context",
+      "domainIncludes": ["pf:Organization"],
+      "rangeIncludes": ["pf:OrganizationContext"],
+      "cardinality": "0..1"
+    },
+    {
+      "@type": "Property",
+      "@id": "pf:hasValueProposition",
+      "name": "Has Value Proposition",
+      "description": "Organization/Brand/Product has value proposition (defined in VSOM ontology)",
+      "domainIncludes": ["pf:OrganizationContext", "pf:Brand", "pf:Product"],
+      "rangeIncludes": ["vsom:ValueProposition"],
+      "cardinality": "0..*",
+      "linkedOntology": "pf:ontology:value-proposition-v1"
+    },
+    {
+      "@type": "Property",
+      "@id": "ext:MarketSegment.hasNeed",
+      "name": "Has Need",
+      "description": "Market segment has customer need",
+      "domainIncludes": ["ext:MarketSegment"],
+      "rangeIncludes": ["ext:CustomerNeed"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ext:MarketSegment.shapedBy",
+      "name": "Shaped By",
+      "description": "Market segment shaped by competitive force",
+      "domainIncludes": ["ext:MarketSegment"],
+      "rangeIncludes": ["ext:CompetitiveForce"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ext:Competitor.targets",
+      "name": "Targets",
+      "description": "Competitor targets market segment",
+      "domainIncludes": ["ext:Competitor"],
+      "rangeIncludes": ["ext:MarketSegment"],
+      "cardinality": "0..*"
+    },
+    {
+      "@type": "Property",
+      "@id": "ext:Trend.impacts",
+      "name": "Impacts",
+      "description": "Trend impacts market segment or strategic pillar",
+      "domainIncludes": ["ext:Trend"],
+      "rangeIncludes": ["ext:MarketSegment", "vsom:StrategicPillar"],
+      "cardinality": "0..*"
+    }
+  ],
+
+  "businessRules": [
+    {
+      "ruleId": "BR-CTX-001",
+      "name": "Context Links to Organization",
+      "description": "Every context must reference a valid organization",
+      "constraint": "organizationRef IS REQUIRED AND EXISTS in pf:Organization"
+    },
+    {
+      "ruleId": "BR-CTX-002",
+      "name": "Competitor Limit",
+      "description": "Maximum of 10 tracked competitors",
+      "constraint": "competitiveLandscape.competitors.length <= 10"
+    },
+    {
+      "ruleId": "BR-CTX-003",
+      "name": "Maturity Scores Range",
+      "description": "All maturity scores must be 1-5",
+      "constraint": "maturity.*.level >= 1 AND maturity.*.level <= 5"
+    },
+    {
+      "ruleId": "BR-CTX-004",
+      "name": "Value Proposition Reference Only",
+      "description": "Org context only references value propositions - details live in VSOM ontology",
+      "constraint": "valuePropositionRefs contains only valid references to vsom:ValueProposition"
+    }
+  ],
+
+  "examples": [
+    {
+      "@type": "pf:OrganizationContext",
+      "@id": "ctx:foot-scientific",
+      "contextId": "ctx:foot-scientific",
+      "organizationRef": "org:foot-scientific",
+      "products": [
+        {
+          "productId": "prod-custom-orthotics",
+          "name": "Custom Orthotics",
+          "category": "Medical Devices",
+          "segment": "Custom Solutions",
+          "status": "active"
+        },
+        {
+          "productId": "prod-insoles",
+          "name": "Over-the-Counter Insoles",
+          "category": "Consumer Products",
+          "segment": "Retail",
+          "status": "active"
+        }
+      ],
+      "brands": [
+        {
+          "brandId": "brand-footsci",
+          "name": "Foot Scientific",
+          "isPrimaryBrand": true,
+          "valuePropositionRef": "vp:foot-scientific-brand"
+        }
+      ],
+      "valuePropositionRefs": [
+        "vp:foot-scientific-brand"
+      ],
+      "productPortfolio": {
+        "portfolioType": "multi_product",
+        "productCount": 15,
+        "segments": ["Custom Solutions", "Retail", "Professional"]
+      },
+      "competitiveLandscape": {
+        "competitors": [
+          {
+            "organizationRef": "org:superfeet",
+            "competitorType": "direct",
+            "priority": 1,
+            "strengths": ["Brand recognition", "Retail distribution"],
+            "weaknesses": ["Less customization", "Higher price point"],
+            "trackCitations": true,
+            "trackRankings": true
+          },
+          {
+            "organizationRef": "org:powerstep",
+            "competitorType": "direct",
+            "priority": 2,
+            "strengths": ["Podiatrist relationships", "Medical credibility"],
+            "trackCitations": true,
+            "trackRankings": true
+          }
+        ],
+        "trends": [
+          {
+            "trendType": "technological",
+            "name": "AI-powered foot scanning",
+            "impact": "positive",
+            "timeframe": "short_term"
+          },
+          {
+            "trendType": "social",
+            "name": "Increased focus on preventive health",
+            "impact": "positive",
+            "timeframe": "medium_term"
+          }
+        ]
+      },
+      "marketContext": {
+        "marketSegments": [
+          {
+            "segmentId": "seg-podiatry",
+            "name": "Podiatry Clinics",
+            "industry": "Healthcare",
+            "priority": "primary"
+          },
+          {
+            "segmentId": "seg-retail",
+            "name": "Retail Consumers",
+            "geography": "US",
+            "priority": "secondary"
+          }
+        ],
+        "geographicScope": ["US", "North America"],
+        "localization": {
+          "baseCurrency": "USD",
+          "baseGeography": "United States",
+          "languages": ["en-US"]
+        }
+      },
+      "maturity": {
+        "sizeMaturity": {
+          "level": 2,
+          "headcount": 75,
+          "revenue": 8000000,
+          "revenueCurrency": "USD"
+        },
+        "valueMaturity": 4,
+        "marketingMaturity": {
+          "level": 2,
+          "hasMarketingDirector": false,
+          "marketingTeamSize": 2,
+          "functionalRoles": ["Content", "Social"]
+        },
+        "technologyMaturity": 3,
+        "complexityMaturity": 2,
+        "aiMaturity": {
+          "maturityLevel": "exploring",
+          "aiToolsInUse": ["ChatGPT for content"],
+          "aiVisibilityAwareness": "medium",
+          "currentAIStrategy": "Beginning to explore AI visibility optimization"
+        }
+      }
+    },
+    {
+      "@type": "pf:OrganizationContext",
+      "@id": "ctx:shoe-carnival",
+      "contextId": "ctx:shoe-carnival",
+      "organizationRef": "org:shoe-carnival",
+      "note": "Example of e-commerce with product segments, not individual product value props",
+      "brands": [
+        {
+          "brandId": "brand-shoe-carnival",
+          "name": "Shoe Carnival",
+          "isPrimaryBrand": true,
+          "valuePropositionRef": "vp:shoe-carnival-brand"
+        }
+      ],
+      "valuePropositionRefs": [
+        "vp:shoe-carnival-brand",
+        "vp:shoe-carnival-work-shoes"
+      ],
+      "productPortfolio": {
+        "portfolioType": "ecommerce",
+        "productCount": 500,
+        "segments": ["Work Shoes", "Athletic", "Casual", "Kids", "Dress"]
+      },
+      "marketContext": {
+        "marketSegments": [
+          {
+            "segmentId": "seg-work-shoes",
+            "name": "Work Shoes Segment",
+            "priority": "primary",
+            "note": "This was their main focus area per discovery call"
+          }
+        ]
+      },
+      "maturity": {
+        "sizeMaturity": {
+          "level": 5,
+          "headcount": 800,
+          "revenue": 100000000,
+          "revenueCurrency": "USD"
+        },
+        "marketingMaturity": {
+          "level": 4,
+          "hasMarketingDirector": true,
+          "marketingTeamSize": 25,
+          "functionalRoles": ["SEO", "Content", "Paid", "Social", "Email", "Analytics"]
+        }
+      }
+    }
+  ]
+}
