@@ -1,0 +1,74 @@
+graph TD
+    %% Customer Input Sources
+    A[Strategy Calls<br/>Customer Interviews] --> B[Structured Data Collection]
+    A1[Product Usage<br/>Analytics] --> B
+    A2[Support Interactions<br/>Feedback] --> B
+    A3[Sales Conversations<br/>Demo Feedback] --> B
+
+    %% Data Collection & Processing
+    B --> C{PMF Component Analysis}
+    
+    %% Four PMF Pillars
+    C --> D[WTP Score<br/>💰 Economic Validation<br/>Price acceptance & budget]
+    C --> E[NPS Score<br/>❤️ Loyalty Validation<br/>Advocacy & referrals]
+    C --> F[CSAT Score<br/>⭐ Experience Validation<br/>Product satisfaction]
+    C --> G[Engagement Score<br/>📊 Behavioral Validation<br/>Usage & adoption]
+
+    %% Platform Functions
+    D --> H[BAIV PMF Platform]
+    E --> H
+    F --> H
+    G --> H
+    
+    H --> I[PMF Tracker App<br/>📱 Team Dashboard]
+    H --> J[AI Analytics Engine<br/>🤖 Pattern Recognition]
+    H --> K[Customer Database<br/>🗄️ Structured Profiles]
+    H --> L[Experiment Manager<br/>🧪 A/B Testing]
+
+    %% Analysis & Scoring
+    I --> M[Real-Time PMF Score<br/>0-100 Composite Rating]
+    J --> N[Automated Insights<br/>Trends & Recommendations]
+    K --> O[Segment Analysis<br/>Market Intelligence]
+    L --> P[Hypothesis Testing<br/>Validation Results]
+
+    %% Outputs & Actions
+    M --> Q[PMF Stage Classification]
+    N --> Q
+    O --> Q
+    P --> Q
+    
+    Q --> R{PMF Stage Decision}
+    
+    %% Decision Branches
+    R -->|Pre-PMF <40| S[Problem-Solution Focus<br/>🔍 Deep customer research<br/>Value proposition testing]
+    R -->|Early PMF 40-59| T[Solution-Market Optimization<br/>⚡ Pricing experiments<br/>Feature prioritization]
+    R -->|PMF 60-79| U[Go-to-Market Scaling<br/>🚀 Growth acceleration<br/>Market expansion]
+    R -->|Scale PMF 80+| V[Market Leadership<br/>🏆 Geographic expansion<br/>Platform development]
+
+    %% Business Outcomes
+    S --> W[Strategic Actions]
+    T --> W
+    U --> W
+    V --> W
+    
+    W --> X[Business Impact<br/>📈 Revenue Growth<br/>💡 Product Development<br/>🎯 Market Position]
+
+    %% Feedback Loop
+    X --> Y[Continuous Learning]
+    Y --> A
+    Y --> A1
+    Y --> A2
+    Y --> A3
+
+    %% Styling
+    classDef inputClass fill:#1A365D,stroke:#1A365D,stroke-width:2px,color:#fff
+    classDef pmfClass fill:#38B2AC,stroke:#38B2AC,stroke-width:2px,color:#fff
+    classDef platformClass fill:#F7FAFC,stroke:#2D3748,stroke-width:2px,color:#2D3748
+    classDef outputClass fill:#38B2AC,stroke:#38B2AC,stroke-width:1px,color:#fff
+    classDef actionClass fill:#2D3748,stroke:#2D3748,stroke-width:2px,color:#fff
+
+    class A,A1,A2,A3 inputClass
+    class D,E,F,G pmfClass
+    class H,I,J,K,L platformClass
+    class M,N,O,P,Q outputClass
+    class S,T,U,V,W,X actionClass
