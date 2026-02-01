@@ -119,21 +119,12 @@ ORG-Context (hub)
 
 ### RRR-ONT Scope (Roles/RACI/RBAC)
 
-RRR-ONT must model organizational hierarchy and access patterns:
+RRR is a **3-component ontology** for determining contextual authority: **What, Why, When, Who**
 
-| Component | Scope |
-|-----------|-------|
-| **Roles** | C-Suite → Senior Management → Line Managers → Teams → Individual Contributors |
-| **RACI** | Responsible, Accountable, Consulted, Informed matrices for processes |
-| **RBAC** | Role-Based Access Control for system permissions |
+#### Component 1: Business Roles (WHO)
 
-**RRR-ONT Connections:**
-- `ORG-Context` → hasRolesStructure → RRR-ONT
-- `ORG-MAT-ONT.OrgStructureProfile` → informsRoles → RRR-ONT
-- RRR-ONT → appliesTo → PPM-ONT (project roles)
-- RRR-ONT → appliesTo → PE-ONT (process ownership)
+Organizational hierarchy from C-Suite to Individual Contributors:
 
-**Hierarchy Levels:**
 ```
 C-Suite (CEO, CFO, CTO, CMO, etc.)
     └── Senior Management (VPs, Directors)
@@ -141,6 +132,70 @@ C-Suite (CEO, CFO, CTO, CMO, etc.)
                     └── Teams (Functional Teams, Squads)
                             └── Individual Contributors
 ```
+
+| Entity | Description |
+|--------|-------------|
+| Role | Named position with authority scope |
+| RoleHolder | Person/entity occupying a role |
+| RoleHierarchy | Parent-child role relationships |
+| RoleScope | Boundaries of role authority (org unit, geography, function) |
+
+#### Component 2: RACI (WHAT + WHY)
+
+Responsibility assignment for processes and decisions:
+
+| Assignment | Meaning | Contextual Question |
+|------------|---------|---------------------|
+| **R** - Responsible | Does the work | **WHAT** must be done |
+| **A** - Accountable | Owns the outcome | **WHY** authority exists |
+| **C** - Consulted | Provides input | **WHAT** expertise needed |
+| **I** - Informed | Kept updated | **WHAT** visibility required |
+
+| Entity | Description |
+|--------|-------------|
+| RACIMatrix | Assignment grid for a process/project |
+| RACIAssignment | Role-to-task assignment with RACI type |
+| ProcessOwnership | Links RACI to PE-ONT processes |
+| ProjectOwnership | Links RACI to PPM-ONT projects |
+
+#### Component 3: RBAC (WHEN + Access Control)
+
+Role-Based Access Control for systems and data:
+
+| Entity | Description | Contextual Question |
+|--------|-------------|---------------------|
+| Permission | System/data access right | **WHAT** can be accessed |
+| PermissionSet | Grouped permissions for a role | **WHO** has access |
+| AccessContext | Conditions for access (time, location, state) | **WHEN** access applies |
+| AccessAudit | Log of access events | **WHEN** access occurred |
+
+#### RRR Contextual Framework
+
+```
+         WHO              WHAT              WHY              WHEN
+          │                │                │                │
+    ┌─────▼─────┐    ┌─────▼─────┐    ┌─────▼─────┐    ┌─────▼─────┐
+    │  Business │    │   RACI    │    │   RACI    │    │   RBAC    │
+    │   Roles   │───►│    R/C/I  │───►│     A     │───►│  Context  │
+    └───────────┘    └───────────┘    └───────────┘    └───────────┘
+          │                │                │                │
+          └────────────────┴────────────────┴────────────────┘
+                                    │
+                            ┌───────▼───────┐
+                            │  RRR-ONT v1.0 │
+                            │   via ORG-    │
+                            │    Context    │
+                            └───────────────┘
+```
+
+#### RRR-ONT Connections
+
+- `ORG-Context` → hasRolesStructure → RRR-ONT (Business Roles)
+- `ORG-Context` → hasRACIFramework → RRR-ONT (RACI)
+- `ORG-Context` → hasAccessControl → RRR-ONT (RBAC)
+- `ORG-MAT-ONT.OrgStructureProfile` → informsRoles → RRR-ONT
+- RRR-ONT → appliesTo → PPM-ONT (project roles/RACI)
+- RRR-ONT → appliesTo → PE-ONT (process ownership/RACI)
 
 ---
 
