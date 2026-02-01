@@ -1,8 +1,8 @@
 # Ontology Migration Plan: Consolidate to Azlan under OAA v6.1.0
 
-**Version:** 2.2.0
+**Version:** 2.3.0
 **Date:** 2026-02-01
-**Status:** Phases 1-4 Complete | CL-ONT Added
+**Status:** Phases 1-4 Complete | CL-ONT + ORG-MAT-ONT Added
 
 ---
 
@@ -78,16 +78,22 @@
 - [ ] Update unified-registry/entries/ with new paths
 - [ ] Update ont-registry-index.json
 
+### Phase 6: OrganizationContext Bridge Completion
+- [ ] Add hasStrategicContext relationship from OrganizationContext → VSOM-ONT (currently in VSOM, needs ORG-ONT update)
+
 ### Future Ontology Development
-These folders need OAA v5.0.0 compliant ontology files created:
-- ALZ-ONT (has MCSB registry, needs main ontology)
-- CE-ONT (needs Customer Experience ontology)
-- OKR-ONT (has glossary, needs main ontology)
-- PMF-ONT (has docs, needs ontology)
-- RRR-ONT (has glossary, needs main ontology)
-- VE-ONT (has diagrams, needs ontology)
-- DS-ONT (needs Design System ontology from BAIV)
-- GA-ONT (needs Gap Analysis ontology from BAIV)
+
+| Priority | Ontology | Current State | Action Required |
+|----------|----------|---------------|-----------------|
+| High | CE-ONT | Empty placeholder | Create Customer Experience ontology (connects to ORG-MAT-ONT) |
+| High | OKR-ONT | Glossary only | Create OKR ontology (connects to VSOM-ONT) |
+| Medium | PMF-ONT | Docs only | Create Product-Market Fit ontology (connects to CL-ONT) |
+| Medium | VE-ONT | Mermaid/docs | Create Value Engineering ontology (connects to VSOM-ONT) |
+| Medium | RRR-ONT | Glossary only | Create Roles/RACI/RBAC ontology |
+| Low | ALZ-ONT | MCSB registry only | Create Azure Landing Zone ontology |
+| Future | DS-ONT | Not created | Design System ontology from BAIV |
+| Future | GA-ONT | Not created | Gap Analysis ontology from BAIV |
+| ON HOLD | EA-ONT | Instance data | PPM-ONT population data (not separate ontology) |
 
 ---
 

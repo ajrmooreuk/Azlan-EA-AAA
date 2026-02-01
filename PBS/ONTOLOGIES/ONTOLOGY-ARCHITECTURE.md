@@ -1,6 +1,6 @@
 # Ontology Architecture Overview
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 **Date:** 2026-02-01
 **Status:** Production
 
@@ -9,14 +9,14 @@
 ```mermaid
 graph TB
     subgraph "Foundation Layer"
-        ORG[("ORG-ONT<br/>Organization")]
+        ORG[("ORG-ONT v2.1.0<br/>Organization")]
         ORG_CTX[("OrganizationContext<br/>(Hub)")]
         ORG -->|hasContext| ORG_CTX
         ORG_CTX -->|contextBelongsTo| ORG
     end
 
     subgraph "Strategic Context Layer"
-        VSOM[("VSOM-ONT<br/>VSOMFramework")]
+        VSOM[("VSOM-ONT v2.1.0<br/>VSOMFramework")]
         VISION["VisionComponent"]
         STRAT["StrategyComponent"]
         OBJ["ObjectivesComponent"]
@@ -35,7 +35,7 @@ graph TB
     end
 
     subgraph "Competitive Context Layer"
-        CL[("CL-ONT<br/>CompetitiveLandscape")]
+        CL[("CL-ONT v1.0.0<br/>CompetitiveLandscape")]
         SEGMENT["MarketSegment"]
         COMPETITOR["CompetitorProfile"]
         DYNAMIC["MarketDynamic"]
@@ -50,7 +50,7 @@ graph TB
     end
 
     subgraph "Analysis Layer"
-        CA[("CA-ONT<br/>CompetitiveAnalysis")]
+        CA[("CA-ONT v2.1.0<br/>CompetitiveAnalysis")]
         CA_TARGET["TargetOrganization"]
         CA_COMP["CompetitorOrganization"]
         CA_REPORT["CompetitiveAnalysis"]
@@ -60,7 +60,7 @@ graph TB
     end
 
     subgraph "Execution Layer"
-        PPM[("PPM-ONT<br/>Portfolio/Programme/Project")]
+        PPM[("PPM-ONT v3.0.0<br/>Portfolio/Programme/Project")]
         PORTFOLIO["Portfolio"]
         PROGRAMME["Programme"]
         PROJECT["Project"]
@@ -71,7 +71,7 @@ graph TB
     end
 
     subgraph "Maturity Assessment Layer"
-        MAT[("ORG-MAT-ONT<br/>Organization Maturity")]
+        MAT[("ORG-MAT-ONT v1.0.0<br/>Organization Maturity")]
         PROFILE["MaturityProfile"]
         SIZE["SizeProfile"]
         SECTOR["SectorProfile"]
@@ -86,7 +86,7 @@ graph TB
     end
 
     subgraph "Supporting Ontologies"
-        PE[("PE-ONT<br/>ProcessEngineering")]
+        PE[("PE-ONT v2.0.0<br/>ProcessEngineering")]
         OKR[("OKR-ONT<br/>Objectives & Key Results")]
         VE[("VE-ONT<br/>ValueEngineering")]
         PMF[("PMF-ONT<br/>Product-Market Fit")]
@@ -139,30 +139,30 @@ graph TB
 ```mermaid
 graph LR
     subgraph "Core"
-        ORG[ORG-ONT]
+        ORG[ORG-ONT v2.1.0]
         CTX((Context<br/>Hub))
     end
 
     subgraph "Strategic"
-        VSOM[VSOM-ONT]
+        VSOM[VSOM-ONT v2.1.0]
         REVIEW((Review<br/>Cycle))
     end
 
     subgraph "Competitive"
-        CL[CL-ONT]
-        CA[CA-ONT]
+        CL[CL-ONT v1.0.0]
+        CA[CA-ONT v2.1.0]
     end
 
     subgraph "Maturity"
-        MAT[ORG-MAT-ONT]
+        MAT[ORG-MAT-ONT v1.0.0]
     end
 
     subgraph "Execution"
-        PPM[PPM-ONT]
+        PPM[PPM-ONT v3.0.0]
     end
 
     subgraph "Supporting"
-        PE[PE-ONT]
+        PE[PE-ONT v2.0.0]
         VE[VE-ONT]
         OKR[OKR-ONT]
         PMF[PMF-ONT]
@@ -240,11 +240,11 @@ graph TB
     end
 
     subgraph "Domain Ontologies"
-        CL_O[CL-ONT]
-        VS_O[VSOM-ONT]
-        MAT_O[ORG-MAT-ONT]
+        CL_O[CL-ONT v1.0.0]
+        VS_O[VSOM-ONT v2.1.0]
+        MAT_O[ORG-MAT-ONT v1.0.0]
         PM_O[PMF-ONT]
-        PE_O[PE-ONT]
+        PE_O[PE-ONT v2.0.0]
         CE_O[CE-ONT]
     end
 
@@ -267,8 +267,8 @@ graph TB
 ### PF-Core Graph (Generic Template)
 ```mermaid
 graph LR
-    ORG[ORG-ONT] --> VSOM[VSOM-ONT]
-    ORG --> PPM[PPM-ONT]
+    ORG[ORG-ONT v2.1.0] --> VSOM[VSOM-ONT v2.1.0]
+    ORG --> PPM[PPM-ONT v3.0.0]
     VSOM --> OKR[OKR-ONT]
 
     style ORG fill:#1a5f7a,color:#fff
@@ -279,14 +279,14 @@ graph LR
 ### PFI Instance Graph (Full Context)
 ```mermaid
 graph LR
-    ORG[ORG-ONT] --> CTX((Context))
-    CTX --> VSOM[VSOM-ONT]
-    CTX --> CL[CL-ONT]
-    CTX --> MAT[ORG-MAT-ONT]
-    CTX --> PE[PE-ONT]
-    CL --> CA[CA-ONT]
+    ORG[ORG-ONT v2.1.0] --> CTX((Context))
+    CTX --> VSOM[VSOM-ONT v2.1.0]
+    CTX --> CL[CL-ONT v1.0.0]
+    CTX --> MAT[ORG-MAT-ONT v1.0.0]
+    CTX --> PE[PE-ONT v2.0.0]
+    CL --> CA[CA-ONT v2.1.0]
     VSOM <--> CL
-    ORG --> PPM[PPM-ONT]
+    ORG --> PPM[PPM-ONT v3.0.0]
 
     style ORG fill:#1a5f7a,color:#fff
     style CTX fill:#1a5f7a,color:#fff
