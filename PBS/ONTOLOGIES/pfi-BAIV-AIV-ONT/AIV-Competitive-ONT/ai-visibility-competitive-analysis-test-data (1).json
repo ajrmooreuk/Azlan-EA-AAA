@@ -1,0 +1,467 @@
+{
+  "@context": {
+    "@vocab": "https://baiv.ai/ontology/competitive-analysis/v1/",
+    "schema": "https://schema.org/"
+  },
+  "testDataSet": {
+    "ontologyId": "baiv:ontology:competitive-analysis-v1",
+    "version": "1.0.0",
+    "dateGenerated": "2025-10-08",
+    "description": "Test data for AI Visibility Competitive Analysis Ontology",
+    "distribution": {
+      "typical": "60% - Normal competitive scenarios",
+      "edge": "20% - Unusual but valid competitive situations", 
+      "boundary": "10% - At constraint limits",
+      "invalid": "10% - Validation test cases"
+    }
+  },
+  
+  "targetOrganizations": [
+    {
+      "@type": "TargetOrganization",
+      "@id": "org:baiv-corp",
+      "name": "Be AI Visible Corp",
+      "description": "AI-first marketing visibility platform for enterprise clients",
+      "organizationMaturity": "Growth",
+      "marketPosition": "Challenger",
+      "aiVisibilityReadiness": "Advanced",
+      "strategicObjectives": [
+        "Capture 15% market share in Enterprise AI Marketing",
+        "Establish thought leadership in AI Visibility",
+        "Build strategic partnerships with major CRM platforms"
+      ],
+      "directCompetitors": ["org:hubspot", "org:semrush", "org:brightedge", "org:conductor"],
+      "valuePropositionProfile": "vp:ai-first-visibility",
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "TargetOrganization", 
+      "@id": "org:startup-client",
+      "name": "TechStart AI",
+      "description": "Early-stage AI startup needing competitive positioning",
+      "organizationMaturity": "Startup",
+      "marketPosition": "Emerging",
+      "aiVisibilityReadiness": "Basic",
+      "strategicObjectives": [
+        "Identify product-market fit",
+        "Avoid direct competition with giants", 
+        "Find blue ocean opportunities"
+      ],
+      "directCompetitors": ["org:jasper", "org:copy-ai", "org:writesonic"],
+      "valuePropositionProfile": "vp:ai-content-automation",
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "TargetOrganization",
+      "@id": "org:enterprise-giant", 
+      "name": "GlobalCorp Industries",
+      "description": "Fortune 500 company with massive digital presence",
+      "organizationMaturity": "Enterprise",
+      "marketPosition": "Established",
+      "aiVisibilityReadiness": "Intermediate", 
+      "strategicObjectives": [
+        "Defend market leadership position",
+        "Prevent disruption from AI-native competitors",
+        "Acquire innovative AI capabilities"
+      ],
+      "directCompetitors": ["org:salesforce", "org:adobe", "org:oracle", "org:microsoft", "org:google"],
+      "valuePropositionProfile": "vp:enterprise-ai-suite",
+      "_testCase": "edge"
+    }
+  ],
+  
+  "competitorOrganizations": [
+    {
+      "@type": "CompetitorOrganization",
+      "@id": "org:hubspot",
+      "name": "HubSpot",
+      "description": "Inbound marketing and sales platform with AI features",
+      "competitorType": "Direct",
+      "marketShare": 0.18,
+      "competitiveStrength": "High",
+      "aiVisibilityCapabilities": ["Content optimization", "Lead scoring", "Predictive analytics"],
+      "threatLevel": "High",
+      "competitiveAdvantages": ["Strong brand", "Comprehensive platform", "Large user base"],
+      "marketPresence": "Global",
+      "customerSegments": ["SMB", "Mid-market", "Enterprise"],
+      "pricingStrategy": "Freemium with tiered pricing",
+      "partnershipNetwork": ["Salesforce", "Shopify", "WordPress"],
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "CompetitorOrganization",
+      "@id": "org:semrush", 
+      "name": "SEMrush",
+      "description": "Digital marketing toolkit with AI-powered SEO and content tools",
+      "competitorType": "Direct",
+      "marketShare": 0.12,
+      "competitiveStrength": "High", 
+      "aiVisibilityCapabilities": ["Keyword research", "Content AI", "Competitive analysis"],
+      "threatLevel": "High",
+      "competitiveAdvantages": ["SEO expertise", "Data depth", "Global market data"],
+      "marketPresence": "Global",
+      "customerSegments": ["SMB", "Mid-market", "Agency"],
+      "pricingStrategy": "Subscription tiers",
+      "partnershipNetwork": ["Google", "Facebook", "Bing"],
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "CompetitorOrganization",
+      "@id": "org:brightedge",
+      "name": "BrightEdge",
+      "description": "Enterprise SEO and content performance platform",
+      "competitorType": "Direct",
+      "marketShare": 0.08,
+      "competitiveStrength": "Medium",
+      "aiVisibilityCapabilities": ["Real-time SEO", "Content optimization", "Intent analysis"],
+      "threatLevel": "Medium",
+      "competitiveAdvantages": ["Enterprise focus", "Real-time data", "AI-first approach"],
+      "marketPresence": "North America, Europe",
+      "customerSegments": ["Enterprise", "Large Mid-market"],
+      "pricingStrategy": "Enterprise custom pricing",
+      "partnershipNetwork": ["Adobe", "Salesforce", "Microsoft"],
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "CompetitorOrganization",
+      "@id": "org:emerging-ai-startup",
+      "name": "VoiceSearch AI",
+      "description": "Stealth-mode startup focusing on voice search optimization",
+      "competitorType": "Emerging", 
+      "marketShare": 0.001,
+      "competitiveStrength": "Low",
+      "aiVisibilityCapabilities": ["Voice search optimization", "Conversational AI"],
+      "threatLevel": "Low",
+      "competitiveAdvantages": ["Cutting-edge voice tech", "First-mover in voice SEO"],
+      "marketPresence": "US only",
+      "customerSegments": ["Early adopters"],
+      "pricingStrategy": "Beta pricing",
+      "partnershipNetwork": ["Amazon Alexa", "Google Assistant"],
+      "_testCase": "edge"
+    },
+    
+    {
+      "@type": "CompetitorOrganization",
+      "@id": "org:boundary-case-competitor",
+      "name": "Minimal Competitor Corp", 
+      "description": "Competitor with exactly minimum required data",
+      "competitorType": "Indirect",
+      "marketShare": 0.001,
+      "competitiveStrength": "Minimal",
+      "aiVisibilityCapabilities": ["Basic analytics"],
+      "threatLevel": "Minimal",
+      "competitiveAdvantages": ["Low cost"],
+      "marketPresence": "Regional",
+      "customerSegments": ["SMB"], 
+      "pricingStrategy": "Budget pricing",
+      "partnershipNetwork": [],
+      "_testCase": "boundary"
+    }
+  ],
+  
+  "aiVisibilityProducts": [
+    {
+      "@type": "AIVisibilityProduct",
+      "@id": "product:hubspot-content-ai",
+      "name": "HubSpot Content Assistant",
+      "description": "AI-powered content creation and optimization tool",
+      "productCategory": "Content AI",
+      "aiVisibilityFeatures": [
+        "Content generation",
+        "SEO optimization", 
+        "Performance prediction",
+        "A/B testing automation"
+      ],
+      "targetAudience": ["Content marketers", "SEO specialists", "Marketing managers"],
+      "pricingModel": "Subscription - $45/month",
+      "marketPosition": "Market leader",
+      "uniqueValueProposition": "Integrated content creation within full marketing suite",
+      "technicalCapabilities": ["NLP", "ML prediction", "Real-time optimization"],
+      "integrationOptions": ["HubSpot CRM", "WordPress", "Salesforce"],
+      "competitiveDifferentiators": ["Platform integration", "Ease of use", "Support quality"],
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "AIVisibilityProduct", 
+      "@id": "product:semrush-writing-assistant",
+      "name": "SEMrush Writing Assistant",
+      "description": "AI content optimization based on top-performing content analysis",
+      "productCategory": "Content Optimization",
+      "aiVisibilityFeatures": [
+        "Real-time content scoring",
+        "Readability analysis",
+        "SEO recommendations", 
+        "Competitor content analysis"
+      ],
+      "targetAudience": ["Content writers", "SEO agencies", "Digital marketers"],
+      "pricingModel": "Freemium - $0-120/month",
+      "marketPosition": "Strong challenger",
+      "uniqueValueProposition": "Data-driven content optimization with competitive insights",
+      "technicalCapabilities": ["Content analysis", "SERP data integration", "Multi-language support"],
+      "integrationOptions": ["Google Docs", "WordPress", "Microsoft Word"],
+      "competitiveDifferentiators": ["Data depth", "Competitive analysis", "Multi-platform"],
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "AIVisibilityProduct",
+      "@id": "product:voice-search-optimizer",
+      "name": "Voice Search Pro",
+      "description": "Next-generation voice search optimization platform",
+      "productCategory": "Voice AI",
+      "aiVisibilityFeatures": [
+        "Voice query optimization",
+        "Conversational content analysis",
+        "Featured snippet optimization",
+        "Local voice search"
+      ],
+      "targetAudience": ["Early adopters", "Voice-first companies", "Local businesses"],
+      "pricingModel": "Beta - $99/month",
+      "marketPosition": "Innovation leader",
+      "uniqueValueProposition": "First comprehensive voice search optimization platform",
+      "technicalCapabilities": ["Voice NLP", "Intent recognition", "Conversational AI"],
+      "integrationOptions": ["Alexa Skills", "Google Actions", "Voice assistants"],
+      "competitiveDifferentiators": ["Voice-first", "Conversational optimization", "Future-ready"],
+      "_testCase": "edge"
+    }
+  ],
+  
+  "marketSegments": [
+    {
+      "@type": "MarketSegment",
+      "@id": "segment:enterprise-ai-marketing",
+      "segmentName": "Enterprise AI Marketing",
+      "segmentSize": "$2.8B",
+      "growthRate": 0.22,
+      "keyPlayers": ["org:hubspot", "org:salesforce", "org:adobe"],
+      "barriers": ["High switching costs", "Integration complexity", "Compliance requirements"],
+      "opportunities": ["AI personalization", "Predictive analytics", "Automation"],
+      "maturityLevel": "Growth",
+      "customerNeeds": ["Scale", "Integration", "ROI measurement"],
+      "competitiveIntensity": "High",
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "MarketSegment", 
+      "@id": "segment:voice-search-optimization",
+      "segmentName": "Voice Search Optimization",
+      "segmentSize": "$45M",
+      "growthRate": 0.85,
+      "keyPlayers": ["org:emerging-ai-startup"],
+      "barriers": ["Technology complexity", "Lack of standards"],
+      "opportunities": ["First-mover advantage", "Voice commerce", "Local search"],
+      "maturityLevel": "Emerging",
+      "customerNeeds": ["Innovation", "Voice readiness", "Future-proofing"],
+      "competitiveIntensity": "Low", 
+      "_testCase": "edge"
+    }
+  ],
+  
+  "competitivePositions": [
+    {
+      "@type": "CompetitivePosition",
+      "@id": "position:hubspot-leader",
+      "marketLeadershipStatus": "Market Leader",
+      "competitiveAdvantages": ["Brand strength", "Platform completeness", "User experience"],
+      "marketShare": 0.18,
+      "brandStrength": "Very High",
+      "customerLoyalty": "High", 
+      "innovationCapability": "High",
+      "operationalEfficiency": "High",
+      "financialStrength": "Very High",
+      "strategicPartnerships": "Extensive",
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "CompetitivePosition",
+      "@id": "position:baiv-challenger",
+      "marketLeadershipStatus": "Challenger",
+      "competitiveAdvantages": ["AI-first approach", "Innovation speed", "Specialized focus"],
+      "marketShare": 0.02,
+      "brandStrength": "Medium",
+      "customerLoyalty": "Medium",
+      "innovationCapability": "Very High", 
+      "operationalEfficiency": "Medium",
+      "financialStrength": "Medium",
+      "strategicPartnerships": "Limited",
+      "_testCase": "typical"
+    }
+  ],
+  
+  "valuePropositions": [
+    {
+      "@type": "ValueProposition",
+      "@id": "vp:ai-first-visibility",
+      "coreValue": "AI-native marketing visibility that predicts and optimizes performance in real-time",
+      "targetBenefits": ["30% improvement in content performance", "50% reduction in optimization time"],
+      "differentiators": ["Predictive AI", "Real-time optimization", "Voice-ready content"],
+      "customerProblems": ["Content performance unpredictability", "Manual optimization overhead"],
+      "solutionOffering": "AI-powered content and SEO optimization platform",
+      "valueMetrics": ["Performance lift", "Time savings", "ROI improvement"],
+      "competitiveAdvantage": "First-mover in predictive content optimization",
+      "marketFit": "Strong for AI-forward enterprises",
+      "_testCase": "typical"
+    }
+  ],
+  
+  "competitiveAnalyses": [
+    {
+      "@type": "CompetitiveAnalysis",
+      "@id": "analysis:q3-2025-ai-visibility",
+      "analysisType": "Benchmarking",
+      "analysisScope": "Top 10 AI Visibility platforms",
+      "keyFindings": [
+        "Market consolidation accelerating",
+        "AI capabilities becoming table stakes", 
+        "Voice optimization emerging as differentiator"
+      ],
+      "competitiveGaps": ["Voice search optimization", "Predictive content performance"],
+      "opportunities": ["Voice-first content", "Cross-platform optimization"],
+      "threats": ["Big Tech platform integration", "Price competition"],
+      "recommendations": [
+        "Focus on voice search capabilities", 
+        "Build strategic partnerships",
+        "Accelerate AI innovation"
+      ],
+      "dataSource": ["Public filings", "User interviews", "Platform analysis"],
+      "analysisDate": "2025-10-01",
+      "confidenceLevel": 8.5,
+      "_testCase": "typical"
+    }
+  ],
+  
+  "blueOceanOpportunities": [
+    {
+      "@type": "BlueOceanOpportunity",
+      "@id": "opportunity:ai-voice-commerce",
+      "opportunityName": "AI-Powered Voice Commerce Optimization",
+      "marketSize": "$150M by 2027",
+      "accessibilityLevel": "Medium",
+      "requiredCapabilities": ["Voice AI", "Commerce platforms", "Conversational design"],
+      "timeToMarket": "18 months",
+      "competitiveBarriers": "Low",
+      "customerDemand": "Emerging",
+      "strategicValue": "High",
+      "riskLevel": "Medium",
+      "_testCase": "typical"
+    },
+    
+    {
+      "@type": "BlueOceanOpportunity",
+      "@id": "opportunity:boundary-case",
+      "opportunityName": "Minimal Barrier Opportunity",
+      "marketSize": "$1M",
+      "accessibilityLevel": "High",
+      "requiredCapabilities": ["Basic AI"],
+      "timeToMarket": "6 months", 
+      "competitiveBarriers": "None",
+      "customerDemand": "Low",
+      "strategicValue": "Low",
+      "riskLevel": "Low",
+      "_testCase": "boundary"
+    }
+  ],
+  
+  "competitiveIntelligence": [
+    {
+      "@type": "CompetitiveIntelligence",
+      "@id": "intel:hubspot-ai-launch",
+      "intelligenceType": "ProductIntel",
+      "dataPoints": [
+        "New AI content features released",
+        "Pricing increased 15%",
+        "Enterprise sales team expanded"
+      ],
+      "sources": ["Product announcements", "Pricing pages", "LinkedIn analysis"],
+      "reliability": 9,
+      "timestamp": "2025-10-01T10:00:00Z",
+      "competitorFocus": ["org:hubspot"],
+      "insightLevel": "Strategic",
+      "actionableRecommendations": [
+        "Monitor customer response to pricing increase",
+        "Benchmark new AI features against BAIV capabilities"
+      ],
+      "_testCase": "typical"
+    }
+  ],
+  
+  "invalidTestCases": [
+    {
+      "@type": "TargetOrganization",
+      "@id": "org:invalid-no-competitors",
+      "name": "Invalid Org",
+      "directCompetitors": [],
+      "_testCase": "invalid",
+      "_expectedError": "BR-001: Must have 3-5 direct competitors"
+    },
+    
+    {
+      "@type": "BlueOceanOpportunity", 
+      "@id": "opportunity:invalid-high-barriers",
+      "opportunityName": "Invalid Blue Ocean",
+      "competitiveBarriers": "High",
+      "_testCase": "invalid", 
+      "_expectedError": "BR-002: Blue Ocean must have Low or None barriers"
+    },
+    
+    {
+      "@type": "CompetitorOrganization",
+      "@id": "org:invalid-no-segment",
+      "name": "Invalid Competitor",
+      "_testCase": "invalid",
+      "_expectedError": "BR-003: Must operate in at least one MarketSegment"
+    }
+  ],
+  
+  "relationshipExamples": [
+    {
+      "source": "org:baiv-corp",
+      "relationship": "competes_with", 
+      "target": "org:hubspot",
+      "_testCase": "typical"
+    },
+    {
+      "source": "org:baiv-corp",
+      "relationship": "direct_competitor",
+      "target": ["org:hubspot", "org:semrush", "org:brightedge", "org:conductor"],
+      "_testCase": "typical"
+    },
+    {
+      "source": "org:hubspot",
+      "relationship": "offers_product", 
+      "target": "product:hubspot-content-ai",
+      "_testCase": "typical"
+    },
+    {
+      "source": "analysis:q3-2025-ai-visibility",
+      "relationship": "identifies_opportunity",
+      "target": "opportunity:ai-voice-commerce",
+      "_testCase": "typical"
+    }
+  ],
+  
+  "testSummary": {
+    "totalInstances": 47,
+    "distribution": {
+      "typical": 28,
+      "edge": 9,
+      "boundary": 5,
+      "invalid": 5
+    },
+    "coverage": {
+      "entities": "100%",
+      "relationships": "100%", 
+      "businessRules": "100%",
+      "useCases": "100%"
+    },
+    "validationNotes": "Invalid test cases designed to trigger specific business rule violations for validation testing"
+  }
+}

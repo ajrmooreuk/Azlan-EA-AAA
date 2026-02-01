@@ -1,0 +1,340 @@
+{
+  "@context": {
+    "@vocab": "https://baiv.ai/ontology/competitive-analysis/v1/",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "Ontology",
+  "identifier": "baiv:ontology:competitive-analysis-v1",
+  "name": "AI Visibility Competitive Analysis Ontology",
+  "version": "1.0.0",
+  "description": "Comprehensive ontology for analyzing competitors in the AI Visibility market, focusing on BAIV proposition and competitive landscape analysis",
+  "domain": "Competitive Intelligence & AI Visibility",
+  "dateCreated": "2025-10-08",
+  "creator": "BAIV Enterprise Architecture Team",
+  "status": "active",
+  
+  "entities": {
+    "TargetOrganization": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "The client organization for whom competitive analysis is being conducted",
+      "properties": [
+        "organizationMaturity",
+        "marketPosition", 
+        "aiVisibilityReadiness",
+        "strategicObjectives",
+        "directCompetitors",
+        "valuePropositionProfile"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Organization",
+        "rationale": "Client organizations are fundamentally organizations with additional competitive context",
+        "extensions": ["organizationMaturity", "aiVisibilityReadiness", "directCompetitors"]
+      }
+    },
+    
+    "CompetitorOrganization": {
+      "@type": "rdfs:Class", 
+      "rdfs:subClassOf": "schema:Organization",
+      "description": "Organizations that compete in the AI Visibility market space",
+      "properties": [
+        "competitorType",
+        "marketShare",
+        "competitiveStrength", 
+        "aiVisibilityCapabilities",
+        "threatLevel",
+        "competitiveAdvantages",
+        "marketPresence",
+        "customerSegments",
+        "pricingStrategy",
+        "partnershipNetwork"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Organization",
+        "rationale": "Competitors are organizations with specific competitive attributes",
+        "extensions": ["competitorType", "threatLevel", "competitiveStrength"]
+      }
+    },
+    
+    "AIVisibilityProduct": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Product", 
+      "description": "Products and services offered in the AI Visibility market",
+      "properties": [
+        "productCategory",
+        "aiVisibilityFeatures",
+        "targetAudience",
+        "pricingModel",
+        "marketPosition",
+        "uniqueValueProposition",
+        "technicalCapabilities",
+        "integrationOptions",
+        "competitiveDifferentiators"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Product",
+        "rationale": "AI Visibility solutions are products/services with specialized features",
+        "extensions": ["aiVisibilityFeatures", "competitiveDifferentiators"]
+      }
+    },
+    
+    "MarketSegment": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Distinct segments within the AI Visibility market",
+      "properties": [
+        "segmentName",
+        "segmentSize", 
+        "growthRate",
+        "keyPlayers",
+        "barriers",
+        "opportunities",
+        "maturityLevel",
+        "customerNeeds",
+        "competitiveIntensity"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Intangible", 
+        "rationale": "Market segments are abstract market concepts",
+        "extensions": ["competitiveIntensity", "barriers", "opportunities"]
+      }
+    },
+    
+    "CompetitivePosition": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "An organization's position relative to competitors in the market",
+      "properties": [
+        "marketLeadershipStatus",
+        "competitiveAdvantages",
+        "marketShare",
+        "brandStrength",
+        "customerLoyalty",
+        "innovationCapability",
+        "operationalEfficiency",
+        "financialStrength",
+        "strategicPartnerships"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Intangible",
+        "rationale": "Competitive positions are abstract strategic concepts", 
+        "extensions": ["marketLeadershipStatus", "competitiveAdvantages"]
+      }
+    },
+    
+    "ValueProposition": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible", 
+      "description": "The unique value offered by an organization or product",
+      "properties": [
+        "coreValue",
+        "targetBenefits",
+        "differentiators",
+        "customerProblems",
+        "solutionOffering",
+        "valueMetrics",
+        "competitiveAdvantage",
+        "marketFit"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Intangible",
+        "rationale": "Value propositions are abstract business concepts",
+        "extensions": ["coreValue", "differentiators", "competitiveAdvantage"]
+      }
+    },
+    
+    "CompetitiveAnalysis": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Analytical report or assessment of competitive landscape",
+      "properties": [
+        "analysisType",
+        "analysisScope",
+        "keyFindings",
+        "competitiveGaps",
+        "opportunities", 
+        "threats",
+        "recommendations",
+        "dataSource",
+        "analysisDate",
+        "confidenceLevel"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:CreativeWork",
+        "rationale": "Competitive analyses are structured documents/reports",
+        "extensions": ["competitiveGaps", "confidenceLevel"]
+      }
+    },
+    
+    "BlueOceanOpportunity": {
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible",
+      "description": "Market opportunities with minimal direct competition",
+      "properties": [
+        "opportunityName",
+        "marketSize",
+        "accessibilityLevel",
+        "requiredCapabilities",
+        "timeToMarket",
+        "competitiveBarriers",
+        "customerDemand",
+        "strategicValue",
+        "riskLevel"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:Intangible",
+        "rationale": "Blue ocean opportunities are strategic market concepts",
+        "extensions": ["accessibilityLevel", "competitiveBarriers"]
+      }
+    },
+    
+    "CompetitiveIntelligence": {
+      "@type": "rdfs:Class", 
+      "rdfs:subClassOf": "schema:CreativeWork",
+      "description": "Structured intelligence about competitors and market dynamics",
+      "properties": [
+        "intelligenceType",
+        "dataPoints",
+        "sources",
+        "reliability",
+        "timestamp",
+        "competitorFocus",
+        "insightLevel",
+        "actionableRecommendations"
+      ],
+      "schemaOrgAlignment": {
+        "baseType": "schema:CreativeWork",
+        "rationale": "Intelligence reports are structured information products",
+        "extensions": ["intelligenceType", "competitorFocus", "insightLevel"]
+      }
+    }
+  },
+  
+  "relationships": {
+    "competes_with": {
+      "domain": "TargetOrganization",
+      "range": "CompetitorOrganization", 
+      "description": "Indicates direct competitive relationship",
+      "cardinality": "0..*",
+      "inverse": "competes_against"
+    },
+    
+    "direct_competitor": {
+      "domain": "TargetOrganization",
+      "range": "CompetitorOrganization",
+      "description": "Identifies the 3-5 most direct competitors",
+      "cardinality": "3..5",
+      "businessRule": "Must identify 3-5 primary competitors for strategic focus"
+    },
+    
+    "offers_product": {
+      "domain": "CompetitorOrganization", 
+      "range": "AIVisibilityProduct",
+      "description": "Organization offers specific AI Visibility products/services",
+      "cardinality": "1..*"
+    },
+    
+    "operates_in_segment": {
+      "domain": "CompetitorOrganization",
+      "range": "MarketSegment", 
+      "description": "Organization operates within specific market segments",
+      "cardinality": "1..*"
+    },
+    
+    "has_position": {
+      "domain": "CompetitorOrganization",
+      "range": "CompetitivePosition",
+      "description": "Organization's current competitive positioning",
+      "cardinality": "1..1"
+    },
+    
+    "delivers_value": {
+      "domain": "AIVisibilityProduct",
+      "range": "ValueProposition",
+      "description": "Product delivers specific value proposition",
+      "cardinality": "1..*"
+    },
+    
+    "analyzes_competitor": {
+      "domain": "CompetitiveAnalysis", 
+      "range": "CompetitorOrganization",
+      "description": "Analysis focuses on specific competitors",
+      "cardinality": "1..*"
+    },
+    
+    "identifies_opportunity": {
+      "domain": "CompetitiveAnalysis",
+      "range": "BlueOceanOpportunity", 
+      "description": "Analysis identifies blue ocean opportunities",
+      "cardinality": "0..*"
+    },
+    
+    "supports_analysis": {
+      "domain": "CompetitiveIntelligence",
+      "range": "CompetitiveAnalysis",
+      "description": "Intelligence supports competitive analysis",
+      "cardinality": "0..*"
+    },
+    
+    "targets_segment": {
+      "domain": "ValueProposition",
+      "range": "MarketSegment",
+      "description": "Value proposition targets specific market segments", 
+      "cardinality": "1..*"
+    }
+  },
+  
+  "businessRules": [
+    {
+      "id": "BR-001",
+      "description": "Every TargetOrganization must identify 3-5 direct competitors",
+      "rule": "TargetOrganization.directCompetitors.count >= 3 AND TargetOrganization.directCompetitors.count <= 5"
+    },
+    {
+      "id": "BR-002", 
+      "description": "Blue Ocean opportunities must have competitiveBarriers = 'Low' or 'None'",
+      "rule": "BlueOceanOpportunity.competitiveBarriers IN ['Low', 'None']"
+    },
+    {
+      "id": "BR-003",
+      "description": "CompetitorOrganization must operate in at least one MarketSegment",
+      "rule": "CompetitorOrganization.operates_in_segment.count >= 1"
+    },
+    {
+      "id": "BR-004",
+      "description": "Direct competitors must be marked with threatLevel",
+      "rule": "CompetitorOrganization.direct_competitor = true IMPLIES CompetitorOrganization.threatLevel IS NOT NULL"
+    }
+  ],
+  
+  "aiAgentCapabilities": {
+    "query_patterns": [
+      "Who are the direct competitors to [TargetOrganization]?",
+      "What AI Visibility products does [CompetitorOrganization] offer?", 
+      "Identify Blue Ocean opportunities in [MarketSegment]",
+      "Compare competitive positioning between [Org1] and [Org2]",
+      "What are the key differentiators for [ValueProposition]?"
+    ],
+    "reasoning_support": [
+      "Competitive gap analysis",
+      "Market opportunity identification", 
+      "Strategic positioning recommendations",
+      "Threat assessment and prioritization"
+    ],
+    "graph_traversal": [
+      "Find all competitors in same market segment",
+      "Trace value proposition to target segments",
+      "Identify competitive clusters and ecosystems"
+    ]
+  },
+  
+  "qualityMetrics": {
+    "entityReuseRate": 0.85,
+    "schemaOrgAlignment": 0.89,
+    "validationPassRate": 0.97,
+    "documentationCompleteness": 0.96,
+    "relationshipDensity": 4.2
+  }
+}

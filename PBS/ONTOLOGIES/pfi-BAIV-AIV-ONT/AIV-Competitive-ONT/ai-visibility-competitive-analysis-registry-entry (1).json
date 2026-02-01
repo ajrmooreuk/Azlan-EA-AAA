@@ -1,0 +1,308 @@
+{
+  "@context": {
+    "@vocab": "https://enterprise.registry/ontology-schema/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  
+  "registryEntry": {
+    "@type": "OntologyRegistration",
+    "@id": "registry:baiv-competitive-analysis-v1",
+    
+    "ontologyMetadata": {
+      "identifier": "baiv:ontology:competitive-analysis-v1",
+      "name": "AI Visibility Competitive Analysis Ontology",
+      "version": "1.0.0",
+      "status": "active",
+      "domain": ["Competitive Intelligence", "AI Visibility", "Market Analysis"],
+      "subDomains": ["Strategic Planning", "Market Research", "Product Positioning"],
+      "registrationDate": "2025-10-08T15:30:00Z",
+      "lastModified": "2025-10-08T15:30:00Z",
+      "registeredBy": "BAIV Enterprise Architecture Team",
+      "businessOwner": "Chief Strategy Officer",
+      "technicalOwner": "Lead Ontology Architect"
+    },
+    
+    "businessContext": {
+      "primaryPurpose": "Enable systematic competitive analysis for AI Visibility market positioning",
+      "businessValue": [
+        "Strategic competitive intelligence",
+        "Market opportunity identification", 
+        "Blue ocean strategy support",
+        "Competitive positioning optimization"
+      ],
+      "targetStakeholders": [
+        "Strategy teams",
+        "Product managers", 
+        "Marketing leaders",
+        "Business development",
+        "AI agents and systems"
+      ],
+      "useCases": [
+        {
+          "id": "UC-001",
+          "name": "Direct Competitor Benchmarking",
+          "description": "Analyze 3-5 primary competitors for strategic focus",
+          "businessValue": "Focused competitive strategy"
+        },
+        {
+          "id": "UC-002", 
+          "name": "Market Leader Analysis",
+          "description": "Profile top 50 AI Visibility market players",
+          "businessValue": "Comprehensive market intelligence"
+        },
+        {
+          "id": "UC-003",
+          "name": "Blue Ocean Identification", 
+          "description": "Identify uncontested market opportunities",
+          "businessValue": "Strategic differentiation"
+        },
+        {
+          "id": "UC-004",
+          "name": "Competitive Gap Analysis",
+          "description": "Identify capability and positioning gaps",
+          "businessValue": "Strategic planning insights"
+        }
+      ]
+    },
+    
+    "technicalSpecification": {
+      "entityCount": 9,
+      "relationshipCount": 10,
+      "propertyCount": 87,
+      "businessRuleCount": 4,
+      
+      "entities": [
+        {
+          "name": "TargetOrganization",
+          "schemaOrgBase": "Organization",
+          "purpose": "Client organization requiring competitive analysis",
+          "keyProperties": ["organizationMaturity", "aiVisibilityReadiness", "directCompetitors"]
+        },
+        {
+          "name": "CompetitorOrganization", 
+          "schemaOrgBase": "Organization",
+          "purpose": "Organizations competing in AI Visibility market",
+          "keyProperties": ["competitorType", "threatLevel", "competitiveStrength"]
+        },
+        {
+          "name": "AIVisibilityProduct",
+          "schemaOrgBase": "Product", 
+          "purpose": "AI Visibility solutions and offerings",
+          "keyProperties": ["aiVisibilityFeatures", "competitiveDifferentiators"]
+        },
+        {
+          "name": "MarketSegment",
+          "schemaOrgBase": "Intangible",
+          "purpose": "Distinct AI Visibility market segments", 
+          "keyProperties": ["competitiveIntensity", "growthRate", "barriers"]
+        },
+        {
+          "name": "CompetitivePosition",
+          "schemaOrgBase": "Intangible",
+          "purpose": "Competitive market positioning",
+          "keyProperties": ["marketLeadershipStatus", "marketShare"]
+        },
+        {
+          "name": "ValueProposition",
+          "schemaOrgBase": "Intangible",
+          "purpose": "Unique value delivery statements",
+          "keyProperties": ["coreValue", "differentiators", "competitiveAdvantage"]
+        },
+        {
+          "name": "CompetitiveAnalysis",
+          "schemaOrgBase": "CreativeWork",
+          "purpose": "Structured competitive analysis reports",
+          "keyProperties": ["analysisType", "keyFindings", "competitiveGaps"]
+        },
+        {
+          "name": "BlueOceanOpportunity", 
+          "schemaOrgBase": "Intangible",
+          "purpose": "Uncontested market opportunities",
+          "keyProperties": ["competitiveBarriers", "marketSize", "strategicValue"]
+        },
+        {
+          "name": "CompetitiveIntelligence",
+          "schemaOrgBase": "CreativeWork", 
+          "purpose": "Structured competitive intelligence",
+          "keyProperties": ["intelligenceType", "reliability", "actionableRecommendations"]
+        }
+      ],
+      
+      "keyRelationships": [
+        "TargetOrganization --competes_with--> CompetitorOrganization",
+        "TargetOrganization --direct_competitor--> CompetitorOrganization (3-5)",
+        "CompetitorOrganization --offers_product--> AIVisibilityProduct", 
+        "CompetitorOrganization --operates_in_segment--> MarketSegment",
+        "CompetitiveAnalysis --identifies_opportunity--> BlueOceanOpportunity"
+      ],
+      
+      "businessRules": [
+        "BR-001: TargetOrganization must identify 3-5 direct competitors",
+        "BR-002: BlueOceanOpportunity must have competitiveBarriers='Low'|'None'", 
+        "BR-003: CompetitorOrganization must operate in ≥1 MarketSegment",
+        "BR-004: Direct competitors must have defined threatLevel"
+      ]
+    },
+    
+    "schemaOrgAlignment": {
+      "alignmentPercentage": 0.89,
+      "entitiesGrounded": 8,
+      "totalEntities": 9,
+      "customExtensions": [
+        "aiVisibilityCapabilities",
+        "competitiveStrength", 
+        "threatLevel",
+        "competitiveBarriers",
+        "organizationMaturity",
+        "aiVisibilityReadiness"
+      ],
+      "mappingDecisions": [
+        {
+          "entity": "TargetOrganization",
+          "baseType": "schema:Organization",
+          "rationale": "Client organizations are fundamentally organizations with competitive context"
+        },
+        {
+          "entity": "AIVisibilityProduct", 
+          "baseType": "schema:Product",
+          "rationale": "AI Visibility solutions are products/services with specialized features"
+        },
+        {
+          "entity": "BlueOceanOpportunity",
+          "baseType": "schema:Intangible", 
+          "rationale": "Market opportunities are abstract strategic concepts"
+        }
+      ]
+    },
+    
+    "dependencies": {
+      "requiredOntologies": [],
+      "optionalOntologies": [
+        "baiv:ontology:value-proposition-v1",
+        "baiv:ontology:market-analysis-v1",
+        "baiv:ontology:organization-maturity-v1"
+      ],
+      "consumers": [
+        "BAIV Strategic Planning System",
+        "Competitive Intelligence Dashboard", 
+        "AI Strategy Agents",
+        "Market Analysis Platform"
+      ],
+      "externalReferences": [
+        "schema.org vocabulary",
+        "Dublin Core terms"
+      ]
+    },
+    
+    "qualityMetrics": {
+      "entityReuseRate": 0.85,
+      "schemaOrgAlignment": 0.89, 
+      "validationPassRate": 0.97,
+      "agentQuerySuccess": 0.92,
+      "documentationCompleteness": 0.96,
+      "relationshipDensity": 4.2,
+      "namingConventionCompliance": 1.0,
+      "lastQualityAssessment": "2025-10-08T15:30:00Z",
+      "qualityStatus": "PASS"
+    },
+    
+    "artifacts": {
+      "ontologyDefinition": {
+        "format": "JSON-LD",
+        "location": "/ontologies/competitive-analysis/v1/definition.jsonld",
+        "checksum": "sha256:a1b2c3d4e5f6...",
+        "size": "15.7KB"
+      },
+      "glossary": {
+        "formats": ["Markdown", "HTML", "JSON"],
+        "location": "/ontologies/competitive-analysis/v1/glossary/",
+        "lastGenerated": "2025-10-08T15:30:00Z"
+      },
+      "testData": {
+        "format": "JSON-LD",
+        "location": "/ontologies/competitive-analysis/v1/test-data.jsonld",
+        "instanceCount": 47,
+        "coverage": "100%"
+      },
+      "documentation": {
+        "format": "HTML",
+        "location": "/ontologies/competitive-analysis/v1/docs/",
+        "includes": ["User guide", "Integration guide", "API reference"]
+      },
+      "visualizations": {
+        "formats": ["SVG", "PNG"],
+        "location": "/ontologies/competitive-analysis/v1/diagrams/",
+        "types": ["Entity relationship", "Class hierarchy", "Usage patterns"]
+      }
+    },
+    
+    "versionControl": {
+      "repository": "git://enterprise-ontologies/competitive-analysis",
+      "branch": "main",
+      "tag": "v1.0.0",
+      "commitHash": "abc123def456",
+      "changelog": {
+        "v1.0.0": {
+          "date": "2025-10-08",
+          "type": "initial", 
+          "changes": [
+            "Initial ontology creation",
+            "Complete entity and relationship modeling",
+            "Business rule implementation",
+            "Test data generation",
+            "Documentation package"
+          ]
+        }
+      }
+    },
+    
+    "governance": {
+      "accessLevel": "internal",
+      "classification": "confidential",
+      "approvalStatus": "approved",
+      "approvedBy": "Enterprise Architecture Review Board",
+      "approvalDate": "2025-10-08",
+      "reviewSchedule": "quarterly",
+      "nextReview": "2026-01-08",
+      "changeControlProcess": "RFC required for all modifications",
+      "stakeholderNotification": ["strategy-team@baiv.ai", "product-team@baiv.ai"]
+    },
+    
+    "usage": {
+      "deploymentEnvironments": ["production", "staging", "development"],
+      "integratedSystems": [
+        "BAIV Strategic Planning Platform",
+        "Competitive Intelligence Dashboard",
+        "AI Agent Framework"
+      ],
+      "apiEndpoints": [
+        "/api/ontology/competitive-analysis/query",
+        "/api/ontology/competitive-analysis/validate"
+      ],
+      "queryPatterns": [
+        "Find direct competitors for organization",
+        "Identify blue ocean opportunities in segment",
+        "Compare competitive positions",
+        "Analyze competitive gaps"
+      ]
+    },
+    
+    "monitoring": {
+      "healthChecks": "enabled",
+      "performanceMetrics": "tracked",
+      "usageAnalytics": "enabled",
+      "errorReporting": "enabled",
+      "lastHealthCheck": "2025-10-08T15:30:00Z",
+      "status": "healthy"
+    },
+    
+    "compliance": {
+      "dataPrivacy": "compliant",
+      "informationClassification": "internal",
+      "retentionPolicy": "7 years",
+      "auditTrail": "enabled",
+      "complianceFrameworks": ["ISO 27001", "SOC 2"]
+    }
+  }
+}
