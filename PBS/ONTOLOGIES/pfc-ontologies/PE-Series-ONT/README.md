@@ -1,4 +1,4 @@
-# PE Ontology (Process Engineering) - OAA v5.0.0 Compliant
+# PE-Series-ONT (Process Engineering Series)
 
 **Current Version:** 2.0.0
 **OAA Schema Version:** 5.0.0
@@ -6,7 +6,9 @@
 
 ## Overview
 
-Comprehensive ontology for defining, orchestrating, and optimizing business processes with agentic AI augmentation. Supports cradle-to-grave process management from vision through execution and continuous improvement.
+Process Engineering Series - comprehensive ontology for defining, orchestrating, and optimizing business processes with agentic AI augmentation. Supports cradle-to-grave process management from vision through execution and continuous improvement.
+
+This folder contains the core PE-ONT (Process Engineering Ontology) and will expand to include related process ontologies.
 
 ## Files
 
@@ -64,6 +66,12 @@ Load in [Ontology Visualiser](https://ajrmooreuk.github.io/Azlan-EA-AAA/) to ver
 | 2.0.0 | 2026-02-01 | Upgraded to OAA v5.0.0 JSON-LD format |
 | 1.0.0 | 2026-01-18 | Initial creation in legacy format |
 
+## Migration Notes
+
+- Renamed from PE-ONT to PE-Series-ONT on Feb 2026
+- Core process engineering ontology remains at v2.0.0
+- Series structure allows for future process-related extensions
+
 ---
 
-*Part of PFC Ontologies | OAA Ontology Workbench*
+*Part of PE-Series-ONT | OAA Ontology Workbench*
