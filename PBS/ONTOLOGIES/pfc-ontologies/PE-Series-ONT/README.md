@@ -1,16 +1,32 @@
 # PE-Series-ONT (Process Engineering Series)
 
-**Current Version:** 2.0.0
 **OAA Schema Version:** 5.0.0
 **Status:** Production
 
 ## Overview
 
-Process Engineering Series - comprehensive ontology for defining, orchestrating, and optimizing business processes with agentic AI augmentation. Supports cradle-to-grave process management from vision through execution and continuous improvement.
+Process Engineering Series - comprehensive ontologies for defining, orchestrating, and optimizing business processes with agentic AI augmentation. Supports cradle-to-grave process management from vision through execution and continuous improvement.
 
-This folder contains the core PE-ONT (Process Engineering Ontology) and will expand to include related process ontologies.
+## Series Structure
 
-## Files
+```
+PE-Series-ONT/
+├── README.md                           # This file
+├── process-engineering-v2.0.0-oaa-v5.json  # Core PE ontology
+├── archive/                            # Legacy versions
+└── PE-PPM-ONT/                         # Portfolio/Programme/Project Management
+    ├── ppm-module-v3.0.0-oaa-v5.json
+    └── archive/
+```
+
+## Ontology Sequence
+
+| Order | Ontology | Full Name | Version | Status |
+|-------|----------|-----------|---------|--------|
+| 1 | **PE-ONT** | Process Engineering | v2.0.0 | Production |
+| 2 | **PE-PPM-ONT** | Portfolio/Programme/Project Management | v3.0.0 | Production |
+
+## Core PE-ONT Files
 
 | File | Version | Format | Description |
 |------|---------|--------|-------------|
@@ -70,7 +86,8 @@ Load in [Ontology Visualiser](https://ajrmooreuk.github.io/Azlan-EA-AAA/) to ver
 
 - Renamed from PE-ONT to PE-Series-ONT on Feb 2026
 - Core process engineering ontology remains at v2.0.0
-- Series structure allows for future process-related extensions
+- PPM-ONT moved into PE-PPM-ONT subfolder on Feb 2026
+- Series structure groups process-related ontologies
 
 ---
 
