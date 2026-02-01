@@ -1,0 +1,358 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v5/",
+    "vsem": "https://oaa-ontology.org/v5/vsem/",
+    "ppm": "https://oaa-ontology.org/v5/ppm/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
+  "@id": "https://oaa-ontology.org/v5/ppm/schema",
+  "@type": "owl:Ontology",
+  "owl:versionInfo": "5.0.0",
+  "rdfs:label": "PPM Schema - OAA v5.0.0 Extension",
+  "rdfs:comment": "Portfolio-Programme-Project Management ontology extending OAA v5.0.0 for initiative tracking, dependency management, and value realisation",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:domain": "Portfolio Management",
+  "oaa:lastUpdated": "2026-01-31",
+
+  "@graph": [
+    {
+      "@id": "ppm:Portfolio",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "oaa:GovernedEntity"},
+      "rdfs:label": "Portfolio",
+      "rdfs:comment": "Collection of programmes delivering strategic vision within investment envelope",
+      "oaa:governanceLevel": "Executive",
+      "oaa:governanceArtifacts": ["Portfolio Charter", "Investment Case", "Benefits Realisation Plan"],
+      "ppm:requiredProperties": ["name", "ppm:vision", "ppm:programmes", "ppm:horizon"],
+      "ppm:optionalProperties": ["ppm:investmentEnvelope", "ppm:valueTarget", "ppm:practiceAreas", "ppm:governanceModel"]
+    },
+    {
+      "@id": "ppm:Programme",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "oaa:GovernedEntity"},
+      "rdfs:label": "Programme",
+      "rdfs:comment": "Coherent set of initiatives delivering programme benefits aligned to strategic pillar",
+      "oaa:governanceLevel": "Steerco",
+      "oaa:governanceArtifacts": ["Programme Charter", "Benefits Profile", "Tranche Plan"],
+      "ppm:requiredProperties": ["name", "ppm:parentPortfolio", "ppm:initiatives"],
+      "ppm:optionalProperties": ["ppm:strategicPillar", "ppm:benefitProfile", "ppm:contributionWeight", "ppm:owner", "ppm:status"]
+    },
+    {
+      "@id": "ppm:Initiative",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "oaa:GovernedEntity"},
+      "rdfs:label": "Initiative",
+      "rdfs:comment": "Discrete transformation initiative with defined outcomes, dependencies, and value contribution",
+      "oaa:governanceLevel": "Project",
+      "oaa:governanceArtifacts": ["Initiative Passport", "Delivery Plan", "RAID Log"],
+      "ppm:requiredProperties": ["ppm:code", "name", "ppm:parentProgramme", "ppm:phase", "ppm:status"],
+      "ppm:optionalProperties": ["ppm:practiceArea", "ppm:priority", "ppm:valueEstimate", "ppm:effortEstimate", "ppm:dependencies", "ppm:milestones", "ppm:owner", "ppm:startDate", "ppm:endDate", "ppm:percentComplete", "ppm:risks", "ppm:tags"]
+    },
+    {
+      "@id": "ppm:Workstream",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "ppm:Initiative"},
+      "rdfs:label": "Workstream",
+      "rdfs:comment": "Sub-component of initiative for complex delivery",
+      "oaa:governanceLevel": "Team"
+    },
+    {
+      "@id": "ppm:Dependency",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "Intangible"},
+      "rdfs:label": "Dependency",
+      "rdfs:comment": "Typed relationship between initiatives defining sequencing and enablement",
+      "ppm:requiredProperties": ["ppm:fromInitiative", "ppm:toInitiative", "ppm:dependencyType"],
+      "ppm:optionalProperties": ["ppm:lag", "ppm:isCriticalPath", "description"]
+    },
+    {
+      "@id": "ppm:Milestone",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "vsem:StrategicObjective"},
+      "rdfs:label": "Milestone",
+      "rdfs:comment": "Significant achievement point within initiative",
+      "ppm:requiredProperties": ["name", "ppm:targetDate"],
+      "ppm:optionalProperties": ["ppm:successCriteria", "ppm:isGate", "ppm:status"]
+    },
+    {
+      "@id": "ppm:PracticeArea",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "Organization"},
+      "rdfs:label": "Practice Area",
+      "rdfs:comment": "Business unit or advisory practice contributing to transformation",
+      "ppm:requiredProperties": ["name"],
+      "ppm:optionalProperties": ["ppm:manualReductionTarget", "ppm:headcount", "ppm:practiceHead", "ppm:primaryProgramme", "ppm:secondaryProgramme"]
+    },
+    {
+      "@id": "ppm:BenefitMetric",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "vsem:StrategicKPI"},
+      "rdfs:label": "Benefit Metric",
+      "rdfs:comment": "Quantified benefit measurement with baseline and target",
+      "ppm:requiredProperties": ["name", "ppm:target"],
+      "ppm:optionalProperties": ["ppm:baseline", "ppm:actual", "ppm:unit", "ppm:measurementFrequency"]
+    },
+    {
+      "@id": "ppm:EffortMetric",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "vsem:StrategicKPI"},
+      "rdfs:label": "Effort Metric",
+      "rdfs:comment": "Resource consumption measurement",
+      "ppm:requiredProperties": ["name", "ppm:estimate"],
+      "ppm:optionalProperties": ["ppm:actual", "ppm:unit"]
+    },
+    {
+      "@id": "ppm:Risk",
+      "@type": ["rdfs:Class", "owl:Class"],
+      "rdfs:subClassOf": {"@id": "Intangible"},
+      "rdfs:label": "Risk",
+      "rdfs:comment": "Identified risk to initiative delivery",
+      "ppm:requiredProperties": ["name", "ppm:probability", "ppm:impact"],
+      "ppm:optionalProperties": ["ppm:mitigation", "ppm:owner", "ppm:status"]
+    },
+
+    {
+      "@id": "ppm:Phase",
+      "@type": "skos:ConceptScheme",
+      "skos:prefLabel": "Initiative Phase",
+      "skos:definition": "Temporal phases for initiative scheduling across 3-year horizon",
+      "skos:hasTopConcept": [
+        {"@id": "ppm:phase/foundation", "skos:prefLabel": "Foundation", "ppm:startDate": "2026-02-01", "ppm:endDate": "2026-04-30"},
+        {"@id": "ppm:phase/y1q2", "skos:prefLabel": "Year 1 Q2", "ppm:startDate": "2026-05-01", "ppm:endDate": "2026-07-31"},
+        {"@id": "ppm:phase/y1q3", "skos:prefLabel": "Year 1 Q3", "ppm:startDate": "2026-08-01", "ppm:endDate": "2026-10-31"},
+        {"@id": "ppm:phase/y1q4", "skos:prefLabel": "Year 1 Q4", "ppm:startDate": "2026-11-01", "ppm:endDate": "2027-01-31"},
+        {"@id": "ppm:phase/y2q1", "skos:prefLabel": "Year 2 Q1", "ppm:startDate": "2027-02-01", "ppm:endDate": "2027-04-30"},
+        {"@id": "ppm:phase/y2q2", "skos:prefLabel": "Year 2 Q2", "ppm:startDate": "2027-05-01", "ppm:endDate": "2027-07-31"},
+        {"@id": "ppm:phase/y2q3", "skos:prefLabel": "Year 2 Q3", "ppm:startDate": "2027-08-01", "ppm:endDate": "2027-10-31"},
+        {"@id": "ppm:phase/y2q4", "skos:prefLabel": "Year 2 Q4", "ppm:startDate": "2027-11-01", "ppm:endDate": "2028-01-31"},
+        {"@id": "ppm:phase/y3q1", "skos:prefLabel": "Year 3 Q1", "ppm:startDate": "2028-02-01", "ppm:endDate": "2028-04-30"},
+        {"@id": "ppm:phase/y3q2", "skos:prefLabel": "Year 3 Q2", "ppm:startDate": "2028-05-01", "ppm:endDate": "2028-07-31"},
+        {"@id": "ppm:phase/y3q3", "skos:prefLabel": "Year 3 Q3", "ppm:startDate": "2028-08-01", "ppm:endDate": "2028-10-31"},
+        {"@id": "ppm:phase/y3q4", "skos:prefLabel": "Year 3 Q4", "ppm:startDate": "2028-11-01", "ppm:endDate": "2029-01-31"}
+      ]
+    },
+    {
+      "@id": "ppm:InitiativeStatus",
+      "@type": "skos:ConceptScheme",
+      "skos:prefLabel": "Initiative Status",
+      "skos:definition": "Lifecycle status of initiative",
+      "skos:hasTopConcept": [
+        {"@id": "ppm:status/proposed", "skos:prefLabel": "Proposed", "skos:definition": "Initiative identified, not yet approved"},
+        {"@id": "ppm:status/approved", "skos:prefLabel": "Approved", "skos:definition": "Approved for delivery, not yet started"},
+        {"@id": "ppm:status/in-progress", "skos:prefLabel": "In Progress", "skos:definition": "Active delivery underway"},
+        {"@id": "ppm:status/on-hold", "skos:prefLabel": "On Hold", "skos:definition": "Paused pending resolution"},
+        {"@id": "ppm:status/completed", "skos:prefLabel": "Completed", "skos:definition": "Delivery complete, benefits realising"},
+        {"@id": "ppm:status/cancelled", "skos:prefLabel": "Cancelled", "skos:definition": "Initiative terminated"}
+      ]
+    },
+    {
+      "@id": "ppm:Priority",
+      "@type": "skos:ConceptScheme",
+      "skos:prefLabel": "Priority Level",
+      "skos:definition": "Initiative priority for resource allocation",
+      "skos:hasTopConcept": [
+        {"@id": "ppm:priority/critical", "skos:prefLabel": "Critical", "ppm:rank": 1, "skos:definition": "Must deliver, blocks portfolio"},
+        {"@id": "ppm:priority/high", "skos:prefLabel": "High", "ppm:rank": 2, "skos:definition": "Important, significant value"},
+        {"@id": "ppm:priority/medium", "skos:prefLabel": "Medium", "ppm:rank": 3, "skos:definition": "Valuable, can flex timing"},
+        {"@id": "ppm:priority/low", "skos:prefLabel": "Low", "ppm:rank": 4, "skos:definition": "Nice to have, defer if constrained"}
+      ]
+    },
+    {
+      "@id": "ppm:DependencyType",
+      "@type": "skos:ConceptScheme",
+      "skos:prefLabel": "Dependency Type",
+      "skos:definition": "Classification of inter-initiative relationships",
+      "skos:hasTopConcept": [
+        {"@id": "ppm:dep-type/finish-to-start", "skos:prefLabel": "Finish to Start", "skos:notation": "FS", "skos:definition": "Successor cannot start until predecessor finishes"},
+        {"@id": "ppm:dep-type/start-to-start", "skos:prefLabel": "Start to Start", "skos:notation": "SS", "skos:definition": "Successor cannot start until predecessor starts"},
+        {"@id": "ppm:dep-type/finish-to-finish", "skos:prefLabel": "Finish to Finish", "skos:notation": "FF", "skos:definition": "Successor cannot finish until predecessor finishes"},
+        {"@id": "ppm:dep-type/enables", "skos:prefLabel": "Enables", "skos:notation": "EN", "skos:definition": "Predecessor creates capability successor requires"},
+        {"@id": "ppm:dep-type/blocks", "skos:prefLabel": "Blocks", "skos:notation": "BL", "skos:definition": "Predecessor must complete before successor viable"},
+        {"@id": "ppm:dep-type/informed-by", "skos:prefLabel": "Informed By", "skos:notation": "IB", "skos:definition": "Soft dependency, successor benefits from predecessor output"}
+      ]
+    },
+    {
+      "@id": "ppm:ProgrammeStatus",
+      "@type": "skos:ConceptScheme",
+      "skos:prefLabel": "Programme Status",
+      "skos:hasTopConcept": [
+        {"@id": "ppm:prog-status/defining", "skos:prefLabel": "Defining"},
+        {"@id": "ppm:prog-status/approved", "skos:prefLabel": "Approved"},
+        {"@id": "ppm:prog-status/delivering", "skos:prefLabel": "Delivering"},
+        {"@id": "ppm:prog-status/closing", "skos:prefLabel": "Closing"},
+        {"@id": "ppm:prog-status/closed", "skos:prefLabel": "Closed"}
+      ]
+    },
+
+    {
+      "@id": "ppm:vision",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Portfolio"},
+      "rdfs:range": {"@id": "vsem:StrategicVision"},
+      "rdfs:label": "vision",
+      "rdfs:comment": "Strategic vision this portfolio realises"
+    },
+    {
+      "@id": "ppm:programmes",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Portfolio"},
+      "rdfs:range": {"@id": "ppm:Programme"},
+      "rdfs:label": "programmes",
+      "rdfs:comment": "Programmes within this portfolio"
+    },
+    {
+      "@id": "ppm:initiatives",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Programme"},
+      "rdfs:range": {"@id": "ppm:Initiative"},
+      "rdfs:label": "initiatives",
+      "rdfs:comment": "Initiatives within this programme"
+    },
+    {
+      "@id": "ppm:parentPortfolio",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Programme"},
+      "rdfs:range": {"@id": "ppm:Portfolio"},
+      "rdfs:label": "parentPortfolio",
+      "rdfs:comment": "Portfolio this programme belongs to"
+    },
+    {
+      "@id": "ppm:parentProgramme",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "ppm:Programme"},
+      "rdfs:label": "parentProgramme",
+      "rdfs:comment": "Programme this initiative belongs to"
+    },
+    {
+      "@id": "ppm:practiceArea",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "ppm:PracticeArea"},
+      "rdfs:label": "practiceArea",
+      "rdfs:comment": "Primary practice area benefiting from initiative"
+    },
+    {
+      "@id": "ppm:dependencies",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "ppm:Dependency"},
+      "rdfs:label": "dependencies",
+      "rdfs:comment": "Dependencies this initiative has on others"
+    },
+    {
+      "@id": "ppm:fromInitiative",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Dependency"},
+      "rdfs:range": {"@id": "ppm:Initiative"},
+      "rdfs:label": "fromInitiative",
+      "rdfs:comment": "Predecessor initiative"
+    },
+    {
+      "@id": "ppm:toInitiative",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Dependency"},
+      "rdfs:range": {"@id": "ppm:Initiative"},
+      "rdfs:label": "toInitiative",
+      "rdfs:comment": "Successor initiative"
+    },
+    {
+      "@id": "ppm:code",
+      "@type": ["rdf:Property", "owl:DatatypeProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "xsd:string"},
+      "rdfs:label": "code",
+      "rdfs:comment": "Unique initiative code (e.g., DA-001)"
+    },
+    {
+      "@id": "ppm:phase",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "ppm:Phase"},
+      "rdfs:label": "phase",
+      "rdfs:comment": "Target delivery phase"
+    },
+    {
+      "@id": "ppm:status",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:label": "status",
+      "rdfs:comment": "Current lifecycle status"
+    },
+    {
+      "@id": "ppm:priority",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "ppm:Priority"},
+      "rdfs:label": "priority",
+      "rdfs:comment": "Priority level for resource allocation"
+    },
+    {
+      "@id": "ppm:valueEstimate",
+      "@type": ["rdf:Property", "owl:ObjectProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "MonetaryAmount"},
+      "rdfs:label": "valueEstimate",
+      "rdfs:comment": "Estimated annual benefit value"
+    },
+    {
+      "@id": "ppm:effortEstimate",
+      "@type": ["rdf:Property", "owl:DatatypeProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "xsd:integer"},
+      "rdfs:label": "effortEstimate",
+      "rdfs:comment": "Estimated effort in person-days"
+    },
+    {
+      "@id": "ppm:contributionWeight",
+      "@type": ["rdf:Property", "owl:DatatypeProperty"],
+      "rdfs:domain": {"@id": "ppm:Programme"},
+      "rdfs:range": {"@id": "xsd:decimal"},
+      "rdfs:label": "contributionWeight",
+      "rdfs:comment": "Weighted contribution to portfolio target (0-1)"
+    },
+    {
+      "@id": "ppm:manualReductionTarget",
+      "@type": ["rdf:Property", "owl:DatatypeProperty"],
+      "rdfs:domain": {"@id": "ppm:PracticeArea"},
+      "rdfs:range": {"@id": "xsd:decimal"},
+      "rdfs:label": "manualReductionTarget",
+      "rdfs:comment": "Target manual process reduction (0-1)"
+    },
+    {
+      "@id": "ppm:percentComplete",
+      "@type": ["rdf:Property", "owl:DatatypeProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "xsd:decimal"},
+      "rdfs:label": "percentComplete",
+      "rdfs:comment": "Delivery progress (0-1)"
+    },
+    {
+      "@id": "ppm:isCriticalPath",
+      "@type": ["rdf:Property", "owl:DatatypeProperty"],
+      "rdfs:domain": {"@id": "ppm:Dependency"},
+      "rdfs:range": {"@id": "xsd:boolean"},
+      "rdfs:label": "isCriticalPath",
+      "rdfs:comment": "Whether dependency is on critical path"
+    },
+    {
+      "@id": "ppm:horizon",
+      "@type": ["rdf:Property", "owl:DatatypeProperty"],
+      "rdfs:domain": {"@id": "ppm:Portfolio"},
+      "rdfs:range": {"@id": "xsd:duration"},
+      "rdfs:label": "horizon",
+      "rdfs:comment": "Portfolio time horizon (ISO 8601 duration)"
+    },
+    {
+      "@id": "ppm:tags",
+      "@type": ["rdf:Property", "owl:DatatypeProperty"],
+      "rdfs:domain": {"@id": "ppm:Initiative"},
+      "rdfs:range": {"@id": "xsd:string"},
+      "rdfs:label": "tags",
+      "rdfs:comment": "Classification tags for filtering"
+    }
+  ]
+}
