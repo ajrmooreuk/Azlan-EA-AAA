@@ -5,7 +5,7 @@
 
 ## Overview
 
-The Value Engineering (VE) Series is a collection of **5 interconnected ontologies** that model value engineering across strategic, operational, and market dimensions. All ontologies connect via the OrganizationContext hub from ORG-ONT.
+The Value Engineering (VE) Series is a collection of **6 interconnected ontologies** that model value engineering across strategic, operational, market, and organizational dimensions. All ontologies connect via the OrganizationContext hub from ORG-ONT.
 
 ## Series Architecture
 
@@ -19,36 +19,35 @@ ORG-Context (hub)
             │               │
             │               └── VE-KPI
             │
-            └── VE-VP ────────────► CL-ONT
-                    │
-                    └── VE-PMF ───► PMF-ONT
+            ├── VE-VP ────────────► CL-ONT
+            │       │
+            │       └── VE-PMF ───► PMF-ONT
+            │
+            └── VE-RRR ───────────► ORG-ONT (Roles/RACI/RBAC)
 ```
 
 ## Ontology Sequence
 
 | Order | Ontology | Full Name | Status | Dependencies |
 |-------|----------|-----------|--------|--------------|
-| 1 | **VE-VSOM-ONT** | Value Engineering for Vision-Strategy-Objectives-Metrics | Planned | ORG-Context, VSOM-ONT |
-| 2 | **VE-OKR-ONT** | Value Engineering for Objectives & Key Results | Planned | ORG-Context, OKR-ONT, VE-VSOM |
+| 1 | **VE-VSOM-ONT** | Value Engineering for Vision-Strategy-Objectives-Metrics | In Dev | ORG-Context, VSOM-ONT |
+| 2 | **VE-OKR-ONT** | Value Engineering for Objectives & Key Results | In Dev | ORG-Context, OKR-ONT, VE-VSOM |
 | 3 | **VE-KPI-ONT** | Value Engineering for Key Performance Indicators | Planned | ORG-Context, VE-OKR |
 | 4 | **VE-VP-ONT** | Value Engineering for Value Proposition | Planned | ORG-Context, CL-ONT |
-| 5 | **VE-PMF-ONT** | Value Engineering for Product-Market Fit | Planned | ORG-Context, PMF-ONT, VE-VP |
+| 5 | **VE-PMF-ONT** | Value Engineering for Product-Market Fit | In Dev | ORG-Context, PMF-ONT, VE-VP |
+| 6 | **VE-RRR-ONT** | Value Engineering for Roles, RACI, RBAC | In Dev | ORG-Context, ORG-ONT |
 
 ## Directory Structure
 
 ```
 VE-Series-ONT/
 ├── README.md                 # This file
-├── VE-VSOM-ONT/             # Value Engineering for VSOM
-│   └── (planned)
-├── VE-OKR-ONT/              # Value Engineering for OKR
-│   └── (planned)
-├── VE-KPI-ONT/              # Value Engineering for KPIs
-│   └── (planned)
-├── VE-VP-ONT/               # Value Engineering for Value Proposition
-│   └── (planned)
-├── VE-PMF-ONT/              # Value Engineering for Product-Market Fit
-│   └── (planned)
+├── VE-VSOM-ONT/             # Value Engineering for VSOM (migrated)
+├── VE-OKR-ONT/              # Value Engineering for OKR (migrated)
+├── VE-KPI-ONT/              # Value Engineering for KPIs (placeholder)
+├── VE-VP-ONT/               # Value Engineering for Value Proposition (placeholder)
+├── VE-PMF-ONT/              # Value Engineering for Product-Market Fit (migrated)
+├── VE-RRR-ONT/              # Value Engineering for Roles/RACI/RBAC (migrated)
 └── archive/                 # Legacy VE content
     ├── PF-Core_VE_GTM_Diagram-Ontology_v0.1.0.mermaid
     ├── PF-Core_VE_PMF_Diagram-Ontology_v2.0.0.mermaid
@@ -142,6 +141,16 @@ Value engineering for Product-Market Fit.
 | FitValueIndicator | Value indicators for fit assessment |
 | ValueScaleReadiness | Readiness for value scaling |
 
+### VE-RRR-ONT (Order 6)
+Value engineering for Roles, RACI, and RBAC.
+
+| Entity | Description |
+|--------|-------------|
+| RoleValueScore | Value contribution score per role |
+| RACIValueImpact | Value impact of RACI assignments |
+| AccessValueCost | Cost/value of access permissions |
+| ResponsibilityValueWeight | Value weighting of responsibilities |
+
 ## Cross-Ontology Relationships
 
 | Relationship | Domain | Range | Description |
@@ -151,17 +160,19 @@ Value engineering for Product-Market Fit.
 | engineersOKRValue | VE-OKR | okr:OKRFramework | OKR value engineering |
 | engineersVP | VE-VP | cl:CompetitiveLandscape | Value proposition engineering |
 | engineersPMF | VE-PMF | pmf:ProductMarketFit | PMF value engineering |
+| engineersRoles | VE-RRR | rrr:Role | Role value engineering |
 | cascadesValue | VE-VSOM | VE-OKR | Value cascade |
 | refinesValue | VE-OKR | VE-KPI | Value refinement |
 | validatesValue | VE-VP | VE-PMF | Value validation |
 
 ## Implementation Order
 
-1. **Phase 1:** VE-VSOM-ONT (requires VSOM-ONT v2.1.0)
+1. **Phase 1:** VE-VSOM-ONT (requires VSOM-ONT v2.1.0) - Done
 2. **Phase 2:** VE-VP-ONT (requires CL-ONT v1.0.0)
-3. **Phase 3:** VE-OKR-ONT (requires OKR-ONT, VE-VSOM)
-4. **Phase 4:** VE-PMF-ONT (requires PMF-ONT, VE-VP)
+3. **Phase 3:** VE-OKR-ONT (requires OKR-ONT, VE-VSOM) - Done
+4. **Phase 4:** VE-PMF-ONT (requires PMF-ONT, VE-VP) - Done
 5. **Phase 5:** VE-KPI-ONT (requires VE-OKR)
+6. **Phase 6:** VE-RRR-ONT (requires ORG-ONT) - Done
 
 ## Prerequisites
 
