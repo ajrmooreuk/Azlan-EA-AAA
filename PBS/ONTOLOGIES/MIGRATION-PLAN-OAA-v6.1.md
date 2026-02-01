@@ -1,8 +1,8 @@
 # Ontology Migration Plan: Consolidate to Azlan under OAA v6.1.0
 
-**Version:** 2.1.0
+**Version:** 2.2.0
 **Date:** 2026-02-01
-**Status:** Phases 1-4 Complete | PR #19 Merged
+**Status:** Phases 1-4 Complete | CL-ONT Added
 
 ---
 
@@ -28,8 +28,9 @@
 | Ontology | Version | Status | Location |
 |----------|---------|--------|----------|
 | PPM-ONT | v3.0.0 | ✅ Production | [PPM-ONT/ppm-module-v3.0.0-oaa-v5.json](pfc-ontologies/PPM-ONT/) |
-| ORG-ONT | v2.0.0 | ✅ Production | [ORG-ONT/org-ontology-v2.0.0-oaa-v5.json](pfc-ontologies/ORG-ONT/) |
+| ORG-ONT | v2.1.0 | ✅ Production | [ORG-ONT/org-ontology-v2.1.0-oaa-v5.json](pfc-ontologies/ORG-ONT/) |
 | CA-ONT | v2.0.0 | ✅ Production | [CA-ONT/competitive-analysis-v2.0.0-oaa-v5.json](pfc-ontologies/CA-ONT/) |
+| CL-ONT | v1.0.0 | ✅ Production | [CL-ONT/competitive-landscape-v1.0.0-oaa-v5.json](pfc-ontologies/CL-ONT/) |
 | PE-ONT | v2.0.0 | ✅ Production | [PE-ONT/process-engineering-v2.0.0-oaa-v5.json](pfc-ontologies/PE-ONT/) |
 | VSOM-ONT | v2.0.0 | ✅ Production | [VSOM-ONT/vsom-ontology-v2.0.0-oaa-v5.json](pfc-ontologies/VSOM-ONT/) |
 
@@ -44,8 +45,10 @@
 | ALZ-ONT | Existing | ⚠️ Has registry entry only (MCSB) |
 | CA-ONT | **NEW** v2.0.0 | ✅ Yes |
 | CE-ONT | Placeholder | ❌ Empty (readme only) |
+| CL-ONT | **NEW** v1.0.0 | ✅ Yes (OrganizationContext bridge) |
+| EA-ONT | ON HOLD | ⚠️ Instance data for PPM-ONT |
 | OKR-ONT | Existing | ⚠️ Glossary only |
-| ORG-ONT | **NEW** v2.0.0 | ✅ Yes |
+| ORG-ONT | **UPGRADED** v2.1.0 | ✅ Yes (G3 IF-THEN rules) |
 | PE-ONT | **NEW** v2.0.0 | ✅ Yes |
 | PMF-ONT | Existing | ⚠️ Docs only |
 | PPM-ONT | v3.0.0 | ✅ Yes |
@@ -92,16 +95,18 @@ These folders need OAA v5.0.0 compliant ontology files created:
 PBS/ONTOLOGIES/
 ├── pfc-ontologies/           # Platform Foundation Core ontologies
 │   ├── ALZ-ONT/              # Azure Landing Zone
-│   ├── CA-ONT/               # Competitive Analysis ✅ NEW
+│   ├── CA-ONT/               # Competitive Analysis ✅
 │   ├── CE-ONT/               # Customer Experience
+│   ├── CL-ONT/               # Competitive Landscape ✅ NEW (OrganizationContext bridge)
+│   ├── EA-ONT/               # Enterprise Architecture (ON HOLD - PPM instance data)
 │   ├── OKR-ONT/              # Objectives & Key Results
-│   ├── ORG-ONT/              # Organisation ✅ NEW
-│   ├── PE-ONT/               # Process Engineering ✅ NEW
+│   ├── ORG-ONT/              # Organisation ✅ UPGRADED v2.1.0
+│   ├── PE-ONT/               # Process Engineering ✅
 │   ├── PMF-ONT/              # Product-Market Fit
 │   ├── PPM-ONT/              # Portfolio Program Project ✅
 │   ├── RRR-ONT/              # Roles RACI RBAC
 │   ├── VE-ONT/               # Value Engineering
-│   ├── VSOM-ONT/             # Vision Strategy Objectives Metrics ✅ UPGRADED
+│   ├── VSOM-ONT/             # Vision Strategy Objectives Metrics ✅
 │   └── README.md
 │
 ├── pfi-ontologies/           # Platform Foundation Instance ontologies
@@ -129,6 +134,44 @@ Each upgraded ontology now has:
 - [x] `businessRules` array with condition/action format
 - [x] `changeControl` with version history
 - [x] Archive folder with legacy versions
+
+---
+
+## Cross-Ontology Architecture
+
+### OrganizationContext Bridge Pattern
+
+Domain ontologies connect to ORG-ONT via OrganizationContext rather than directly to Organization:
+
+```
+org:Organization (core entity)
+    └── org:hasContext → org:OrganizationContext (hub)
+                              ├── cl:hasCompetitiveLandscape → CL-ONT
+                              ├── (future) hasStrategicContext → VSOM-ONT
+                              ├── (future) hasTransformationContext → EA data
+                              └── (future) hasMarketContext → PMF-ONT
+```
+
+**Benefits:**
+- ORG-ONT stays clean as foundational entity
+- OrganizationContext becomes extensible hub
+- Modular composition for PF-Core vs PFI graphs
+- Clear separation of concerns
+
+### Join Pattern Specifications
+
+Each context ontology declares join patterns for graph composition:
+
+| Pattern | Path | Use Case |
+|---------|------|----------|
+| JP-CL-001 | Org→Context→Landscape | Full competitive context |
+| JP-CL-002 | Landscape→Analysis | CA-ONT integration |
+| JP-CL-003 | Landscape→Strategy | VSOM-ONT integration |
+
+### PF-Core vs PFI Graphs
+
+- **PF-Core Graph:** Generic templates using core ontologies (ORG, PPM, VSOM)
+- **PFI Instance Graph:** Specific org with full context joins (add CL, CA, EA data)
 
 ---
 
