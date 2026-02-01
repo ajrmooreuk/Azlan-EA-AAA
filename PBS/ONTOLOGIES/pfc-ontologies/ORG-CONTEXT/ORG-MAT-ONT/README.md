@@ -140,6 +140,12 @@ Load in [Ontology Visualiser](https://ajrmooreuk.github.io/Azlan-EA-AAA/) to ver
 |---------|------|--------|
 | 1.0.0 | 2026-02-01 | Initial creation with 19 maturity dimensions |
 
+## Migration Notes
+
+- Moved from `/PBS/ONTOLOGIES/pfc-ontologies/ORG-MAT-ONT/` to `ORG-CONTEXT/ORG-MAT-ONT/` on Feb 2026
+- Now part of ORG-CONTEXT hub for consolidated organization context routing
+- Core ontology v1.0.0 unchanged
+
 ---
 
-*Part of PFC Ontologies | OAA Ontology Workbench*
+*Part of ORG-CONTEXT | OAA Ontology Workbench*
