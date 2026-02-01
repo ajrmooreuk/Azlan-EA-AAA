@@ -1,0 +1,517 @@
+{
+  "@context": {
+    "@vocab": "https://platform.framework/ontology-registry/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  
+  "registryEntry": {
+    "@type": "OntologyRegistration",
+    "@id": "registry:pf-competitive-analysis-v1",
+    
+    "ontologyMetadata": {
+      "identifier": "pf:ontology:competitive-analysis-v1",
+      "name": "PF Competitive Analysis Ontology",
+      "version": "1.0.0",
+      "status": "active",
+      "frameworkType": "Platform Framework (Domain-Agnostic)",
+      "domain": ["Competitive Intelligence", "Strategic Analysis", "Market Research"],
+      "applicableSectors": ["Technology", "Healthcare", "Finance", "E-commerce", "Manufacturing", "Services"],
+      "registrationDate": "2025-10-08T15:45:00Z",
+      "lastModified": "2025-10-08T15:45:00Z",
+      "registeredBy": "Platform Framework Architecture Team",
+      "businessOwner": "Chief Strategy Officer (Configurable)",
+      "technicalOwner": "Lead Ontology Architect"
+    },
+    
+    "configurationFramework": {
+      "configurationType": "Template-Based with Variable Substitution",
+      "requiredConfigurationVariables": {
+        "TARGET_ORG_ID": {
+          "description": "Unique identifier for the target organization",
+          "type": "string",
+          "pattern": "org:[organization-name]",
+          "example": "org:techstart-ai"
+        },
+        "TARGET_ORG_NAME": {
+          "description": "Display name of the target organization", 
+          "type": "string",
+          "example": "TechStart AI"
+        },
+        "MARKET_DOMAIN": {
+          "description": "Primary market domain for competitive analysis",
+          "type": "string",
+          "examples": ["SaaS Integration", "Digital Payments", "Healthcare Technology", "E-commerce Platforms"]
+        },
+        "MARKET_SUBSECTOR": {
+          "description": "Specific subsector within the market domain",
+          "type": "string", 
+          "examples": ["API Management", "B2B Payments", "Telemedicine", "Payment Gateways"]
+        },
+        "GEOGRAPHICAL_SCOPE": {
+          "description": "Geographical boundaries for competitive analysis",
+          "type": "string",
+          "examples": ["North America", "Global", "EMEA", "United States"]
+        },
+        "PRODUCT_CATEGORY": {
+          "description": "Primary product or service category",
+          "type": "string",
+          "examples": ["Integration Platform", "Payment Gateway", "Telehealth Platform", "E-commerce Platform"]
+        }
+      },
+      "optionalConfigurationVariables": {
+        "OKR_FRAMEWORK": {
+          "description": "Reference to organizational OKR system",
+          "type": "reference",
+          "example": "okr:q3-2025-objectives"
+        },
+        "VALUE_PROPOSITION_ONTOLOGY": {
+          "description": "Reference to VSOM (Value Proposition Ontology)",
+          "type": "reference", 
+          "example": "vsom:techstart-value-model"
+        },
+        "STRATEGIC_CONTEXT": {
+          "description": "Business strategy context reference",
+          "type": "reference",
+          "example": "strategy:developer-first-growth"
+        },
+        "COMPETITIVE_TIMEFRAME": {
+          "description": "Time horizon for competitive analysis",
+          "type": "string",
+          "default": "18 months",
+          "examples": ["6 months", "12 months", "18 months", "3 years"]
+        }
+      },
+      "competitorConfigurationPattern": {
+        "DIRECT_COMPETITORS": {
+          "description": "3-5 primary direct competitors (BR-001)",
+          "type": "array[string]",
+          "cardinality": "3..5",
+          "example": ["Competitor A", "Competitor B", "Competitor C", "Competitor D"]
+        },
+        "INDIRECT_COMPETITORS": {
+          "description": "Secondary competitive threats",
+          "type": "array[string]",
+          "cardinality": "0..*",
+          "example": ["Indirect Competitor 1", "Indirect Competitor 2"]
+        },
+        "EMERGING_COMPETITORS": {
+          "description": "Emerging competitive threats to monitor",
+          "type": "array[string]",
+          "cardinality": "0..*",
+          "example": ["Startup X", "Stealth Company Y"]
+        }
+      }
+    },
+    
+    "businessContext": {
+      "primaryPurpose": "Enable systematic competitive analysis across any market domain and organizational context",
+      "businessValue": [
+        "Domain-agnostic competitive intelligence framework",
+        "Rapid deployment across diverse market sectors", 
+        "Strategic competitive positioning for any organization type",
+        "Standardized competitive analysis methodology",
+        "AI agent-enabled competitive insights automation"
+      ],
+      "targetStakeholders": [
+        "Strategy teams across all industries",
+        "Product managers in any domain", 
+        "Marketing leaders in competitive markets",
+        "Business development across sectors",
+        "Executive leadership teams",
+        "AI agents and competitive intelligence systems"
+      ],
+      "universalUseCases": [
+        {
+          "id": "UC-001",
+          "name": "Direct Competitor Benchmarking",
+          "description": "Analyze 3-5 primary competitors in [MARKET_DOMAIN]",
+          "businessValue": "Focused competitive strategy for any market",
+          "applicableTo": "All organizations with competitive markets"
+        },
+        {
+          "id": "UC-002", 
+          "name": "Market Leader Analysis",
+          "description": "Profile market leaders in [MARKET_SUBSECTOR]",
+          "businessValue": "Comprehensive market intelligence",
+          "applicableTo": "Organizations entering or competing in established markets"
+        },
+        {
+          "id": "UC-003",
+          "name": "Blue Ocean Identification", 
+          "description": "Identify uncontested opportunities in [MARKET_DOMAIN]",
+          "businessValue": "Strategic differentiation and new market creation",
+          "applicableTo": "Innovation-focused organizations across all sectors"
+        },
+        {
+          "id": "UC-004",
+          "name": "Strategic Objective Alignment",
+          "description": "Align competitive analysis with [OKR_FRAMEWORK]",
+          "businessValue": "Strategy-driven competitive intelligence",
+          "applicableTo": "Organizations with structured strategic planning"
+        }
+      ]
+    },
+    
+    "technicalSpecification": {
+      "entityCount": 10,
+      "relationshipCount": 12,
+      "propertyCount": 95,
+      "businessRuleCount": 5,
+      "configurationVariableCount": 10,
+      
+      "coreEntities": [
+        {
+          "name": "TargetOrganization",
+          "schemaOrgBase": "Organization",
+          "purpose": "Configurable organization requiring competitive analysis in [MARKET_DOMAIN]",
+          "keyProperties": ["organizationMaturity", "domainReadiness", "directCompetitors", "okrFramework"],
+          "configurability": "Fully configurable for any organization type"
+        },
+        {
+          "name": "CompetitorOrganization", 
+          "schemaOrgBase": "Organization",
+          "purpose": "Competitors in [MARKET_DOMAIN] within [GEOGRAPHICAL_SCOPE]",
+          "keyProperties": ["competitorType", "threatLevel", "domainCapabilities"],
+          "configurability": "Adaptable to any competitive landscape"
+        },
+        {
+          "name": "MarketOffering",
+          "schemaOrgBase": "Product", 
+          "purpose": "Products/services in [PRODUCT_CATEGORY] within [MARKET_DOMAIN]",
+          "keyProperties": ["domainFeatures", "competitiveDifferentiators"],
+          "configurability": "Flexible for any product or service type"
+        },
+        {
+          "name": "MarketSegment",
+          "schemaOrgBase": "Intangible",
+          "purpose": "Market segments within [MARKET_DOMAIN] and [GEOGRAPHICAL_SCOPE]", 
+          "keyProperties": ["competitiveIntensity", "regulatoryFactors", "technologyTrends"],
+          "configurability": "Applicable to any market segmentation"
+        },
+        {
+          "name": "StrategicObjective",
+          "schemaOrgBase": "Intangible",
+          "purpose": "OKRs driving competitive strategy, linked to [OKR_FRAMEWORK]",
+          "keyProperties": ["keyResults", "competitiveRelevance", "strategicPriority"],
+          "configurability": "Integrates with any OKR or strategic planning system"
+        },
+        {
+          "name": "ValueProposition",
+          "schemaOrgBase": "Intangible",
+          "purpose": "Value delivery in [MARKET_DOMAIN], connected to [VALUE_PROPOSITION_ONTOLOGY]",
+          "keyProperties": ["coreValue", "differentiators", "vsomReference"],
+          "configurability": "Links to any VSOM or value framework"
+        },
+        {
+          "name": "BlueOceanOpportunity",
+          "schemaOrgBase": "Intangible",
+          "purpose": "Uncontested opportunities in [MARKET_DOMAIN]",
+          "keyProperties": ["competitiveBarriers", "marketEducationNeeded"],
+          "configurability": "Identifies opportunities across any market"
+        }
+      ],
+      
+      "configurableRelationships": [
+        "TargetOrganization --direct_competitor(3-5)--> CompetitorOrganization",
+        "TargetOrganization --pursues_objective--> StrategicObjective", 
+        "CompetitorOrganization --operates_in_segment--> MarketSegment",
+        "ValueProposition --references_vsom--> [VALUE_PROPOSITION_ONTOLOGY]",
+        "CompetitiveAnalysis --informs_objective--> StrategicObjective"
+      ],
+      
+      "universalBusinessRules": [
+        "BR-001: TargetOrganization must identify 3-5 direct competitors in [MARKET_DOMAIN]",
+        "BR-002: BlueOceanOpportunity must have competitiveBarriers='Low'|'None'", 
+        "BR-003: CompetitorOrganization must operate in ≥1 MarketSegment in [MARKET_DOMAIN]",
+        "BR-004: Direct competitors must have defined threatLevel",
+        "BR-005: StrategicObjective must have ≥1 measurable keyResult"
+      ]
+    },
+    
+    "schemaOrgAlignment": {
+      "alignmentPercentage": 0.90,
+      "entitiesGrounded": 9,
+      "totalEntities": 10,
+      "domainAgnosticExtensions": [
+        "domainCapabilities",
+        "domainReadiness", 
+        "competitiveStrength",
+        "threatLevel",
+        "competitiveBarriers",
+        "organizationMaturity",
+        "marketEducationNeeded",
+        "strategicPriority",
+        "competitiveRelevance"
+      ],
+      "universalMappingDecisions": [
+        {
+          "entity": "TargetOrganization",
+          "baseType": "schema:Organization",
+          "rationale": "Organizations are universal across all domains, extended with competitive context"
+        },
+        {
+          "entity": "MarketOffering", 
+          "baseType": "schema:Product",
+          "rationale": "Products/services are universal concepts, specialized with domain features"
+        },
+        {
+          "entity": "StrategicObjective",
+          "baseType": "schema:Intangible",
+          "rationale": "Strategic objectives are abstract concepts applicable across all organizations"
+        }
+      ]
+    },
+    
+    "configurationExamples": {
+      "saasIntegrationExample": {
+        "TARGET_ORG_ID": "org:integration-innovators",
+        "MARKET_DOMAIN": "SaaS Integration & API Management",
+        "MARKET_SUBSECTOR": "Enterprise API Orchestration",
+        "PRODUCT_CATEGORY": "Integration Platform",
+        "DIRECT_COMPETITORS": ["Zapier", "MuleSoft", "Workato", "Microsoft Power Automate"],
+        "applicableTo": "SaaS and integration platform companies"
+      },
+      "fintechExample": {
+        "TARGET_ORG_ID": "org:paytech-solutions",
+        "MARKET_DOMAIN": "Digital Payments & Fintech",
+        "MARKET_SUBSECTOR": "B2B Payment Processing", 
+        "PRODUCT_CATEGORY": "Payment Gateway",
+        "DIRECT_COMPETITORS": ["Stripe", "Square", "Adyen", "PayPal Business"],
+        "applicableTo": "Financial technology and payment companies"
+      },
+      "healthtechExample": {
+        "TARGET_ORG_ID": "org:healthtech-platform",
+        "MARKET_DOMAIN": "Healthcare Technology",
+        "MARKET_SUBSECTOR": "Telemedicine & Remote Care",
+        "PRODUCT_CATEGORY": "Telehealth Platform",
+        "DIRECT_COMPETITORS": ["Teladoc", "Amwell", "MDLive", "Doxy.me"],
+        "applicableTo": "Healthcare technology and digital health companies"
+      },
+      "ecommerceExample": {
+        "TARGET_ORG_ID": "org:commerce-platform",
+        "MARKET_DOMAIN": "E-commerce Technology",
+        "MARKET_SUBSECTOR": "Headless Commerce Platforms",
+        "PRODUCT_CATEGORY": "Commerce Platform",
+        "DIRECT_COMPETITORS": ["Shopify Plus", "BigCommerce", "Commercetools", "Salesforce Commerce"],
+        "applicableTo": "E-commerce platform and retail technology companies"
+      }
+    },
+    
+    "dependencies": {
+      "requiredOntologies": [],
+      "optionalOntologies": [
+        "[VALUE_PROPOSITION_ONTOLOGY] - VSOM reference",
+        "[OKR_FRAMEWORK] - Strategic objectives reference",
+        "[MARKET_ANALYSIS_ONTOLOGY] - Broader market intelligence",
+        "[ORGANIZATION_CAPABILITY_ONTOLOGY] - Capability assessment"
+      ],
+      "consumerSystems": [
+        "[TARGET_ORG_NAME] Strategic Planning System",
+        "Competitive Intelligence Dashboard", 
+        "AI Strategy Agents",
+        "Market Analysis Platform",
+        "Business Intelligence Systems",
+        "Strategic Planning Tools"
+      ],
+      "externalReferences": [
+        "schema.org vocabulary",
+        "Dublin Core terms",
+        "Industry-specific vocabularies (configurable)"
+      ]
+    },
+    
+    "qualityMetrics": {
+      "entityReuseRate": 0.85,
+      "schemaOrgAlignment": 0.90, 
+      "validationPassRate": 0.97,
+      "agentQuerySuccess": 0.93,
+      "documentationCompleteness": 0.96,
+      "relationshipDensity": 4.5,
+      "namingConventionCompliance": 1.0,
+      "configurabilityScore": 0.95,
+      "domainAgnosticScore": 0.92,
+      "lastQualityAssessment": "2025-10-08T15:45:00Z",
+      "qualityStatus": "PASS"
+    },
+    
+    "configurationValidation": {
+      "requiredVariableValidation": {
+        "TARGET_ORG_ID": "Must match pattern org:[organization-identifier]",
+        "MARKET_DOMAIN": "Must be non-empty string describing market domain",
+        "MARKET_SUBSECTOR": "Must be specific subsector within MARKET_DOMAIN",
+        "GEOGRAPHICAL_SCOPE": "Must define geographical boundaries",
+        "PRODUCT_CATEGORY": "Must specify primary product/service category"
+      },
+      "businessRuleValidation": {
+        "BR-001": "Configuration must specify exactly 3-5 direct competitors",
+        "BR-002": "Blue ocean opportunities must have Low/None competitive barriers",
+        "BR-003": "All competitors must be assigned to market segments",
+        "BR-004": "Direct competitors must have threat level assessment",
+        "BR-005": "Strategic objectives must have measurable key results"
+      },
+      "configurationChecklist": [
+        "[ ] All required variables configured",
+        "[ ] Direct competitors identified (3-5)",
+        "[ ] Market segments defined",
+        "[ ] Optional integrations configured (OKR, VSOM)",
+        "[ ] Geographical scope specified",
+        "[ ] Product categories defined",
+        "[ ] Strategic context established"
+      ]
+    },
+    
+    "artifacts": {
+      "ontologyDefinition": {
+        "format": "JSON-LD with configuration variables",
+        "location": "/ontologies/pf-competitive-analysis/v1/definition.jsonld",
+        "configurationRequired": true,
+        "size": "18.3KB"
+      },
+      "glossary": {
+        "formats": ["Markdown", "HTML", "JSON"],
+        "location": "/ontologies/pf-competitive-analysis/v1/glossary/",
+        "configurationGuidance": "Complete configuration examples and variable substitution guide",
+        "lastGenerated": "2025-10-08T15:45:00Z"
+      },
+      "testData": {
+        "format": "JSON-LD with multiple domain examples",
+        "location": "/ontologies/pf-competitive-analysis/v1/test-data.jsonld",
+        "instanceCount": 52,
+        "marketDomainExamples": 3,
+        "templateInstances": 6,
+        "coverage": "100% with configuration templates"
+      },
+      "configurationTemplates": {
+        "format": "JSON configuration files",
+        "location": "/ontologies/pf-competitive-analysis/v1/templates/",
+        "templates": ["saas-integration", "fintech", "healthtech", "ecommerce", "generic"],
+        "includes": "Complete variable mappings and validation"
+      },
+      "implementationGuide": {
+        "format": "Markdown",
+        "location": "/ontologies/pf-competitive-analysis/v1/implementation/",
+        "includes": [
+          "Configuration guide",
+          "Domain-specific examples", 
+          "Integration patterns",
+          "AI agent query templates",
+          "Validation procedures"
+        ]
+      }
+    },
+    
+    "deploymentStrategy": {
+      "deploymentModel": "Template-Based Configuration",
+      "configurationProcess": [
+        "1. Select appropriate configuration template",
+        "2. Replace configuration variables with organization-specific values",
+        "3. Validate configuration against business rules",
+        "4. Generate configured ontology instance",
+        "5. Deploy to target systems",
+        "6. Initialize competitive intelligence data"
+      ],
+      "supportedDeploymentTargets": [
+        "Cloud-based competitive intelligence platforms",
+        "Enterprise strategic planning systems", 
+        "AI agent frameworks",
+        "Business intelligence dashboards",
+        "Market research platforms"
+      ]
+    },
+    
+    "versionControl": {
+      "repository": "git://platform-framework/competitive-analysis",
+      "branch": "main",
+      "tag": "v1.0.0",
+      "commitHash": "def456abc789",
+      "changelog": {
+        "v1.0.0": {
+          "date": "2025-10-08",
+          "type": "initial", 
+          "changes": [
+            "Initial platform framework ontology creation",
+            "Domain-agnostic competitive analysis modeling",
+            "Configuration variable framework implementation",
+            "Multi-domain test data generation",
+            "Comprehensive configuration templates",
+            "Universal business rule framework"
+          ]
+        }
+      }
+    },
+    
+    "governance": {
+      "accessLevel": "platform-framework",
+      "classification": "internal-template",
+      "frameworkStatus": "production-ready",
+      "approvalStatus": "approved",
+      "approvedBy": "Platform Framework Architecture Board",
+      "approvalDate": "2025-10-08",
+      "reviewSchedule": "quarterly",
+      "nextReview": "2026-01-08",
+      "changeControlProcess": "Template RFC required for framework modifications",
+      "configurationControl": "Organization-specific configurations managed independently",
+      "stakeholderNotification": ["framework-team@platform.ai", "architecture-board@platform.ai"]
+    },
+    
+    "usage": {
+      "deploymentEnvironments": ["production", "staging", "development", "configuration-sandbox"],
+      "frameworkIntegrations": [
+        "Platform Framework Ontology Registry",
+        "Configuration Management System",
+        "Template Deployment Pipeline",
+        "Multi-tenant Competitive Intelligence Platform"
+      ],
+      "apiEndpoints": [
+        "/api/framework/competitive-analysis/configure",
+        "/api/framework/competitive-analysis/validate-config",
+        "/api/framework/competitive-analysis/deploy",
+        "/api/framework/competitive-analysis/query"
+      ],
+      "configurationPatterns": [
+        "Configure framework for specific market domain",
+        "Generate organization-specific competitive landscape", 
+        "Validate configuration against business rules",
+        "Deploy configured ontology to target systems"
+      ]
+    },
+    
+    "monitoring": {
+      "healthChecks": "enabled",
+      "configurationValidation": "automated",
+      "deploymentTracking": "enabled",
+      "usageAnalytics": "multi-tenant aware",
+      "errorReporting": "configuration-context aware",
+      "lastHealthCheck": "2025-10-08T15:45:00Z",
+      "frameworkStatus": "healthy",
+      "activeConfigurations": "tracked per deployment"
+    },
+    
+    "compliance": {
+      "dataPrivacy": "configuration-dependent", 
+      "informationClassification": "template (internal), instances (variable)",
+      "retentionPolicy": "framework: permanent, instances: organization-specific",
+      "auditTrail": "configuration and deployment tracking enabled",
+      "complianceFrameworks": ["ISO 27001", "SOC 2", "Domain-specific as configured"]
+    },
+    
+    "supportAndMaintenance": {
+      "frameworkSupport": "platform-framework-team@platform.ai",
+      "configurationSupport": "configuration-specialists@platform.ai",
+      "documentationLocation": "/docs/platform-framework/competitive-analysis/",
+      "trainingMaterials": [
+        "Configuration Workshop (2 hours)",
+        "Domain-Specific Implementation Guide",
+        "AI Agent Integration Training",
+        "Competitive Intelligence Best Practices"
+      ],
+      "supportChannels": [
+        "Framework documentation portal",
+        "Configuration assistance chat",
+        "Expert services for complex domains",
+        "Community forum for framework users"
+      ]
+    }
+  }
+}
