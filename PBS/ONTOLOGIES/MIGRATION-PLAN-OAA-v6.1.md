@@ -1,8 +1,8 @@
 # Ontology Migration Plan: Consolidate to Azlan under OAA v6.1.0
 
-**Version:** 2.4.0
+**Version:** 2.5.0
 **Date:** 2026-02-01
-**Status:** Phases 1-4 Complete | CL-ONT + ORG-MAT-ONT + GA-ONT Added
+**Status:** Phases 1-4 Complete | VE-Series-ONT Structure Added
 
 ---
 
@@ -96,27 +96,43 @@
 | ✅ Done | GA-ONT | v1.0.0 Production | Gap Analysis ontology (CGA Agent support) |
 | ON HOLD | EA-ONT | Instance data | PPM-ONT population data (not separate ontology) |
 
-### VE-ONT Series (Value Engineering)
+### VE-Series-ONT (Value Engineering Series)
 
-VE is a **series of interconnected ontologies**, not a single ontology. All connect via ORG-Context.
+**Location:** `pfc-ontologies/VE-Series-ONT/`
 
-| Order | Ontology | Description | Dependencies |
-|-------|----------|-------------|--------------|
-| 1 | VE-VSOM | Value Engineering for Vision-Strategy-Objectives-Metrics | ORG-Context, VSOM-ONT |
-| 2 | VE-OKR | Value Engineering for Objectives & Key Results | ORG-Context, OKR-ONT, VE-VSOM |
-| 3 | VE-KPI | Value Engineering for Key Performance Indicators | ORG-Context, VE-OKR |
-| 4 | VE-VP | Value Engineering for Value Proposition | ORG-Context, CL-ONT |
-| 5 | VE-PMF | Value Engineering for Product-Market Fit | ORG-Context, PMF-ONT, VE-VP |
+VE is a **series of 5 interconnected ontologies** organized under a single parent folder. All connect via ORG-Context.
+
+| Order | Folder | Description | Status | Dependencies |
+|-------|--------|-------------|--------|--------------|
+| 1 | `VE-VSOM-ONT/` | Value Engineering for VSOM | Planned | ORG-Context, VSOM-ONT |
+| 2 | `VE-OKR-ONT/` | Value Engineering for OKR | Planned | ORG-Context, OKR-ONT, VE-VSOM |
+| 3 | `VE-KPI-ONT/` | Value Engineering for KPIs | Planned | ORG-Context, VE-OKR |
+| 4 | `VE-VP-ONT/` | Value Engineering for Value Proposition | Planned | ORG-Context, CL-ONT |
+| 5 | `VE-PMF-ONT/` | Value Engineering for Product-Market Fit | Planned | ORG-Context, PMF-ONT, VE-VP |
 
 **VE Series Architecture:**
 ```
 ORG-Context (hub)
     └── hasValueEngineering
-            ├── VE-VSOM ──► VSOM-ONT
+            │
+            ├── VE-VSOM ──────► VSOM-ONT
             │       └── VE-OKR ──► OKR-ONT
             │               └── VE-KPI
-            └── VE-VP ──► CL-ONT
+            │
+            └── VE-VP ────────► CL-ONT
                     └── VE-PMF ──► PMF-ONT
+```
+
+**Directory Structure:**
+```
+VE-Series-ONT/
+├── README.md
+├── VE-VSOM-ONT/
+├── VE-OKR-ONT/
+├── VE-KPI-ONT/
+├── VE-VP-ONT/
+├── VE-PMF-ONT/
+└── archive/          # Legacy VE content
 ```
 
 ### RRR-ONT Scope (Roles/RACI/RBAC)
@@ -219,7 +235,13 @@ PBS/ONTOLOGIES/
 │   ├── PMF-ONT/              # Product-Market Fit
 │   ├── PPM-ONT/              # Portfolio Program Project ✅
 │   ├── RRR-ONT/              # Roles RACI RBAC
-│   ├── VE-ONT/               # Value Engineering
+│   ├── VE-Series-ONT/        # Value Engineering Series (5 ontologies)
+│   │   ├── VE-VSOM-ONT/      # VE for VSOM
+│   │   ├── VE-OKR-ONT/       # VE for OKR
+│   │   ├── VE-KPI-ONT/       # VE for KPIs
+│   │   ├── VE-VP-ONT/        # VE for Value Proposition
+│   │   ├── VE-PMF-ONT/       # VE for Product-Market Fit
+│   │   └── archive/          # Legacy VE content
 │   ├── VSOM-ONT/             # Vision Strategy Objectives Metrics ✅
 │   └── README.md
 │
