@@ -1,0 +1,388 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@base": "https://baiv.ai/ontology/process/mvp1.2/",
+    "schema": "https://schema.org/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "baiv": "https://baiv.ai/ontology/process/",
+    "pmf": "https://baiv.ai/ontology/pmf/",
+    "okr": "https://baiv.ai/ontology/okr/",
+    "vsom": "https://baiv.ai/ontology/vsom/"
+  },
+  "@graph": [
+    {
+      "@id": "baiv:BAIVMVP12ProcessOntology",
+      "@type": "owl:Ontology",
+      "rdfs:label": "BAIV MVP1.2 Process Ontology",
+      "rdfs:comment": "Operational process ontology for Be AI Visible MVP1.2 customer acquisition and PMF validation, distinct from strategic frameworks",
+      "schema:version": "1.2",
+      "schema:dateCreated": "2025-09-21",
+      "schema:creator": "BAIV Process Architecture Team",
+      "owl:imports": [
+        "https://baiv.ai/ontology/pmf/",
+        "https://baiv.ai/ontology/vsom/",
+        "https://schema.org/"
+      ]
+    },
+
+    {
+      "@id": "baiv:ProcessType",
+      "@type": "owl:Class",
+      "rdfs:label": "Process Type",
+      "rdfs:comment": "Classification of operational processes in BAIV MVP1.2",
+      "baiv:processCategories": [
+        "OngoingProcess",
+        "ProjectProcess", 
+        "CampaignProcess",
+        "CycleProcess"
+      ]
+    },
+
+    {
+      "@id": "baiv:OngoingProcess",
+      "@type": "owl:Class",
+      "rdfs:label": "Ongoing Process",
+      "rdfs:comment": "Continuous operational processes with regular cycles and monitoring",
+      "rdfs:subClassOf": "baiv:ProcessType",
+      "baiv:characteristics": {
+        "frequency": "continuous",
+        "lifecycle": "indefinite",
+        "ownership": "functional_team",
+        "governance": "regular_reviews"
+      },
+      "baiv:examples": [
+        "Customer acquisition pipeline",
+        "Content production workflow",
+        "AI visibility monitoring",
+        "Lead nurturing automation"
+      ]
+    },
+
+    {
+      "@id": "baiv:ProjectProcess",
+      "@type": "owl:Class", 
+      "rdfs:label": "Project Process",
+      "rdfs:comment": "One-time processes with defined start, end, and deliverables",
+      "rdfs:subClassOf": "baiv:ProcessType",
+      "baiv:characteristics": {
+        "frequency": "one-time",
+        "lifecycle": "defined_duration",
+        "ownership": "project_manager",
+        "governance": "milestone_gates"
+      },
+      "baiv:examples": [
+        "MVP1.2 implementation",
+        "P0-P16 agent deployment",
+        "Ontology framework development",
+        "PMF validation study"
+      ]
+    },
+
+    {
+      "@id": "baiv:CampaignProcess",
+      "@type": "owl:Class",
+      "rdfs:label": "Campaign Process", 
+      "rdfs:comment": "Marketing and outreach campaigns with specific targets and timeframes",
+      "rdfs:subClassOf": "baiv:ProcessType",
+      "baiv:characteristics": {
+        "frequency": "episodic",
+        "lifecycle": "campaign_duration",
+        "ownership": "marketing_team",
+        "governance": "performance_tracking"
+      },
+      "baiv:examples": [
+        "Batch targeting campaigns",
+        "Industry-specific outreach",
+        "Product launch campaigns",
+        "BAIV awareness campaigns"
+      ]
+    },
+
+    {
+      "@id": "baiv:CycleProcess",
+      "@type": "owl:Class",
+      "rdfs:label": "Cycle Process",
+      "rdfs:comment": "Recurring processes aligned with business cycles (quarterly, annual)",
+      "rdfs:subClassOf": "baiv:ProcessType",
+      "baiv:characteristics": {
+        "frequency": "cyclical",
+        "lifecycle": "cycle_aligned",
+        "ownership": "senior_management",
+        "governance": "cycle_reviews"
+      },
+      "baiv:examples": [
+        "Quarterly OKR planning",
+        "Annual strategy review",
+        "PMF assessment cycles",
+        "Customer retention reviews"
+      ]
+    },
+
+    {
+      "@id": "baiv:CustomerAcquisitionProcess",
+      "@type": "owl:Class",
+      "rdfs:label": "Customer Acquisition Process",
+      "rdfs:comment": "End-to-end process for acquiring and onboarding new customers using BAIV methodology",
+      "rdfs:subClassOf": "baiv:OngoingProcess",
+      "baiv:processFlow": [
+        "TargetIdentification",
+        "BatchSegmentation", 
+        "PMFValidation",
+        "BAIVProcessExecution",
+        "CustomerOnboarding",
+        "ValueRealization",
+        "RetentionOptimization"
+      ],
+      "baiv:dataInputs": {
+        "targetList": "schema:Dataset",
+        "industrySegmentation": "baiv:IndustryClassification",
+        "contactData": "schema:ContactPoint",
+        "behavioralData": "schema:UserInteraction"
+      }
+    },
+
+    {
+      "@id": "baiv:BatchProcessingFramework",
+      "@type": "owl:Class",
+      "rdfs:label": "Batch Processing Framework",
+      "rdfs:comment": "Framework for processing customer acquisition in batches of 100 for PMF validation",
+      "rdfs:subClassOf": "baiv:CampaignProcess",
+      "baiv:batchSpecifications": {
+        "batchSize": 100,
+        "totalBatches": 35,
+        "finalBatchSize": 26,
+        "totalRecords": 3426
+      },
+      "baiv:processingStages": [
+        "BatchPreparation",
+        "IndustryStratification",
+        "PMFHypothesisTesting",
+        "BAIVProcessApplication",
+        "ResultsAnalysis",
+        "NextBatchOptimization"
+      ]
+    },
+
+    {
+      "@id": "baiv:IndustryClassification",
+      "@type": "owl:Class",
+      "rdfs:label": "Industry Classification",
+      "rdfs:comment": "Classification system for target industries in customer acquisition",
+      "rdfs:subClassOf": "schema:CategoryCode",
+      "baiv:primaryIndustries": {
+        "HVAC": {
+          "percentage": 7.3,
+          "count": 250,
+          "keywords": ["heating", "air", "hvac", "cooling", "refrigeration", "climate"]
+        },
+        "Technology": {
+          "percentage": 12.3,
+          "count": 420,
+          "keywords": ["tech", "software", "digital", "it", "data"]
+        },
+        "Construction": {
+          "percentage": 2.0,
+          "count": 70,
+          "keywords": ["construction", "building", "contractor", "concrete", "roofing"]
+        },
+        "Engineering": {
+          "percentage": 1.8,
+          "count": 62,
+          "keywords": ["engineering", "engineered", "systems"]
+        },
+        "FireProtection": {
+          "percentage": 1.2,
+          "count": 42,
+          "keywords": ["fire", "protection", "safety", "sprinkler"]
+        },
+        "Other": {
+          "percentage": 73.1,
+          "count": 2503,
+          "description": "Mixed industries requiring further classification"
+        }
+      }
+    },
+
+    {
+      "@id": "baiv:PMFValidationProcess",
+      "@type": "owl:Class",
+      "rdfs:label": "Product-Market Fit Validation Process",
+      "rdfs:comment": "Systematic process for validating product-market fit using batch testing methodology",
+      "rdfs:subClassOf": "baiv:ProjectProcess",
+      "baiv:validationPhases": [
+        "HypothesisFormulation",
+        "BatchStratification", 
+        "ExperimentDesign",
+        "ProcessExecution",
+        "DataCollection",
+        "AnalysisAndInsights",
+        "IterationPlanning"
+      ],
+      "baiv:successMetrics": [
+        "CustomerResponseRate",
+        "EngagementQuality",
+        "ConversionToOpportunity",
+        "TimeToValue",
+        "CustomerSatisfactionScore"
+      ]
+    },
+
+    {
+      "@id": "baiv:BAIVAgentOrchestration",
+      "@type": "owl:Class",
+      "rdfs:label": "BAIV Agent Orchestration",
+      "rdfs:comment": "Orchestration process for P0-P16 agents in customer journey execution",
+      "rdfs:subClassOf": "baiv:OngoingProcess",
+      "baiv:agentSequence": {
+        "P0": "MasterReasoningAgent",
+        "P1": "ConfigurationAgent",
+        "P2": "DiscoveryAgent", 
+        "P3": "CaptureAgent",
+        "P4": "AuditAgent",
+        "P5": "AnalyticsAgent",
+        "P6": "GapAnalysisAgent",
+        "P7": "IdeationAgent",
+        "P8-P16": "ImplementationAgents"
+      },
+      "baiv:orchestrationPrinciples": [
+        "ClientCollaboration",
+        "TransparencyFirst",
+        "ProgressiveLearning",
+        "ValueAugmentation"
+      ]
+    },
+
+    {
+      "@id": "baiv:OKRProcessIntegration",
+      "@type": "owl:Class",
+      "rdfs:label": "OKR Process Integration",
+      "rdfs:comment": "Integration framework connecting operational processes to OKR management",
+      "rdfs:subClassOf": "baiv:CycleProcess",
+      "baiv:okrLevels": {
+        "Strategic": {
+          "owner": "SeniorManagement",
+          "cycle": "Annual",
+          "focus": "Vision and market positioning"
+        },
+        "Functional": {
+          "owner": "FunctionHead",
+          "cycle": "Quarterly", 
+          "focus": "Operational excellence"
+        },
+        "Tactical": {
+          "owner": "TeamLead",
+          "cycle": "Monthly",
+          "focus": "Process execution"
+        },
+        "Individual": {
+          "owner": "TeamMember",
+          "cycle": "Weekly",
+          "focus": "Task completion"
+        }
+      }
+    },
+
+    {
+      "@id": "baiv:ProcessOwnership",
+      "@type": "owl:Class",
+      "rdfs:label": "Process Ownership",
+      "rdfs:comment": "Ownership and accountability framework for BAIV processes",
+      "rdfs:subClassOf": "schema:Role",
+      "baiv:ownershipTypes": {
+        "ProcessOwner": {
+          "responsibility": "End-to-end process accountability",
+          "authority": "Process design and optimization",
+          "accountability": "Process performance outcomes"
+        },
+        "ProcessManager": {
+          "responsibility": "Day-to-day process execution",
+          "authority": "Resource allocation within limits",
+          "accountability": "Process efficiency metrics"
+        },
+        "ProcessParticipant": {
+          "responsibility": "Task execution and feedback",
+          "authority": "Local optimization decisions",
+          "accountability": "Task quality and timeliness"
+        }
+      }
+    },
+
+    {
+      "@id": "baiv:ProcessMetrics",
+      "@type": "owl:Class",
+      "rdfs:label": "Process Metrics",
+      "rdfs:comment": "Measurement framework for BAIV operational processes",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "baiv:metricCategories": {
+        "EfficiencyMetrics": [
+          "ProcessCycleTime",
+          "ResourceUtilization",
+          "AutomationRatio",
+          "ErrorRate"
+        ],
+        "EffectivenessMetrics": [
+          "CustomerSatisfaction",
+          "BusinessValueCreated",
+          "QualityScore",
+          "OutcomeAchievement"
+        ],
+        "StrategicMetrics": [
+          "OKRAlignment",
+          "StrategicContribution",
+          "MarketImpact",
+          "CompetitiveAdvantage"
+        ]
+      }
+    },
+
+    {
+      "@id": "baiv:ProcessGovernance",
+      "@type": "owl:Class",
+      "rdfs:label": "Process Governance",
+      "rdfs:comment": "Governance framework ensuring process alignment with strategic objectives",
+      "rdfs:subClassOf": "schema:GovernmentOrganization",
+      "baiv:governanceStructure": {
+        "ProcessSteeringCommittee": {
+          "composition": "Senior stakeholders",
+          "frequency": "Quarterly",
+          "purpose": "Strategic alignment and resource allocation"
+        },
+        "ProcessReviewBoard": {
+          "composition": "Process owners and managers",
+          "frequency": "Monthly", 
+          "purpose": "Performance review and optimization"
+        },
+        "ProcessWorkingGroup": {
+          "composition": "Process participants and experts",
+          "frequency": "Weekly",
+          "purpose": "Operational execution and improvement"
+        }
+      }
+    },
+
+    {
+      "@id": "baiv:TargetListSchema",
+      "@type": "owl:Class",
+      "rdfs:label": "Target List Schema",
+      "rdfs:comment": "Schema.org-based structure for customer acquisition target lists",
+      "rdfs:subClassOf": "schema:Dataset",
+      "baiv:dataSchema": {
+        "ContactID": "schema:identifier",
+        "CompanyURL": "schema:url", 
+        "ContactEmail": "schema:email",
+        "PersonName": "schema:Person",
+        "OrganizationName": "schema:Organization",
+        "IndustryClassification": "baiv:IndustryClassification",
+        "BAIVProcessStatus": "baiv:ProcessStatus",
+        "PMFValidationResults": "baiv:ValidationResults"
+      },
+      "baiv:qualityRequirements": {
+        "dataCompleteness": "98%+ across core fields",
+        "emailValidity": "95%+ valid email addresses",
+        "urlAccessibility": "90%+ accessible websites",
+        "industryClassification": "85%+ accurately classified"
+      }
+    }
+  ]
+}
