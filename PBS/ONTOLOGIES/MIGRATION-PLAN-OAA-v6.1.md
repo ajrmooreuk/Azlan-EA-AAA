@@ -88,12 +88,59 @@
 | High | CE-ONT | Empty placeholder | Create Customer Experience ontology (connects to ORG-MAT-ONT) |
 | High | OKR-ONT | Glossary only | Create OKR ontology (connects to VSOM-ONT) |
 | Medium | PMF-ONT | Docs only | Create Product-Market Fit ontology (connects to CL-ONT) |
-| Medium | VE-ONT | Mermaid/docs | Create Value Engineering ontology (connects to VSOM-ONT) |
-| Medium | RRR-ONT | Glossary only | Create Roles/RACI/RBAC ontology |
+| Medium | RRR-ONT | Glossary only | Create Roles/RACI/RBAC ontology (see detailed scope below) |
 | Low | ALZ-ONT | MCSB registry only | Create Azure Landing Zone ontology |
 | Future | DS-ONT | Not created | Design System ontology from BAIV |
 | Future | GA-ONT | Not created | Gap Analysis ontology from BAIV |
 | ON HOLD | EA-ONT | Instance data | PPM-ONT population data (not separate ontology) |
+
+### VE-ONT Series (Value Engineering)
+
+VE is a **series of interconnected ontologies**, not a single ontology. All connect via ORG-Context.
+
+| Order | Ontology | Description | Dependencies |
+|-------|----------|-------------|--------------|
+| 1 | VE-VSOM | Value Engineering for Vision-Strategy-Objectives-Metrics | ORG-Context, VSOM-ONT |
+| 2 | VE-OKR | Value Engineering for Objectives & Key Results | ORG-Context, OKR-ONT, VE-VSOM |
+| 3 | VE-KPI | Value Engineering for Key Performance Indicators | ORG-Context, VE-OKR |
+| 4 | VE-VP | Value Engineering for Value Proposition | ORG-Context, CL-ONT |
+| 5 | VE-PMF | Value Engineering for Product-Market Fit | ORG-Context, PMF-ONT, VE-VP |
+
+**VE Series Architecture:**
+```
+ORG-Context (hub)
+    └── hasValueEngineering
+            ├── VE-VSOM ──► VSOM-ONT
+            │       └── VE-OKR ──► OKR-ONT
+            │               └── VE-KPI
+            └── VE-VP ──► CL-ONT
+                    └── VE-PMF ──► PMF-ONT
+```
+
+### RRR-ONT Scope (Roles/RACI/RBAC)
+
+RRR-ONT must model organizational hierarchy and access patterns:
+
+| Component | Scope |
+|-----------|-------|
+| **Roles** | C-Suite → Senior Management → Line Managers → Teams → Individual Contributors |
+| **RACI** | Responsible, Accountable, Consulted, Informed matrices for processes |
+| **RBAC** | Role-Based Access Control for system permissions |
+
+**RRR-ONT Connections:**
+- `ORG-Context` → hasRolesStructure → RRR-ONT
+- `ORG-MAT-ONT.OrgStructureProfile` → informsRoles → RRR-ONT
+- RRR-ONT → appliesTo → PPM-ONT (project roles)
+- RRR-ONT → appliesTo → PE-ONT (process ownership)
+
+**Hierarchy Levels:**
+```
+C-Suite (CEO, CFO, CTO, CMO, etc.)
+    └── Senior Management (VPs, Directors)
+            └── Line Managers (Department Heads, Team Leads)
+                    └── Teams (Functional Teams, Squads)
+                            └── Individual Contributors
+```
 
 ---
 
