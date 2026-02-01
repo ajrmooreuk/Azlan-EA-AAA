@@ -1,8 +1,14 @@
 # Ontology Migration Plan: Consolidate to Azlan under OAA v6.1.0
 
-**Version:** 2.0.0
+**Version:** 2.1.0
 **Date:** 2026-02-01
-**Status:** Phases 1-4 Complete
+**Status:** Phases 1-4 Complete | PR #19 Merged
+
+---
+
+## Related Documentation
+
+- [OAA-ARCHITECTURE-GUIDE.md](../TOOLS/ontology-visualiser/OAA-ARCHITECTURE-GUIDE.md) - Component relationships and process flows
 
 ---
 
@@ -52,6 +58,12 @@
 ## Not Migrated (Per User Request)
 
 - **Sierra Dreams test data** - Explicitly excluded from migration
+
+## BAIV Cleanup (Completed)
+
+- Removed duplicate PPM ontology files from PF-Core-BAIV (now consolidated here)
+- Deleted empty `ds-e2e-prototype/` directory
+- BAIV feature branch `feature/efs-templates-oaa-v5` merged and deleted
 
 ---
 
