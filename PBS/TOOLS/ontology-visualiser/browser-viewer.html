@@ -916,12 +916,29 @@ function validateG3BusinessRules(data) {
 
   let compliantCount = 0;
   businessRules.forEach((rule, i) => {
-    const ruleName = rule.name || rule.id || `Rule ${i + 1}`;
-    const ruleText = rule.expression || rule.rule || rule.description || '';
+    const ruleName = rule.name || rule['@id'] || rule.id || `Rule ${i + 1}`;
+
+    // Support OAA v5.0.0 format with separate condition/action fields
+    let ruleText = '';
+    if (rule.condition && rule.action) {
+      // OAA v5.0.0 format: combine condition + action
+      ruleText = `${rule.condition} ${rule.action}`;
+    } else {
+      // Legacy format: single expression field
+      ruleText = rule.expression || rule.rule || rule.description || '';
+    }
 
     // Check for IF-THEN format
     if (ifThenPattern.test(ruleText)) {
       compliantCount++;
+    } else if (rule.condition && rule.action) {
+      // OAA v5.0.0 format present but not matching IF-THEN pattern exactly
+      // Check if condition starts with IF and action contains constraint
+      if (rule.condition.toUpperCase().startsWith('IF') && rule.action.toUpperCase().includes('MUST')) {
+        compliantCount++;
+      } else {
+        warnings.push(`${ruleName}: condition/action should use IF...THEN format`);
+      }
     } else if (expressionPattern.test(ruleText)) {
       // Has a logical expression but not in IF-THEN format
       warnings.push(`${ruleName}: has expression but not IF-THEN format`);

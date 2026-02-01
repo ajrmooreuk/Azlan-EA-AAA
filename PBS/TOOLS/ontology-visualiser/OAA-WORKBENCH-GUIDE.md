@@ -13,8 +13,9 @@ The **OAA Ontology Workbench** is an integrated toolchain for ontology lifecycle
 | Component | Purpose | Location |
 |-----------|---------|----------|
 | **Ontology Visualiser** | Visual inspection, validation, library management | Azlan-EA-AAA |
-| **OAA System Prompt** | AI-powered ontology creation and upgrade | PF-Core-BAIV |
-| **UniRegistry** | Centralized artifact versioning and audit trail | PF-Core-BAIV |
+| **OAA System Prompt v6.1.0** | AI-powered ontology creation and upgrade | Azlan-EA-AAA |
+| **PFC Ontologies** | Clean reference ontologies (OAA-compliant) | Azlan-EA-AAA |
+| **UniRegistry Schema** | Centralized artifact versioning and audit trail | PF-Core-BAIV |
 
 This integration enables a complete **create → validate → upgrade → archive** workflow for enterprise ontologies.
 
@@ -394,9 +395,11 @@ Recommended name: **OAA Ontology Workbench**
 | Resource | Path |
 |----------|------|
 | Ontology Visualiser | `Azlan-EA-AAA/PBS/TOOLS/ontology-visualiser/` |
-| OAA System Prompt v6.1.0 | `PF-Core-BAIV/PBS/AGENTS/PFC-Agents/Agent-03-OAA-Architect/oaa-v6/` |
-| UniRegistry Schema v1.1 | `PF-Core-BAIV/PBS/ARCHITECTURE/unified-register/uniregistry-mvp-v1.0/` |
+| OAA System Prompt v6.1.0 | `Azlan-EA-AAA/PBS/AGENTS/oaa-v6/` |
+| PFC Ontologies | `Azlan-EA-AAA/PBS/ONTOLOGIES/pfc-ontologies/` |
+| PPM Ontology v3.0.0 | `Azlan-EA-AAA/PBS/ONTOLOGIES/pfc-ontologies/ppm-ont/ppm-module-v3.0.0-oaa-v5.json` |
 | Test Ontology (non-compliant) | `Azlan-EA-AAA/PBS/TOOLS/ontology-visualiser/test-data/test-non-compliant-ontology.json` |
+| UniRegistry Schema v1.2 (PF-Core) | `PF-Core-BAIV/PBS/ARCHITECTURE/unified-register/uniregistry-mvp-v1.0/` |
 
 ---
 
