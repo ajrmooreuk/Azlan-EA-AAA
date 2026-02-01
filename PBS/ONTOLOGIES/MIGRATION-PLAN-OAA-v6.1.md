@@ -29,10 +29,10 @@
 |----------|---------|--------|----------|
 | PPM-ONT | v3.0.0 | ✅ Production | [PPM-ONT/ppm-module-v3.0.0-oaa-v5.json](pfc-ontologies/PPM-ONT/) |
 | ORG-ONT | v2.1.0 | ✅ Production | [ORG-ONT/org-ontology-v2.1.0-oaa-v5.json](pfc-ontologies/ORG-ONT/) |
-| CA-ONT | v2.0.0 | ✅ Production | [CA-ONT/competitive-analysis-v2.0.0-oaa-v5.json](pfc-ontologies/CA-ONT/) |
+| CA-ONT | v2.1.0 | ✅ Production | [CA-ONT/competitive-analysis-v2.1.0-oaa-v5.json](pfc-ontologies/CA-ONT/) |
 | CL-ONT | v1.0.0 | ✅ Production | [CL-ONT/competitive-landscape-v1.0.0-oaa-v5.json](pfc-ontologies/CL-ONT/) |
 | PE-ONT | v2.0.0 | ✅ Production | [PE-ONT/process-engineering-v2.0.0-oaa-v5.json](pfc-ontologies/PE-ONT/) |
-| VSOM-ONT | v2.0.0 | ✅ Production | [VSOM-ONT/vsom-ontology-v2.0.0-oaa-v5.json](pfc-ontologies/VSOM-ONT/) |
+| VSOM-ONT | v2.1.0 | ✅ Production | [VSOM-ONT/vsom-ontology-v2.1.0-oaa-v5.json](pfc-ontologies/VSOM-ONT/) |
 
 ---
 
@@ -43,7 +43,7 @@
 | Folder | Status | OAA v5.0.0 Compliant? |
 |--------|--------|----------------------|
 | ALZ-ONT | Existing | ⚠️ Has registry entry only (MCSB) |
-| CA-ONT | **NEW** v2.0.0 | ✅ Yes |
+| CA-ONT | **UPGRADED** v2.1.0 | ✅ Yes (ORG-ONT + CL-ONT integration) |
 | CE-ONT | Placeholder | ❌ Empty (readme only) |
 | CL-ONT | **NEW** v1.0.0 | ✅ Yes (OrganizationContext bridge) |
 | EA-ONT | ON HOLD | ⚠️ Instance data for PPM-ONT |
@@ -54,7 +54,7 @@
 | PPM-ONT | v3.0.0 | ✅ Yes |
 | RRR-ONT | Existing | ⚠️ Glossary only |
 | VE-ONT | Existing | ⚠️ Mermaid/docs only |
-| VSOM-ONT | **UPGRADED** v2.0.0 | ✅ Yes |
+| VSOM-ONT | **UPGRADED** v2.1.0 | ✅ Yes (StrategicReviewCycle + CL-ONT iteration) |
 
 ---
 
