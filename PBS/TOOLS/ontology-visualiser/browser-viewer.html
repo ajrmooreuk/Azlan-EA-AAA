@@ -415,9 +415,19 @@ function parseOntology(data, source) {
       const desc = ent.description || ent['rdfs:comment'] || '';
       const type = ent.entityType || (ent['@type'] || '').replace(/.*:/, '') || 'class';
       if (id) addNode(id, label, type.toLowerCase(), desc, ent);
+      // Handle schemaOrgBase inheritance
       if (ent.schemaOrgBase) {
         addNode(ent.schemaOrgBase, ent.schemaOrgBase.replace('schema:', ''), 'external', 'schema.org type');
         addEdge(id, ent.schemaOrgBase, 'extends', 'inheritance');
+      }
+      // Handle rdfs:subClassOf inheritance
+      const subClassOf = ent['rdfs:subClassOf'] || ent.subClassOf;
+      if (subClassOf) {
+        const parentId = typeof subClassOf === 'object' ? (subClassOf['@id'] || subClassOf.id) : subClassOf;
+        if (parentId) {
+          if (!seen.has(parentId)) addNode(parentId, parentId.replace(/.*[:#]/, ''), 'external', 'Parent class');
+          addEdge(id, parentId, 'subClassOf', 'inheritance');
+        }
       }
     });
 

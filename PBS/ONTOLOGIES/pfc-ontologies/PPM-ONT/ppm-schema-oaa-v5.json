@@ -23,6 +23,7 @@
         {
             "@id": "ppm:Portfolio",
             "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "oaa:GovernedEntity"},
             "rdfs:label": "Portfolio",
             "rdfs:comment": "Collection of programmes delivering strategic vision within investment envelope",
             "oaa:description": "A portfolio represents the highest level of organisational investment management, grouping related programmes under a unified strategic vision and governance structure with defined investment boundaries."
@@ -30,6 +31,7 @@
         {
             "@id": "ppm:Programme",
             "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "oaa:GovernedEntity"},
             "rdfs:label": "Programme",
             "rdfs:comment": "Coherent set of initiatives delivering programme benefits aligned to strategic pillar",
             "oaa:description": "A programme coordinates multiple related initiatives to deliver transformational benefits that align with organisational strategic pillars, managing cross-initiative dependencies and shared resources."
@@ -37,6 +39,7 @@
         {
             "@id": "ppm:Initiative",
             "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "oaa:GovernedEntity"},
             "rdfs:label": "Initiative",
             "rdfs:comment": "Discrete transformation initiative with defined outcomes and dependencies",
             "oaa:description": "An initiative is an individual transformation effort with clearly defined scope, outcomes, timeline, and resource requirements that contributes to programme-level benefits realisation."
@@ -44,6 +47,7 @@
         {
             "@id": "ppm:Dependency",
             "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "schema:Intangible"},
             "rdfs:label": "Dependency",
             "rdfs:comment": "Typed relationship between initiatives defining sequencing and enablement",
             "oaa:description": "A dependency captures the logical or temporal relationship between initiatives, specifying how one initiative enables, blocks, or influences another within the delivery schedule."
@@ -51,6 +55,7 @@
         {
             "@id": "ppm:Milestone",
             "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "vsem:StrategicObjective"},
             "rdfs:label": "Milestone",
             "rdfs:comment": "Significant achievement point within an initiative delivery timeline",
             "oaa:description": "A milestone marks a significant checkpoint or deliverable within an initiative, used for progress tracking, governance reviews, and stakeholder communication."
@@ -58,6 +63,7 @@
         {
             "@id": "ppm:PracticeArea",
             "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "schema:Organization"},
             "rdfs:label": "Practice Area",
             "rdfs:comment": "Business unit or advisory practice contributing to transformation",
             "oaa:description": "A practice area represents an organisational unit, business function, or advisory domain that participates in or benefits from transformation initiatives."
@@ -65,6 +71,7 @@
         {
             "@id": "ppm:BenefitMetric",
             "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "vsem:StrategicKPI"},
             "rdfs:label": "Benefit Metric",
             "rdfs:comment": "Quantified benefit measurement with baseline and target values",
             "oaa:description": "A benefit metric defines a measurable indicator of value realisation, including baseline measurements, target values, measurement methodology, and tracking frequency."
@@ -72,6 +79,7 @@
         {
             "@id": "ppm:Risk",
             "@type": "rdfs:Class",
+            "rdfs:subClassOf": {"@id": "schema:Intangible"},
             "rdfs:label": "Risk",
             "rdfs:comment": "Identified risk to initiative delivery with probability and impact",
             "oaa:description": "A risk captures a potential threat to initiative or programme success, including probability assessment, impact analysis, mitigation strategies, and ownership assignment."
