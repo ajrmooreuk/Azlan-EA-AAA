@@ -1,8 +1,8 @@
 # OAA Ontology Workbench
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Status:** Production
-**Last Updated:** 2026-01-31
+**Last Updated:** 2026-02-01
 
 ---
 
@@ -31,11 +31,11 @@ graph TB
 
     subgraph "Processing Layer"
         CLI[Claude Code CLI]
-        OAA[OAA System Prompt<br/>v5.0.0]
+        OAA[OAA System Prompt<br/>v6.1.0]
     end
 
     subgraph "Storage Layer"
-        REG[UniRegistry<br/>v1.1.0]
+        REG[UniRegistry<br/>v1.2.0]
         ARCH[Version Archive<br/>versionHistory]
     end
 
@@ -65,7 +65,7 @@ sequenceDiagram
     participant V as Visualiser
     participant L as Library (IndexedDB)
     participant C as Claude Code CLI
-    participant O as OAA v5.0.0
+    participant O as OAA v6.1.0
     participant R as UniRegistry
 
     U->>V: Load ontology (drag/drop, GitHub, file)
@@ -73,7 +73,7 @@ sequenceDiagram
     V->>U: Show compliance status
 
     alt Non-compliant
-        U->>V: Click "Upgrade with OAA v5"
+        U->>V: Click "Upgrade with OAA v6"
         V->>V: Generate upgrade prompt
         V->>U: Copy command to clipboard
         U->>C: Paste & execute command
@@ -98,7 +98,7 @@ sequenceDiagram
 
 ## Validation Gates
 
-The Workbench enforces **OAA v5.0.0 compliance** through two gate categories:
+The Workbench enforces **OAA v6.1.0 compliance** through two gate categories:
 
 ### Core Gates (Required for Compliance)
 
@@ -161,7 +161,7 @@ stateDiagram-v2
     Validating --> NonCompliant: Gates fail
     Validating --> Compliant: Gates pass
 
-    NonCompliant --> Upgrading: Run OAA v5
+    NonCompliant --> Upgrading: Run OAA v6
     Upgrading --> Validating: Reload upgraded JSON
 
     Compliant --> Saved: Save to Library
@@ -190,7 +190,7 @@ stateDiagram-v2
    - Drag & drop JSON file
    - Paste GitHub raw URL
    - Select from Library
-3. View "OAA v5.0.0 Compliance" panel
+3. View "OAA v6.1.0 Compliance" panel
 4. Review gate status (✅ pass, ⚠️ warn, ❌ fail)
 ```
 
@@ -198,7 +198,7 @@ stateDiagram-v2
 
 ```
 1. Load non-compliant ontology in Visualiser
-2. Click "Upgrade with OAA v5" button
+2. Click "Upgrade with OAA v6" button
 3. In modal, click "Copy Command"
 4. Open terminal with Claude Code installed
 5. Paste and execute:
@@ -252,7 +252,7 @@ stateDiagram-v2
 
 ---
 
-## UniRegistry Schema v1.1.0
+## UniRegistry Schema v1.2.0
 
 The UniRegistry supports full version tracking:
 
@@ -272,10 +272,10 @@ The UniRegistry supports full version tracking:
     {
       "version": "1.0.0",
       "archivedAt": "2026-01-31T10:00:00Z",
-      "archivedBy": "OAA-v5.0.0",
+      "archivedBy": "OAA-v6.1.0",
       "registryEntryPath": "archive/registry-entry-v1.0.0.jsonld",
       "artifactPath": "archive/example-ontology-v1.0.0.json",
-      "changeReason": "Upgraded to OAA v5.0.0 compliance",
+      "changeReason": "Upgraded to OAA v6.1.0 compliance",
       "qualityMetricsSnapshot": {
         "overallScore": 65,
         "validationStatus": "non-compliant",
@@ -313,13 +313,13 @@ ontology-name/
 
 ```bash
 # Upgrade ontology with inline prompt
-claude -p 'You are OAA v5.0.0. Upgrade this ontology...' > output.json
+claude -p 'You are OAA v6.1.0. Upgrade this ontology...' > output.json
 
 # Upgrade ontology from file
-claude -p "Upgrade to OAA v5.0.0 compliance" < input.json > output.json
+claude -p "Upgrade to OAA v6.1.0 compliance" < input.json > output.json
 
 # Use OAA system prompt file
-claude --system-prompt oaa-system-prompt-v5.0.0.md < input.json
+claude --system-prompt system-prompt.md < input.json  # From oaa-v6/ directory
 ```
 
 ### GitHub Actions Integration
@@ -370,7 +370,7 @@ Recommended name: **OAA Ontology Workbench**
 ## Roadmap
 
 ### Current (v1.0)
-- [x] Visualiser with OAA v5.0.0 validation
+- [x] Visualiser with OAA v6.1.0 validation
 - [x] Claude Code CLI integration for upgrades
 - [x] IndexedDB Library with version history
 - [x] UniRegistry schema with versionHistory
@@ -394,10 +394,10 @@ Recommended name: **OAA Ontology Workbench**
 | Resource | Path |
 |----------|------|
 | Ontology Visualiser | `Azlan-EA-AAA/PBS/TOOLS/ontology-visualiser/` |
-| OAA System Prompt v5.0.0 | `PF-Core-BAIV/PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/` |
+| OAA System Prompt v6.1.0 | `PF-Core-BAIV/PBS/AGENTS/PFC-Agents/Agent-03-OAA-Architect/oaa-v6/` |
 | UniRegistry Schema v1.1 | `PF-Core-BAIV/PBS/ARCHITECTURE/unified-register/uniregistry-mvp-v1.0/` |
 | Test Ontology (non-compliant) | `Azlan-EA-AAA/PBS/TOOLS/ontology-visualiser/test-data/test-non-compliant-ontology.json` |
 
 ---
 
-*OAA Ontology Workbench v1.0.0 | Be AI Visible Platform*
+*OAA Ontology Workbench v1.1.0 | Be AI Visible Platform*

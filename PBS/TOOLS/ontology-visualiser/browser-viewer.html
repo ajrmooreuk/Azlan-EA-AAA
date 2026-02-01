@@ -136,9 +136,9 @@
 <header>
   <h1>OAA Ontology Visualiser</h1>
   <span id="file-name" style="font-size:13px; color:#666;"></span>
-  <span id="compliance-status" style="display:none;" class="compliance-badge" onclick="toggleAudit()" title="Click to view OAA v5.0.0 compliance report">
+  <span id="compliance-status" style="display:none;" class="compliance-badge" onclick="toggleAudit()" title="Click to view OAA v6.1.0 compliance report">
     <span class="dot"></span>
-    <span id="compliance-text">OAA v5.0.0</span>
+    <span id="compliance-text">OAA v6.1.0</span>
   </span>
   <span class="stats" id="stats"></span>
 </header>
@@ -157,7 +157,7 @@
   <button onclick="exportPNG()">Export PNG</button>
   <button id="btn-sidebar" onclick="toggleSidebar()">Details</button>
   <button id="btn-audit" onclick="toggleAudit()">OAA Audit</button>
-  <button id="btn-run-oaa" onclick="runOAAUpgrade()" style="display:none;" title="Generate Claude Code command to upgrade this ontology">Upgrade with OAA v5</button>
+  <button id="btn-run-oaa" onclick="runOAAUpgrade()" style="display:none;" title="Generate Claude Code command to upgrade this ontology">Upgrade with OAA v6</button>
   <button id="btn-save-library" onclick="showSaveToLibrary()" style="display:none;" title="Save compliant ontology to library">Save to Library</button>
   <span style="border-left:1px solid #3a3d47; height:24px;"></span>
   <button onclick="toggleLibrary()">📚 Library</button>
@@ -170,7 +170,7 @@
     <div class="drop-area" id="drop-area">
       <h2>Drop JSON Ontology Here</h2>
       <p>or click "Open JSON File" above</p>
-      <div class="formats">Supports: OAA v5.0.0 (hasDefinedTerm), JSON-LD, UniRegistry, Registry Entry, Agent Registry<br>Validates against OAA v5.0.0 compliance gates (G1-G6)<br>Or use "Load from GitHub" to fetch from a private repo</div>
+      <div class="formats">Supports: OAA v6.1.0 (hasDefinedTerm), JSON-LD, UniRegistry, Registry Entry, Agent Registry<br>Validates against OAA v6.1.0 compliance gates (G1-G6)<br>Or use "Load from GitHub" to fetch from a private repo</div>
     </div>
   </div>
   <div id="network"></div>
@@ -191,7 +191,7 @@
   <div class="legend" id="legend" style="display:none;"></div>
   <div class="audit-panel" id="audit-panel">
     <button class="close-btn" onclick="toggleAudit()">&times;</button>
-    <h3>OAA v5.0.0 Compliance</h3>
+    <h3>OAA v6.1.0 Compliance</h3>
     <div id="oaa-compliance-content"><p style="color:#666">Load a graph to see compliance report</p></div>
     <h3 style="margin-top:16px;">Graph Audit</h3>
     <div id="audit-content"><p style="color:#666">Load a graph to see audit results</p></div>
@@ -202,7 +202,7 @@
 <div id="oaa-modal" class="oaa-modal" style="display:none;">
   <div class="oaa-modal-content">
     <button class="close-btn" onclick="closeOAAModal()">&times;</button>
-    <h3>Run OAA v5.0.0 Upgrade</h3>
+    <h3>Run OAA v6.1.0 Upgrade</h3>
     <div id="oaa-modal-body"></div>
   </div>
 </div>
@@ -457,7 +457,7 @@ function parseOntology(data, source) {
   }
 
   else if (format === 'jsonld-definedterm') {
-    // OAA v5.0.0 / EFS-style JSON-LD with hasDefinedTerm array
+    // OAA v6.1.0 / EFS-style JSON-LD with hasDefinedTerm array
     const ontName = data.name || data['rdfs:label'] || data['@id'] || source;
     const ontDesc = data.description || data['rdfs:comment'] || '';
 
@@ -649,7 +649,7 @@ function auditGraph(parsed) {
 }
 
 // ========================================
-// OAA v5.0.0 VALIDATION GATES
+// OAA v6.1.0 VALIDATION GATES
 // ========================================
 
 function validateOAAv5(data, parsed) {
@@ -1162,7 +1162,7 @@ function renderOAACompliancePanel(validation) {
   // Update header badge
   const badge = document.getElementById('compliance-status');
   badge.className = `compliance-badge ${validation.overall}`;
-  document.getElementById('compliance-text').textContent = `OAA v5.0.0 ${statusText}`;
+  document.getElementById('compliance-text').textContent = `OAA v6.1.0 ${statusText}`;
   badge.style.display = 'inline-flex';
 
   // Show/hide upgrade button based on compliance
@@ -1246,7 +1246,7 @@ function renderGraph(parsed) {
   const audit = auditGraph(parsed);
   renderAuditPanel(audit);
 
-  // OAA v5.0.0 Validation
+  // OAA v6.1.0 Validation
   const validation = validateOAAv5(currentData, parsed);
   renderOAACompliancePanel(validation);
   const siloNodeIds = new Set();
@@ -1430,41 +1430,18 @@ function renderSchemaTab(node) {
   let html = '';
   const props = node.properties || {};
 
-  // Extract schema properties
-  const schemaProps = props.properties || props.attributes || [];
-
-  if (Array.isArray(schemaProps) && schemaProps.length > 0) {
-    html += '<div class="conn-section"><h4>Properties</h4>';
-    schemaProps.forEach(p => {
-      const name = p.name || p['@id'] || p.id || 'unknown';
-      const type = p.type || p.dataType || p['@type'] || p.range || 'any';
-      const required = p.required || p.minCount > 0;
-      html += `<div class="prop-row">
-        <span class="prop-name">${name}${required ? '<span class="prop-required">*</span>' : ''}</span>
-        <span class="prop-type">${type}</span>
+  // Inheritance hierarchy (rdfs:subClassOf)
+  const subClassOf = props['rdfs:subClassOf'] || props.subClassOf;
+  if (subClassOf) {
+    const parentId = typeof subClassOf === 'object' ? (subClassOf['@id'] || subClassOf.id) : subClassOf;
+    if (parentId) {
+      html += '<div class="conn-section"><h4>Inherits From</h4>';
+      html += `<div class="connection-item" onclick="navigateToNode('${parentId.replace(/'/g, "\\'")}')">
+        <span class="connection-arrow">↑</span>
+        <span class="connection-node">${parentId.replace(/.*[:#]/, '')}</span>
       </div>`;
-    });
-    html += '</div>';
-  }
-
-  // Check for inline property definitions in the entity itself
-  const inlineProps = [];
-  for (const [k, v] of Object.entries(props)) {
-    if (['id', 'name', 'label', 'description', 'entityType', 'type', '@id', '@type', 'properties', 'attributes', 'schemaOrgBase'].includes(k)) continue;
-    if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
-      inlineProps.push({ name: k, type: typeof v, value: v });
+      html += '</div>';
     }
-  }
-
-  if (inlineProps.length > 0) {
-    html += '<div class="conn-section"><h4>Attributes</h4>';
-    inlineProps.forEach(p => {
-      html += `<div class="prop-row">
-        <span class="prop-name">${p.name}</span>
-        <span class="prop-type">${p.type}</span>
-      </div>`;
-    });
-    html += '</div>';
   }
 
   // Schema.org mapping
@@ -1474,7 +1451,84 @@ function renderSchemaTab(node) {
     html += '</div>';
   }
 
-  if (!schemaProps.length && !inlineProps.length && !props.schemaOrgBase) {
+  // Extract schema properties - support oaa:properties, properties, attributes
+  const schemaProps = props['oaa:properties'] || props.properties || props.attributes || [];
+
+  if (Array.isArray(schemaProps) && schemaProps.length > 0) {
+    html += '<div class="conn-section"><h4>Data Properties</h4>';
+    schemaProps.forEach(p => {
+      const name = p.name || p['@id'] || p.id || 'unknown';
+      const type = p.type || p.dataType || p['@type'] || p.range || 'any';
+      const required = p.required || p.minCount > 0;
+      const desc = p.description || '';
+      const schemaOrg = p.schemaOrgMapping || '';
+      html += `<div class="prop-row" title="${desc}${schemaOrg ? ' (' + schemaOrg + ')' : ''}">
+        <span class="prop-name">${name}${required ? '<span class="prop-required">*</span>' : ''}</span>
+        <span class="prop-type">${type}${p.enumValues ? ' [' + p.enumValues.slice(0,3).join('|') + (p.enumValues.length > 3 ? '...' : '') + ']' : ''}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Relationship participation (what relationships use this entity)
+  if (lastParsed) {
+    const nodeId = node.id;
+    const asSource = lastParsed.edges.filter(e => e.from === nodeId);
+    const asTarget = lastParsed.edges.filter(e => e.to === nodeId);
+
+    if (asSource.length > 0 || asTarget.length > 0) {
+      html += '<div class="conn-section"><h4>Relationship Participation</h4>';
+
+      // Group by relationship type
+      const relTypes = new Map();
+      asSource.forEach(e => {
+        const key = `→ ${e.label || 'relates to'}`;
+        if (!relTypes.has(key)) relTypes.set(key, []);
+        relTypes.get(key).push(e.to);
+      });
+      asTarget.forEach(e => {
+        const key = `← ${e.label || 'relates to'}`;
+        if (!relTypes.has(key)) relTypes.set(key, []);
+        relTypes.get(key).push(e.from);
+      });
+
+      relTypes.forEach((targets, rel) => {
+        const targetLabels = targets.map(t => {
+          const n = lastParsed.nodes.find(x => x.id === t);
+          return n ? n.label : t.replace(/.*[:#]/, '');
+        }).slice(0, 3);
+        html += `<div style="font-size:11px; color:#888; margin:4px 0;">
+          <span style="color:#9dfff5;">${rel}</span> ${targetLabels.join(', ')}${targets.length > 3 ? '...' : ''}
+        </div>`;
+      });
+      html += '</div>';
+    }
+  }
+
+  // Check for inline property definitions in the entity itself
+  const inlineProps = [];
+  const skipKeys = ['id', 'name', 'label', 'description', 'entityType', 'type', '@id', '@type',
+                    'properties', 'attributes', 'schemaOrgBase', 'oaa:properties', 'oaa:description',
+                    'rdfs:label', 'rdfs:comment', 'rdfs:subClassOf', 'subClassOf'];
+  for (const [k, v] of Object.entries(props)) {
+    if (skipKeys.includes(k)) continue;
+    if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') {
+      inlineProps.push({ name: k, type: typeof v, value: v });
+    }
+  }
+
+  if (inlineProps.length > 0) {
+    html += '<div class="conn-section"><h4>Metadata</h4>';
+    inlineProps.forEach(p => {
+      html += `<div class="prop-row">
+        <span class="prop-name">${p.name}</span>
+        <span class="prop-type">${p.type}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (!html) {
     html = '<p class="no-data">No schema information available for this entity</p>';
   }
 
@@ -1785,7 +1839,7 @@ function loadFromGitHub() {
 }
 
 // ========================================
-// OAA v5.0.0 UPGRADE VIA CLAUDE CODE CLI
+// OAA v6.1.0 UPGRADE VIA CLAUDE CODE CLI
 // ========================================
 
 function runOAAUpgrade() {
@@ -1800,7 +1854,7 @@ function runOAAUpgrade() {
   const baseName = fileName.replace(/\.json$/i, '');
 
   // Generate output filename
-  const outputName = `${baseName}-oaa-v5-upgraded.json`;
+  const outputName = `${baseName}-oaa-v6-upgraded.json`;
 
   // Build the prompt for Claude Code
   const prompt = buildOAAPrompt(currentData, validation);
@@ -1836,12 +1890,12 @@ function buildOAAPrompt(ontology, validation) {
     }
   });
 
-  // Build detailed prompt with OAA v5.0.0 requirements
-  let prompt = `You are the OAA (Ontology Architect Agent) v5.0.0.
+  // Build detailed prompt with OAA v6.1.0 requirements
+  let prompt = `You are the OAA (Ontology Architect Agent) v6.1.0.
 
-Upgrade this ontology to pass ALL OAA v5.0.0 core compliance gates (G1-G4).
+Upgrade this ontology to pass ALL OAA v6.1.0 core compliance gates (G1-G4).
 
-## OAA v5.0.0 Core Gates (REQUIRED - must pass at 100%)
+## OAA v6.1.0 Core Gates (REQUIRED - must pass at 100%)
 
 | Gate | Requirement |
 |------|-------------|
@@ -1944,7 +1998,7 @@ function showOAAModal(prompt, outputName) {
       <summary style="color:#888; cursor:pointer;">Alternative: Use file input</summary>
       <p style="color:#666; margin-top:8px; font-size:12px;">
         1. Download the ontology JSON using the button above<br>
-        2. Run: <code style="background:#0d0f12; padding:2px 6px; border-radius:3px;">claude -p "Upgrade this ontology to OAA v5.0.0 compliance" &lt; ${outputName.replace('-upgraded', '-for-oaa')}</code>
+        2. Run: <code style="background:#0d0f12; padding:2px 6px; border-radius:3px;">claude -p "Upgrade this ontology to OAA v6.1.0 compliance" &lt; ${outputName.replace('-upgraded', '-for-oaa')}</code>
       </p>
     </details>
 
@@ -2294,7 +2348,7 @@ async function refreshLibraryPanel() {
     }
 
     if (!hasAny) {
-      html = '<p class="library-empty">No ontologies saved yet.<br>Load an ontology and click "Save to Library" when it passes OAA v5.0.0 compliance.</p>';
+      html = '<p class="library-empty">No ontologies saved yet.<br>Load an ontology and click "Save to Library" when it passes OAA v6.1.0 compliance.</p>';
     }
 
     content.innerHTML = html;
@@ -2375,7 +2429,7 @@ function showSaveToLibrary() {
 
     <div class="library-form-group">
       <label>Notes (optional)</label>
-      <input type="text" id="save-ont-notes" class="library-input" placeholder="e.g., Upgraded to OAA v5.0.0 compliance">
+      <input type="text" id="save-ont-notes" class="library-input" placeholder="e.g., Upgraded to OAA v6.1.0 compliance">
     </div>
 
     <div id="save-result"></div>

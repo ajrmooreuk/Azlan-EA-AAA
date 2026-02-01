@@ -3,7 +3,7 @@
   "@id": "baiv:test-non-compliant",
   "name": "Test Non-Compliant Ontology",
   "version": "1.0.0",
-  "description": "An intentionally non-compliant ontology for testing OAA v5.0.0 upgrade feature",
+  "description": "An intentionally non-compliant ontology for testing OAA v6.1.0 upgrade feature",
   "entities": [
     {
       "@id": "Customer",

@@ -13,7 +13,7 @@
     "dateCreated": "2026-01-31T00:00:00Z",
     "lastModified": "2026-01-31T00:00:00Z",
     "createdBy": "claude-opus-4.5",
-    "description": "Browser-based ontology visualisation tool with OAA v5.0.0 compliance validation, Claude Code CLI integration for upgrades, and IndexedDB-based library with version history.",
+    "description": "Browser-based ontology visualisation tool with OAA v6.1.0 compliance validation, Claude Code CLI integration for upgrades, and IndexedDB-based library with version history.",
     "tags": [
       "ontology",
       "visualiser",
@@ -39,7 +39,7 @@
         "description": "Force-directed, hierarchical, and circular graph layouts using vis.js"
       },
       {
-        "name": "OAA v5.0.0 Validation",
+        "name": "OAA v6.1.0 Validation",
         "description": "Client-side validation against G1-G4 core gates and G5-G6 advisory gates"
       },
       {
@@ -56,7 +56,7 @@
       },
       {
         "name": "Multi-format Support",
-        "description": "OAA v5.0.0, JSON-LD, UniRegistry, Registry Entry, Agent Registry formats"
+        "description": "OAA v6.1.0, JSON-LD, UniRegistry, Registry Entry, Agent Registry formats"
       }
     ],
     "endpoints": {
@@ -96,7 +96,7 @@
     "lastValidated": "2026-01-31T00:00:00Z"
   },
   "changeControl": {
-    "changeReason": "Initial registration of Ontology Visualiser with OAA v5.0.0 upgrade integration and Library features",
+    "changeReason": "Initial registration of Ontology Visualiser with OAA v6.1.0 upgrade integration and Library features",
     "approvalStatus": "approved",
     "approvedBy": "system",
     "approvalDate": "2026-01-31T00:00:00Z",

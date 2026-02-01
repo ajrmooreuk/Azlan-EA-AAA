@@ -4,7 +4,7 @@
 
 Transform the Ontology Visualiser from a standalone browser tool into a **PFC Core Capability** with:
 - Supabase-backed unified registry
-- OAA v5.0.0 compliance validation
+- OAA v6.1.0 compliance validation
 - Tiered organizational graph modeling
 - PFI-customizable theming via Figma design tokens
 
@@ -12,7 +12,7 @@ Transform the Ontology Visualiser from a standalone browser tool into a **PFC Co
 flowchart TB
     subgraph PFC["PFC CORE CAPABILITY"]
         VIS["Ontology Visualiser"]
-        VAL["OAA v5.0.0 Validator"]
+        VAL["OAA v6.1.0 Validator"]
         REG["Unified Registry"]
     end
 
@@ -50,7 +50,7 @@ flowchart TB
 | # | Feature | Description | Priority |
 |---|---------|-------------|----------|
 | F1 | Supabase Registry | Store ontologies in JSONB with versioning | High |
-| F2 | OAA v5.0.0 Validator | Validate any JSON against v5.0.0 spec | High |
+| F2 | OAA v6.1.0 Validator | Validate any JSON against v6.1.0 spec | High |
 | F3 | Tiered Graph Navigation | Drill-down from org → domain → entity | High |
 | F4 | PFI Theming | Customize via Figma design tokens | Medium |
 | F5 | Compliance Processor | Auto-upgrade non-compliant ontologies | Medium |
@@ -205,7 +205,7 @@ CREATE TABLE ontologies (
     tier TEXT DEFAULT 'domain',     -- 'org', 'domain', 'entity'
     parent_id UUID REFERENCES ontologies(id),
 
-    -- OAA v5.0.0 structure
+    -- OAA v6.1.0 structure
     definition JSONB NOT NULL,      -- Full ontology JSON
     entities JSONB GENERATED ALWAYS AS (definition->'hasDefinedTerm') STORED,
     relationships JSONB GENERATED ALWAYS AS (definition->'relationships') STORED,
@@ -269,9 +269,9 @@ CREATE INDEX idx_ontologies_parent ON ontologies(parent_id);
 
 ---
 
-## OAA v5.0.0 Validation
+## OAA v6.1.0 Validation
 
-### Validation Gates (from OAA v5.0.0 Spec)
+### Validation Gates (from OAA v6.1.0 Spec)
 
 | Gate | Check | Action on Fail |
 |------|-------|----------------|
@@ -305,7 +305,7 @@ flowchart TB
     subgraph REMEDIATE["Remediation Options"]
         AUTO["Auto-fix (where possible)"]
         GUIDE["Guided manual fix"]
-        UPGRADE["Upgrade to v5.0.0"]
+        UPGRADE["Upgrade to v6.1.0"]
     end
 
     INPUT --> DETECT
@@ -461,7 +461,7 @@ const tokenMapping = {
 
 ### Phase 1: Foundation (Option A - Supabase-First)
 1. Set up Supabase schema in Azlan (test PFI)
-2. Implement OAA v5.0.0 validator as Edge Function
+2. Implement OAA v6.1.0 validator as Edge Function
 3. Add "Save to Registry" button in visualiser
 4. Basic tiered navigation (2 levels)
 
@@ -502,7 +502,7 @@ const tokenMapping = {
 flowchart TB
     subgraph PFC["PF-CORE (Central)"]
         CONFIG["Core Config"]
-        VALIDATOR["OAA v5.0.0 Validator"]
+        VALIDATOR["OAA v6.1.0 Validator"]
         REGISTRY["Master Registry"]
     end
 
@@ -592,7 +592,7 @@ CREATE TABLE pfi_config (
 ```mermaid
 flowchart TB
     UPLOAD["Upload Ontology"]
-    VALIDATE["Run OAA v5.0.0 Validator"]
+    VALIDATE["Run OAA v6.1.0 Validator"]
 
     subgraph RESULT["Validation Result"]
         PASS["✓ Compliant"]
@@ -601,7 +601,7 @@ flowchart TB
 
     subgraph ACTIONS["Non-Compliant Actions"]
         STORE["Store anyway (flagged)"]
-        RECOMMEND["Recommend: Run OAA v5.0.0"]
+        RECOMMEND["Recommend: Run OAA v6.1.0"]
         REPORT["Show validation report"]
     end
 
@@ -621,10 +621,10 @@ flowchart TB
 
 **Workflow:**
 1. User uploads ontology
-2. Validator checks against OAA v5.0.0 gates
+2. Validator checks against OAA v6.1.0 gates
 3. If non-compliant:
    - **Allow storage** with `compliance_status = 'non-compliant'`
-   - **Show recommendation**: "Run OAA v5.0.0 agent to upgrade"
+   - **Show recommendation**: "Run OAA v6.1.0 agent to upgrade"
    - **Display report**: Which gates failed
 4. Non-compliant ontologies visible but flagged in UI
 
@@ -664,8 +664,8 @@ flowchart LR
 | Environment | Compliance Required | OAA Version | Branding |
 |-------------|---------------------|-------------|----------|
 | **dev** | No (warnings only) | Any | Switchable |
-| **test** | Yes (must pass gates) | v5.0.0+ | Locked to target |
-| **prod** | Yes (enforced) | v5.0.0+ | Locked |
+| **test** | Yes (must pass gates) | v6.1.0+ | Locked to target |
+| **prod** | Yes (enforced) | v6.1.0+ | Locked |
 
 ### Database Schema Addition
 
@@ -680,7 +680,7 @@ RETURNS TRIGGER AS $$
 BEGIN
     -- Prod requires full compliance
     IF NEW.environment = 'prod' AND NEW.compliance_status != 'compliant' THEN
-        RAISE EXCEPTION 'Production ontologies must be OAA v5.0.0 compliant';
+        RAISE EXCEPTION 'Production ontologies must be OAA v6.1.0 compliant';
     END IF;
 
     -- Test requires validation to have run
@@ -705,7 +705,7 @@ CREATE TRIGGER enforce_environment_rules
 flowchart TB
     subgraph PFC["PF-CORE"]
         VIS["Ontology Visualiser<br/>(Core Capability)"]
-        VAL["OAA v5.0.0 Validator"]
+        VAL["OAA v6.1.0 Validator"]
         CONFIG["PFC Config"]
     end
 
@@ -748,7 +748,7 @@ flowchart TB
 |----------|----------|-----------|
 | DS-E2E Implementation Plan | `PBS/DESIGN-SYSTEM/ds-e2e-prototype-azlan/ds-e2e-implementation-plan-azlan.md` | Token extraction pipeline |
 | Azlan DS Config | `PBS/DESIGN-SYSTEM/ds-e2e-prototype-azlan/azlan-ds-config.json` | Brand switching config |
-| OAA v5.0.0 System Prompt | `PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/oaa-v5.0.0-sys-prompt/` | Validation gates |
+| OAA v6.1.0 System Prompt | `PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/oaa-v6.1.0-sys-prompt/` | Validation gates |
 | Design System Ontology | `PBS/DESIGN-SYSTEM/ds-e2e-prototype-azlan/design-system-ontology-v1.0.0.json` | Token taxonomy |
 
 ---
@@ -758,7 +758,7 @@ flowchart TB
 | # | Question | Resolution |
 |---|----------|------------|
 | Q1 | Multi-tenancy | Shared Supabase with RLS. PFC config distributed to PFIs. |
-| Q2 | Compliance enforcement | Allow non-compliant + recommend OAA v5.0.0 upgrade |
+| Q2 | Compliance enforcement | Allow non-compliant + recommend OAA v6.1.0 upgrade |
 | Q3 | Branding control | RBAC-protected. Default PFI. Only admins can switch. |
 | Q4 | Environment handling | dev/test/prod with escalating validation requirements |
 
