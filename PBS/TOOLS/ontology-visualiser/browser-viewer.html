@@ -388,8 +388,8 @@ function parseOntology(data, source) {
           if (!seen.has(range)) addNode(range, range.replace(/.*[:#]/, ''), 'external', '');
           addEdge(domain, range, label, 'relationship');
         }
-        const domains = rel.domainIncludes;
-        const ranges = rel.rangeIncludes;
+        const domains = rel.domainIncludes || rel['oaa:domainIncludes'];
+        const ranges = rel.rangeIncludes || rel['oaa:rangeIncludes'];
         if (domains && ranges) {
           (Array.isArray(domains) ? domains : [domains]).forEach(d => {
             (Array.isArray(ranges) ? ranges : [ranges]).forEach(r => {
@@ -423,11 +423,11 @@ function parseOntology(data, source) {
 
     if (data.relationships && Array.isArray(data.relationships)) {
       data.relationships.forEach(rel => {
-        const label = rel.name || rel.label || rel['@id'] || '';
-        const domains = rel.domainIncludes || (rel.domain ? [rel.domain] : []);
-        const ranges = rel.rangeIncludes || (rel.range ? [rel.range] : []);
-        domains.forEach(d => {
-          ranges.forEach(r => {
+        const label = rel.name || rel.label || rel['@id'] || rel['rdfs:label'] || '';
+        const domains = rel.domainIncludes || rel['oaa:domainIncludes'] || (rel.domain ? [rel.domain] : []);
+        const ranges = rel.rangeIncludes || rel['oaa:rangeIncludes'] || (rel.range ? [rel.range] : []);
+        (Array.isArray(domains) ? domains : [domains]).forEach(d => {
+          (Array.isArray(ranges) ? ranges : [ranges]).forEach(r => {
             if (!seen.has(d)) addNode(d, d.replace(/.*:/, ''), 'external', '');
             if (!seen.has(r)) addNode(r, r.replace(/.*:/, ''), 'external', '');
             addEdge(d, r, label, rel.linkedOntology ? 'binding' : 'relationship');
@@ -474,8 +474,8 @@ function parseOntology(data, source) {
       }
 
       // Handle schema:domainIncludes for properties
-      const domains = term['schema:domainIncludes'] || term.domainIncludes;
-      const ranges = term['schema:rangeIncludes'] || term.rangeIncludes;
+      const domains = term['schema:domainIncludes'] || term['oaa:domainIncludes'] || term.domainIncludes;
+      const ranges = term['schema:rangeIncludes'] || term['oaa:rangeIncludes'] || term.rangeIncludes;
       if (domains || ranges) {
         const domainList = Array.isArray(domains) ? domains : (domains ? [domains] : []);
         const rangeList = Array.isArray(ranges) ? ranges : (ranges ? [ranges] : []);
@@ -502,8 +502,8 @@ function parseOntology(data, source) {
     if (data.relationships && Array.isArray(data.relationships)) {
       data.relationships.forEach(rel => {
         const label = rel.name || rel['rdfs:label'] || rel['@id'] || '';
-        const domains = rel.domainIncludes || (rel.domain ? [rel.domain] : []);
-        const ranges = rel.rangeIncludes || (rel.range ? [rel.range] : []);
+        const domains = rel.domainIncludes || rel['oaa:domainIncludes'] || (rel.domain ? [rel.domain] : []);
+        const ranges = rel.rangeIncludes || rel['oaa:rangeIncludes'] || (rel.range ? [rel.range] : []);
         (Array.isArray(domains) ? domains : [domains]).forEach(d => {
           (Array.isArray(ranges) ? ranges : [ranges]).forEach(r => {
             if (d && r) {
@@ -760,22 +760,23 @@ function validateG2RelationshipCardinality(data) {
     const name = rel.name || rel['@id'] || rel['rdfs:label'] || `Relationship ${i}`;
 
     // Check for domain
-    const hasDomain = rel.domainIncludes || rel.domain || rel.source || rel['rdfs:domain'] || rel['schema:domainIncludes'];
+    const hasDomain = rel.domainIncludes || rel.domain || rel.source || rel['rdfs:domain'] || rel['schema:domainIncludes'] || rel['oaa:domainIncludes'];
     if (!hasDomain) {
       issues.push(`${name}: missing domain`);
     }
 
     // Check for range
-    const hasRange = rel.rangeIncludes || rel.range || rel.target || rel['rdfs:range'] || rel['schema:rangeIncludes'];
+    const hasRange = rel.rangeIncludes || rel.range || rel.target || rel['rdfs:range'] || rel['schema:rangeIncludes'] || rel['oaa:rangeIncludes'];
     if (!hasRange) {
       issues.push(`${name}: missing range`);
     }
 
     // Check cardinality notation
-    if (rel.cardinality) {
+    const cardinality = rel.cardinality || rel['oaa:cardinality'];
+    if (cardinality) {
       const cardPattern = /^(0|1|\*|n)(\.\.(0|1|\*|n))?$/i;
-      if (!cardPattern.test(rel.cardinality)) {
-        warnings.push(`${name}: non-standard cardinality notation "${rel.cardinality}"`);
+      if (!cardPattern.test(cardinality)) {
+        warnings.push(`${name}: non-standard cardinality notation "${cardinality}"`);
       }
     }
   });
