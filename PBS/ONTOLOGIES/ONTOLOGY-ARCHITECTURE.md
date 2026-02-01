@@ -1,6 +1,6 @@
 # Ontology Architecture Overview
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Date:** 2026-02-01
 **Status:** Production
 
@@ -70,6 +70,21 @@ graph TB
         PROGRAMME -->|hasProject| PROJECT
     end
 
+    subgraph "Maturity Assessment Layer"
+        MAT[("ORG-MAT-ONT<br/>Organization Maturity")]
+        PROFILE["MaturityProfile"]
+        SIZE["SizeProfile"]
+        SECTOR["SectorProfile"]
+        TECH["TechAIMaturity"]
+        DIGITAL["DigitalMaturity"]
+
+        MAT -->|hasProfile| PROFILE
+        PROFILE -->|hasSize| SIZE
+        PROFILE -->|hasSector| SECTOR
+        PROFILE -->|hasTechAI| TECH
+        PROFILE -->|hasDigital| DIGITAL
+    end
+
     subgraph "Supporting Ontologies"
         PE[("PE-ONT<br/>ProcessEngineering")]
         OKR[("OKR-ONT<br/>Objectives & Key Results")]
@@ -82,6 +97,7 @@ graph TB
     %% Bridge Pattern Connections
     ORG_CTX -->|hasStrategicContext| VSOM
     ORG_CTX -->|hasCompetitiveLandscape| CL
+    ORG_CTX -->|hasMaturityProfile| MAT
     ORG_CTX -.->|hasMarketContext| PMF
     ORG_CTX -.->|hasCustomerContext| CE
     ORG_CTX -.->|hasProcessContext| PE
@@ -105,6 +121,7 @@ graph TB
     classDef competitive fill:#c38154,stroke:#333,color:#fff
     classDef analysis fill:#884a39,stroke:#333,color:#fff
     classDef execution fill:#2c3333,stroke:#333,color:#fff
+    classDef maturity fill:#6b5b95,stroke:#333,color:#fff
     classDef supporting fill:#4a4a4a,stroke:#333,color:#fff
     classDef entity fill:#f0f0f0,stroke:#666,color:#333
 
@@ -113,6 +130,7 @@ graph TB
     class CL,SEGMENT,COMPETITOR,DYNAMIC,ADVANTAGE,OPPORTUNITY competitive
     class CA,CA_TARGET,CA_COMP,CA_REPORT analysis
     class PPM,PORTFOLIO,PROGRAMME,PROJECT execution
+    class MAT,PROFILE,SIZE,SECTOR,TECH,DIGITAL maturity
     class PE,OKR,VE,PMF,CE,RRR supporting
 ```
 
@@ -135,6 +153,10 @@ graph LR
         CA[CA-ONT]
     end
 
+    subgraph "Maturity"
+        MAT[ORG-MAT-ONT]
+    end
+
     subgraph "Execution"
         PPM[PPM-ONT]
     end
@@ -150,6 +172,7 @@ graph LR
     ORG --> CTX
     CTX --> VSOM
     CTX --> CL
+    CTX --> MAT
     CTX -.-> PE
     CTX -.-> PMF
     CTX -.-> CE
@@ -167,6 +190,7 @@ graph LR
     style REVIEW fill:#57837b,color:#fff
     style CL fill:#c38154,color:#fff
     style CA fill:#884a39,color:#fff
+    style MAT fill:#6b5b95,color:#fff
     style PPM fill:#2c3333,color:#fff
 ```
 
@@ -209,6 +233,7 @@ graph TB
     subgraph "Domain Contexts"
         CL_B[hasCompetitiveLandscape]
         VS_B[hasStrategicContext]
+        MAT_B[hasMaturityProfile]
         PM_B[hasMarketContext]
         PE_B[hasProcessContext]
         CE_B[hasCustomerContext]
@@ -217,6 +242,7 @@ graph TB
     subgraph "Domain Ontologies"
         CL_O[CL-ONT]
         VS_O[VSOM-ONT]
+        MAT_O[ORG-MAT-ONT]
         PM_O[PMF-ONT]
         PE_O[PE-ONT]
         CE_O[CE-ONT]
@@ -224,6 +250,7 @@ graph TB
 
     OC --> CL_B --> CL_O
     OC --> VS_B --> VS_O
+    OC --> MAT_B --> MAT_O
     OC -.-> PM_B -.-> PM_O
     OC -.-> PE_B -.-> PE_O
     OC -.-> CE_B -.-> CE_O
@@ -232,6 +259,7 @@ graph TB
     style OC fill:#1a5f7a,color:#fff
     style CL_O fill:#c38154,color:#fff
     style VS_O fill:#57837b,color:#fff
+    style MAT_O fill:#6b5b95,color:#fff
 ```
 
 ## Graph Composition Patterns
@@ -254,6 +282,7 @@ graph LR
     ORG[ORG-ONT] --> CTX((Context))
     CTX --> VSOM[VSOM-ONT]
     CTX --> CL[CL-ONT]
+    CTX --> MAT[ORG-MAT-ONT]
     CTX --> PE[PE-ONT]
     CL --> CA[CA-ONT]
     VSOM <--> CL
@@ -264,6 +293,7 @@ graph LR
     style VSOM fill:#57837b,color:#fff
     style CL fill:#c38154,color:#fff
     style CA fill:#884a39,color:#fff
+    style MAT fill:#6b5b95,color:#fff
     style PPM fill:#2c3333,color:#fff
     style PE fill:#4a4a4a,color:#fff
 ```
@@ -273,15 +303,16 @@ graph LR
 | Ontology | Version | Status | Bridge Pattern | Cross-Ontology Links |
 |----------|---------|--------|----------------|---------------------|
 | ORG-ONT | v2.1.0 | ✅ Production | Foundation + Hub | - |
+| ORG-MAT-ONT | v1.0.0 | ✅ Production | hasMaturityProfile | PE-ONT, CE-ONT (concepts) |
 | VSOM-ONT | v2.1.0 | ✅ Production | hasStrategicContext | CL-ONT (reviewsLandscape) |
 | CL-ONT | v1.0.0 | ✅ Production | hasCompetitiveLandscape | VSOM-ONT, CA-ONT |
-| CA-ONT | v2.0.0 | ✅ Production | Direct | CL-ONT |
+| CA-ONT | v2.1.0 | ✅ Production | Direct | ORG-ONT, CL-ONT |
 | PPM-ONT | v3.0.0 | ✅ Production | Direct | VSOM-ONT (future) |
-| PE-ONT | v2.0.0 | ✅ Production | hasProcessContext (future) | - |
+| PE-ONT | v2.0.0 | ✅ Production | hasProcessContext (future) | ORG-MAT-ONT |
 | OKR-ONT | - | ⚠️ Glossary only | - | VSOM-ONT |
 | VE-ONT | - | ⚠️ Docs only | - | VSOM-ONT |
 | PMF-ONT | - | ⚠️ Docs only | hasMarketContext (future) | CL-ONT |
-| CE-ONT | - | ⚠️ Empty | hasCustomerContext (future) | - |
+| CE-ONT | - | ⚠️ Empty | hasCustomerContext (future) | ORG-MAT-ONT |
 | EA-ONT | - | ⏸️ ON HOLD | Instance data for PPM-ONT | - |
 
 ## Join Pattern Registry
@@ -294,6 +325,8 @@ graph LR
 | JP-VSOM-001 | ORG-ONT | VSOM-ONT | Org→Context→VSOM | Full strategic context |
 | JP-VSOM-002 | CL-ONT | VSOM-ONT | ReviewCycle→Landscape | Competitive feedback |
 | JP-VSOM-003 | VSOM-ONT | VSOM-ONT | Metric→ReviewCycle | Performance-driven iteration |
+| JP-MAT-001 | ORG-ONT | ORG-MAT-ONT | Org→Context→MaturityProfile | Organization maturity assessment |
+| JP-MAT-002 | ORG-MAT-ONT | ORG-MAT-ONT | Profile→DimensionScores | Access all maturity dimensions |
 
 ---
 

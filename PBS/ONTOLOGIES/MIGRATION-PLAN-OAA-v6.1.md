@@ -33,6 +33,7 @@
 | CL-ONT | v1.0.0 | ✅ Production | [CL-ONT/competitive-landscape-v1.0.0-oaa-v5.json](pfc-ontologies/CL-ONT/) |
 | PE-ONT | v2.0.0 | ✅ Production | [PE-ONT/process-engineering-v2.0.0-oaa-v5.json](pfc-ontologies/PE-ONT/) |
 | VSOM-ONT | v2.1.0 | ✅ Production | [VSOM-ONT/vsom-ontology-v2.1.0-oaa-v5.json](pfc-ontologies/VSOM-ONT/) |
+| ORG-MAT-ONT | v1.0.0 | ✅ Production | [ORG-MAT-ONT/org-maturity-v1.0.0-oaa-v5.json](pfc-ontologies/ORG-MAT-ONT/) |
 
 ---
 
@@ -49,6 +50,7 @@
 | EA-ONT | ON HOLD | ⚠️ Instance data for PPM-ONT |
 | OKR-ONT | Existing | ⚠️ Glossary only |
 | ORG-ONT | **UPGRADED** v2.1.0 | ✅ Yes (G3 IF-THEN rules) |
+| ORG-MAT-ONT | **NEW** v1.0.0 | ✅ Yes (19 maturity dimensions) |
 | PE-ONT | **NEW** v2.0.0 | ✅ Yes |
 | PMF-ONT | Existing | ⚠️ Docs only |
 | PPM-ONT | v3.0.0 | ✅ Yes |
@@ -101,6 +103,7 @@ PBS/ONTOLOGIES/
 │   ├── EA-ONT/               # Enterprise Architecture (ON HOLD - PPM instance data)
 │   ├── OKR-ONT/              # Objectives & Key Results
 │   ├── ORG-ONT/              # Organisation ✅ UPGRADED v2.1.0
+│   ├── ORG-MAT-ONT/          # Organization Maturity ✅ NEW (19 dimensions)
 │   ├── PE-ONT/               # Process Engineering ✅
 │   ├── PMF-ONT/              # Product-Market Fit
 │   ├── PPM-ONT/              # Portfolio Program Project ✅
@@ -147,6 +150,7 @@ Domain ontologies connect to ORG-ONT via OrganizationContext rather than directl
 org:Organization (core entity)
     └── org:hasContext → org:OrganizationContext (hub)
                               ├── cl:hasCompetitiveLandscape → CL-ONT
+                              ├── mat:hasMaturityProfile → ORG-MAT-ONT
                               ├── (future) hasStrategicContext → VSOM-ONT
                               ├── (future) hasTransformationContext → EA data
                               └── (future) hasMarketContext → PMF-ONT
@@ -167,6 +171,8 @@ Each context ontology declares join patterns for graph composition:
 | JP-CL-001 | Org→Context→Landscape | Full competitive context |
 | JP-CL-002 | Landscape→Analysis | CA-ONT integration |
 | JP-CL-003 | Landscape→Strategy | VSOM-ONT integration |
+| JP-MAT-001 | Org→Context→MaturityProfile | Organization maturity assessment |
+| JP-MAT-002 | Profile→DimensionScores | Access all maturity dimensions |
 
 ### PF-Core vs PFI Graphs
 
