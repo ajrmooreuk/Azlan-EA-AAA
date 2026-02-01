@@ -1,14 +1,25 @@
 # VE-OKR-ONT (Value Engineering for OKR)
 
-**Status:** Planned
+**Status:** In Development
 **Order in Series:** 2 of 5
-**Dependencies:** ORG-Context, OKR-ONT, VE-VSOM-ONT
+**Dependencies:** ORG-Context, VE-VSOM-ONT
 
 ## Overview
 
-Value engineering for Objectives and Key Results. Receives value cascade from VE-VSOM and refines it to the OKR level.
+Value engineering for Objectives and Key Results. Receives value cascade from VE-VSOM and refines it to the OKR level. This folder now contains the base OKR-ONT content which serves as the foundation for value engineering extensions.
 
-## Planned Entities
+## Base OKR-ONT Content (Migrated)
+
+The following files were migrated from the standalone OKR-ONT folder:
+
+| File | Description |
+|------|-------------|
+| `PFC-ONT-OKR-v1_0_0.jsonld` | Base OKR ontology (JSON-LD format) |
+| `PFC-ONT-OKR-documentation.md` | OKR ontology documentation |
+| `PFC-ONT-OKR-glossary.json` | OKR terminology glossary |
+| `PFC-ONT-OKR-README.md` | Original OKR-ONT README |
+
+## Planned VE Entities
 
 | Entity | Description |
 |--------|-------------|
@@ -21,20 +32,26 @@ Value engineering for Objectives and Key Results. Receives value cascade from VE
 
 | Relationship | Range | Description |
 |--------------|-------|-------------|
-| engineersOKRValue | okr:OKRFramework | Main bridge to OKR-ONT |
+| engineersOKRValue | okr:OKRFramework | Main bridge to base OKR content |
 | receivesFrom | VE-VSOM-ONT | Receives value cascade |
 | refinesTo | VE-KPI-ONT | Refines value to KPI layer |
 
 ## Prerequisites
 
-- OKR-ONT must be created first (currently glossary only)
 - VE-VSOM-ONT must be created first
 
-## Files (Planned)
+## Files
 
 | File | Version | Status |
 |------|---------|--------|
-| `ve-okr-v1.0.0-oaa-v5.json` | 1.0.0 | Planned |
+| `PFC-ONT-OKR-v1_0_0.jsonld` | 1.0.0 | Base (migrated) |
+| `ve-okr-v1.0.0-oaa-v5.json` | 1.0.0 | Planned (VE extension) |
+
+## Migration Notes
+
+- OKR-ONT content moved from `/PBS/ONTOLOGIES/pfc-ontologies/OKR-ONT/` on Feb 2026
+- Base ontology in JSON-LD format will be converted to OAA v5 JSON schema
+- VE extension will add value engineering entities and relationships
 
 ---
 
