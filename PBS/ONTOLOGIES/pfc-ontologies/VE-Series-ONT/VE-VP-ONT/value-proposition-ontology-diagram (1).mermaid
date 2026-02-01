@@ -1,0 +1,99 @@
+graph TB
+    subgraph "PROBLEM DOMAIN"
+        Problem[Problem<br/>Core Challenge]
+        PainPoint[PainPoint<br/>Specific Difficulty]
+        Consequence[Consequence<br/>Negative Outcome]
+        ValidationEvidence[ValidationEvidence<br/>Proof of Problem]
+        ProblemTrigger[ProblemTrigger<br/>What Causes It]
+    end
+    
+    subgraph "CUSTOMER DOMAIN"
+        TargetCustomer[TargetCustomer<br/>Who Experiences It]
+        Stakeholder[Stakeholder<br/>Roles & Influencers]
+    end
+    
+    subgraph "MARKET DOMAIN"
+        MarketContext[MarketContext<br/>Market Environment]
+        CurrentSolution[CurrentSolution<br/>What Exists Today]
+        SolutionGap[SolutionGap<br/>What's Missing]
+        CompetitiveAlternative[CompetitiveAlternative<br/>Competitors]
+    end
+    
+    subgraph "SOLUTION DOMAIN"
+        Solution[Solution<br/>Your Offering]
+        Feature[Feature<br/>What It Does]
+        Benefit[Benefit<br/>Value Delivered]
+        Differentiator[Differentiator<br/>What Makes It Unique]
+    end
+    
+    subgraph "VALUE ARTICULATION"
+        ValueProposition[ValueProposition<br/>Complete Value Story]
+        MessagingFramework[MessagingFramework<br/>How to Communicate]
+        ProofPoint[ProofPoint<br/>Supporting Evidence]
+        ValueEvidence[ValueEvidence<br/>Proof of Value]
+    end
+    
+    subgraph "IMPLEMENTATION"
+        ImplementationPath[ImplementationPath<br/>How to Deploy]
+        SuccessMetric[SuccessMetric<br/>How to Measure]
+        CustomerJourney[CustomerJourney<br/>Customer Experience]
+    end
+    
+    %% Problem Relationships
+    Problem -->|affects| TargetCustomer
+    Problem -->|hasPainPoint| PainPoint
+    Problem -->|hasConsequence| Consequence
+    Problem -->|triggeredBy| ProblemTrigger
+    Problem -->|addressedBy| CurrentSolution
+    Problem -->|validatedBy| ValidationEvidence
+    
+    %% Customer Relationships
+    TargetCustomer -->|hasStakeholder| Stakeholder
+    TargetCustomer -->|participatesIn| CustomerJourney
+    
+    %% Market Relationships
+    CurrentSolution -->|hasGap| SolutionGap
+    MarketContext -->|hasCompetitor| CompetitiveAlternative
+    
+    %% Solution Relationships
+    Solution -->|addresses| Problem
+    Solution -->|hasFeature| Feature
+    Solution -->|delivers| Benefit
+    Solution -->|differentiatedBy| Differentiator
+    Solution -->|implementedVia| ImplementationPath
+    
+    %% Feature-Benefit Relationships
+    Feature -->|enables| Benefit
+    Feature -->|addresses| PainPoint
+    Benefit -->|mitigates| PainPoint
+    Benefit -->|evidencedBy| ValueEvidence
+    
+    %% Value Proposition Relationships
+    ValueProposition -->|targets| TargetCustomer
+    ValueProposition -->|addresses| Problem
+    ValueProposition -->|offeredThrough| Solution
+    ValueProposition -->|communicatedVia| MessagingFramework
+    ValueProposition -->|supportedBy| ValueEvidence
+    ValueProposition -->|differentiatesFrom| CompetitiveAlternative
+    
+    %% Messaging Relationships
+    MessagingFramework -->|hasProofPoint| ProofPoint
+    MessagingFramework -->|customizedFor| Stakeholder
+    
+    %% Implementation Relationships
+    ImplementationPath -->|measuredBy| SuccessMetric
+    
+    %% Styling
+    classDef problemClass fill:#ffcccc,stroke:#cc0000,stroke-width:2px
+    classDef customerClass fill:#ccffcc,stroke:#00cc00,stroke-width:2px
+    classDef marketClass fill:#ccccff,stroke:#0000cc,stroke-width:2px
+    classDef solutionClass fill:#ffffcc,stroke:#cccc00,stroke-width:2px
+    classDef valueClass fill:#ffccff,stroke:#cc00cc,stroke-width:2px
+    classDef implClass fill:#ccffff,stroke:#00cccc,stroke-width:2px
+    
+    class Problem,PainPoint,Consequence,ValidationEvidence,ProblemTrigger problemClass
+    class TargetCustomer,Stakeholder customerClass
+    class MarketContext,CurrentSolution,SolutionGap,CompetitiveAlternative marketClass
+    class Solution,Feature,Benefit,Differentiator solutionClass
+    class ValueProposition,MessagingFramework,ProofPoint,ValueEvidence valueClass
+    class ImplementationPath,SuccessMetric,CustomerJourney implClass

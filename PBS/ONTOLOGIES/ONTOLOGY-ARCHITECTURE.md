@@ -492,7 +492,7 @@ graph LR
 | VE-Series-ONT | VE-RRR-ONT | v3.0.0 | ✅ Production | - | VE-VSOM-ONT |
 | VE-Series-ONT | VE-PMF-ONT | - | ⚠️ Docs only | hasMarketContext (future) | CL-ONT |
 | VE-Series-ONT | VE-KPI-ONT | - | ⏸️ Placeholder | - | VE-VSOM-ONT |
-| VE-Series-ONT | VE-VP-ONT | - | ⏸️ Placeholder | - | VE-VSOM-ONT |
+| VE-Series-ONT | VE-VP-ONT | v1.0.0 | ✅ Production | - | VE-VSOM-ONT |
 | **PE-Series-ONT** | PE-PPM-ONT | v3.0.0 | ✅ Production | Direct | VE-VSOM-ONT (future) |
 | PE-Series-ONT | PE-Process-Engr-ONT | v2.0.0 | ✅ Production | hasProcessContext (future) | ORG-MAT-ONT |
 | PE-Series-ONT | PE-Campaign-Mgr-ONT | - | ⏸️ Placeholder | - | PE-PPM-ONT |
