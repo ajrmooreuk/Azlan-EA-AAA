@@ -1,0 +1,493 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@base": "https://ontology.platform.com/",
+    "pf": "https://ontology.platform.com/pf#",
+    "schema": "https://schema.org/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dct": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "pf:organisation-ontology-v2.1",
+      "@type": ["owl:Ontology", "pf:CoreOntology"],
+      "rdfs:label": "PF Organisation Ontology",
+      "owl:versionInfo": "2.1.0",
+      "dct:title": "PF Organisation Ontology - Platform Common Multi-dimensional Customer Targeting & Relationship Management",
+      "dct:description": "A comprehensive, AI-ready, platform-agnostic semantic framework for multi-dimensional customer targeting, qualification, and relationship management. Designed as a common foundation for any business platform requiring systematic organization intelligence.",
+      "dct:created": "2024-09-15",
+      "dct:modified": "2025-10-08",
+      "dct:creator": {
+        "@type": "schema:Organization",
+        "schema:name": "Platform Common Ontology Initiative",
+        "schema:description": "Enterprise ontology standardization"
+      },
+      "owl:imports": [
+        "https://schema.org/Organization"
+      ],
+      "pf:designPrinciples": [
+        "Platform Agnostic - Works with any business platform",
+        "Single Instance, Multi-Role Architecture",
+        "Discovery-Driven Evolution",
+        "AI-Native Design",
+        "Modular Integration",
+        "Schema.org Foundation"
+      ],
+      "pf:supportedPhases": 16,
+      "pf:applicability": "Universal - Any business platform requiring organization intelligence"
+    },
+    
+    {
+      "@id": "pf:Organisation",
+      "@type": "owl:Class",
+      "rdfs:label": "Organisation",
+      "rdfs:comment": "Core entity representing any business, government, or organizational entity in a platform ecosystem",
+      "rdfs:subClassOf": "schema:Organization",
+      "skos:definition": "An organized entity such as a company, government agency, nonprofit, or other institution that can be a target customer, client, partner, or competitor",
+      "pf:schemaOrgBase": "schema:Organization",
+      "pf:schemaOrgAlignment": "100%",
+      "pf:usageContext": "Primary entity for all organizational relationships in any business platform",
+      "pf:aiAgentCapability": "AI agents can discover, enrich, analyze, and score organizations through progressive phase-based enrichment"
+    },
+    
+    {
+      "@id": "pf:TargetOrganisation",
+      "@type": "owl:Class",
+      "rdfs:label": "Target Organisation",
+      "rdfs:comment": "An organization identified as a potential customer or prospect",
+      "rdfs:subClassOf": "pf:Organisation",
+      "pf:relationshipType": "Prospect",
+      "pf:engagementPhase": "Discovery"
+    },
+    
+    {
+      "@id": "pf:ClientOrganisation",
+      "@type": "owl:Class",
+      "rdfs:label": "Client Organisation",
+      "rdfs:comment": "An organization that has an active customer relationship",
+      "rdfs:subClassOf": "pf:Organisation",
+      "pf:relationshipType": "Client",
+      "pf:engagementPhase": "Active"
+    },
+    
+    {
+      "@id": "pf:CompetitorOrganisation",
+      "@type": "owl:Class",
+      "rdfs:label": "Competitor Organisation",
+      "rdfs:comment": "An organization identified as a competitor to a target or client",
+      "rdfs:subClassOf": "pf:Organisation",
+      "pf:relationshipType": "Competitor",
+      "pf:analysisContext": "Competitive Intelligence"
+    },
+    
+    {
+      "@id": "pf:PartnerOrganisation",
+      "@type": "owl:Class",
+      "rdfs:label": "Partner Organisation",
+      "rdfs:comment": "An organization with a strategic partnership relationship",
+      "rdfs:subClassOf": "pf:Organisation",
+      "pf:relationshipType": "Partner",
+      "pf:engagementPhase": "Collaboration"
+    },
+    
+    {
+      "@id": "pf:orgId",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Organisation ID",
+      "rdfs:comment": "Unique identifier for the organization within the platform system",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "1..1",
+      "pf:required": true,
+      "pf:immutable": true,
+      "pf:pattern": "^[A-Z]\\d+-\\d{4}$",
+      "pf:example": "B1-0001"
+    },
+    
+    {
+      "@id": "pf:batchId",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Batch ID",
+      "rdfs:comment": "Identifier for the batch import that created this organization record",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..1",
+      "pf:example": "BATCH-001"
+    },
+    
+    {
+      "@id": "pf:platformContext",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Platform Context",
+      "rdfs:comment": "Which platform module or service line this organization is associated with",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "1..*",
+      "pf:note": "Platform-specific values should be defined by implementing organization"
+    },
+    
+    {
+      "@id": "pf:relationshipType",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Relationship Type",
+      "rdfs:comment": "Nature of the relationship with this organization",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "pf:RelationshipType",
+      "owl:cardinality": "1..*",
+      "pf:allowedValues": ["Prospect", "Client", "Competitor", "Partner", "Supplier", "Other"]
+    },
+    
+    {
+      "@id": "pf:engagementStatus",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Engagement Status",
+      "rdfs:comment": "Current stage of engagement with this organization",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "pf:EngagementStatus",
+      "owl:cardinality": "1..1",
+      "pf:allowedValues": ["Identified", "Researched", "Contacted", "Engaged", "Qualified", "Negotiating", "Closed-Won", "Closed-Lost", "Nurturing"]
+    },
+    
+    {
+      "@id": "pf:accountOwner",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Account Owner",
+      "rdfs:comment": "Person responsible for managing this organization relationship",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..1"
+    },
+    
+    {
+      "@id": "pf:businessCategory",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Business Category",
+      "rdfs:comment": "High-level classification of business type",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..1",
+      "pf:examples": ["SaaS Provider", "Software Company", "Professional Services", "Manufacturing", "Retail"]
+    },
+    
+    {
+      "@id": "pf:rawBusinessType",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Raw Business Type",
+      "rdfs:comment": "Original business type description as provided",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..1"
+    },
+    
+    {
+      "@id": "pf:industry",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Industry",
+      "rdfs:comment": "Industry sector classification",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..*",
+      "pf:schemaOrgEquivalent": "schema:industry"
+    },
+    
+    {
+      "@id": "pf:discoveryStatus",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Discovery Status",
+      "rdfs:comment": "Tracks the progressive discovery and enrichment of organization data",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "pf:DiscoveryStatus",
+      "owl:cardinality": "1..1",
+      "pf:required": true
+    },
+    
+    {
+      "@id": "pf:DiscoveryStatus",
+      "@type": "owl:Class",
+      "rdfs:label": "Discovery Status",
+      "rdfs:comment": "Composite object tracking data discovery progress"
+    },
+    
+    {
+      "@id": "pf:phase",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Discovery Phase",
+      "rdfs:comment": "Current phase in the 16-phase discovery process",
+      "rdfs:domain": "pf:DiscoveryStatus",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "1..1",
+      "pf:pattern": "^P([1-9]|1[0-6])$",
+      "pf:allowedValues": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15", "P16"]
+    },
+    
+    {
+      "@id": "pf:completeness",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Data Completeness",
+      "rdfs:comment": "Percentage of required data fields that are populated",
+      "rdfs:domain": "pf:DiscoveryStatus",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "1..1",
+      "pf:pattern": "^\\d{1,3}%$"
+    },
+    
+    {
+      "@id": "pf:dataPopulated",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Data Populated",
+      "rdfs:comment": "List of fields that have been populated with data",
+      "rdfs:domain": "pf:DiscoveryStatus",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..*"
+    },
+    
+    {
+      "@id": "pf:dataRequired",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Data Required",
+      "rdfs:comment": "List of fields that still need to be discovered",
+      "rdfs:domain": "pf:DiscoveryStatus",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..*"
+    },
+    
+    {
+      "@id": "pf:strategicAssessment",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Strategic Assessment",
+      "rdfs:comment": "Comprehensive strategic assessment of the organization",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "pf:StrategicAssessment",
+      "owl:cardinality": "0..1"
+    },
+    
+    {
+      "@id": "pf:StrategicAssessment",
+      "@type": "owl:Class",
+      "rdfs:label": "Strategic Assessment",
+      "rdfs:comment": "Comprehensive assessment of organization's strategic position and capabilities"
+    },
+    
+    {
+      "@id": "pf:maturityLevel",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Maturity Level",
+      "rdfs:comment": "Overall organizational maturity score",
+      "rdfs:domain": "pf:StrategicAssessment",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..1",
+      "pf:allowedValues": ["Emerging", "Developing", "Established", "Advanced", "Leading"]
+    },
+    
+    {
+      "@id": "pf:marketContext",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Market Context",
+      "rdfs:comment": "Market positioning and competitive context",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "pf:MarketContext",
+      "owl:cardinality": "0..1"
+    },
+    
+    {
+      "@id": "pf:MarketContext",
+      "@type": "owl:Class",
+      "rdfs:label": "Market Context",
+      "rdfs:comment": "Information about organization's market position and competitive landscape"
+    },
+    
+    {
+      "@id": "pf:targetMarket",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Target Market",
+      "rdfs:comment": "Primary market(s) the organization operates in",
+      "rdfs:domain": "pf:MarketContext",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..*"
+    },
+    
+    {
+      "@id": "pf:competitivePosition",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Competitive Position",
+      "rdfs:comment": "Assessment of competitive standing",
+      "rdfs:domain": "pf:MarketContext",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..1",
+      "pf:allowedValues": ["Leader", "Challenger", "Follower", "Niche", "Emerging"]
+    },
+    
+    {
+      "@id": "pf:performanceProfile",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Performance Profile",
+      "rdfs:comment": "Assessment of organization's performance and capabilities",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "pf:PerformanceProfile",
+      "owl:cardinality": "0..1"
+    },
+    
+    {
+      "@id": "pf:PerformanceProfile",
+      "@type": "owl:Class",
+      "rdfs:label": "Performance Profile",
+      "rdfs:comment": "Analysis of organization's performance metrics and capabilities"
+    },
+    
+    {
+      "@id": "pf:currentPerformanceScore",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Current Performance Score",
+      "rdfs:comment": "Quantitative assessment of current performance (0-100)",
+      "rdfs:domain": "pf:PerformanceProfile",
+      "rdfs:range": "xsd:integer",
+      "owl:cardinality": "0..1",
+      "pf:minValue": 0,
+      "pf:maxValue": 100
+    },
+    
+    {
+      "@id": "pf:performanceGaps",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Performance Gaps",
+      "rdfs:comment": "Identified gaps in performance or capabilities",
+      "rdfs:domain": "pf:PerformanceProfile",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "0..*"
+    },
+    
+    {
+      "@id": "pf:metadata",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "Metadata",
+      "rdfs:comment": "System metadata about the organization record",
+      "rdfs:domain": "pf:Organisation",
+      "rdfs:range": "pf:OrganisationMetadata",
+      "owl:cardinality": "1..1",
+      "pf:required": true
+    },
+    
+    {
+      "@id": "pf:OrganisationMetadata",
+      "@type": "owl:Class",
+      "rdfs:label": "Organisation Metadata",
+      "rdfs:comment": "System metadata tracking record management"
+    },
+    
+    {
+      "@id": "pf:createdDate",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Created Date",
+      "rdfs:comment": "When this organization record was created",
+      "rdfs:domain": "pf:OrganisationMetadata",
+      "rdfs:range": "xsd:dateTime",
+      "owl:cardinality": "1..1",
+      "pf:required": true,
+      "pf:immutable": true
+    },
+    
+    {
+      "@id": "pf:lastModified",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Last Modified",
+      "rdfs:comment": "When this organization record was last updated",
+      "rdfs:domain": "pf:OrganisationMetadata",
+      "rdfs:range": "xsd:dateTime",
+      "owl:cardinality": "1..1",
+      "pf:required": true
+    },
+    
+    {
+      "@id": "pf:dataQuality",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Data Quality",
+      "rdfs:comment": "Assessment of overall data quality",
+      "rdfs:domain": "pf:OrganisationMetadata",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "1..1",
+      "pf:allowedValues": ["Low", "Medium", "High", "Excellent"]
+    },
+    
+    {
+      "@id": "pf:requiresEnrichment",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Requires Enrichment",
+      "rdfs:comment": "Boolean flag indicating if record needs enrichment",
+      "rdfs:domain": "pf:OrganisationMetadata",
+      "rdfs:range": "xsd:boolean",
+      "owl:cardinality": "1..1"
+    },
+    
+    {
+      "@id": "pf:agentProcessingStatus",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "Agent Processing Status",
+      "rdfs:comment": "Current status of AI agent processing",
+      "rdfs:domain": "pf:OrganisationMetadata",
+      "rdfs:range": "xsd:string",
+      "owl:cardinality": "1..1",
+      "pf:allowedValues": ["Pending", "InProgress", "Complete", "Failed", "Paused"]
+    },
+    
+    {
+      "@id": "pf:BusinessRules",
+      "@type": "owl:Class",
+      "rdfs:label": "Business Rules",
+      "rdfs:comment": "Collection of business rules governing organization data"
+    },
+    
+    {
+      "@id": "pf:rule-001",
+      "@type": "pf:BusinessRule",
+      "rdfs:label": "Unique Organization ID",
+      "pf:ruleType": "Constraint",
+      "pf:description": "Every organization must have a unique orgId",
+      "pf:validation": "orgId must match pattern ^[A-Z]\\d+-\\d{4}$ and be unique across all organizations",
+      "pf:severity": "Error"
+    },
+    
+    {
+      "@id": "pf:rule-002",
+      "@type": "pf:BusinessRule",
+      "rdfs:label": "Website URL Format",
+      "pf:ruleType": "Validation",
+      "pf:description": "Website URLs must be valid and normalized",
+      "pf:validation": "schema:url must be valid HTTP/HTTPS URL",
+      "pf:severity": "Warning"
+    },
+    
+    {
+      "@id": "pf:rule-003",
+      "@type": "pf:BusinessRule",
+      "rdfs:label": "Discovery Phase Progression",
+      "pf:ruleType": "Workflow",
+      "pf:description": "Organizations must progress through phases sequentially",
+      "pf:validation": "Cannot skip from P1 to P5; must complete intermediate phases",
+      "pf:severity": "Warning"
+    },
+    
+    {
+      "@id": "pf:rule-004",
+      "@type": "pf:BusinessRule",
+      "rdfs:label": "Minimum Contact Information",
+      "pf:ruleType": "Quality",
+      "pf:description": "Organizations should have at least one contact method",
+      "pf:validation": "Must have email OR phone OR contactPoint populated",
+      "pf:severity": "Info"
+    },
+    
+    {
+      "@id": "pf:rule-005",
+      "@type": "pf:BusinessRule",
+      "rdfs:label": "Platform Context Required",
+      "pf:ruleType": "Constraint",
+      "pf:description": "Every organization must be assigned to at least one platform module",
+      "pf:validation": "platformContext must contain at least one value",
+      "pf:severity": "Error"
+    }
+  ]
+}

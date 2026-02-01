@@ -1,0 +1,246 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@base": "https://ontology.platform.com/registry/",
+    "pf": "https://ontology.platform.com/pf#",
+    "schema": "https://schema.org/",
+    "dct": "http://purl.org/dc/terms/",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
+  "@type": "pf:OntologyRegistryEntry",
+  "@id": "pf:registry:organisation-ontology-v2.1",
+  "schema:name": "PF Organisation Ontology",
+  "schema:version": "2.1.0",
+  "schema:dateCreated": "2024-09-15",
+  "schema:dateModified": "2025-10-08",
+  "pf:status": "active",
+  "pf:ontologyIdentifier": "pf:organisation-ontology-v2.1",
+  "pf:ontologyType": "core",
+  "pf:namespace": "https://ontology.platform.com/pf#",
+  "pf:namespacePrefix": "pf",
+  
+  "schema:description": "Platform Common (PF) core ontology for organizational entity management, customer targeting, qualification, and relationship tracking. Platform-agnostic and universally applicable.",
+  
+  "pf:domain": "Customer Relationship Management & Business Intelligence",
+  "pf:subDomains": [
+    "Prospect Management",
+    "Customer Intelligence",
+    "Competitive Analysis",
+    "Market Research",
+    "Strategic Assessment",
+    "Performance Analysis"
+  ],
+  
+  "pf:applicability": "Universal - Any business platform requiring organization intelligence",
+  "pf:platformAgnostic": true,
+  
+  "pf:entities": [
+    {
+      "entityId": "pf:Organisation",
+      "entityName": "Organisation",
+      "entityType": "Core",
+      "schemaOrgBase": "schema:Organization",
+      "description": "Base entity for all organizational entities",
+      "propertyCount": 15,
+      "relationshipCount": 7,
+      "required": true
+    },
+    {
+      "entityId": "pf:TargetOrganisation",
+      "entityName": "Target Organisation",
+      "entityType": "Specialized",
+      "parentEntity": "pf:Organisation",
+      "description": "Prospect organizations"
+    },
+    {
+      "entityId": "pf:ClientOrganisation",
+      "entityName": "Client Organisation",
+      "entityType": "Specialized",
+      "parentEntity": "pf:Organisation",
+      "description": "Active customer organizations"
+    },
+    {
+      "entityId": "pf:CompetitorOrganisation",
+      "entityName": "Competitor Organisation",
+      "entityType": "Specialized",
+      "parentEntity": "pf:Organisation",
+      "description": "Competitive organizations"
+    },
+    {
+      "entityId": "pf:PartnerOrganisation",
+      "entityName": "Partner Organisation",
+      "entityType": "Specialized",
+      "parentEntity": "pf:Organisation",
+      "description": "Strategic partners"
+    },
+    {
+      "entityId": "pf:DiscoveryStatus",
+      "entityName": "Discovery Status",
+      "entityType": "Composite",
+      "description": "Progressive data discovery tracking"
+    },
+    {
+      "entityId": "pf:StrategicAssessment",
+      "entityName": "Strategic Assessment",
+      "entityType": "Composite",
+      "description": "Organizational maturity assessment"
+    },
+    {
+      "entityId": "pf:MarketContext",
+      "entityName": "Market Context",
+      "entityType": "Composite",
+      "description": "Market positioning"
+    },
+    {
+      "entityId": "pf:PerformanceProfile",
+      "entityName": "Performance Profile",
+      "entityType": "Composite",
+      "description": "Performance metrics and gaps"
+    },
+    {
+      "entityId": "pf:OrganisationMetadata",
+      "entityName": "Organisation Metadata",
+      "entityType": "System",
+      "description": "System metadata"
+    }
+  ],
+  
+  "pf:coreProperties": [
+    "pf:orgId",
+    "pf:batchId",
+    "pf:platformContext",
+    "pf:relationshipType",
+    "pf:engagementStatus",
+    "pf:accountOwner",
+    "pf:businessCategory",
+    "pf:industry",
+    "pf:discoveryStatus",
+    "pf:strategicAssessment",
+    "pf:marketContext",
+    "pf:performanceProfile",
+    "pf:metadata"
+  ],
+  
+  "pf:businessRules": [
+    {
+      "ruleId": "pf:rule-001",
+      "ruleName": "Unique Organization ID",
+      "ruleType": "Constraint",
+      "severity": "Error"
+    },
+    {
+      "ruleId": "pf:rule-002",
+      "ruleName": "Website URL Format",
+      "ruleType": "Validation",
+      "severity": "Warning"
+    },
+    {
+      "ruleId": "pf:rule-003",
+      "ruleName": "Discovery Phase Progression",
+      "ruleType": "Workflow",
+      "severity": "Warning"
+    },
+    {
+      "ruleId": "pf:rule-004",
+      "ruleName": "Minimum Contact Information",
+      "ruleType": "Quality",
+      "severity": "Info"
+    },
+    {
+      "ruleId": "pf:rule-005",
+      "ruleName": "Platform Context Required",
+      "ruleType": "Constraint",
+      "severity": "Error"
+    }
+  ],
+  
+  "pf:dependencies": [
+    {
+      "ontologyId": "schema:Organization",
+      "ontologyName": "Schema.org Organization",
+      "dependencyType": "extends",
+      "description": "Extends schema.org Organization vocabulary"
+    }
+  ],
+  
+  "pf:qualityMetrics": {
+    "entityReuseRate": 95,
+    "schemaOrgAlignment": 85,
+    "validationPassRate": 98,
+    "documentationCompleteness": 100,
+    "relationshipDensity": 7,
+    "namingConventionCompliance": 100
+  },
+  
+  "pf:qualityStatus": "Exceeds All Thresholds",
+  
+  "pf:changeHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2024-09-15",
+      "changeType": "Initial",
+      "description": "Initial domain-specific ontology creation"
+    },
+    {
+      "version": "2.1.0",
+      "date": "2025-10-08",
+      "changeType": "Major",
+      "description": "Platform Common release - converted to platform-agnostic standard",
+      "changes": [
+        "Namespace changed from baiv: to pf:",
+        "Genericized platformContext",
+        "Renamed aiReadiness to strategicAssessment",
+        "Renamed visibilityProfile to performanceProfile",
+        "Enhanced documentation for universal adoption"
+      ]
+    }
+  ],
+  
+  "pf:artifacts": [
+    {
+      "artifactType": "Ontology Definition",
+      "format": "JSON-LD",
+      "location": "pf_organisation_ontology_v2.1.json",
+      "dateGenerated": "2025-10-08"
+    },
+    {
+      "artifactType": "Glossary",
+      "format": "JSON",
+      "location": "pf_organisation_glossary_v2.1.json",
+      "dateGenerated": "2025-10-08"
+    },
+    {
+      "artifactType": "Test Data",
+      "format": "JSON-LD",
+      "location": "pf_organisation_test_data_v2.1.json",
+      "dateGenerated": "2025-10-08"
+    },
+    {
+      "artifactType": "Documentation",
+      "format": "Markdown",
+      "location": "PF_ORGANISATION_ONTOLOGY_COMPLETE_DOCUMENTATION.md",
+      "dateGenerated": "2025-10-08"
+    }
+  ],
+  
+  "pf:governance": {
+    "owner": "Platform Common Ontology Initiative",
+    "steward": "Community Governance Board",
+    "reviewCycle": "Quarterly"
+  },
+  
+  "pf:compliance": {
+    "oaaCompliant": true,
+    "schemaOrgCompliant": true,
+    "w3cCompliant": true,
+    "jsonLdValid": true,
+    "platformAgnostic": true
+  },
+  
+  "pf:metadata": {
+    "registrationDate": "2024-09-15T10:00:00Z",
+    "lastUpdated": "2025-10-08T18:00:00Z",
+    "registryVersion": "2.1.0",
+    "registrar": "OAA - Ontology Architect Agent"
+  }
+}
