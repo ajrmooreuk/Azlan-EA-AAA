@@ -1,6 +1,6 @@
 # Ontology Architecture Overview
 
-**Version:** 1.2.0
+**Version:** 1.3.0
 **Date:** 2026-02-01
 **Status:** Production
 
@@ -57,6 +57,19 @@ graph TB
 
         CA -->|analyzesCompetitor| CA_COMP
         CA -->|analysisFor| CA_TARGET
+
+        GA[("GA-ONT v1.0.0<br/>GapAnalysis")]
+        GAP["IdentifiedGap"]
+        THREAT["ThreatAssessment"]
+        OPP["OpportunityAssessment"]
+        PRIORITY["PriorityMatrix"]
+        REC["Recommendation"]
+
+        GA -->|identifiesGap| GAP
+        GA -->|identifiesThreat| THREAT
+        GA -->|identifiesOpportunity| OPP
+        GA -->|hasPriorityMatrix| PRIORITY
+        GA -->|hasRecommendation| REC
     end
 
     subgraph "Execution Layer"
@@ -108,6 +121,13 @@ graph TB
     METRIC -->|triggersReview| REVIEW
     CL -->|informsAnalysis| CA
 
+    %% Gap Analysis Connections
+    ORG_CTX -->|hasGapAnalysis| GA
+    GA -->|strategicContext| VSOM
+    GA -->|analysesLandscape| CL
+    REC -->|spawnsProject| PROJECT
+    REC -.->|alignsToObjective| OBJ
+
     %% Strategic Alignment
     STRAT -->|alignsToStrategy| CL
     PROGRAMME -.->|alignsToObjective| OBJ
@@ -128,7 +148,7 @@ graph TB
     class ORG,ORG_CTX foundation
     class VSOM,VISION,STRAT,OBJ,METRIC,REVIEW strategic
     class CL,SEGMENT,COMPETITOR,DYNAMIC,ADVANTAGE,OPPORTUNITY competitive
-    class CA,CA_TARGET,CA_COMP,CA_REPORT analysis
+    class CA,CA_TARGET,CA_COMP,CA_REPORT,GA,GAP,THREAT,OPP,PRIORITY,REC analysis
     class PPM,PORTFOLIO,PROGRAMME,PROJECT execution
     class MAT,PROFILE,SIZE,SECTOR,TECH,DIGITAL maturity
     class PE,OKR,VE,PMF,CE,RRR supporting
@@ -153,6 +173,10 @@ graph LR
         CA[CA-ONT v2.1.0]
     end
 
+    subgraph "Analysis"
+        GA[GA-ONT v1.0.0]
+    end
+
     subgraph "Maturity"
         MAT[ORG-MAT-ONT v1.0.0]
     end
@@ -173,11 +197,14 @@ graph LR
     CTX --> VSOM
     CTX --> CL
     CTX --> MAT
+    CTX --> GA
     CTX -.-> PE
     CTX -.-> PMF
     CTX -.-> CE
 
     CL --> CA
+    GA --> CL
+    GA --> VSOM
     CL <--> REVIEW
     REVIEW --> VSOM
     VSOM --> OKR
@@ -190,6 +217,7 @@ graph LR
     style REVIEW fill:#57837b,color:#fff
     style CL fill:#c38154,color:#fff
     style CA fill:#884a39,color:#fff
+    style GA fill:#884a39,color:#fff
     style MAT fill:#6b5b95,color:#fff
     style PPM fill:#2c3333,color:#fff
 ```
@@ -234,6 +262,7 @@ graph TB
         CL_B[hasCompetitiveLandscape]
         VS_B[hasStrategicContext]
         MAT_B[hasMaturityProfile]
+        GA_B[hasGapAnalysis]
         PM_B[hasMarketContext]
         PE_B[hasProcessContext]
         CE_B[hasCustomerContext]
@@ -243,6 +272,7 @@ graph TB
         CL_O[CL-ONT v1.0.0]
         VS_O[VSOM-ONT v2.1.0]
         MAT_O[ORG-MAT-ONT v1.0.0]
+        GA_O[GA-ONT v1.0.0]
         PM_O[PMF-ONT]
         PE_O[PE-ONT v2.0.0]
         CE_O[CE-ONT]
@@ -251,6 +281,7 @@ graph TB
     OC --> CL_B --> CL_O
     OC --> VS_B --> VS_O
     OC --> MAT_B --> MAT_O
+    OC --> GA_B --> GA_O
     OC -.-> PM_B -.-> PM_O
     OC -.-> PE_B -.-> PE_O
     OC -.-> CE_B -.-> CE_O
@@ -260,6 +291,7 @@ graph TB
     style CL_O fill:#c38154,color:#fff
     style VS_O fill:#57837b,color:#fff
     style MAT_O fill:#6b5b95,color:#fff
+    style GA_O fill:#884a39,color:#fff
 ```
 
 ## Graph Composition Patterns
@@ -277,14 +309,18 @@ graph LR
 ```
 
 ### PFI Instance Graph (Full Context)
+
 ```mermaid
 graph LR
     ORG[ORG-ONT v2.1.0] --> CTX((Context))
     CTX --> VSOM[VSOM-ONT v2.1.0]
     CTX --> CL[CL-ONT v1.0.0]
     CTX --> MAT[ORG-MAT-ONT v1.0.0]
+    CTX --> GA[GA-ONT v1.0.0]
     CTX --> PE[PE-ONT v2.0.0]
     CL --> CA[CA-ONT v2.1.0]
+    GA --> CL
+    GA --> VSOM
     VSOM <--> CL
     ORG --> PPM[PPM-ONT v3.0.0]
 
@@ -293,6 +329,7 @@ graph LR
     style VSOM fill:#57837b,color:#fff
     style CL fill:#c38154,color:#fff
     style CA fill:#884a39,color:#fff
+    style GA fill:#884a39,color:#fff
     style MAT fill:#6b5b95,color:#fff
     style PPM fill:#2c3333,color:#fff
     style PE fill:#4a4a4a,color:#fff
@@ -307,6 +344,7 @@ graph LR
 | VSOM-ONT | v2.1.0 | ✅ Production | hasStrategicContext | CL-ONT (reviewsLandscape) |
 | CL-ONT | v1.0.0 | ✅ Production | hasCompetitiveLandscape | VSOM-ONT, CA-ONT |
 | CA-ONT | v2.1.0 | ✅ Production | Direct | ORG-ONT, CL-ONT |
+| GA-ONT | v1.0.0 | ✅ Production | hasGapAnalysis | VSOM-ONT, CL-ONT, PPM-ONT, ORG-MAT-ONT |
 | PPM-ONT | v3.0.0 | ✅ Production | Direct | VSOM-ONT (future) |
 | PE-ONT | v2.0.0 | ✅ Production | hasProcessContext (future) | ORG-MAT-ONT |
 | OKR-ONT | - | ⚠️ Glossary only | - | VSOM-ONT |
@@ -327,6 +365,11 @@ graph LR
 | JP-VSOM-003 | VSOM-ONT | VSOM-ONT | Metric→ReviewCycle | Performance-driven iteration |
 | JP-MAT-001 | ORG-ONT | ORG-MAT-ONT | Org→Context→MaturityProfile | Organization maturity assessment |
 | JP-MAT-002 | ORG-MAT-ONT | ORG-MAT-ONT | Profile→DimensionScores | Access all maturity dimensions |
+| JP-GA-001 | ORG-ONT | GA-ONT | Org→Context→GapAnalysis | Connect org to gap analysis |
+| JP-GA-002 | GA-ONT | VSOM-ONT | Analysis→strategicContext | Strategic alignment |
+| JP-GA-003 | GA-ONT | CL-ONT | Analysis→analysesLandscape | Competitive grounding |
+| JP-GA-004 | GA-ONT | ORG-MAT-ONT | Gap→affectsMaturity | Maturity impact |
+| JP-GA-005 | GA-ONT | PPM-ONT | Recommendation→spawnsProject | Execution handoff |
 
 ---
 

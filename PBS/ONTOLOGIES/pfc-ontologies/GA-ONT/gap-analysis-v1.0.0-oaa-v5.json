@@ -1,0 +1,670 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://platform-foundation.ai/ontology/oaa/",
+    "ga": "https://platform-foundation.ai/ontology/gap-analysis/",
+    "org": "https://platform-foundation.ai/ontology/organization/",
+    "vsom": "https://platform-foundation.ai/ontology/vsom/",
+    "cl": "https://platform-foundation.ai/ontology/competitive-landscape/",
+    "mat": "https://platform-foundation.ai/ontology/org-maturity/",
+    "ppm": "https://platform-foundation.ai/ontology/ppm/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
+  "@id": "https://platform-foundation.ai/ontology/gap-analysis/",
+  "@type": "owl:Ontology",
+  "name": "Gap Analysis Ontology",
+  "description": "Comprehensive ontology for comparative gap analysis supporting the CGA (Comparative Gap Analysis) Agent. Models gaps, threats, opportunities, recommendations, and priority matrices with full cross-ontology integration.",
+  "oaa:schemaVersion": "5.0.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:status": "Production",
+  "oaa:domain": "Gap Analysis",
+  "oaa:imports": [
+    {
+      "ontology": "ORG-ONT",
+      "version": "2.1.0",
+      "entities": ["OrganizationContext"]
+    },
+    {
+      "ontology": "VSOM-ONT",
+      "version": "2.1.0",
+      "entities": ["VSOMFramework", "ObjectivesComponent", "MetricsComponent"]
+    },
+    {
+      "ontology": "CL-ONT",
+      "version": "1.0.0",
+      "entities": ["CompetitiveLandscape", "MarketSegment", "CompetitorProfile"]
+    },
+    {
+      "ontology": "ORG-MAT-ONT",
+      "version": "1.0.0",
+      "entities": ["MaturityProfile", "DimensionScore"]
+    },
+    {
+      "ontology": "PPM-ONT",
+      "version": "3.0.0",
+      "entities": ["Project", "Programme"]
+    }
+  ],
+  "oaa:joinPatterns": [
+    {
+      "id": "JP-GA-001",
+      "path": "OrganizationContext -> hasGapAnalysis -> GapAnalysisReport",
+      "description": "Connect organization context to gap analysis"
+    },
+    {
+      "id": "JP-GA-002",
+      "path": "GapAnalysisReport -> strategicContext -> VSOMFramework",
+      "description": "Align analysis with strategic framework"
+    },
+    {
+      "id": "JP-GA-003",
+      "path": "GapAnalysisReport -> analysesLandscape -> CompetitiveLandscape",
+      "description": "Ground analysis in competitive context"
+    },
+    {
+      "id": "JP-GA-004",
+      "path": "IdentifiedGap -> affectsMaturity -> DimensionScore",
+      "description": "Link gaps to maturity dimensions"
+    },
+    {
+      "id": "JP-GA-005",
+      "path": "Recommendation -> spawnsProject -> Project",
+      "description": "Transform recommendations into projects"
+    }
+  ],
+  "entities": [
+    {
+      "@id": "ga:GapAnalysisReport",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "CreativeWork",
+      "rdfs:label": "Gap Analysis Report",
+      "rdfs:comment": "Container for complete gap analysis including identified gaps, threats, opportunities, and recommendations",
+      "oaa:properties": [
+        {"name": "identifier", "type": "Text", "required": true},
+        {"name": "sessionId", "type": "Text", "required": true},
+        {"name": "analysisType", "type": "Text", "enum": ["comparative", "structural", "competitive", "capability", "content"]},
+        {"name": "domainInstance", "type": "Text", "description": "PF-Instance identifier (e.g., BAIV, AIR, W4M)"},
+        {"name": "dateCreated", "type": "DateTime", "required": true},
+        {"name": "status", "type": "Text", "enum": ["draft", "reviewed", "approved"]},
+        {"name": "entityCount", "type": "Integer"},
+        {"name": "relationshipCount", "type": "Integer"},
+        {"name": "timeframe", "type": "Text"},
+        {"name": "comparators", "type": "Text", "isArray": true}
+      ]
+    },
+    {
+      "@id": "ga:IdentifiedGap",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Identified Gap",
+      "rdfs:comment": "A gap identified through analysis with type, severity, confidence, and evidence",
+      "oaa:properties": [
+        {"name": "gapId", "type": "Text", "required": true},
+        {"name": "gapType", "type": "Text", "enum": ["structural_hole", "capability", "content", "competitive", "market", "technology"], "required": true},
+        {"name": "title", "type": "Text", "required": true},
+        {"name": "description", "type": "Text", "required": true},
+        {"name": "severity", "type": "Text", "enum": ["critical", "high", "medium", "low"], "required": true},
+        {"name": "confidence", "type": "Number", "minimum": 0, "maximum": 1, "required": true},
+        {"name": "affectedEntities", "type": "Text", "isArray": true}
+      ]
+    },
+    {
+      "@id": "ga:GapEvidence",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Gap Evidence",
+      "rdfs:comment": "Supporting evidence for an identified gap including source and metrics",
+      "oaa:properties": [
+        {"name": "source", "type": "Text", "required": true, "description": "Evidence source (e.g., InfraNodus, market research)"},
+        {"name": "metric", "type": "Text", "description": "Metric name (e.g., betweenness_centrality)"},
+        {"name": "value", "type": "Number"},
+        {"name": "dateCollected", "type": "DateTime"},
+        {"name": "methodology", "type": "Text"}
+      ]
+    },
+    {
+      "@id": "ga:BusinessImpact",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Business Impact",
+      "rdfs:comment": "Assessment of business impact from a gap including revenue, competitive, and opportunity risks",
+      "oaa:properties": [
+        {"name": "revenueRisk", "type": "Text", "enum": ["critical", "high", "medium", "low"]},
+        {"name": "competitiveRisk", "type": "Text", "enum": ["critical", "high", "medium", "low"]},
+        {"name": "opportunityCost", "type": "Text"},
+        {"name": "estimatedValue", "type": "MonetaryAmount"},
+        {"name": "timeToImpact", "type": "Text"}
+      ]
+    },
+    {
+      "@id": "ga:StructuralHole",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "ga:IdentifiedGap",
+      "rdfs:label": "Structural Hole",
+      "rdfs:comment": "A disconnected cluster in a knowledge graph identified through network analysis",
+      "oaa:properties": [
+        {"name": "betweennessCentrality", "type": "Number", "minimum": 0, "maximum": 1},
+        {"name": "clusterSize", "type": "Integer"},
+        {"name": "disconnectedNodes", "type": "Text", "isArray": true},
+        {"name": "graphDensity", "type": "Number"}
+      ]
+    },
+    {
+      "@id": "ga:BridgeConcept",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Bridge Concept",
+      "rdfs:comment": "A concept that could connect disconnected areas in a knowledge graph",
+      "oaa:properties": [
+        {"name": "conceptName", "type": "Text", "required": true},
+        {"name": "connectsGaps", "type": "Text", "isArray": true},
+        {"name": "bridgeStrength", "type": "Number", "minimum": 0, "maximum": 1},
+        {"name": "implementationComplexity", "type": "Text", "enum": ["low", "medium", "high"]},
+        {"name": "relatedConcepts", "type": "Text", "isArray": true}
+      ]
+    },
+    {
+      "@id": "ga:ThreatAssessment",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Threat Assessment",
+      "rdfs:comment": "Assessment of a competitive or market threat derived from identified gaps",
+      "oaa:properties": [
+        {"name": "threatId", "type": "Text", "required": true},
+        {"name": "threatType", "type": "Text", "enum": ["competitive", "market", "capability", "technology", "regulatory"], "required": true},
+        {"name": "description", "type": "Text", "required": true},
+        {"name": "probability", "type": "Number", "minimum": 0, "maximum": 1, "required": true},
+        {"name": "impact", "type": "Number", "minimum": 0, "maximum": 1, "required": true},
+        {"name": "riskScore", "type": "Number", "minimum": 0, "maximum": 1, "description": "Calculated as probability * impact"},
+        {"name": "timeHorizon", "type": "Text", "enum": ["immediate", "short-term", "medium-term", "long-term"]}
+      ]
+    },
+    {
+      "@id": "ga:MitigationOption",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Mitigation Option",
+      "rdfs:comment": "A potential mitigation strategy for a threat",
+      "oaa:properties": [
+        {"name": "option", "type": "Text", "required": true},
+        {"name": "effort", "type": "Text", "enum": ["low", "medium", "high"]},
+        {"name": "effectiveness", "type": "Number", "minimum": 0, "maximum": 1},
+        {"name": "cost", "type": "MonetaryAmount"},
+        {"name": "timeToImplement", "type": "Text"}
+      ]
+    },
+    {
+      "@id": "ga:OpportunityAssessment",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Opportunity Assessment",
+      "rdfs:comment": "Assessment of a strategic opportunity derived from gap analysis",
+      "oaa:properties": [
+        {"name": "opportunityId", "type": "Text", "required": true},
+        {"name": "opportunityType", "type": "Text", "enum": ["market", "capability", "content", "partnership", "technology", "innovation"], "required": true},
+        {"name": "title", "type": "Text", "required": true},
+        {"name": "description", "type": "Text", "required": true},
+        {"name": "feasibility", "type": "Number", "minimum": 0, "maximum": 1, "required": true},
+        {"name": "timeToValue", "type": "Text"},
+        {"name": "requiredCapabilities", "type": "Text", "isArray": true}
+      ]
+    },
+    {
+      "@id": "ga:PotentialValue",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Potential Value",
+      "rdfs:comment": "Estimated value of an opportunity",
+      "oaa:properties": [
+        {"name": "revenueImpact", "type": "MonetaryAmount"},
+        {"name": "marketShareGain", "type": "Text"},
+        {"name": "competitiveAdvantage", "type": "Text"},
+        {"name": "strategicValue", "type": "Text", "enum": ["critical", "high", "medium", "low"]},
+        {"name": "confidenceLevel", "type": "Number", "minimum": 0, "maximum": 1}
+      ]
+    },
+    {
+      "@id": "ga:PriorityMatrix",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Priority Matrix",
+      "rdfs:comment": "Impact/effort prioritization matrix with quadrants for gap and opportunity ranking",
+      "oaa:properties": [
+        {"name": "dimensions", "type": "Text", "isArray": true, "default": ["impact", "effort", "urgency", "alignment"]},
+        {"name": "weightImpact", "type": "Number", "minimum": 0, "maximum": 1, "default": 0.4},
+        {"name": "weightEffort", "type": "Number", "minimum": 0, "maximum": 1, "default": 0.3},
+        {"name": "weightUrgency", "type": "Number", "minimum": 0, "maximum": 1, "default": 0.15},
+        {"name": "weightAlignment", "type": "Number", "minimum": 0, "maximum": 1, "default": 0.15}
+      ]
+    },
+    {
+      "@id": "ga:PriorityQuadrant",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Priority Quadrant",
+      "rdfs:comment": "A quadrant in the priority matrix (Quick Wins, Major Projects, Fill-Ins, Hard Slogs)",
+      "oaa:properties": [
+        {"name": "quadrantType", "type": "Text", "enum": ["quickWins", "majorProjects", "fillIns", "hardSlogs"], "required": true},
+        {"name": "impactLevel", "type": "Text", "enum": ["high", "low"]},
+        {"name": "effortLevel", "type": "Text", "enum": ["high", "low"]},
+        {"name": "itemCount", "type": "Integer"}
+      ]
+    },
+    {
+      "@id": "ga:RankedItem",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Ranked Item",
+      "rdfs:comment": "An item ranked within the priority matrix",
+      "oaa:properties": [
+        {"name": "itemId", "type": "Text", "required": true},
+        {"name": "itemType", "type": "Text", "enum": ["gap", "threat", "opportunity"]},
+        {"name": "rank", "type": "Integer", "required": true},
+        {"name": "compositeScore", "type": "Number", "minimum": 0, "maximum": 1},
+        {"name": "rationale", "type": "Text"}
+      ]
+    },
+    {
+      "@id": "ga:Recommendation",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Recommendation",
+      "rdfs:comment": "Actionable recommendation derived from gap analysis with implementation phases",
+      "oaa:properties": [
+        {"name": "recommendationId", "type": "Text", "required": true},
+        {"name": "title", "type": "Text", "required": true},
+        {"name": "description", "type": "Text", "required": true},
+        {"name": "actionType", "type": "Text", "enum": ["content", "capability", "process", "partnership", "technology"], "required": true},
+        {"name": "priority", "type": "Text", "enum": ["critical", "high", "medium", "low"], "required": true},
+        {"name": "estimatedEffort", "type": "Text"},
+        {"name": "dependencies", "type": "Text", "isArray": true},
+        {"name": "risks", "type": "Text", "isArray": true}
+      ]
+    },
+    {
+      "@id": "ga:ImplementationPhase",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Implementation Phase",
+      "rdfs:comment": "A phase in the recommendation implementation plan",
+      "oaa:properties": [
+        {"name": "phase", "type": "Integer", "required": true},
+        {"name": "name", "type": "Text", "required": true},
+        {"name": "deliverables", "type": "Text", "isArray": true},
+        {"name": "estimatedEffort", "type": "Text"},
+        {"name": "prerequisites", "type": "Text", "isArray": true}
+      ]
+    },
+    {
+      "@id": "ga:ExpectedOutcome",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Expected Outcome",
+      "rdfs:comment": "Expected outcomes from implementing a recommendation",
+      "oaa:properties": [
+        {"name": "gapsClosed", "type": "Text", "isArray": true},
+        {"name": "threatsAddressed", "type": "Text", "isArray": true},
+        {"name": "opportunitiesEnabled", "type": "Text", "isArray": true},
+        {"name": "valueCreated", "type": "Text"}
+      ]
+    },
+    {
+      "@id": "ga:OutcomeMetric",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Outcome Metric",
+      "rdfs:comment": "A metric for measuring recommendation outcomes",
+      "oaa:properties": [
+        {"name": "metricName", "type": "Text", "required": true},
+        {"name": "baseline", "type": "Number"},
+        {"name": "target", "type": "Number"},
+        {"name": "unit", "type": "Text"},
+        {"name": "measurementFrequency", "type": "Text"}
+      ]
+    },
+    {
+      "@id": "ga:ExecutiveSummary",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "Intangible",
+      "rdfs:label": "Executive Summary",
+      "rdfs:comment": "High-level summary of gap analysis findings and recommendations",
+      "oaa:properties": [
+        {"name": "keyFindings", "type": "Text", "isArray": true, "required": true},
+        {"name": "criticalGapsCount", "type": "Integer"},
+        {"name": "highPriorityOpportunities", "type": "Integer"},
+        {"name": "totalThreatsIdentified", "type": "Integer"},
+        {"name": "recommendedNextSteps", "type": "Text", "isArray": true},
+        {"name": "estimatedTotalValue", "type": "MonetaryAmount"}
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "@id": "ga:hasGapAnalysis",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Gap Analysis",
+      "rdfs:comment": "Links OrganizationContext to gap analysis reports",
+      "rdfs:domain": "org:OrganizationContext",
+      "rdfs:range": "ga:GapAnalysisReport",
+      "oaa:crossOntology": true
+    },
+    {
+      "@id": "ga:strategicContext",
+      "@type": "rdf:Property",
+      "rdfs:label": "strategic Context",
+      "rdfs:comment": "Links gap analysis to VSOM strategic framework for alignment",
+      "rdfs:domain": "ga:GapAnalysisReport",
+      "rdfs:range": "vsom:VSOMFramework",
+      "oaa:crossOntology": true
+    },
+    {
+      "@id": "ga:analysesLandscape",
+      "@type": "rdf:Property",
+      "rdfs:label": "analyses Landscape",
+      "rdfs:comment": "Links gap analysis to competitive landscape context",
+      "rdfs:domain": "ga:GapAnalysisReport",
+      "rdfs:range": "cl:CompetitiveLandscape",
+      "oaa:crossOntology": true
+    },
+    {
+      "@id": "ga:identifiesGap",
+      "@type": "rdf:Property",
+      "rdfs:label": "identifies Gap",
+      "rdfs:comment": "Links gap analysis report to identified gaps",
+      "rdfs:domain": "ga:GapAnalysisReport",
+      "rdfs:range": "ga:IdentifiedGap"
+    },
+    {
+      "@id": "ga:hasEvidence",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Evidence",
+      "rdfs:comment": "Links identified gap to supporting evidence",
+      "rdfs:domain": "ga:IdentifiedGap",
+      "rdfs:range": "ga:GapEvidence"
+    },
+    {
+      "@id": "ga:hasBusinessImpact",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Business Impact",
+      "rdfs:comment": "Links identified gap to business impact assessment",
+      "rdfs:domain": "ga:IdentifiedGap",
+      "rdfs:range": "ga:BusinessImpact"
+    },
+    {
+      "@id": "ga:hasBridgeConcept",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Bridge Concept",
+      "rdfs:comment": "Links structural hole to potential bridge concepts",
+      "rdfs:domain": "ga:StructuralHole",
+      "rdfs:range": "ga:BridgeConcept"
+    },
+    {
+      "@id": "ga:identifiesThreat",
+      "@type": "rdf:Property",
+      "rdfs:label": "identifies Threat",
+      "rdfs:comment": "Links gap analysis to identified threats",
+      "rdfs:domain": "ga:GapAnalysisReport",
+      "rdfs:range": "ga:ThreatAssessment"
+    },
+    {
+      "@id": "ga:relatedToGap",
+      "@type": "rdf:Property",
+      "rdfs:label": "related to Gap",
+      "rdfs:comment": "Links threat or opportunity to originating gaps",
+      "rdfs:domain": ["ga:ThreatAssessment", "ga:OpportunityAssessment"],
+      "rdfs:range": "ga:IdentifiedGap"
+    },
+    {
+      "@id": "ga:hasMitigation",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Mitigation",
+      "rdfs:comment": "Links threat to potential mitigation options",
+      "rdfs:domain": "ga:ThreatAssessment",
+      "rdfs:range": "ga:MitigationOption"
+    },
+    {
+      "@id": "ga:identifiesOpportunity",
+      "@type": "rdf:Property",
+      "rdfs:label": "identifies Opportunity",
+      "rdfs:comment": "Links gap analysis to identified opportunities",
+      "rdfs:domain": "ga:GapAnalysisReport",
+      "rdfs:range": "ga:OpportunityAssessment"
+    },
+    {
+      "@id": "ga:hasPotentialValue",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Potential Value",
+      "rdfs:comment": "Links opportunity to estimated potential value",
+      "rdfs:domain": "ga:OpportunityAssessment",
+      "rdfs:range": "ga:PotentialValue"
+    },
+    {
+      "@id": "ga:enabledByBridge",
+      "@type": "rdf:Property",
+      "rdfs:label": "enabled by Bridge",
+      "rdfs:comment": "Links opportunity to enabling bridge concepts",
+      "rdfs:domain": "ga:OpportunityAssessment",
+      "rdfs:range": "ga:BridgeConcept"
+    },
+    {
+      "@id": "ga:hasPriorityMatrix",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Priority Matrix",
+      "rdfs:comment": "Links gap analysis to prioritization matrix",
+      "rdfs:domain": "ga:GapAnalysisReport",
+      "rdfs:range": "ga:PriorityMatrix"
+    },
+    {
+      "@id": "ga:hasQuadrant",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Quadrant",
+      "rdfs:comment": "Links priority matrix to its quadrants",
+      "rdfs:domain": "ga:PriorityMatrix",
+      "rdfs:range": "ga:PriorityQuadrant"
+    },
+    {
+      "@id": "ga:containsItem",
+      "@type": "rdf:Property",
+      "rdfs:label": "contains Item",
+      "rdfs:comment": "Links quadrant to ranked items within it",
+      "rdfs:domain": "ga:PriorityQuadrant",
+      "rdfs:range": "ga:RankedItem"
+    },
+    {
+      "@id": "ga:hasRankedList",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Ranked List",
+      "rdfs:comment": "Links priority matrix to overall ranked list",
+      "rdfs:domain": "ga:PriorityMatrix",
+      "rdfs:range": "ga:RankedItem"
+    },
+    {
+      "@id": "ga:hasRecommendation",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Recommendation",
+      "rdfs:comment": "Links gap analysis to recommendations",
+      "rdfs:domain": "ga:GapAnalysisReport",
+      "rdfs:range": "ga:Recommendation"
+    },
+    {
+      "@id": "ga:addressesGap",
+      "@type": "rdf:Property",
+      "rdfs:label": "addresses Gap",
+      "rdfs:comment": "Links recommendation to gaps it addresses",
+      "rdfs:domain": "ga:Recommendation",
+      "rdfs:range": "ga:IdentifiedGap"
+    },
+    {
+      "@id": "ga:addressesThreat",
+      "@type": "rdf:Property",
+      "rdfs:label": "addresses Threat",
+      "rdfs:comment": "Links recommendation to threats it addresses",
+      "rdfs:domain": "ga:Recommendation",
+      "rdfs:range": "ga:ThreatAssessment"
+    },
+    {
+      "@id": "ga:enablesOpportunity",
+      "@type": "rdf:Property",
+      "rdfs:label": "enables Opportunity",
+      "rdfs:comment": "Links recommendation to opportunities it enables",
+      "rdfs:domain": "ga:Recommendation",
+      "rdfs:range": "ga:OpportunityAssessment"
+    },
+    {
+      "@id": "ga:hasImplementationPhase",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Implementation Phase",
+      "rdfs:comment": "Links recommendation to implementation phases",
+      "rdfs:domain": "ga:Recommendation",
+      "rdfs:range": "ga:ImplementationPhase"
+    },
+    {
+      "@id": "ga:hasExpectedOutcome",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Expected Outcome",
+      "rdfs:comment": "Links recommendation to expected outcomes",
+      "rdfs:domain": "ga:Recommendation",
+      "rdfs:range": "ga:ExpectedOutcome"
+    },
+    {
+      "@id": "ga:hasOutcomeMetric",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Outcome Metric",
+      "rdfs:comment": "Links expected outcome to measurement metrics",
+      "rdfs:domain": "ga:ExpectedOutcome",
+      "rdfs:range": "ga:OutcomeMetric"
+    },
+    {
+      "@id": "ga:alignsToObjective",
+      "@type": "rdf:Property",
+      "rdfs:label": "aligns to Objective",
+      "rdfs:comment": "Links recommendation to VSOM objectives for strategic alignment",
+      "rdfs:domain": "ga:Recommendation",
+      "rdfs:range": "vsom:ObjectivesComponent",
+      "oaa:crossOntology": true
+    },
+    {
+      "@id": "ga:spawnsProject",
+      "@type": "rdf:Property",
+      "rdfs:label": "spawns Project",
+      "rdfs:comment": "Links recommendation to PPM project when actioned",
+      "rdfs:domain": "ga:Recommendation",
+      "rdfs:range": "ppm:Project",
+      "oaa:crossOntology": true
+    },
+    {
+      "@id": "ga:affectsMaturity",
+      "@type": "rdf:Property",
+      "rdfs:label": "affects Maturity",
+      "rdfs:comment": "Links identified gap to affected maturity dimensions",
+      "rdfs:domain": "ga:IdentifiedGap",
+      "rdfs:range": "mat:DimensionScore",
+      "oaa:crossOntology": true
+    },
+    {
+      "@id": "ga:hasExecutiveSummary",
+      "@type": "rdf:Property",
+      "rdfs:label": "has Executive Summary",
+      "rdfs:comment": "Links gap analysis report to executive summary",
+      "rdfs:domain": "ga:GapAnalysisReport",
+      "rdfs:range": "ga:ExecutiveSummary"
+    },
+    {
+      "@id": "ga:inSegment",
+      "@type": "rdf:Property",
+      "rdfs:label": "in Segment",
+      "rdfs:comment": "Links opportunity to market segment",
+      "rdfs:domain": "ga:OpportunityAssessment",
+      "rdfs:range": "cl:MarketSegment",
+      "oaa:crossOntology": true
+    },
+    {
+      "@id": "ga:involvedCompetitor",
+      "@type": "rdf:Property",
+      "rdfs:label": "involved Competitor",
+      "rdfs:comment": "Links threat to competitor profile",
+      "rdfs:domain": "ga:ThreatAssessment",
+      "rdfs:range": "cl:CompetitorProfile",
+      "oaa:crossOntology": true
+    }
+  ],
+  "businessRules": [
+    {
+      "id": "BR-GA-001",
+      "name": "Gap Evidence Required",
+      "description": "Every identified gap must have at least one evidence source",
+      "severity": "error",
+      "condition": "IF IdentifiedGap EXISTS",
+      "action": "THEN hasEvidence relationship MUST exist with at least one GapEvidence"
+    },
+    {
+      "id": "BR-GA-002",
+      "name": "Threat Risk Score Calculation",
+      "description": "Threat risk score must equal probability multiplied by impact",
+      "severity": "error",
+      "condition": "IF ThreatAssessment.probability AND ThreatAssessment.impact ARE SET",
+      "action": "THEN ThreatAssessment.riskScore MUST EQUAL probability * impact"
+    },
+    {
+      "id": "BR-GA-003",
+      "name": "Low Confidence Escalation",
+      "description": "Gaps with confidence below 0.6 require human review",
+      "severity": "warning",
+      "condition": "IF IdentifiedGap.confidence < 0.6",
+      "action": "THEN flag for human review with escalation note"
+    },
+    {
+      "id": "BR-GA-004",
+      "name": "Recommendation Linkage Required",
+      "description": "Recommendations must link to at least one gap, threat, or opportunity",
+      "severity": "error",
+      "condition": "IF Recommendation EXISTS",
+      "action": "THEN at least one of addressesGap, addressesThreat, or enablesOpportunity MUST exist"
+    },
+    {
+      "id": "BR-GA-005",
+      "name": "Minimum Comparative Entities",
+      "description": "Comparative analysis requires at least 3 entities",
+      "severity": "error",
+      "condition": "IF GapAnalysisReport.analysisType = 'comparative'",
+      "action": "THEN GapAnalysisReport.entityCount MUST BE >= 3"
+    },
+    {
+      "id": "BR-GA-006",
+      "name": "Priority Matrix Weights Sum",
+      "description": "Priority matrix dimension weights must sum to 1.0",
+      "severity": "error",
+      "condition": "IF PriorityMatrix weights ARE SET",
+      "action": "THEN weightImpact + weightEffort + weightUrgency + weightAlignment MUST EQUAL 1.0"
+    },
+    {
+      "id": "BR-GA-007",
+      "name": "Strategic Alignment for High Priority",
+      "description": "Critical and high priority recommendations should have strategic alignment",
+      "severity": "warning",
+      "condition": "IF Recommendation.priority IN ['critical', 'high']",
+      "action": "THEN alignsToObjective relationship SHOULD exist"
+    },
+    {
+      "id": "BR-GA-008",
+      "name": "Executive Summary Completeness",
+      "description": "Executive summary must have key findings and next steps",
+      "severity": "error",
+      "condition": "IF ExecutiveSummary EXISTS",
+      "action": "THEN keyFindings AND recommendedNextSteps MUST have at least one item each"
+    }
+  ],
+  "changeControl": {
+    "version": "1.0.0",
+    "date": "2026-02-01",
+    "author": "Platform Foundation",
+    "changes": [
+      {
+        "version": "1.0.0",
+        "date": "2026-02-01",
+        "description": "Initial creation based on CGA Agent PRD v1.0.0. Includes 18 entities, 26 relationships, 8 business rules. Full cross-ontology integration with ORG-ONT, VSOM-ONT, CL-ONT, ORG-MAT-ONT, PPM-ONT."
+      }
+    ]
+  }
+}

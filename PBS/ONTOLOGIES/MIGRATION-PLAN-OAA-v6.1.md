@@ -1,8 +1,8 @@
 # Ontology Migration Plan: Consolidate to Azlan under OAA v6.1.0
 
-**Version:** 2.3.0
+**Version:** 2.4.0
 **Date:** 2026-02-01
-**Status:** Phases 1-4 Complete | CL-ONT + ORG-MAT-ONT Added
+**Status:** Phases 1-4 Complete | CL-ONT + ORG-MAT-ONT + GA-ONT Added
 
 ---
 
@@ -34,6 +34,7 @@
 | PE-ONT | v2.0.0 | ✅ Production | [PE-ONT/process-engineering-v2.0.0-oaa-v5.json](pfc-ontologies/PE-ONT/) |
 | VSOM-ONT | v2.1.0 | ✅ Production | [VSOM-ONT/vsom-ontology-v2.1.0-oaa-v5.json](pfc-ontologies/VSOM-ONT/) |
 | ORG-MAT-ONT | v1.0.0 | ✅ Production | [ORG-MAT-ONT/org-maturity-v1.0.0-oaa-v5.json](pfc-ontologies/ORG-MAT-ONT/) |
+| GA-ONT | v1.0.0 | ✅ Production | [GA-ONT/gap-analysis-v1.0.0-oaa-v5.json](pfc-ontologies/GA-ONT/) |
 
 ---
 
@@ -48,6 +49,7 @@
 | CE-ONT | Placeholder | ❌ Empty (readme only) |
 | CL-ONT | **NEW** v1.0.0 | ✅ Yes (OrganizationContext bridge) |
 | EA-ONT | ON HOLD | ⚠️ Instance data for PPM-ONT |
+| GA-ONT | **NEW** v1.0.0 | ✅ Yes (CGA Agent support, 18 entities) |
 | OKR-ONT | Existing | ⚠️ Glossary only |
 | ORG-ONT | **UPGRADED** v2.1.0 | ✅ Yes (G3 IF-THEN rules) |
 | ORG-MAT-ONT | **NEW** v1.0.0 | ✅ Yes (19 maturity dimensions) |
@@ -91,7 +93,7 @@
 | Medium | RRR-ONT | Glossary only | Create Roles/RACI/RBAC ontology (see detailed scope below) |
 | Low | ALZ-ONT | MCSB registry only | Create Azure Landing Zone ontology |
 | Future | DS-ONT | Not created | Design System ontology from BAIV |
-| Future | GA-ONT | Not created | Gap Analysis ontology from BAIV |
+| ✅ Done | GA-ONT | v1.0.0 Production | Gap Analysis ontology (CGA Agent support) |
 | ON HOLD | EA-ONT | Instance data | PPM-ONT population data (not separate ontology) |
 
 ### VE-ONT Series (Value Engineering)
@@ -209,6 +211,7 @@ PBS/ONTOLOGIES/
 │   ├── CE-ONT/               # Customer Experience
 │   ├── CL-ONT/               # Competitive Landscape ✅ NEW (OrganizationContext bridge)
 │   ├── EA-ONT/               # Enterprise Architecture (ON HOLD - PPM instance data)
+│   ├── GA-ONT/               # Gap Analysis ✅ NEW (CGA Agent support)
 │   ├── OKR-ONT/              # Objectives & Key Results
 │   ├── ORG-ONT/              # Organisation ✅ UPGRADED v2.1.0
 │   ├── ORG-MAT-ONT/          # Organization Maturity ✅ NEW (19 dimensions)
