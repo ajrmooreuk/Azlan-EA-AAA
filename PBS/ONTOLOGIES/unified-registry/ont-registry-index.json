@@ -227,6 +227,16 @@
       "gatesFailed": 0,
       "validatedDate": null,
       "path": "./entries/Entry-ONT-AZALZ-001.json"
+    },
+    {
+      "@id": "Entry-ONT-SA-001",
+      "name": "SA Ontology (Solution Architecture)",
+      "namespace": "sa:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-SA-001.json"
     }
   ],
   "namespaceRegistry": {
@@ -252,7 +262,8 @@
     "ea": "https://platformcore.io/ontology/ea/",
     "air": "https://platformcore.io/ontology/air/",
     "gdpr": "https://platformcore.io/ontology/gdpr/",
-    "azalz": "https://platformcore.io/ontology/azalz/"
+    "azalz": "https://platformcore.io/ontology/azalz/",
+    "sa": "https://platformcore.io/ontology/solution-architecture/"
   },
   "seriesRegistry": {
     "VE-Series": {
@@ -263,7 +274,7 @@
     "PE-Series": {
       "name": "Process Engineering Series",
       "description": "Execution and process management ontologies",
-      "ontologies": ["PPM", "PE", "EFS", "EA"]
+      "ontologies": ["PPM", "PE", "EFS", "EA", "SA"]
     },
     "Security-Series": {
       "name": "Security & Compliance Series",
@@ -287,8 +298,8 @@
     }
   },
   "statistics": {
-    "totalOntologies": 22,
-    "compliant": 16,
+    "totalOntologies": 23,
+    "compliant": 17,
     "nearCompliance": 0,
     "partialCompliance": 0,
     "pendingReview": 0,
@@ -296,12 +307,12 @@
     "deprecated": 0
   },
   "validationSummary": {
-    "validated": 17,
+    "validated": 18,
     "validatedOntologies": [
       "EMC", "ORG", "ORG-CONTEXT", "ORG-MAT",
       "CA", "CL", "GA",
       "VSOM", "OKR", "VP", "RRR", "PMF",
-      "PPM", "PE", "EFS", "MCSB", "EA"
+      "PPM", "PE", "EFS", "MCSB", "EA", "SA"
     ],
     "placeholders": ["KPI", "MCSB2", "AIR", "GDPR", "AZALZ"],
     "oaaVersion": "5.0.0",
