@@ -4,8 +4,8 @@
   "@id": "Entry-ONT-VP-001",
   "name": "VP Ontology (Value Proposition)",
   "description": "Comprehensive ontology for developing, validating, and articulating value propositions. Links VSOM strategic layer to EFS execution layer through ICP-driven problem-solution mapping. Part of VE lineage chain: VSOM → OKR → VP → PMF → EFS.",
-  "version": "1.2.0",
-  "oaaVersion": "5.0.0",
+  "version": "1.2.3",
+  "oaaVersion": "6.1.0",
   "namespace": "https://platformcore.io/ontology/vp/",
   "prefix": "vp:",
   "status": "compliant",
@@ -19,9 +19,12 @@
     "gate5": "pass",
     "gate6": "pass"
   },
+  "validationDate": "2026-02-02",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
   "artifacts": {
-    "ontology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/vp-ontology-v1.2.0.jsonld",
-    "legacyOntology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-v1.1.0-oaa-v5.jsonld",
+    "ontology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-v1.2.3-oaa-v6.jsonld",
+    "legacyOntology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-v1.2.2-oaa-v6.jsonld",
     "documentation": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/VALUE-PROPOSITION-ONTOLOGY-SUMMARY (1).md",
     "frameworkGuide": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-framework-guide (1).md",
     "diagrams": [
@@ -33,10 +36,11 @@
     "validationReport": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-validation-report (1).json"
   },
   "entities": {
-    "count": 14,
+    "count": 17,
     "list": [
       "ValueProposition",
       "IdealCustomerProfile",
+      "RoleBasedICP",
       "Problem",
       "PainPoint",
       "Gain",
@@ -47,13 +51,14 @@
       "ValidationEvidence",
       "SuccessMetric",
       "Stakeholder",
-      "MessagingFramework"
+      "MessagingFramework",
+      "VPRACIAssignment"
     ]
   },
   "relationships": {
-    "count": 23,
-    "internal": 17,
-    "crossOntology": 6,
+    "count": 30,
+    "internal": 22,
+    "crossOntology": 8,
     "keyBridges": [
       {
         "name": "alignsToObjective",
@@ -100,11 +105,11 @@
     ]
   },
   "businessRules": {
-    "count": 16,
+    "count": 22,
     "format": "IF-THEN",
     "severityBreakdown": {
-      "error": 14,
-      "warning": 2
+      "error": 17,
+      "warning": 5
     }
   },
   "testData": {
@@ -165,9 +170,24 @@
   "lastModified": "2026-02-02",
   "versionHistory": [
     {
+      "version": "1.2.3",
+      "date": "2026-02-02",
+      "changes": "G2 fix: cardinality object→string notation in all 30 relationships for OAA v6.1.0 compliance"
+    },
+    {
+      "version": "1.2.2",
+      "date": "2026-02-02",
+      "changes": "G3 fix: constraint→action field in all 22 business rules"
+    },
+    {
+      "version": "1.2.1",
+      "date": "2026-02-02",
+      "changes": "OAA v6.1.0 upgrade attempt (G3 format issue identified)"
+    },
+    {
       "version": "1.2.0",
       "date": "2026-02-02",
-      "changes": "Added VE lineage chain relationships (OKR→VP→PMF), updated namespace to platformcore.io, RRR integration"
+      "changes": "RRR integration: RoleBasedICP, VPRACIAssignment, hierarchical ICP structure, problem roll-up"
     },
     {
       "version": "1.1.0",
@@ -180,5 +200,5 @@
       "changes": "Initial VP ontology in legacy format"
     }
   ],
-  "notes": "VP v1.2.0 part of complete VE lineage chain: VSOM → OKR → VP → PMF → EFS. Critical bridges established for PFI-instance builds. Ready for BAIV AI Visibility product VP instantiation."
+  "notes": "VP v1.2.3 OAA v6.1.0 compliant with 17 entities, 30 relationships, 22 business rules. Includes RRR integration with RoleBasedICP and VPRACIAssignment. Part of VE lineage chain: VSOM → OKR → VP → PMF → EFS."
 }
