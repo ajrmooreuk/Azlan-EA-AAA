@@ -6,14 +6,14 @@
     "azure": "https://platform-foundation.io/ontology/v1/azure/"
   },
   "@type": "DefinedTermSet",
-  "@id": "pf:ontology:architectural-roles-v1.0.0",
-  "name": "PF-Core Architectural Roles Ontology",
+  "@id": "pf:RRR-DATA:architectural-roles-v1.0.0",
+  "name": "PF-Core Architectural Roles Data",
   "version": "1.0.0",
   "dateCreated": "2026-02-02",
-  "description": "Generic architectural role templates for any organization. Includes Enterprise Architecture hierarchy (Enterprise, Solution, Security, Data, Integration Architects), Security leadership (CSO, CISO), and Azure/Microsoft platform roles. Role applicability determined by organizational context and maturity level.",
+  "description": "Role data instances conforming to RRR-ONT schema. Includes Enterprise Architecture hierarchy (Enterprise, Solution, Security, Data, Integration Architects), Security leadership (CSO, CISO), and Azure/Microsoft platform roles. Role applicability determined by organizational context and maturity level.",
   "conformsTo": [
-    "pf:ontology:roles-raci-rbac-v3.1.0",
-    "pf:ontology:oaa-registry-v3.0"
+    "pf:RRR-ONT-v3.1.0",
+    "pf:OAA-ONT-v3.0"
   ],
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "publisher": {
@@ -2031,7 +2031,7 @@
   },
 
   "validation": {
-    "conformsTo": "pf:ontology:roles-raci-rbac-v3.1.0",
+    "conformsTo": "pf:RRR-ONT-v3.1.0",
     "schemaOrgMapping": {
       "Role": "schema:Role",
       "Organization": "schema:Organization",

@@ -1,0 +1,638 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform-foundation.io/ontology/v1/",
+    "baiv": "https://beaivisible.com/ontology/",
+    "efs": "https://platform-foundation.io/ontology/v1/efs/"
+  },
+  "@type": "Dataset",
+  "@id": "baiv:EFS-DATA:aiv-security-v1.0.0",
+  "name": "BAIV AI Visibility Security EPICs-Features-Stories",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-02",
+  "description": "Security requirements for BAIV AI Visibility product structured as EPICs, Features, and User Stories. Derived from BAIV-Security-REQS.pdf functional requirements.",
+  "conformsTo": "pf:EFS-ONT-v1.0",
+  "sourceDocuments": [
+    "BAIV-Security-REQS.pdf",
+    "BAIV-PFC-PFI Security-PBS.pdf"
+  ],
+  "organization": {
+    "@id": "baiv:organization:beaivisible",
+    "@type": "Organization",
+    "name": "Be AI Visible (BAIV)"
+  },
+  "product": {
+    "@id": "baiv:product:ai-visibility",
+    "name": "AI Visibility Platform"
+  },
+
+  "epics": [
+    {
+      "@id": "baiv:epic:sec-auth",
+      "@type": "efs:Epic",
+      "epicCode": "EPIC-SEC-AUTH",
+      "name": "Authentication & Authorization",
+      "description": "Enable secure user authentication through multiple methods with multi-tenant support",
+      "businessValue": "Secure access to platform with flexible authentication options",
+      "priority": "P0-Critical",
+      "status": "planned",
+      "pbsPackage": "PBS-1.0",
+      "features": ["baiv:feat:auth-email", "baiv:feat:auth-oauth", "baiv:feat:auth-magic", "baiv:feat:auth-multitenant", "baiv:feat:auth-jwt"]
+    },
+    {
+      "@id": "baiv:epic:sec-rls",
+      "@type": "efs:Epic",
+      "epicCode": "EPIC-SEC-RLS",
+      "name": "Row-Level Security",
+      "description": "Implement database-level tenant isolation and security controls",
+      "businessValue": "Ensure tenant data cannot leak even if application bugs exist",
+      "priority": "P0-Critical",
+      "status": "planned",
+      "pbsPackage": "PBS-2.0",
+      "features": ["baiv:feat:rls-isolation", "baiv:feat:rls-context", "baiv:feat:rls-audit"]
+    },
+    {
+      "@id": "baiv:epic:sec-collab",
+      "@type": "efs:Epic",
+      "epicCode": "EPIC-SEC-COLLAB",
+      "name": "Collaboration & Presence",
+      "description": "Real-time collaboration features including user presence, record locking, and activity tracking",
+      "businessValue": "Enable team collaboration without data conflicts",
+      "priority": "P1-High",
+      "status": "planned",
+      "pbsPackage": "PBS-3.0",
+      "features": ["baiv:feat:collab-presence", "baiv:feat:collab-locking", "baiv:feat:collab-activity"]
+    },
+    {
+      "@id": "baiv:epic:sec-cycle",
+      "@type": "efs:Epic",
+      "epicCode": "EPIC-SEC-CYCLE",
+      "name": "Cycle State Management",
+      "description": "Manage organization journey through AI Visibility stages with role-based controls",
+      "businessValue": "Guide users through structured AI visibility improvement process",
+      "priority": "P1-High",
+      "status": "planned",
+      "pbsPackage": "PBS-3.0",
+      "features": ["baiv:feat:cycle-tracking", "baiv:feat:cycle-advance", "baiv:feat:cycle-health"]
+    }
+  ],
+
+  "features": [
+    {
+      "@id": "baiv:feat:auth-email",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-AUTH-01",
+      "name": "Email/Password Authentication",
+      "description": "Standard email and password authentication via Supabase Auth",
+      "epic": "baiv:epic:sec-auth",
+      "priority": "P0-Critical",
+      "status": "planned",
+      "pbsDeliverable": "PBS-1.1, PBS-1.3",
+      "stories": ["baiv:story:us-a01"],
+      "requirements": ["FR-AUTH-01"]
+    },
+    {
+      "@id": "baiv:feat:auth-oauth",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-AUTH-02",
+      "name": "OAuth Integration",
+      "description": "Google OAuth for simplified signup/login experience",
+      "epic": "baiv:epic:sec-auth",
+      "priority": "P1-High",
+      "status": "planned",
+      "pbsDeliverable": "PBS-1.2",
+      "stories": ["baiv:story:us-a02"],
+      "requirements": ["FR-AUTH-03"]
+    },
+    {
+      "@id": "baiv:feat:auth-magic",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-AUTH-03",
+      "name": "Magic Link Authentication",
+      "description": "Passwordless authentication via email magic links",
+      "epic": "baiv:epic:sec-auth",
+      "priority": "P2-Medium",
+      "status": "planned",
+      "pbsDeliverable": "PBS-1.1",
+      "stories": ["baiv:story:us-a03"],
+      "requirements": ["FR-AUTH-02"]
+    },
+    {
+      "@id": "baiv:feat:auth-multitenant",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-AUTH-04",
+      "name": "Multi-Tenant User Switching",
+      "description": "Support users belonging to multiple tenants with tenant selector",
+      "epic": "baiv:epic:sec-auth",
+      "priority": "P1-High",
+      "status": "planned",
+      "pbsDeliverable": "PBS-1.4, PBS-5.2",
+      "stories": ["baiv:story:us-a04", "baiv:story:us-a05"],
+      "requirements": ["FR-AUTH-05", "FR-AUTH-06", "FR-AUTH-07", "FR-AUTH-08"]
+    },
+    {
+      "@id": "baiv:feat:auth-jwt",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-AUTH-05",
+      "name": "JWT Token Management",
+      "description": "Issue and manage JWT tokens containing user context",
+      "epic": "baiv:epic:sec-auth",
+      "priority": "P0-Critical",
+      "status": "planned",
+      "pbsDeliverable": "PBS-1.3",
+      "stories": [],
+      "requirements": ["FR-AUTH-04"]
+    },
+    {
+      "@id": "baiv:feat:rls-isolation",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-RLS-01",
+      "name": "Tenant Data Isolation",
+      "description": "RLS enabled on all tables with tenant_id for complete data isolation",
+      "epic": "baiv:epic:sec-rls",
+      "priority": "P0-Critical",
+      "status": "planned",
+      "pbsDeliverable": "PBS-2.1",
+      "stories": ["baiv:story:us-s01"],
+      "requirements": ["FR-SEC-01", "TR-DB-01", "TR-DB-02"]
+    },
+    {
+      "@id": "baiv:feat:rls-context",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-RLS-02",
+      "name": "Tenant Context Propagation",
+      "description": "set_tenant_context() function and PostgreSQL session settings",
+      "epic": "baiv:epic:sec-rls",
+      "priority": "P0-Critical",
+      "status": "planned",
+      "pbsDeliverable": "PBS-2.2, PBS-4.1",
+      "stories": [],
+      "requirements": ["FR-SEC-02", "FR-SEC-03", "TR-API-01"]
+    },
+    {
+      "@id": "baiv:feat:rls-audit",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-RLS-03",
+      "name": "Audit Log Immutability",
+      "description": "Append-only audit log with tenant isolation",
+      "epic": "baiv:epic:sec-rls",
+      "priority": "P0-Critical",
+      "status": "planned",
+      "pbsDeliverable": "PBS-2.3",
+      "stories": ["baiv:story:us-s02"],
+      "requirements": ["FR-SEC-04", "FR-SEC-05", "FR-SEC-06"]
+    },
+    {
+      "@id": "baiv:feat:collab-presence",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-COLLAB-01",
+      "name": "User Presence Tracking",
+      "description": "Track online users per tenant with heartbeat mechanism",
+      "epic": "baiv:epic:sec-collab",
+      "priority": "P1-High",
+      "status": "planned",
+      "pbsDeliverable": "PBS-3.2, PBS-4.2, PBS-5.4",
+      "stories": ["baiv:story:us-l01"],
+      "requirements": ["FR-PRE-01", "FR-PRE-02", "FR-PRE-03", "FR-PRE-04", "FR-PRE-05", "TR-API-02"]
+    },
+    {
+      "@id": "baiv:feat:collab-locking",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-COLLAB-02",
+      "name": "Record Locking",
+      "description": "Pessimistic locking for datasets to prevent concurrent edits",
+      "epic": "baiv:epic:sec-collab",
+      "priority": "P1-High",
+      "status": "planned",
+      "pbsDeliverable": "PBS-3.3, PBS-4.3",
+      "stories": ["baiv:story:us-l02"],
+      "requirements": ["FR-LOCK-01", "FR-LOCK-02", "FR-LOCK-03", "FR-LOCK-04", "FR-LOCK-05", "FR-LOCK-06", "TR-API-03"]
+    },
+    {
+      "@id": "baiv:feat:collab-activity",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-COLLAB-03",
+      "name": "Activity Stream",
+      "description": "Log and display recent activities with highlight capability",
+      "epic": "baiv:epic:sec-collab",
+      "priority": "P2-Medium",
+      "status": "planned",
+      "pbsDeliverable": "PBS-3.4, PBS-4.5, PBS-5.5",
+      "stories": ["baiv:story:us-l03"],
+      "requirements": ["FR-ACT-01", "FR-ACT-02", "FR-ACT-03", "FR-ACT-04", "FR-ACT-05", "TR-API-05"]
+    },
+    {
+      "@id": "baiv:feat:cycle-tracking",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-CYCLE-01",
+      "name": "Cycle Stage Tracking",
+      "description": "Track organization progress through AI Visibility stages",
+      "epic": "baiv:epic:sec-cycle",
+      "priority": "P1-High",
+      "status": "planned",
+      "pbsDeliverable": "PBS-3.1, PBS-5.3",
+      "stories": ["baiv:story:us-c01"],
+      "requirements": ["FR-CYC-01", "FR-CYC-02", "FR-CYC-03"]
+    },
+    {
+      "@id": "baiv:feat:cycle-advance",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-CYCLE-02",
+      "name": "Stage Advancement",
+      "description": "Role-controlled stage progression with activity logging",
+      "epic": "baiv:epic:sec-cycle",
+      "priority": "P1-High",
+      "status": "planned",
+      "pbsDeliverable": "PBS-3.5, PBS-4.4",
+      "stories": ["baiv:story:us-c02"],
+      "requirements": ["FR-CYC-04", "FR-CYC-05", "FR-CYC-06", "TR-API-04"]
+    },
+    {
+      "@id": "baiv:feat:cycle-health",
+      "@type": "efs:Feature",
+      "featureCode": "FEAT-CYCLE-03",
+      "name": "Health Indicators",
+      "description": "Display stage health indicators for progress tracking",
+      "epic": "baiv:epic:sec-cycle",
+      "priority": "P2-Medium",
+      "status": "planned",
+      "pbsDeliverable": "PBS-5.3",
+      "stories": ["baiv:story:us-c03"],
+      "requirements": ["TR-DB-04"]
+    }
+  ],
+
+  "stories": [
+    {
+      "@id": "baiv:story:us-a01",
+      "@type": "efs:UserStory",
+      "storyCode": "US-A01",
+      "name": "Email/Password Signup",
+      "asA": "new user",
+      "iWant": "to sign up with email/password",
+      "soThat": "I can access the platform",
+      "feature": "baiv:feat:auth-email",
+      "priority": "P0-Critical",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given a new user with valid email",
+        "When user submits signup form",
+        "Then account is created",
+        "And confirmation email is sent"
+      ]
+    },
+    {
+      "@id": "baiv:story:us-a02",
+      "@type": "efs:UserStory",
+      "storyCode": "US-A02",
+      "name": "Google OAuth Login",
+      "asA": "user",
+      "iWant": "to sign in with Google",
+      "soThat": "I don't need another password",
+      "feature": "baiv:feat:auth-oauth",
+      "priority": "P1-High",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given Google OAuth is enabled",
+        "When user clicks 'Sign in with Google'",
+        "Then user is redirected to Google",
+        "And upon success, JWT is issued"
+      ]
+    },
+    {
+      "@id": "baiv:story:us-a03",
+      "@type": "efs:UserStory",
+      "storyCode": "US-A03",
+      "name": "Magic Link Sign In",
+      "asA": "user",
+      "iWant": "to use Magic Link",
+      "soThat": "I can sign in without remembering a password",
+      "feature": "baiv:feat:auth-magic",
+      "priority": "P2-Medium",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given user enters valid email",
+        "When magic link is requested",
+        "Then email is sent with one-time link",
+        "And clicking link authenticates user"
+      ]
+    },
+    {
+      "@id": "baiv:story:us-a04",
+      "@type": "efs:UserStory",
+      "storyCode": "US-A04",
+      "name": "Multi-Org Switching",
+      "asA": "user with multiple organizations",
+      "iWant": "to switch between them easily",
+      "soThat": "I can manage multiple tenants",
+      "feature": "baiv:feat:auth-multitenant",
+      "priority": "P1-High",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given user belongs to Tenant A and Tenant B",
+        "When user logs in",
+        "Then tenant selector is displayed",
+        "And selecting Tenant A sets context to Tenant A"
+      ]
+    },
+    {
+      "@id": "baiv:story:us-a05",
+      "@type": "efs:UserStory",
+      "storyCode": "US-A05",
+      "name": "Enterprise SSO",
+      "asA": "enterprise admin",
+      "iWant": "my team to use our company SSO",
+      "soThat": "we maintain security standards",
+      "feature": "baiv:feat:auth-multitenant",
+      "priority": "P3-Future",
+      "status": "future",
+      "acceptanceCriteria": [
+        "Given SAML SSO is configured",
+        "When enterprise user attempts login",
+        "Then user is redirected to company IdP",
+        "And upon success, user is authenticated"
+      ],
+      "note": "Future capability - architecture must support without modification (FR-AUTH-08)"
+    },
+    {
+      "@id": "baiv:story:us-s01",
+      "@type": "efs:UserStory",
+      "storyCode": "US-S01",
+      "name": "Tenant Data Isolation",
+      "asA": "Platform Owner",
+      "iWant": "tenant data isolated at DB level",
+      "soThat": "app bugs can't leak data",
+      "feature": "baiv:feat:rls-isolation",
+      "priority": "P0-Critical",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given User A is in Tenant A",
+        "When User A queries any table with Tenant B's ID",
+        "Then zero rows are returned"
+      ]
+    },
+    {
+      "@id": "baiv:story:us-s02",
+      "@type": "efs:UserStory",
+      "storyCode": "US-S02",
+      "name": "Audit Trail",
+      "asA": "Tenant Admin",
+      "iWant": "audit logs",
+      "soThat": "I can track who changed what",
+      "feature": "baiv:feat:rls-audit",
+      "priority": "P1-High",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given an audit_log record exists",
+        "When any user attempts UPDATE or DELETE",
+        "Then the operation is blocked",
+        "And records are append-only"
+      ]
+    },
+    {
+      "@id": "baiv:story:us-c01",
+      "@type": "efs:UserStory",
+      "storyCode": "US-C01",
+      "name": "View Cycle Stage",
+      "asA": "Tenant Admin",
+      "iWant": "to see current cycle stage",
+      "soThat": "team knows what phase we're in",
+      "feature": "baiv:feat:cycle-tracking",
+      "priority": "P1-High",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given tenant has cycle state record",
+        "When admin views dashboard",
+        "Then current stage is displayed",
+        "And stage status is visible"
+      ]
+    },
+    {
+      "@id": "baiv:story:us-c02",
+      "@type": "efs:UserStory",
+      "storyCode": "US-C02",
+      "name": "Advance Stage",
+      "asA": "Tenant Admin",
+      "iWant": "to advance stages",
+      "soThat": "we progress through the AI Visibility journey",
+      "feature": "baiv:feat:cycle-advance",
+      "priority": "P1-High",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given tenant is in 'audit' stage",
+        "And user has 'admin' role",
+        "When user calls advance_cycle_stage()",
+        "Then stage becomes 'gap_analysis'",
+        "And activity is logged with is_highlight=true"
+      ],
+      "negativeCase": {
+        "scenario": "Non-admin cannot advance",
+        "given": "user has 'member' role",
+        "when": "user calls advance_cycle_stage()",
+        "then": "operation fails with 'Permission denied'"
+      }
+    },
+    {
+      "@id": "baiv:story:us-c03",
+      "@type": "efs:UserStory",
+      "storyCode": "US-C03",
+      "name": "Health Indicators",
+      "asA": "Team Member",
+      "iWant": "to see health indicators",
+      "soThat": "I know if we're on track",
+      "feature": "baiv:feat:cycle-health",
+      "priority": "P2-Medium",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given cycle state has health_indicators JSONB",
+        "When team member views status card",
+        "Then health indicators are displayed"
+      ]
+    },
+    {
+      "@id": "baiv:story:us-l01",
+      "@type": "efs:UserStory",
+      "storyCode": "US-L01",
+      "name": "See Online Users",
+      "asA": "Analyst",
+      "iWant": "to see who's online",
+      "soThat": "I know who's available",
+      "feature": "baiv:feat:collab-presence",
+      "priority": "P1-High",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given multiple users are active in tenant",
+        "When analyst views online badge",
+        "Then list of active users is shown",
+        "And users offline after 2 minutes without heartbeat"
+      ]
+    },
+    {
+      "@id": "baiv:story:us-l02",
+      "@type": "efs:UserStory",
+      "storyCode": "US-L02",
+      "name": "Lock Gap Analysis",
+      "asA": "Analyst",
+      "iWant": "to lock a gap analysis while editing",
+      "soThat": "others don't overwrite my work",
+      "feature": "baiv:feat:collab-locking",
+      "priority": "P1-High",
+      "status": "planned",
+      "acceptanceCriteria": [
+        {
+          "scenario": "Lock acquisition",
+          "given": "no lock exists on gap_analysis:123",
+          "when": "User A requests lock",
+          "then": "lock is granted to User A"
+        },
+        {
+          "scenario": "Lock conflict",
+          "given": "User A holds lock on gap_analysis:123",
+          "when": "User B requests same lock",
+          "then": "User B receives 'Locked by User A'"
+        }
+      ]
+    },
+    {
+      "@id": "baiv:story:us-l03",
+      "@type": "efs:UserStory",
+      "storyCode": "US-L03",
+      "name": "Recent Activity",
+      "asA": "Team Member",
+      "iWant": "to see recent activity",
+      "soThat": "I know what's happened",
+      "feature": "baiv:feat:collab-activity",
+      "priority": "P2-Medium",
+      "status": "planned",
+      "acceptanceCriteria": [
+        "Given activities exist for tenant",
+        "When team member views activity feed",
+        "Then recent activities are shown paginated",
+        "And highlighted events are prominent"
+      ]
+    }
+  ],
+
+  "requirementMapping": {
+    "description": "Mapping from FR/TR IDs to EFS entities",
+    "authenticationRequirements": {
+      "FR-AUTH-01": {"feature": "baiv:feat:auth-email", "story": "baiv:story:us-a01"},
+      "FR-AUTH-02": {"feature": "baiv:feat:auth-magic", "story": "baiv:story:us-a03"},
+      "FR-AUTH-03": {"feature": "baiv:feat:auth-oauth", "story": "baiv:story:us-a02"},
+      "FR-AUTH-04": {"feature": "baiv:feat:auth-jwt"},
+      "FR-AUTH-05": {"feature": "baiv:feat:auth-multitenant"},
+      "FR-AUTH-06": {"feature": "baiv:feat:auth-multitenant"},
+      "FR-AUTH-07": {"feature": "baiv:feat:auth-multitenant", "story": "baiv:story:us-a04"},
+      "FR-AUTH-08": {"feature": "baiv:feat:auth-multitenant", "story": "baiv:story:us-a05"}
+    },
+    "securityLayerRequirements": {
+      "FR-SEC-01": {"feature": "baiv:feat:rls-isolation", "story": "baiv:story:us-s01"},
+      "FR-SEC-02": {"feature": "baiv:feat:rls-context"},
+      "FR-SEC-03": {"feature": "baiv:feat:rls-context"},
+      "FR-SEC-04": {"feature": "baiv:feat:rls-audit", "story": "baiv:story:us-s02"},
+      "FR-SEC-05": {"feature": "baiv:feat:rls-audit", "story": "baiv:story:us-s02"},
+      "FR-SEC-06": {"feature": "baiv:feat:rls-audit"}
+    },
+    "cycleManagementRequirements": {
+      "FR-CYC-01": {"feature": "baiv:feat:cycle-tracking", "story": "baiv:story:us-c01"},
+      "FR-CYC-02": {"feature": "baiv:feat:cycle-tracking", "story": "baiv:story:us-c01"},
+      "FR-CYC-03": {"feature": "baiv:feat:cycle-tracking", "story": "baiv:story:us-c01"},
+      "FR-CYC-04": {"feature": "baiv:feat:cycle-advance", "story": "baiv:story:us-c02"},
+      "FR-CYC-05": {"feature": "baiv:feat:cycle-advance", "story": "baiv:story:us-c02"},
+      "FR-CYC-06": {"feature": "baiv:feat:cycle-advance"}
+    },
+    "presenceRequirements": {
+      "FR-PRE-01": {"feature": "baiv:feat:collab-presence", "story": "baiv:story:us-l01"},
+      "FR-PRE-02": {"feature": "baiv:feat:collab-presence"},
+      "FR-PRE-03": {"feature": "baiv:feat:collab-presence"},
+      "FR-PRE-04": {"feature": "baiv:feat:collab-presence"},
+      "FR-PRE-05": {"feature": "baiv:feat:collab-presence"}
+    },
+    "lockingRequirements": {
+      "FR-LOCK-01": {"feature": "baiv:feat:collab-locking", "story": "baiv:story:us-l02"},
+      "FR-LOCK-02": {"feature": "baiv:feat:collab-locking"},
+      "FR-LOCK-03": {"feature": "baiv:feat:collab-locking"},
+      "FR-LOCK-04": {"feature": "baiv:feat:collab-locking"},
+      "FR-LOCK-05": {"feature": "baiv:feat:collab-locking"},
+      "FR-LOCK-06": {"feature": "baiv:feat:collab-locking"}
+    },
+    "activityRequirements": {
+      "FR-ACT-01": {"feature": "baiv:feat:collab-activity", "story": "baiv:story:us-l03"},
+      "FR-ACT-02": {"feature": "baiv:feat:collab-activity"},
+      "FR-ACT-03": {"feature": "baiv:feat:collab-activity"},
+      "FR-ACT-04": {"feature": "baiv:feat:collab-activity"},
+      "FR-ACT-05": {"feature": "baiv:feat:collab-activity"}
+    },
+    "technicalRequirements": {
+      "TR-DB-01": {"feature": "baiv:feat:rls-isolation"},
+      "TR-DB-02": {"feature": "baiv:feat:rls-isolation"},
+      "TR-DB-03": {"feature": "baiv:feat:rls-isolation"},
+      "TR-DB-04": {"feature": "baiv:feat:cycle-health"},
+      "TR-API-01": {"feature": "baiv:feat:rls-context"},
+      "TR-API-02": {"feature": "baiv:feat:collab-presence"},
+      "TR-API-03": {"feature": "baiv:feat:collab-locking"},
+      "TR-API-04": {"feature": "baiv:feat:cycle-advance"},
+      "TR-API-05": {"feature": "baiv:feat:collab-activity"}
+    }
+  },
+
+  "pbsMapping": {
+    "description": "Mapping to Product Breakdown Structure packages",
+    "packages": [
+      {
+        "pbsId": "PBS-1.0",
+        "name": "Auth Package",
+        "epic": "baiv:epic:sec-auth",
+        "deliverables": ["PBS-1.1", "PBS-1.2", "PBS-1.3", "PBS-1.4"]
+      },
+      {
+        "pbsId": "PBS-2.0",
+        "name": "Security Package",
+        "epic": "baiv:epic:sec-rls",
+        "deliverables": ["PBS-2.1", "PBS-2.2", "PBS-2.3"]
+      },
+      {
+        "pbsId": "PBS-3.0",
+        "name": "Collaboration Package",
+        "epics": ["baiv:epic:sec-collab", "baiv:epic:sec-cycle"],
+        "deliverables": ["PBS-3.1", "PBS-3.2", "PBS-3.3", "PBS-3.4", "PBS-3.5"]
+      },
+      {
+        "pbsId": "PBS-4.0",
+        "name": "API Package",
+        "epics": ["baiv:epic:sec-auth", "baiv:epic:sec-rls", "baiv:epic:sec-collab", "baiv:epic:sec-cycle"],
+        "deliverables": ["PBS-4.1", "PBS-4.2", "PBS-4.3", "PBS-4.4", "PBS-4.5"]
+      },
+      {
+        "pbsId": "PBS-5.0",
+        "name": "UI Package",
+        "epics": ["baiv:epic:sec-auth", "baiv:epic:sec-collab", "baiv:epic:sec-cycle"],
+        "deliverables": ["PBS-5.1", "PBS-5.2", "PBS-5.3", "PBS-5.4", "PBS-5.5"]
+      },
+      {
+        "pbsId": "PBS-6.0",
+        "name": "Test Package",
+        "epics": ["baiv:epic:sec-auth", "baiv:epic:sec-rls"],
+        "deliverables": ["PBS-6.1", "PBS-6.2", "PBS-6.3"]
+      }
+    ]
+  },
+
+  "validation": {
+    "conformsTo": "pf:EFS-ONT-v1.0",
+    "totalEpics": 4,
+    "totalFeatures": 14,
+    "totalStories": 15,
+    "requirementsCovered": {
+      "FR-AUTH": 8,
+      "FR-SEC": 6,
+      "FR-CYC": 6,
+      "FR-PRE": 5,
+      "FR-LOCK": 6,
+      "FR-ACT": 5,
+      "TR-DB": 4,
+      "TR-API": 5
+    },
+    "sourceTraceability": "BAIV-Security-REQS.pdf"
+  }
+}

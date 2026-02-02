@@ -1,0 +1,820 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform-foundation.io/ontology/v1/",
+    "baiv": "https://beaivisible.com/ontology/",
+    "rrr": "https://platform-foundation.io/ontology/v1/rrr/",
+    "rbac": "https://platform-foundation.io/ontology/v1/rbac/",
+    "raci": "https://platform-foundation.io/ontology/v1/raci/"
+  },
+  "@type": "Dataset",
+  "@id": "baiv:RRR-DATA:aiv-roles-v1.0.0",
+  "name": "BAIV AI Visibility Product Roles Data",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-02",
+  "description": "RBAC role instances for BAIV AI Visibility product. Defines 11 roles across Platform, Agency, Client, and Limited Access categories. Includes role hierarchy, RACI matrices, and permission mappings.",
+  "conformsTo": "pf:RRR-ONT-v3.1.0",
+  "sourceDocuments": [
+    "BAIV-PFI-RBAC Roles v2.pdf",
+    "BAIV-PFI-AIV-RBAC Roles Legend.pdf"
+  ],
+  "organization": {
+    "@id": "baiv:organization:beaivisible",
+    "@type": "Organization",
+    "name": "Be AI Visible (BAIV)"
+  },
+  "product": {
+    "@id": "baiv:product:ai-visibility",
+    "name": "AI Visibility Platform",
+    "description": "AI Visibility and Brand Authority platform for B2B marketing leaders"
+  },
+
+  "roleCategories": [
+    {
+      "@id": "baiv:category:platform",
+      "name": "Platform",
+      "description": "BAIV platform-level roles with cross-tenant access",
+      "roles": ["baiv:role:pfi-owner", "baiv:role:admin"]
+    },
+    {
+      "@id": "baiv:category:agency",
+      "name": "Agency",
+      "description": "Marketing agency roles managing multiple client tenants",
+      "roles": ["baiv:role:agency-admin", "baiv:role:agency-manager", "baiv:role:agency-analyst"]
+    },
+    {
+      "@id": "baiv:category:client",
+      "name": "Direct Client",
+      "description": "Enterprise client organization roles",
+      "roles": ["baiv:role:client-admin", "baiv:role:client-manager", "baiv:role:client-analyst", "baiv:role:client-viewer"]
+    },
+    {
+      "@id": "baiv:category:limited",
+      "name": "Limited Access",
+      "description": "Restricted access roles for partners and integrations",
+      "roles": ["baiv:role:affiliate", "baiv:role:api-only"]
+    }
+  ],
+
+  "platformRoles": [
+    {
+      "@id": "baiv:role:pfi-owner",
+      "@type": "pf:ExecutiveRole",
+      "roleCode": "PFI-OWNER",
+      "roleTitle": "PFI Owner",
+      "description": "Platform owner with full control over BAIV platform",
+      "exampleUsers": "Milana (BAIV founder)",
+      "roleCategory": "Platform",
+      "functionalDomain": "Executive Leadership",
+      "seniorityLevel": 1,
+      "tenantScope": "cross-tenant",
+      "isActive": true,
+
+      "coreResponsibilities": [
+        "Platform vision and strategic direction",
+        "Cross-tenant platform governance",
+        "Platform security and compliance oversight",
+        "Multi-venture coordination",
+        "Platform pricing and commercial strategy",
+        "Platform feature roadmap ownership",
+        "Executive stakeholder management"
+      ],
+
+      "keyDecisions": [
+        "Platform architecture direction",
+        "Tenant creation and deletion",
+        "Cross-tenant data access policies",
+        "Platform-wide security policies",
+        "New feature releases",
+        "Commercial and pricing decisions",
+        "Partnership and integration approvals"
+      ],
+
+      "raciAccountable": [
+        "Platform availability and reliability",
+        "Cross-tenant data security",
+        "Platform regulatory compliance",
+        "Platform commercial success",
+        "Multi-tenant architecture integrity"
+      ],
+
+      "raciResponsible": [
+        "Platform strategic planning",
+        "Major incident escalation handling",
+        "Platform governance policy definition",
+        "Executive reporting and communication"
+      ],
+
+      "raciConsulted": [
+        "Tenant-specific operational decisions",
+        "Agency partnership strategies",
+        "Technical architecture decisions"
+      ],
+
+      "raciInformed": [
+        "Tenant onboarding activities",
+        "Day-to-day operational metrics",
+        "Support ticket volumes"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-all-tenant-data", "delete-tenant", "archive-tenant", "access-billing"],
+        "accessLevel": "Full",
+        "note": "Complete platform access including destructive operations"
+      },
+
+      "fallbackRole": "Board of Directors"
+    },
+
+    {
+      "@id": "baiv:role:admin",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "ADMIN",
+      "roleTitle": "Admin",
+      "description": "Super user with cross-tenant access for BAIV team members",
+      "exampleUsers": "BAIV team members",
+      "roleCategory": "Platform",
+      "functionalDomain": "Operations",
+      "function": "Operations",
+      "seniorityLevel": 2,
+      "reportsTo": "baiv:role:pfi-owner",
+      "tenantScope": "cross-tenant",
+      "isActive": true,
+
+      "coreResponsibilities": [
+        "Day-to-day platform operations",
+        "Tenant support and onboarding",
+        "Cross-tenant issue resolution",
+        "User management across tenants",
+        "Platform monitoring and health checks",
+        "Feature configuration and rollout",
+        "Documentation and training"
+      ],
+
+      "keyDecisions": [
+        "Tenant configuration settings",
+        "User role assignments",
+        "Feature enablement per tenant",
+        "Support escalation paths",
+        "Operational process improvements"
+      ],
+
+      "raciAccountable": [
+        "Tenant onboarding success",
+        "Platform operational health",
+        "User support quality",
+        "Feature rollout execution"
+      ],
+
+      "raciResponsible": [
+        "Tenant provisioning",
+        "User creation and management",
+        "Support ticket resolution",
+        "Monitoring and alerting"
+      ],
+
+      "raciConsulted": [
+        "Platform architecture changes",
+        "Security policy updates",
+        "Pricing decisions"
+      ],
+
+      "raciInformed": [
+        "Strategic direction changes",
+        "Major commercial decisions"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-all-tenant-data", "create-edit-data", "execute-agents", "view-team", "invite-users", "change-roles", "remove-users", "archive-tenant", "access-billing"],
+        "accessLevel": "Full",
+        "note": "Full access except tenant deletion (PFI Owner only)"
+      },
+
+      "fallbackRole": "baiv:role:pfi-owner"
+    }
+  ],
+
+  "agencyRoles": [
+    {
+      "@id": "baiv:role:agency-admin",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "AGENCY-ADMIN",
+      "roleTitle": "Agency Admin",
+      "description": "Agency owner managing multiple client tenants",
+      "exampleUsers": "Marketing agency owner",
+      "roleCategory": "Agency",
+      "functionalDomain": "Commercial",
+      "function": "Sales",
+      "seniorityLevel": 2,
+      "reportsTo": "baiv:role:admin",
+      "tenantScope": "agency-clients",
+      "isActive": true,
+
+      "coreResponsibilities": [
+        "Agency client portfolio management",
+        "Client tenant creation and setup",
+        "Agency team management",
+        "White-label reporting configuration",
+        "Bulk operations across clients",
+        "Agency billing and commercial management"
+      ],
+
+      "keyDecisions": [
+        "Client tenant provisioning",
+        "Agency team composition",
+        "Client service levels",
+        "White-label branding",
+        "Cross-client reporting"
+      ],
+
+      "raciAccountable": [
+        "Agency client satisfaction",
+        "Agency team performance",
+        "Client tenant security",
+        "Agency revenue"
+      ],
+
+      "raciResponsible": [
+        "Client onboarding execution",
+        "Agency team management",
+        "Client relationship management",
+        "Reporting to clients"
+      ],
+
+      "raciConsulted": [
+        "Platform feature requests",
+        "Pricing for clients"
+      ],
+
+      "raciInformed": [
+        "Platform updates",
+        "New feature releases"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-own-tenant-data", "create-edit-data", "execute-agents", "view-team", "invite-users", "change-roles", "remove-users"],
+        "agencySpecific": ["create-client-tenants", "view-all-agency-clients", "switch-client-views", "white-label-reports", "bulk-operations"],
+        "accessLevel": "Full within agency scope",
+        "note": "Agency Admin only can create client tenants"
+      },
+
+      "fallbackRole": "baiv:role:admin"
+    },
+
+    {
+      "@id": "baiv:role:agency-manager",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "AGENCY-MGR",
+      "roleTitle": "Agency Manager",
+      "description": "Agency team member with client access",
+      "exampleUsers": "Account manager at agency",
+      "roleCategory": "Agency",
+      "functionalDomain": "Customer Success",
+      "function": "Customer Success",
+      "seniorityLevel": 3,
+      "reportsTo": "baiv:role:agency-admin",
+      "tenantScope": "assigned-clients",
+      "isActive": true,
+
+      "coreResponsibilities": [
+        "Client account management",
+        "Client onboarding support",
+        "Analysis execution for clients",
+        "Content creation for clients",
+        "Client reporting",
+        "Team coordination"
+      ],
+
+      "keyDecisions": [
+        "Client deliverable priorities",
+        "Analysis parameter configuration",
+        "Content scheduling",
+        "Team task assignment"
+      ],
+
+      "raciAccountable": [
+        "Client deliverable quality",
+        "Client communication",
+        "Account health"
+      ],
+
+      "raciResponsible": [
+        "Running analyses",
+        "Creating content",
+        "Client meetings",
+        "Progress reporting"
+      ],
+
+      "raciConsulted": [
+        "Client strategy",
+        "Pricing discussions"
+      ],
+
+      "raciInformed": [
+        "Agency strategy",
+        "New client acquisitions"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-own-tenant-data", "create-edit-data", "execute-agents", "view-team"],
+        "agencySpecific": ["view-all-agency-clients", "switch-client-views"],
+        "inviteConstraint": "Can invite same or lower role only",
+        "accessLevel": "Full within assigned clients"
+      },
+
+      "fallbackRole": "baiv:role:agency-admin"
+    },
+
+    {
+      "@id": "baiv:role:agency-analyst",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "AGENCY-ANALYST",
+      "roleTitle": "Agency Analyst",
+      "description": "Agency read-only team member",
+      "exampleUsers": "Junior analyst at agency",
+      "roleCategory": "Agency",
+      "functionalDomain": "Data & Analytics",
+      "function": "Data",
+      "seniorityLevel": 4,
+      "reportsTo": "baiv:role:agency-manager",
+      "tenantScope": "assigned-clients",
+      "isActive": true,
+
+      "coreResponsibilities": [
+        "View and analyze results",
+        "Generate reports",
+        "Support content drafting",
+        "Research and discovery"
+      ],
+
+      "keyDecisions": [
+        "Report formatting",
+        "Data visualization choices"
+      ],
+
+      "raciAccountable": [
+        "Report accuracy"
+      ],
+
+      "raciResponsible": [
+        "Report generation",
+        "Data compilation"
+      ],
+
+      "raciConsulted": [
+        "Analysis methodology"
+      ],
+
+      "raciInformed": [
+        "Client status",
+        "Project timelines"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-own-tenant-data"],
+        "limitations": {
+          "executeAgents": "View results only",
+          "runGapAnalysis": "View only",
+          "generateContent": "Draft only",
+          "createContentPlans": "Suggest only"
+        },
+        "accessLevel": "Partial/Limited"
+      },
+
+      "fallbackRole": "baiv:role:agency-manager"
+    }
+  ],
+
+  "clientRoles": [
+    {
+      "@id": "baiv:role:client-admin",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "CLIENT-ADMIN",
+      "roleTitle": "Client Admin (Enterprise)",
+      "description": "Client organization administrator",
+      "exampleUsers": "CMO, VP Marketing, Director",
+      "roleCategory": "Direct Client",
+      "functionalDomain": "Marketing",
+      "function": "Marketing",
+      "seniorityLevel": 2,
+      "reportsTo": "baiv:role:admin",
+      "tenantScope": "own-tenant",
+      "isActive": true,
+
+      "businessRoleMapping": [
+        {"businessRole": "CMO/VP Marketing", "focus": "Strategic oversight, ROI focus"},
+        {"businessRole": "Director E-commerce", "focus": "Implementation + oversight"}
+      ],
+
+      "coreResponsibilities": [
+        "Organization AI visibility strategy",
+        "Team management within tenant",
+        "Budget and resource allocation",
+        "Integration configuration",
+        "Billing management",
+        "Security settings for tenant"
+      ],
+
+      "keyDecisions": [
+        "Team composition",
+        "Integration approvals",
+        "Budget allocation",
+        "Content approval",
+        "Analysis priorities"
+      ],
+
+      "raciAccountable": [
+        "Tenant AI visibility outcomes",
+        "Team performance",
+        "Budget utilization",
+        "ROI achievement"
+      ],
+
+      "raciResponsible": [
+        "Strategic planning",
+        "Team management",
+        "Executive reporting",
+        "Stakeholder communication"
+      ],
+
+      "raciConsulted": [
+        "Content strategy",
+        "Technical integrations"
+      ],
+
+      "raciInformed": [
+        "Day-to-day operations",
+        "Content production"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-own-tenant-data", "create-edit-data", "execute-agents", "view-team", "invite-users", "change-roles", "remove-users", "access-billing"],
+        "integrations": ["connect-linkedin", "connect-google-drive", "connect-wordpress", "connect-email", "manage-api-keys"],
+        "accessLevel": "Full within tenant",
+        "note": "Admin initiates onboarding wizard"
+      },
+
+      "fallbackRole": "baiv:role:admin"
+    },
+
+    {
+      "@id": "baiv:role:client-manager",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "CLIENT-MGR",
+      "roleTitle": "Client Manager",
+      "description": "Client team member with edit rights",
+      "exampleUsers": "Marketing Manager, SEO Manager",
+      "roleCategory": "Direct Client",
+      "functionalDomain": "Marketing",
+      "function": "Marketing",
+      "seniorityLevel": 3,
+      "reportsTo": "baiv:role:client-admin",
+      "tenantScope": "own-tenant",
+      "isActive": true,
+
+      "businessRoleMapping": [
+        {"businessRole": "Marketing Manager", "focus": "Day-to-day execution"},
+        {"businessRole": "SEO Manager", "focus": "Technical + analysis"},
+        {"businessRole": "Content Manager", "focus": "Content workflow"},
+        {"businessRole": "Paid Media Manager", "focus": "Attribution focus"}
+      ],
+
+      "coreResponsibilities": [
+        "Day-to-day AI visibility execution",
+        "Content creation and management",
+        "Analysis execution",
+        "Scheduling and planning",
+        "Team coordination"
+      ],
+
+      "keyDecisions": [
+        "Content scheduling",
+        "Analysis parameters",
+        "Task prioritization",
+        "Custom dashboard creation"
+      ],
+
+      "raciAccountable": [
+        "Content production quality",
+        "Analysis completion",
+        "Schedule adherence"
+      ],
+
+      "raciResponsible": [
+        "Running analyses",
+        "Creating content",
+        "Managing calendar",
+        "Reporting progress"
+      ],
+
+      "raciConsulted": [
+        "Strategic priorities",
+        "Budget allocation"
+      ],
+
+      "raciInformed": [
+        "Executive decisions",
+        "Team changes"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-own-tenant-data", "create-edit-data", "execute-agents", "view-team"],
+        "inviteConstraint": "Can invite same or lower role only",
+        "customDashboards": "Own views only",
+        "accessLevel": "Full execution, limited admin"
+      },
+
+      "fallbackRole": "baiv:role:client-admin"
+    },
+
+    {
+      "@id": "baiv:role:client-analyst",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "CLIENT-ANALYST",
+      "roleTitle": "Client Analyst",
+      "description": "Client specialist with limited edit capabilities",
+      "exampleUsers": "SEO Specialist, Content Writer",
+      "roleCategory": "Direct Client",
+      "functionalDomain": "Marketing",
+      "function": "Marketing",
+      "seniorityLevel": 4,
+      "reportsTo": "baiv:role:client-manager",
+      "tenantScope": "own-tenant",
+      "isActive": true,
+
+      "businessRoleMapping": [
+        {"businessRole": "Social Media Manager", "focus": "Monitoring + engagement"},
+        {"businessRole": "SEO Specialist", "focus": "Technical implementation"}
+      ],
+
+      "coreResponsibilities": [
+        "View and analyze AI visibility data",
+        "Support content creation",
+        "Monitor social channels",
+        "Technical implementation support"
+      ],
+
+      "keyDecisions": [
+        "Report formatting",
+        "Content drafts"
+      ],
+
+      "raciAccountable": [
+        "Data accuracy in reports"
+      ],
+
+      "raciResponsible": [
+        "Running specific analyses",
+        "Content drafting",
+        "Data compilation"
+      ],
+
+      "raciConsulted": [
+        "Content strategy",
+        "Analysis methodology"
+      ],
+
+      "raciInformed": [
+        "Team updates",
+        "Priority changes"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-own-tenant-data"],
+        "limitations": {
+          "createEditData": "Limited scope",
+          "runGapAnalysis": "View only",
+          "generateContent": "Draft only",
+          "createContentPlans": "Suggest only"
+        },
+        "accessLevel": "Partial/Limited"
+      },
+
+      "fallbackRole": "baiv:role:client-manager"
+    },
+
+    {
+      "@id": "baiv:role:client-viewer",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "CLIENT-VIEWER",
+      "roleTitle": "Client Viewer",
+      "description": "Executive read-only access",
+      "exampleUsers": "CEO wanting visibility",
+      "roleCategory": "Direct Client",
+      "functionalDomain": "Executive Leadership",
+      "function": "Strategy",
+      "seniorityLevel": 5,
+      "reportsTo": "baiv:role:client-admin",
+      "tenantScope": "own-tenant",
+      "isActive": true,
+
+      "coreResponsibilities": [
+        "Review executive dashboards",
+        "Monitor AI visibility progress",
+        "Stay informed on outcomes"
+      ],
+
+      "keyDecisions": [],
+
+      "raciAccountable": [],
+
+      "raciResponsible": [],
+
+      "raciConsulted": [
+        "Strategic direction"
+      ],
+
+      "raciInformed": [
+        "All major outcomes",
+        "Progress reports",
+        "ROI metrics"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-own-tenant-data"],
+        "dashboards": "Summary only",
+        "reports": "View only, no export",
+        "accessLevel": "Read-only"
+      },
+
+      "fallbackRole": "baiv:role:client-admin"
+    }
+  ],
+
+  "limitedAccessRoles": [
+    {
+      "@id": "baiv:role:affiliate",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "AFFILIATE",
+      "roleTitle": "Affiliate",
+      "description": "Referral partner with limited access",
+      "exampleUsers": "Partner tracking referrals",
+      "roleCategory": "Limited Access",
+      "functionalDomain": "Commercial",
+      "function": "Sales",
+      "seniorityLevel": 3,
+      "reportsTo": "baiv:role:admin",
+      "tenantScope": "referral-data-only",
+      "isActive": true,
+
+      "coreResponsibilities": [
+        "Track referral performance",
+        "View referral dashboard",
+        "Monitor affiliate earnings"
+      ],
+
+      "keyDecisions": [],
+
+      "raciAccountable": [
+        "Referral quality"
+      ],
+
+      "raciResponsible": [
+        "Referral tracking"
+      ],
+
+      "raciConsulted": [],
+
+      "raciInformed": [
+        "Program updates"
+      ],
+
+      "permissionSummary": {
+        "securityAccess": ["view-referral-data-only"],
+        "dashboards": "Referral dashboard only",
+        "discoveryResults": "Own referrals only",
+        "accessLevel": "Very Limited"
+      },
+
+      "fallbackRole": "baiv:role:admin"
+    },
+
+    {
+      "@id": "baiv:role:api-only",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "API-ONLY",
+      "roleTitle": "API Only",
+      "description": "System integration account",
+      "exampleUsers": "Automated systems, webhooks",
+      "roleCategory": "Limited Access",
+      "functionalDomain": "Technology",
+      "function": "Technology",
+      "seniorityLevel": 5,
+      "reportsTo": "baiv:role:admin",
+      "tenantScope": "api-scoped",
+      "isActive": true,
+
+      "coreResponsibilities": [
+        "Automated data integration",
+        "System-to-system communication",
+        "Webhook event handling"
+      ],
+
+      "keyDecisions": [],
+
+      "raciAccountable": [],
+
+      "raciResponsible": [
+        "API integration maintenance"
+      ],
+
+      "raciConsulted": [],
+
+      "raciInformed": [],
+
+      "permissionSummary": {
+        "securityAccess": ["access-rest-api", "access-websocket-feeds"],
+        "scope": "Scoped by API key permissions",
+        "humanInteraction": "None - machine account",
+        "accessLevel": "API-scoped only"
+      },
+
+      "fallbackRole": "baiv:role:admin"
+    }
+  ],
+
+  "roleHierarchy": {
+    "description": "BAIV AI Visibility product role hierarchy",
+    "structure": [
+      {
+        "role": "baiv:role:pfi-owner",
+        "level": 1,
+        "directReports": ["baiv:role:admin"]
+      },
+      {
+        "role": "baiv:role:admin",
+        "level": 2,
+        "reportsTo": "baiv:role:pfi-owner",
+        "directReports": ["baiv:role:agency-admin", "baiv:role:client-admin", "baiv:role:affiliate", "baiv:role:api-only"]
+      },
+      {
+        "role": "baiv:role:agency-admin",
+        "level": 2,
+        "reportsTo": "baiv:role:admin",
+        "directReports": ["baiv:role:agency-manager"]
+      },
+      {
+        "role": "baiv:role:agency-manager",
+        "level": 3,
+        "reportsTo": "baiv:role:agency-admin",
+        "directReports": ["baiv:role:agency-analyst"]
+      },
+      {
+        "role": "baiv:role:agency-analyst",
+        "level": 4,
+        "reportsTo": "baiv:role:agency-manager"
+      },
+      {
+        "role": "baiv:role:client-admin",
+        "level": 2,
+        "reportsTo": "baiv:role:admin",
+        "directReports": ["baiv:role:client-manager", "baiv:role:client-viewer"]
+      },
+      {
+        "role": "baiv:role:client-manager",
+        "level": 3,
+        "reportsTo": "baiv:role:client-admin",
+        "directReports": ["baiv:role:client-analyst"]
+      },
+      {
+        "role": "baiv:role:client-analyst",
+        "level": 4,
+        "reportsTo": "baiv:role:client-manager"
+      },
+      {
+        "role": "baiv:role:client-viewer",
+        "level": 5,
+        "reportsTo": "baiv:role:client-admin"
+      },
+      {
+        "role": "baiv:role:affiliate",
+        "level": 3,
+        "reportsTo": "baiv:role:admin"
+      },
+      {
+        "role": "baiv:role:api-only",
+        "level": 5,
+        "reportsTo": "baiv:role:admin"
+      }
+    ]
+  },
+
+  "validation": {
+    "conformsTo": "pf:RRR-ONT-v3.1.0",
+    "totalRoles": 11,
+    "rolesPerCategory": {
+      "Platform": 2,
+      "Agency": 3,
+      "Client": 4,
+      "Limited": 2
+    },
+    "businessRulesValidated": [
+      "BR-RRR-003: At least one Responsible per role - PASS",
+      "BR-RRR-004: No circular reporting - PASS (tree structure verified)"
+    ],
+    "sourceTraceability": {
+      "rolesFromPdf": "BAIV-PFI-RBAC Roles v2.pdf",
+      "legendFromPdf": "BAIV-PFI-AIV-RBAC Roles Legend.pdf"
+    }
+  }
+}

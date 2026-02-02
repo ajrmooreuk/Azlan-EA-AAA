@@ -11,11 +11,11 @@
   "name": "BAIV Architecture & Security Roles Instance",
   "version": "1.0.0",
   "dateCreated": "2026-02-02",
-  "description": "BAIV instance configuration for architectural and security roles. References PF-Core role templates from pf-architectural-roles-ontology. BAIV-specific roles to be defined separately.",
+  "description": "BAIV instance configuration for architectural and security roles. References PF-Core role data from RRR-DATA-architectural-roles. BAIV-specific roles to be defined separately.",
 
   "conformsTo": [
-    "pf:ontology:roles-raci-rbac-v3.1.0",
-    "pf:ontology:architectural-roles-v1.0.0"
+    "pf:RRR-ONT-v3.1.0",
+    "pf:RRR-DATA:architectural-roles-v1.0.0"
   ],
 
   "organization": {
@@ -26,7 +26,7 @@
 
   "pfCoreRoleReferences": {
     "description": "PF-Core role templates adopted for this BAIV instance",
-    "sourceOntology": "pf:ontology:architectural-roles-v1.0.0",
+    "sourceOntology": "pf:RRR-DATA:architectural-roles-v1.0.0",
 
     "securityLeadership": {
       "adoptedRoles": [
@@ -189,9 +189,9 @@
 
   "validation": {
     "conformsTo": [
-      "pf:ontology:roles-raci-rbac-v3.1.0",
-      "pf:ontology:architectural-roles-v1.0.0"
+      "pf:RRR-ONT-v3.1.0",
+      "pf:RRR-DATA:architectural-roles-v1.0.0"
     ],
-    "note": "Instance references PF-Core templates; full role definitions in pf-architectural-roles-ontology-v1.0.0.jsonld"
+    "note": "Instance references PF-Core role data; full role definitions in RRR-DATA-architectural-roles-v1.0.0.jsonld"
   }
 }

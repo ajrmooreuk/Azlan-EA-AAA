@@ -9,8 +9,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#"
   },
   "@type": "owl:Ontology",
-  "@id": "pf:ontology:roles-raci-rbac-v3.1.0",
-  "name": "Platform Foundation: Roles, RACI & RBAC Ontology",
+  "@id": "pf:RRR-ONT-v3.1.0",
+  "name": "Platform Foundation: Roles, RACI & RBAC Ontology (RRR-ONT)",
   "version": "3.1.0",
   "dateCreated": "2025-10-11",
   "dateModified": "2026-02-02",
