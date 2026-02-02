@@ -1,0 +1,593 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "baiv": "https://baiv.co.uk/ontology/",
+    "pf": "https://platform.framework/ontology/",
+    "ext": "https://platform.framework/ontology/external/",
+    "vsom": "https://platform.framework/ontology/vsom/"
+  },
+  "@type": "pf:OrganizationContext",
+  "@id": "ctx:partners-and",
+  "metadata": {
+    "instanceVersion": "1.0.0",
+    "ontologyVersion": "1.0.1",
+    "ontologyRef": "pf:ontology:org-context-v1",
+    "dateCreated": "2026-02-02",
+    "dateModified": "2026-02-02",
+    "creator": "BAIV Platform — Demo Instance",
+    "dataSourceNote": "Populated from partnersand.com website analysis, Companies House (00497227), LinkedIn, and public search results. Some fields are estimates pending client discovery session."
+  },
+
+  "contextId": "ctx:partners-and",
+  "organizationRef": "org:partners-and",
+
+  "organizationCore": {
+    "@type": "schema:Organization",
+    "legalName": "Partners& Limited",
+    "tradingName": "Partners&",
+    "alternateName": ["Partners And", "PartnersAnd"],
+    "identifier": "00497227",
+    "foundingDate": "2020-04-01",
+    "incorporationDate": "1951-07-04",
+    "description": "Chartered insurance broker providing next-generation insurance advisory, employee benefits, risk management and claims advice to businesses and private clients across the UK",
+    "url": "https://www.partnersand.com",
+    "telephone": "03300 940177",
+    "address": {
+      "@type": "schema:PostalAddress",
+      "streetAddress": "Mrib House, 25 Amersham Hill",
+      "addressLocality": "High Wycombe",
+      "addressRegion": "Buckinghamshire",
+      "postalCode": "HP13 6NU",
+      "addressCountry": "GB"
+    },
+    "sameAs": [
+      "https://uk.linkedin.com/company/partnersand",
+      "https://partnersand.podbean.com/"
+    ],
+    "naics": "524210",
+    "isicV4": "6622",
+    "industryClassification": "66220 - Activities of insurance agents and brokers",
+    "founder": {
+      "@type": "schema:Person",
+      "name": "Phil Barton",
+      "jobTitle": "CEO"
+    }
+  },
+
+  "brands": [
+    {
+      "brandId": "brand-partners-and",
+      "name": "Partners&",
+      "description": "Next-generation insurance advisory brand built on partnership, technical excellence, and technology-enabled client service",
+      "isPrimaryBrand": true,
+      "valuePropositionRef": "vp:partners-and-brand",
+      "brandValues": {
+        "acronym": "PACE",
+        "values": [
+          {
+            "letter": "P",
+            "name": "Progressive",
+            "description": "Continuously challenging the status quo and pushing boundaries in insurance advisory"
+          },
+          {
+            "letter": "A",
+            "name": "Approachable",
+            "description": "Making insurance advice accessible, jargon-free, and client-centred"
+          },
+          {
+            "letter": "C",
+            "name": "Collaborative",
+            "description": "Building genuine partnerships across clients, people, and ecosystem"
+          },
+          {
+            "letter": "E",
+            "name": "Enablers",
+            "description": "Empowering clients and colleagues to achieve their objectives through expert advice and technology"
+          }
+        ]
+      },
+      "brandPositioning": {
+        "tagline": "Advice that makes a difference",
+        "positioning": "Next generation insurance advisory — challenging the status quo with client-centric, technology-enabled service",
+        "charteredStatus": true,
+        "charteredBody": "Chartered Insurance Institute (CII)"
+      },
+      "awards": [
+        {
+          "name": "UK Broker of the Year",
+          "year": 2023,
+          "awardingBody": "UK Broker Awards"
+        },
+        {
+          "name": "Best UK Start Up",
+          "year": 2021,
+          "awardingBody": "UK Broker Awards"
+        },
+        {
+          "name": "Best Diversity & Inclusion Programme",
+          "year": 2021,
+          "awardingBody": "UK Broker Awards"
+        },
+        {
+          "name": "Diversity and Inclusion",
+          "year": 2022,
+          "awardingBody": "Broker Innovation Awards"
+        }
+      ]
+    }
+  ],
+
+  "products": [
+    {
+      "productId": "prod-business-insurance",
+      "name": "Business Insurance Advisory",
+      "category": "Insurance Advisory",
+      "segment": "Commercial Lines",
+      "status": "active",
+      "description": "Specialist insurance advice across 30+ industry verticals including construction, technology, entertainment, manufacturing, care, food & drink, science & tech",
+      "subSegments": [
+        "Automotive", "Care Sector", "Commercial Property", "Construction",
+        "Contractors", "Energy & Renewables", "Entertainment", "Fine Art",
+        "Fire Safety", "Food & Drink", "Haulage & Logistics", "Hotels Restaurants & Leisure",
+        "Manufacturing", "Marine", "Media & Digital", "Medical Practice",
+        "Mergers & Acquisitions", "Recruitment & Umbrella", "Retail & Wholesale",
+        "Rural Insurance", "Science & Technology", "Sports & Leisure", "Waste Management"
+      ]
+    },
+    {
+      "productId": "prod-insurance-types",
+      "name": "Insurance Type Specialisms",
+      "category": "Insurance Advisory",
+      "segment": "Specialist Lines",
+      "status": "active",
+      "description": "Deep expertise in specific insurance types",
+      "subSegments": [
+        "Buildings Contents & Property Damage", "Business Interruption",
+        "Commercial Combined", "Commercial Fleet", "Cyber",
+        "Directors & Officers Liability", "Employers Liability",
+        "Flood Risk", "Goods in Transit", "Group Business Travel",
+        "Intellectual Property", "Legal Indemnity", "Management Liability",
+        "Product Liability", "Professional Indemnity", "Public Liability"
+      ]
+    },
+    {
+      "productId": "prod-private-client",
+      "name": "Private Client Insurance",
+      "category": "Insurance Advisory",
+      "segment": "Personal Lines — HNW",
+      "status": "active",
+      "description": "Specialist insurance for high-net-worth individuals covering art, jewellery, prestige cars, yachts, wine collections, and high-value homes",
+      "subSegments": [
+        "Art Collections", "Collections", "High Value Homes", "Holiday Homes",
+        "Jewellery & Watches", "Listed & Non-Standard Buildings",
+        "Performance Prestige & Family Cars", "Fine Wine", "Yachts & Superyachts", "Travel"
+      ]
+    },
+    {
+      "productId": "prod-family-home",
+      "name": "Family & Home Insurance",
+      "category": "Insurance Advisory",
+      "segment": "Personal Lines — Standard",
+      "status": "active",
+      "description": "Home, motor, travel, and property insurance for individuals and families",
+      "subSegments": [
+        "Buildings", "General Home Contents", "Investment & Let Properties",
+        "Motor", "Self-Build & Renovation Projects", "Travel"
+      ]
+    },
+    {
+      "productId": "prod-wellbeing-health-protection",
+      "name": "Wellbeing, Health & Protection",
+      "category": "Employee Benefits",
+      "segment": "Employee Benefits & Business Protection",
+      "status": "active",
+      "description": "Employee benefits advisory including PMI, group life, dental, EAP, business protection, and the Harmony wellbeing platform",
+      "subSegments": [
+        "Private Medical Insurance", "Group Life Insurance", "Dental Insurance",
+        "BUPA Health Assessments", "Virtual GP", "EAP",
+        "Business Loan Protection", "Key Person Insurance",
+        "Relevant Life Insurance", "Shareholder Protection", "Harmony"
+      ]
+    },
+    {
+      "productId": "prod-risk-management",
+      "name": "Risk Management",
+      "category": "Advisory Services",
+      "segment": "Risk & Resilience",
+      "status": "active",
+      "description": "Proactive risk management advisory — building business resilience through the Partners& Difference model"
+    },
+    {
+      "productId": "prod-private-office",
+      "name": "Private Office",
+      "category": "Insurance Advisory",
+      "segment": "Ultra-HNW",
+      "status": "active",
+      "description": "Dedicated private office service for ultra-high-net-worth clients with complex insurance needs"
+    },
+    {
+      "productId": "prod-personal-cyber",
+      "name": "Personal Cyber Protection",
+      "category": "Insurance Advisory",
+      "segment": "Personal Lines — Specialist",
+      "status": "active",
+      "description": "Personal cyber insurance and protection for individuals and families"
+    }
+  ],
+
+  "valuePropositionRefs": [
+    "vp:partners-and-brand",
+    "vp:partners-and-business-insurance",
+    "vp:partners-and-private-client",
+    "vp:partners-and-employee-benefits"
+  ],
+
+  "valuePropositionSummary": {
+    "note": "Summarised value proposition for agent context. Full details in Value Proposition Ontology (vp:partners-and-brand)",
+    "corePurpose": "Challenge the insurance advisory status quo by combining best traditions of technical broking advice with modern thinking, smart technology, and genuine partnership",
+    "uniqueMechanism": "The Partners& Difference — a resilience model that challenges each client's notion of risk and ensures their programme performs when needed most",
+    "primaryDifferentiators": [
+      "Partnership model — standing shoulder to shoulder with clients, not transactional",
+      "Technology-enabled — smart use of systems to enhance client experience",
+      "Chartered status — CII Chartered insurance broker with strict ethical code",
+      "Ecosystem approach — first-class network of partners enabling comprehensive service",
+      "PACE values culture — Progressive, Approachable, Collaborative, Enablers",
+      "Resilience-focused — building business resilience not just selling policies",
+      "Client journey design — structured experience from onboarding through claims"
+    ],
+    "targetClients": [
+      "UK businesses across 30+ industry verticals seeking specialist insurance advisory",
+      "High-net-worth individuals and families with complex personal insurance needs",
+      "Mid-market employers seeking employee benefits and wellbeing programmes",
+      "Organisations requiring risk management and business resilience advice"
+    ],
+    "painPointsAddressed": [
+      "Insurance industry has become commoditised with diminishing client service",
+      "Short-term profit prioritised over genuine client relationships",
+      "Clients treated as policies not people — transactional not advisory",
+      "Underinsurance epidemic — clients don't understand their exposure",
+      "Cyber crime myths preventing businesses from proper protection",
+      "Employee staffing crises requiring people risk management",
+      "Fragmented advice across insurance, benefits, and risk — no single partner"
+    ]
+  },
+
+  "productPortfolio": {
+    "portfolioType": "service",
+    "productCount": 8,
+    "segments": [
+      "Commercial Insurance Advisory",
+      "Specialist Insurance Lines",
+      "Private Client & HNW",
+      "Family & Home",
+      "Employee Benefits & Wellbeing",
+      "Risk Management",
+      "Private Office",
+      "Personal Cyber"
+    ],
+    "revenueModel": "Brokerage commission and advisory fees",
+    "clientJourney": "Partners& Difference model — discovery, challenge risk understanding, build resilience programme, ongoing partnership"
+  },
+
+  "competitiveLandscape": {
+    "competitors": [
+      {
+        "organizationRef": "org:gallagher",
+        "name": "Arthur J. Gallagher",
+        "competitorType": "direct",
+        "priority": 1,
+        "strengths": ["Global scale", "Wide service breadth", "Established market presence"],
+        "weaknesses": ["Less personal service at scale", "Acquisitive model can dilute culture"],
+        "strategicPosture": "aggressive",
+        "trackCitations": true,
+        "trackRankings": true
+      },
+      {
+        "organizationRef": "org:howden",
+        "name": "Howden Group",
+        "competitorType": "direct",
+        "priority": 2,
+        "strengths": ["Specialist expertise", "Employee ownership model", "International reach"],
+        "weaknesses": ["Less consumer brand visibility", "Complex acquisition integration"],
+        "strategicPosture": "expanding",
+        "trackCitations": true,
+        "trackRankings": true
+      },
+      {
+        "organizationRef": "org:marsh",
+        "name": "Marsh McLennan",
+        "competitorType": "indirect",
+        "priority": 3,
+        "strengths": ["Global leader", "Risk intelligence", "Brand authority"],
+        "weaknesses": ["Enterprise focus — less suited to mid-market", "Premium pricing"],
+        "strategicPosture": "stable",
+        "trackCitations": true,
+        "trackRankings": false
+      },
+      {
+        "organizationRef": "org:aon",
+        "name": "Aon plc",
+        "competitorType": "indirect",
+        "priority": 4,
+        "strengths": ["Data analytics capability", "Global presence", "Reinsurance expertise"],
+        "weaknesses": ["Large corporate focus", "Perception of impersonal service"],
+        "strategicPosture": "stable",
+        "trackCitations": true,
+        "trackRankings": false
+      },
+      {
+        "organizationRef": "org:jelf",
+        "name": "Jelf (now Marsh Commercial)",
+        "competitorType": "aspirational",
+        "priority": 5,
+        "strengths": ["Legacy regional relationships"],
+        "weaknesses": ["Lost identity post-acquisition", "Several Partners& team members came from Jelf"],
+        "strategicPosture": "contracting",
+        "trackCitations": false,
+        "trackRankings": false,
+        "note": "Historic competitor — Partners& founding team includes former Jelf leadership"
+      }
+    ],
+    "competitiveForces": [
+      {
+        "forceType": "threat_of_new_entrants",
+        "intensity": "medium",
+        "description": "Regulatory barriers (FCA authorisation, Chartered status) provide moderate protection. InsurTech disruptors emerging in transactional lines but less in advisory.",
+        "keyFactors": ["FCA regulation", "CII Chartered requirements", "InsurTech direct-to-consumer players"]
+      },
+      {
+        "forceType": "threat_of_substitutes",
+        "intensity": "medium",
+        "description": "Price comparison websites and direct insurer channels threaten commoditised lines. Advisory relationships harder to substitute.",
+        "keyFactors": ["Comparison sites for personal lines", "Direct insurer channels", "Self-service portals", "AI-powered insurance tools"]
+      },
+      {
+        "forceType": "bargaining_power_buyers",
+        "intensity": "medium",
+        "description": "Businesses can switch brokers at renewal. Specialist knowledge and relationship depth create switching costs.",
+        "keyFactors": ["Annual renewal cycle", "Specialist sector knowledge creates lock-in", "Claims handling relationship"]
+      },
+      {
+        "forceType": "bargaining_power_suppliers",
+        "intensity": "high",
+        "description": "Insurers (underwriters) have significant power in hard markets. Broker panel diversity mitigates but doesn't eliminate.",
+        "keyFactors": ["Hard market conditions", "Insurer appetite restrictions", "Capacity availability"]
+      },
+      {
+        "forceType": "competitive_rivalry",
+        "intensity": "high",
+        "description": "UK insurance broking market is highly competitive with ongoing M&A consolidation. Partners& differentiates through culture, client experience, and technology.",
+        "keyFactors": ["M&A consolidation wave", "Talent competition", "Technology investment", "Client retention rates"]
+      }
+    ],
+    "trends": [
+      {
+        "trendType": "technological",
+        "name": "AI and automation in insurance advisory",
+        "description": "AI tools transforming underwriting, claims processing, and client service. Advisory relationships increasingly technology-augmented.",
+        "impact": "positive",
+        "timeframe": "short_term"
+      },
+      {
+        "trendType": "regulatory",
+        "name": "FCA Consumer Duty",
+        "description": "FCA Consumer Duty requirements driving higher standards of client care — aligns with Partners& existing approach",
+        "impact": "positive",
+        "timeframe": "immediate"
+      },
+      {
+        "trendType": "social",
+        "name": "Employee wellbeing and benefits expectations",
+        "description": "Post-pandemic workforce expecting comprehensive wellbeing, mental health, and benefits packages",
+        "impact": "positive",
+        "timeframe": "medium_term"
+      },
+      {
+        "trendType": "technological",
+        "name": "Cyber risk proliferation",
+        "description": "Growing cyber threat landscape creating demand for specialist cyber insurance and risk management advice",
+        "impact": "positive",
+        "timeframe": "short_term"
+      },
+      {
+        "trendType": "economic",
+        "name": "Hard insurance market conditions",
+        "description": "Premium inflation and reduced capacity in certain lines increasing broker advisory value but challenging client relationships",
+        "impact": "uncertain",
+        "timeframe": "short_term"
+      },
+      {
+        "trendType": "social",
+        "name": "M&A consolidation and talent flight",
+        "description": "Continued consolidation creating dissatisfied talent pools — opportunity for Partners& talent acquisition",
+        "impact": "positive",
+        "timeframe": "medium_term"
+      }
+    ]
+  },
+
+  "marketContext": {
+    "marketSegments": [
+      {
+        "segmentId": "seg-uk-sme-commercial",
+        "name": "UK SME Commercial Insurance",
+        "industry": "Small & Medium Enterprises",
+        "geography": "UK",
+        "priority": "primary",
+        "description": "UK businesses across multiple sectors requiring specialist commercial insurance advisory"
+      },
+      {
+        "segmentId": "seg-uk-mid-market",
+        "name": "UK Mid-Market Corporates",
+        "industry": "Mid-Market Enterprise",
+        "geography": "UK",
+        "priority": "primary",
+        "description": "Larger UK businesses requiring comprehensive risk management, insurance, and employee benefits"
+      },
+      {
+        "segmentId": "seg-uk-hnw-private",
+        "name": "UK High-Net-Worth Private Clients",
+        "industry": "Private Client",
+        "geography": "UK & International assets",
+        "priority": "primary",
+        "description": "HNW individuals and families with complex personal insurance needs — art, property, vehicles, travel"
+      },
+      {
+        "segmentId": "seg-uk-employee-benefits",
+        "name": "UK Employers — Benefits & Wellbeing",
+        "industry": "Cross-sector employers",
+        "geography": "UK",
+        "priority": "secondary",
+        "description": "Employers seeking competitive employee benefits packages, PMI, and wellbeing programmes"
+      },
+      {
+        "segmentId": "seg-specialist-verticals",
+        "name": "Specialist Industry Verticals",
+        "industry": "Niche sectors",
+        "geography": "UK",
+        "priority": "primary",
+        "description": "Deep specialist sectors including Science & Technology, Entertainment, Fine Art, Marine, Care"
+      }
+    ],
+    "customerNeeds": [
+      {
+        "needId": "need-advisory-not-transactional",
+        "needType": "job_to_be_done",
+        "description": "Receive genuine advisory partnership rather than transactional policy selling",
+        "priority": "critical"
+      },
+      {
+        "needId": "need-understand-risk",
+        "needType": "job_to_be_done",
+        "description": "Understand actual risk exposure and ensure insurance programme is fit for purpose",
+        "priority": "critical"
+      },
+      {
+        "needId": "need-specialist-knowledge",
+        "needType": "value_driver",
+        "description": "Access sector-specialist insurance knowledge relevant to their specific industry",
+        "priority": "high"
+      },
+      {
+        "needId": "need-claims-performance",
+        "needType": "pain_point",
+        "description": "Insurance programme must actually perform when a claim occurs — not just look good on paper",
+        "priority": "critical"
+      },
+      {
+        "needId": "need-underinsurance-protection",
+        "needType": "pain_point",
+        "description": "Protection against underinsurance — many businesses unknowingly underinsured",
+        "priority": "high"
+      },
+      {
+        "needId": "need-cyber-guidance",
+        "needType": "unmet_need",
+        "description": "Plain-English guidance on cyber risk — businesses confused by jargon and myths",
+        "priority": "high"
+      },
+      {
+        "needId": "need-people-risk",
+        "needType": "unmet_need",
+        "description": "Help managing people risks — recruitment, retention, benefits, wellbeing in a challenging labour market",
+        "priority": "medium"
+      }
+    ],
+    "geographicScope": ["United Kingdom", "Scotland", "England", "Wales"],
+    "localization": {
+      "baseCurrency": "GBP",
+      "baseGeography": "United Kingdom",
+      "languages": ["en-GB"],
+      "regulatoryBody": "Financial Conduct Authority (FCA)"
+    }
+  },
+
+  "maturity": {
+    "sizeMaturity": {
+      "level": 5,
+      "headcount": 800,
+      "headcountNote": "Grown from 50 at founding (2020) to approximately 800 by 2026",
+      "revenue": null,
+      "revenueNote": "Private company — revenue not publicly disclosed. Estimated mid-market based on headcount and M&A activity.",
+      "revenueCurrency": "GBP"
+    },
+    "valueMaturity": 5,
+    "valueMaturityNote": "Strong value proposition clearly articulated through PACE values, resilience model, and The Partners& Difference. UK Broker of the Year 2023.",
+    "marketingMaturity": {
+      "level": 4,
+      "hasMarketingDirector": true,
+      "marketingTeamSize": null,
+      "marketingTeamNote": "Dedicated marketing/brand team — Malia leads brand, marketing & communications",
+      "functionalRoles": ["Brand", "Content", "Digital", "Events", "PR", "Social Media", "Podcasts"],
+      "notableActivities": ["Podcast series", "Spring Magazine publication", "Employee Benefits Whitepaper", "BEAT programme communications"]
+    },
+    "technologyMaturity": 4,
+    "technologyMaturityNote": "Self-described focus on smart technology use. Client portal available. Technology investment is a stated strategic pillar.",
+    "complexityMaturity": 4,
+    "complexityMaturityNote": "Multi-product portfolio across commercial, personal, benefits, and specialist lines. Active M&A integration (Hart Insurance, NexGen, others). Ecosystem partner management.",
+    "aiMaturity": {
+      "maturityLevel": "exploring",
+      "maturityNote": "No public evidence of AI-specific strategy. Technology focus appears centred on operational systems and client experience rather than AI/ML specifically. Strong candidate for BAIV AI visibility optimisation.",
+      "aiToolsInUse": [],
+      "aiVisibilityAwareness": "low",
+      "currentAIStrategy": "Not publicly articulated — potential greenfield opportunity for BAIV engagement"
+    }
+  },
+
+  "ecosystemContext": {
+    "description": "Partners& explicitly emphasises their 'ecosystem' as a differentiator",
+    "ecosystemElements": [
+      {
+        "type": "insurer_panel",
+        "description": "Panel of insurance underwriters/carriers providing capacity and products"
+      },
+      {
+        "type": "acquisition_partners",
+        "description": "M&A targets being integrated — Hart Insurance Brokers, NexGen Insurance Solutions, and others"
+      },
+      {
+        "type": "chartered_body",
+        "description": "Chartered Insurance Institute (CII) — providing professional standards and accreditation"
+      },
+      {
+        "type": "wellness_partners",
+        "description": "BUPA, YuLife, and other wellbeing/benefits providers in the Harmony ecosystem"
+      },
+      {
+        "type": "community_partners",
+        "description": "Charity partnerships and community engagement — BEAT programme for D&I"
+      },
+      {
+        "type": "apprenticeship_programme",
+        "description": "Partners& Academy — apprenticeship scheme for next-generation talent"
+      }
+    ]
+  },
+
+  "baivOpportunityAssessment": {
+    "description": "BAIV-specific assessment of AI visibility opportunity for Partners&",
+    "overallScore": "high",
+    "rationale": "Strong brand with clear differentiation, extensive content potential across 30+ industry verticals, low current AI visibility maturity = significant gap to exploit",
+    "quickWins": [
+      "FAQ schema implementation across industry vertical pages",
+      "HowTo schema for risk management and claims guidance content",
+      "Service schema markup for all insurance product pages",
+      "Organization and LocalBusiness schema for SEO foundation"
+    ],
+    "strategicInitiatives": [
+      "AI-optimised content strategy across 30+ industry verticals — each a citation opportunity",
+      "The Partners& Difference narrative optimised for AI recommendation engines",
+      "PACE values content architecture for brand personality citations",
+      "Specialist expertise content (cyber, M&A, science & tech) for authority building",
+      "Podcast content repurposing for AI training data and citation generation"
+    ],
+    "contentAssets": [
+      "30+ industry vertical landing pages (each convertible to AI-citable resource)",
+      "Blog/insights section with success stories",
+      "Spring Magazine publication",
+      "Employee Benefits Whitepaper",
+      "Podcast series (Podbean)",
+      "Client testimonials and experience content"
+    ]
+  }
+}

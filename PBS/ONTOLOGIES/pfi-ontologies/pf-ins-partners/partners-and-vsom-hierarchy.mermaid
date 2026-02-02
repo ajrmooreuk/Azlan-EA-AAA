@@ -1,0 +1,65 @@
+%% Partners& VSOM Hierarchy — PF-Instance
+%% Vision → Strategy → PPM Programmes → KPIs cascade
+
+flowchart TB
+    subgraph Vision["Vision"]
+        V1["AI-Enhanced Insurance Advisory of Choice\nGrowth via capacity not headcount\n60% semi-manual to less than 15%"]
+    end
+
+    subgraph Strategy["5 Strategic Pillars"]
+        S1["S1: AI-Enhanced\nOperational Transformation"]
+        S2["S2: Client Experience\nand Advisory Excellence"]
+        S3["S3: Revenue Growth\nand Market Expansion"]
+        S4["S4: People and\nCulture Transformation"]
+        S5["S5: Enterprise Architecture\nand Platform Foundation"]
+    end
+
+    subgraph Programmes["PPM Programmes P1-P5"]
+        P1["P1: Operational\nTransformation\n200-400 initiatives"]
+        P2["P2: Client\nExperience\n100-200 initiatives"]
+        P3["P3: Revenue\nGrowth\n50-100 initiatives"]
+        P4["P4: People\nTransformation\n50-100 initiatives"]
+        P5["P5: Enterprise\nArchitecture\n100-200 initiatives"]
+    end
+
+    subgraph Metrics["Key Strategic KPIs"]
+        M1["Semi-Manual Ratio\n60% to less than 15%"]
+        M2["Revenue Gain\n2m+ GBP"]
+        M3["Operating Margin\n+5 points"]
+        M4["NPS 70+\nRetention 95%+"]
+        M5["AI Literacy 80%+\nEngagement 80%+"]
+    end
+
+    V1 -->|"informs"| S1
+    V1 -->|"informs"| S2
+    V1 -->|"informs"| S3
+    V1 -->|"informs"| S4
+    V1 -->|"informs"| S5
+
+    S1 -->|"delivers"| P1
+    S2 -->|"delivers"| P2
+    S3 -->|"delivers"| P3
+    S4 -->|"delivers"| P4
+    S5 -->|"delivers"| P5
+
+    P1 -->|"measured by"| M1
+    P3 -->|"measured by"| M2
+    P1 -->|"measured by"| M3
+    P2 -->|"measured by"| M4
+    P4 -->|"measured by"| M5
+
+    M1 -.->|"validates"| V1
+    M2 -.->|"validates"| V1
+    M3 -.->|"validates"| V1
+    M4 -.->|"validates"| V1
+    M5 -.->|"validates"| V1
+
+    S5 -.->|"enables"| S1
+    S5 -.->|"enables"| S2
+    S5 -.->|"enables"| S3
+    S4 -.->|"enables"| S1
+
+    style Vision fill:#bbdefb
+    style Strategy fill:#e1bee7
+    style Programmes fill:#ffe0b2
+    style Metrics fill:#c8e6c9

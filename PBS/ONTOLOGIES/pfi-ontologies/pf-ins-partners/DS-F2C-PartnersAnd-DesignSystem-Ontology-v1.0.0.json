@@ -1,0 +1,528 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform.framework/ontology/",
+    "ds": "https://platform.framework/ontology/design-system/",
+    "f2c": "https://platform.framework/ontology/figma-to-code/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "Ontology",
+  "@id": "ds:ontology:partnersand-design-system-v1",
+
+  "metadata": {
+    "name": "DS-F2C Partners& Design System Ontology",
+    "version": "1.0.0",
+    "status": "Draft",
+    "description": "Three-tier design token taxonomy (Primitives → Semantics → Components) for Partners& insurance advisory brand. Bridges Figma Variables to Next.js/shadcn/ui via Figma Make token specification. Derived from partnersand.com website analysis.",
+    "dateCreated": "2026-02-02",
+    "dateModified": "2026-02-02",
+    "creator": "BAIV Platform Team",
+    "domain": "Design System / Figma-to-Code",
+    "purpose": "Provide design token ontology for F2C pipeline ensuring brand-consistent code generation from Figma Make",
+    "frameworkType": "Platform Framework (Domain-Agnostic DS Layer)",
+    "targetOrganization": "Partners& Limited",
+    "dependencies": [
+      "pf:ontology:org-context-v1",
+      "ds:ontology:f2c-token-bridge-v1"
+    ],
+    "toolchain": {
+      "designTool": "Figma",
+      "codeGenerator": "Figma Make",
+      "framework": "Next.js 14+",
+      "uiLibrary": "shadcn/ui",
+      "cssStrategy": "CSS Custom Properties + Tailwind",
+      "tokenBridge": "F2C Token Specification Document"
+    },
+    "note": "Token values derived from Partners& website (partnersand.com) brand analysis. Actual hex values should be validated against brand guidelines source files."
+  },
+
+  "schemaOrgAlignment": {
+    "baseTypes": ["CreativeWork", "DefinedTerm", "PropertyValue"],
+    "rationale": "Design tokens modelled as DefinedTerm instances within a DefinedTermSet; components as CreativeWork with encoding metadata",
+    "extensions": ["DesignToken", "TokenTier", "ComponentSpec", "DesignPrimitive", "SemanticToken", "ComponentToken"]
+  },
+
+  "tokenArchitecture": {
+    "@type": "ds:TokenArchitecture",
+    "description": "Three-tier cascade: Primitives (raw values, NEVER in component code) → Semantics (intent-based, general styling) → Components (specific component overrides)",
+    "cascade": [
+      {
+        "tier": 1,
+        "name": "Primitives",
+        "prefix": "--prim-",
+        "usage": "INTERNAL ONLY — referenced by semantic and component tokens. Never used directly in component code.",
+        "cssScope": ":root"
+      },
+      {
+        "tier": 2,
+        "name": "Semantics",
+        "prefix": "--sem-",
+        "usage": "Intent-based tokens describing WHAT the value does. Use for general styling when no component token exists.",
+        "cssScope": ":root"
+      },
+      {
+        "tier": 3,
+        "name": "Components",
+        "prefix": "--comp-",
+        "usage": "Component-specific tokens. Use FIRST when generating code for a known component.",
+        "cssScope": "[data-component] or :root"
+      }
+    ],
+    "criticalRules": [
+      "NEVER hardcode colors — always use var(--token-name)",
+      "NEVER use primitive tokens in component code",
+      "USE semantic tokens for general styling",
+      "USE component tokens FIRST when they exist for that component",
+      "CASCADE: Component tokens → Semantic tokens → (Primitives are internal only)"
+    ]
+  },
+
+  "primitives": {
+    "@type": "ds:PrimitiveTokenSet",
+    "description": "Raw brand values for Partners&. These define the palette but are NEVER referenced in component code directly.",
+
+    "color": {
+      "description": "Partners& brand palette derived from website analysis",
+      "tokens": {
+        "--prim-navy-900": { "value": "#0a1628", "description": "Deepest navy — primary dark" },
+        "--prim-navy-800": { "value": "#0f2240", "description": "Deep navy — header backgrounds" },
+        "--prim-navy-700": { "value": "#162d52", "description": "Navy — hero sections" },
+        "--prim-navy-600": { "value": "#1e3a5f", "description": "Navy medium" },
+        "--prim-navy-500": { "value": "#2a4a73", "description": "Navy accent" },
+        "--prim-navy-400": { "value": "#3d6490", "description": "Navy light" },
+        "--prim-navy-300": { "value": "#5a82ad", "description": "Navy muted" },
+        "--prim-navy-200": { "value": "#8fa8c7", "description": "Navy wash" },
+        "--prim-navy-100": { "value": "#c7d5e3", "description": "Navy tint" },
+        "--prim-navy-50": { "value": "#eef2f7", "description": "Navy ghost" },
+
+        "--prim-teal-700": { "value": "#0d6e6e", "description": "Deep teal" },
+        "--prim-teal-600": { "value": "#0f8585", "description": "Teal primary" },
+        "--prim-teal-500": { "value": "#14a3a3", "description": "Teal vibrant" },
+        "--prim-teal-400": { "value": "#2dbdbd", "description": "Teal light" },
+        "--prim-teal-300": { "value": "#5cd5d0", "description": "Teal accent" },
+        "--prim-teal-200": { "value": "#99e5e1", "description": "Teal wash" },
+        "--prim-teal-100": { "value": "#ccf2f0", "description": "Teal tint" },
+        "--prim-teal-50": { "value": "#edfaf9", "description": "Teal ghost" },
+
+        "--prim-green-600": { "value": "#16a34a", "description": "Success green" },
+        "--prim-green-100": { "value": "#dcfce7", "description": "Success green tint" },
+        "--prim-amber-600": { "value": "#d97706", "description": "Warning amber" },
+        "--prim-amber-100": { "value": "#fef3c7", "description": "Warning amber tint" },
+        "--prim-red-600": { "value": "#dc2626", "description": "Error red" },
+        "--prim-red-100": { "value": "#fee2e2", "description": "Error red tint" },
+
+        "--prim-white": { "value": "#ffffff", "description": "Pure white" },
+        "--prim-gray-50": { "value": "#f9fafb", "description": "Lightest gray" },
+        "--prim-gray-100": { "value": "#f3f4f6", "description": "Light gray" },
+        "--prim-gray-200": { "value": "#e5e7eb", "description": "Gray border light" },
+        "--prim-gray-300": { "value": "#d1d5db", "description": "Gray border" },
+        "--prim-gray-400": { "value": "#9ca3af", "description": "Gray muted" },
+        "--prim-gray-500": { "value": "#6b7280", "description": "Gray medium" },
+        "--prim-gray-600": { "value": "#4b5563", "description": "Gray dark" },
+        "--prim-gray-700": { "value": "#374151", "description": "Charcoal" },
+        "--prim-gray-800": { "value": "#1f2937", "description": "Near black" },
+        "--prim-gray-900": { "value": "#111827", "description": "Deepest gray" }
+      }
+    },
+
+    "typography": {
+      "description": "Partners& typography primitives",
+      "tokens": {
+        "--prim-font-family-heading": { "value": "'Montserrat', 'Segoe UI', sans-serif", "description": "Heading typeface — clean, modern, professional" },
+        "--prim-font-family-body": { "value": "'Open Sans', 'Segoe UI', sans-serif", "description": "Body typeface — excellent readability" },
+        "--prim-font-family-mono": { "value": "'JetBrains Mono', 'Fira Code', monospace", "description": "Code/data typeface" },
+
+        "--prim-font-size-xs": { "value": "0.75rem", "description": "12px" },
+        "--prim-font-size-sm": { "value": "0.875rem", "description": "14px" },
+        "--prim-font-size-base": { "value": "1rem", "description": "16px" },
+        "--prim-font-size-lg": { "value": "1.125rem", "description": "18px" },
+        "--prim-font-size-xl": { "value": "1.25rem", "description": "20px" },
+        "--prim-font-size-2xl": { "value": "1.5rem", "description": "24px" },
+        "--prim-font-size-3xl": { "value": "1.875rem", "description": "30px" },
+        "--prim-font-size-4xl": { "value": "2.25rem", "description": "36px" },
+        "--prim-font-size-5xl": { "value": "3rem", "description": "48px" },
+
+        "--prim-font-weight-regular": { "value": "400", "description": "Regular weight" },
+        "--prim-font-weight-medium": { "value": "500", "description": "Medium weight" },
+        "--prim-font-weight-semibold": { "value": "600", "description": "Semibold weight" },
+        "--prim-font-weight-bold": { "value": "700", "description": "Bold weight" },
+
+        "--prim-line-height-tight": { "value": "1.25", "description": "Tight line height" },
+        "--prim-line-height-normal": { "value": "1.5", "description": "Normal line height" },
+        "--prim-line-height-relaxed": { "value": "1.75", "description": "Relaxed line height" }
+      }
+    },
+
+    "spacing": {
+      "description": "Spacing scale based on 4px grid",
+      "tokens": {
+        "--prim-space-0": { "value": "0px", "description": "Zero" },
+        "--prim-space-1": { "value": "4px", "description": "4px" },
+        "--prim-space-2": { "value": "8px", "description": "8px" },
+        "--prim-space-3": { "value": "12px", "description": "12px" },
+        "--prim-space-4": { "value": "16px", "description": "16px" },
+        "--prim-space-5": { "value": "20px", "description": "20px" },
+        "--prim-space-6": { "value": "24px", "description": "24px" },
+        "--prim-space-8": { "value": "32px", "description": "32px" },
+        "--prim-space-10": { "value": "40px", "description": "40px" },
+        "--prim-space-12": { "value": "48px", "description": "48px" },
+        "--prim-space-16": { "value": "64px", "description": "64px" },
+        "--prim-space-20": { "value": "80px", "description": "80px" },
+        "--prim-space-24": { "value": "96px", "description": "96px" }
+      }
+    },
+
+    "radius": {
+      "tokens": {
+        "--prim-radius-none": { "value": "0px" },
+        "--prim-radius-sm": { "value": "4px" },
+        "--prim-radius-md": { "value": "8px" },
+        "--prim-radius-lg": { "value": "12px" },
+        "--prim-radius-xl": { "value": "16px" },
+        "--prim-radius-2xl": { "value": "24px" },
+        "--prim-radius-full": { "value": "9999px" }
+      }
+    },
+
+    "shadow": {
+      "tokens": {
+        "--prim-shadow-sm": { "value": "0 1px 2px 0 rgba(10, 22, 40, 0.05)" },
+        "--prim-shadow-md": { "value": "0 4px 6px -1px rgba(10, 22, 40, 0.1), 0 2px 4px -2px rgba(10, 22, 40, 0.1)" },
+        "--prim-shadow-lg": { "value": "0 10px 15px -3px rgba(10, 22, 40, 0.1), 0 4px 6px -4px rgba(10, 22, 40, 0.1)" },
+        "--prim-shadow-xl": { "value": "0 20px 25px -5px rgba(10, 22, 40, 0.1), 0 8px 10px -6px rgba(10, 22, 40, 0.1)" }
+      }
+    }
+  },
+
+  "semantics": {
+    "@type": "ds:SemanticTokenSet",
+    "description": "Intent-based tokens describing WHAT a value does. Reference primitives. Use these for general styling.",
+
+    "surface": {
+      "description": "Background surface tokens",
+      "tokens": {
+        "--sem-surface-page": { "references": "--prim-white", "description": "Page background" },
+        "--sem-surface-subtle": { "references": "--prim-gray-50", "description": "Subtle surface (cards on white)" },
+        "--sem-surface-muted": { "references": "--prim-gray-100", "description": "Muted background (sidebar, disabled areas)" },
+        "--sem-surface-field": { "references": "--prim-gray-50", "description": "Form field background" },
+        "--sem-surface-overlay": { "references": "rgba(10, 22, 40, 0.6)", "description": "Modal/dialog overlay" },
+        "--sem-surface-brand": { "references": "--prim-navy-800", "description": "Brand hero/header surface" },
+        "--sem-surface-brand-light": { "references": "--prim-navy-50", "description": "Light brand surface" },
+        "--sem-surface-accent": { "references": "--prim-teal-50", "description": "Accent highlight surface" },
+        "--sem-surface-success": { "references": "--prim-green-100", "description": "Success state surface" },
+        "--sem-surface-warning": { "references": "--prim-amber-100", "description": "Warning state surface" },
+        "--sem-surface-error": { "references": "--prim-red-100", "description": "Error state surface" }
+      }
+    },
+
+    "text": {
+      "description": "Text color tokens",
+      "tokens": {
+        "--sem-text-primary": { "references": "--prim-gray-900", "description": "Primary body text" },
+        "--sem-text-secondary": { "references": "--prim-gray-600", "description": "Secondary/supporting text" },
+        "--sem-text-muted": { "references": "--prim-gray-400", "description": "Muted/placeholder text" },
+        "--sem-text-inverse": { "references": "--prim-white", "description": "Text on dark backgrounds" },
+        "--sem-text-brand": { "references": "--prim-navy-800", "description": "Brand-coloured text (headings)" },
+        "--sem-text-accent": { "references": "--prim-teal-600", "description": "Accent text (links, highlights)" },
+        "--sem-text-success": { "references": "--prim-green-600", "description": "Success state text" },
+        "--sem-text-warning": { "references": "--prim-amber-600", "description": "Warning state text" },
+        "--sem-text-error": { "references": "--prim-red-600", "description": "Error state text" }
+      }
+    },
+
+    "border": {
+      "description": "Border color tokens",
+      "tokens": {
+        "--sem-border-default": { "references": "--prim-gray-200", "description": "Default border" },
+        "--sem-border-strong": { "references": "--prim-gray-300", "description": "Stronger border (inputs)" },
+        "--sem-border-focus": { "references": "--prim-teal-500", "description": "Focus ring border" },
+        "--sem-border-brand": { "references": "--prim-navy-600", "description": "Brand accent border" },
+        "--sem-border-success": { "references": "--prim-green-600", "description": "Success border" },
+        "--sem-border-warning": { "references": "--prim-amber-600", "description": "Warning border" },
+        "--sem-border-error": { "references": "--prim-red-600", "description": "Error border" }
+      }
+    },
+
+    "interactive": {
+      "description": "Interactive element tokens (buttons, links, actions)",
+      "tokens": {
+        "--sem-interactive-primary": { "references": "--prim-teal-600", "description": "Primary action color (CTA)" },
+        "--sem-interactive-primary-hover": { "references": "--prim-teal-700", "description": "Primary action hover" },
+        "--sem-interactive-primary-text": { "references": "--prim-white", "description": "Text on primary action" },
+        "--sem-interactive-secondary": { "references": "--prim-navy-800", "description": "Secondary action color" },
+        "--sem-interactive-secondary-hover": { "references": "--prim-navy-700", "description": "Secondary action hover" },
+        "--sem-interactive-secondary-text": { "references": "--prim-white", "description": "Text on secondary action" },
+        "--sem-interactive-ghost": { "references": "transparent", "description": "Ghost/tertiary action bg" },
+        "--sem-interactive-ghost-hover": { "references": "--prim-gray-100", "description": "Ghost action hover" },
+        "--sem-interactive-link": { "references": "--prim-teal-600", "description": "Text link color" },
+        "--sem-interactive-link-hover": { "references": "--prim-teal-700", "description": "Text link hover" },
+        "--sem-interactive-disabled-bg": { "references": "--prim-gray-100", "description": "Disabled background" },
+        "--sem-interactive-disabled-text": { "references": "--prim-gray-400", "description": "Disabled text" }
+      }
+    },
+
+    "typographySemantics": {
+      "description": "Semantic typography tokens",
+      "tokens": {
+        "--sem-heading-font": { "references": "--prim-font-family-heading", "description": "Heading typeface" },
+        "--sem-body-font": { "references": "--prim-font-family-body", "description": "Body typeface" },
+        "--sem-heading-xl-size": { "references": "--prim-font-size-4xl", "description": "Hero heading" },
+        "--sem-heading-lg-size": { "references": "--prim-font-size-3xl", "description": "Page heading" },
+        "--sem-heading-md-size": { "references": "--prim-font-size-2xl", "description": "Section heading" },
+        "--sem-heading-sm-size": { "references": "--prim-font-size-xl", "description": "Subsection heading" },
+        "--sem-heading-weight": { "references": "--prim-font-weight-bold", "description": "Heading weight" },
+        "--sem-body-size": { "references": "--prim-font-size-base", "description": "Body text size" },
+        "--sem-body-sm-size": { "references": "--prim-font-size-sm", "description": "Small body text" },
+        "--sem-caption-size": { "references": "--prim-font-size-xs", "description": "Caption/label text" }
+      }
+    },
+
+    "spacingSemantics": {
+      "description": "Semantic spacing tokens",
+      "tokens": {
+        "--sem-space-section": { "references": "--prim-space-16", "description": "Between major sections" },
+        "--sem-space-card-padding": { "references": "--prim-space-6", "description": "Card internal padding" },
+        "--sem-space-stack-sm": { "references": "--prim-space-2", "description": "Small vertical stack gap" },
+        "--sem-space-stack-md": { "references": "--prim-space-4", "description": "Medium vertical stack gap" },
+        "--sem-space-stack-lg": { "references": "--prim-space-6", "description": "Large vertical stack gap" },
+        "--sem-space-inline-sm": { "references": "--prim-space-2", "description": "Small horizontal gap" },
+        "--sem-space-inline-md": { "references": "--prim-space-4", "description": "Medium horizontal gap" },
+        "--sem-space-inline-lg": { "references": "--prim-space-6", "description": "Large horizontal gap" }
+      }
+    }
+  },
+
+  "components": {
+    "@type": "ds:ComponentTokenSet",
+    "description": "Component-specific tokens. Figma Make should use THESE FIRST when generating code for the named component.",
+
+    "card": {
+      "shadcnMapping": "Card",
+      "figmaMakeHint": "Use for any card-like container in Partners& UI",
+      "tokens": {
+        "--comp-card-bg": { "references": "--sem-surface-page", "description": "Card background" },
+        "--comp-card-border": { "references": "--sem-border-default", "description": "Card border color" },
+        "--comp-card-border-width": { "value": "1px" },
+        "--comp-card-radius": { "references": "--prim-radius-lg", "description": "Card corner radius" },
+        "--comp-card-shadow": { "references": "--prim-shadow-md", "description": "Card elevation" },
+        "--comp-card-padding": { "references": "--sem-space-card-padding", "description": "Card padding" },
+        "--comp-card-hover-shadow": { "references": "--prim-shadow-lg", "description": "Card hover elevation" }
+      }
+    },
+
+    "button": {
+      "shadcnMapping": "Button",
+      "figmaMakeHint": "Partners& uses teal primary CTAs and navy secondary actions",
+      "variants": {
+        "primary": {
+          "--comp-btn-primary-bg": { "references": "--sem-interactive-primary" },
+          "--comp-btn-primary-bg-hover": { "references": "--sem-interactive-primary-hover" },
+          "--comp-btn-primary-text": { "references": "--sem-interactive-primary-text" },
+          "--comp-btn-primary-border": { "value": "none" }
+        },
+        "secondary": {
+          "--comp-btn-secondary-bg": { "references": "--sem-interactive-secondary" },
+          "--comp-btn-secondary-bg-hover": { "references": "--sem-interactive-secondary-hover" },
+          "--comp-btn-secondary-text": { "references": "--sem-interactive-secondary-text" },
+          "--comp-btn-secondary-border": { "value": "none" }
+        },
+        "outline": {
+          "--comp-btn-outline-bg": { "value": "transparent" },
+          "--comp-btn-outline-bg-hover": { "references": "--prim-teal-50" },
+          "--comp-btn-outline-text": { "references": "--prim-teal-600" },
+          "--comp-btn-outline-border": { "references": "--prim-teal-600" }
+        },
+        "ghost": {
+          "--comp-btn-ghost-bg": { "references": "--sem-interactive-ghost" },
+          "--comp-btn-ghost-bg-hover": { "references": "--sem-interactive-ghost-hover" },
+          "--comp-btn-ghost-text": { "references": "--sem-text-primary" }
+        }
+      },
+      "shared": {
+        "--comp-btn-radius": { "references": "--prim-radius-md" },
+        "--comp-btn-padding-x": { "references": "--prim-space-5" },
+        "--comp-btn-padding-y": { "references": "--prim-space-3" },
+        "--comp-btn-font-weight": { "references": "--prim-font-weight-semibold" },
+        "--comp-btn-font-size": { "references": "--prim-font-size-sm" },
+        "--comp-btn-disabled-bg": { "references": "--sem-interactive-disabled-bg" },
+        "--comp-btn-disabled-text": { "references": "--sem-interactive-disabled-text" }
+      }
+    },
+
+    "navigation": {
+      "shadcnMapping": "NavigationMenu",
+      "figmaMakeHint": "Partners& mega-menu navigation with For Businesses / For Individuals tabs",
+      "tokens": {
+        "--comp-nav-bg": { "references": "--prim-white" },
+        "--comp-nav-text": { "references": "--prim-navy-800" },
+        "--comp-nav-text-hover": { "references": "--prim-teal-600" },
+        "--comp-nav-active-indicator": { "references": "--prim-teal-500" },
+        "--comp-nav-mega-bg": { "references": "--prim-white" },
+        "--comp-nav-mega-shadow": { "references": "--prim-shadow-xl" },
+        "--comp-nav-mega-heading": { "references": "--prim-navy-700" },
+        "--comp-nav-mega-link": { "references": "--prim-gray-700" },
+        "--comp-nav-mega-link-hover": { "references": "--prim-teal-600" },
+        "--comp-nav-mobile-bg": { "references": "--prim-navy-800" },
+        "--comp-nav-mobile-text": { "references": "--prim-white" }
+      }
+    },
+
+    "hero": {
+      "shadcnMapping": "custom:HeroSection",
+      "figmaMakeHint": "Partners& hero sections use deep navy gradient with overlay text",
+      "tokens": {
+        "--comp-hero-bg": { "references": "--prim-navy-800" },
+        "--comp-hero-bg-gradient": { "value": "linear-gradient(135deg, var(--prim-navy-900) 0%, var(--prim-navy-700) 100%)" },
+        "--comp-hero-text": { "references": "--prim-white" },
+        "--comp-hero-heading-size": { "references": "--sem-heading-xl-size" },
+        "--comp-hero-subtext": { "references": "--prim-navy-200" },
+        "--comp-hero-cta-bg": { "references": "--prim-teal-500" },
+        "--comp-hero-cta-text": { "references": "--prim-white" },
+        "--comp-hero-overlay": { "value": "rgba(10, 22, 40, 0.7)" },
+        "--comp-hero-padding-y": { "references": "--prim-space-24" }
+      }
+    },
+
+    "serviceCard": {
+      "shadcnMapping": "Card",
+      "figmaMakeHint": "Used for insurance industry types and service offerings — icon + title + description pattern",
+      "tokens": {
+        "--comp-svc-card-bg": { "references": "--prim-white" },
+        "--comp-svc-card-icon-color": { "references": "--prim-teal-500" },
+        "--comp-svc-card-icon-size": { "value": "48px" },
+        "--comp-svc-card-title-color": { "references": "--prim-navy-800" },
+        "--comp-svc-card-desc-color": { "references": "--prim-gray-600" },
+        "--comp-svc-card-hover-border": { "references": "--prim-teal-400" },
+        "--comp-svc-card-hover-shadow": { "references": "--prim-shadow-lg" },
+        "--comp-svc-card-radius": { "references": "--prim-radius-lg" }
+      }
+    },
+
+    "input": {
+      "shadcnMapping": "Input",
+      "figmaMakeHint": "Form inputs for enquiry forms, Ask Us, and quote requests",
+      "tokens": {
+        "--comp-input-bg": { "references": "--sem-surface-field" },
+        "--comp-input-border": { "references": "--sem-border-strong" },
+        "--comp-input-border-focus": { "references": "--sem-border-focus" },
+        "--comp-input-text": { "references": "--sem-text-primary" },
+        "--comp-input-placeholder": { "references": "--sem-text-muted" },
+        "--comp-input-radius": { "references": "--prim-radius-md" },
+        "--comp-input-padding": { "references": "--prim-space-3" },
+        "--comp-input-error-border": { "references": "--sem-border-error" },
+        "--comp-input-error-text": { "references": "--sem-text-error" }
+      }
+    },
+
+    "badge": {
+      "shadcnMapping": "Badge",
+      "figmaMakeHint": "Used for insurance type labels, industry tags, PACE values, awards",
+      "variants": {
+        "default": {
+          "--comp-badge-default-bg": { "references": "--prim-navy-100" },
+          "--comp-badge-default-text": { "references": "--prim-navy-800" }
+        },
+        "accent": {
+          "--comp-badge-accent-bg": { "references": "--prim-teal-100" },
+          "--comp-badge-accent-text": { "references": "--prim-teal-700" }
+        },
+        "success": {
+          "--comp-badge-success-bg": { "references": "--prim-green-100" },
+          "--comp-badge-success-text": { "references": "--prim-green-600" }
+        },
+        "warning": {
+          "--comp-badge-warning-bg": { "references": "--prim-amber-100" },
+          "--comp-badge-warning-text": { "references": "--prim-amber-600" }
+        }
+      },
+      "shared": {
+        "--comp-badge-radius": { "references": "--prim-radius-full" },
+        "--comp-badge-padding-x": { "references": "--prim-space-3" },
+        "--comp-badge-padding-y": { "references": "--prim-space-1" },
+        "--comp-badge-font-size": { "references": "--prim-font-size-xs" },
+        "--comp-badge-font-weight": { "references": "--prim-font-weight-medium" }
+      }
+    },
+
+    "testimonial": {
+      "shadcnMapping": "Card",
+      "figmaMakeHint": "Client experience quotes — Partners& uses these prominently",
+      "tokens": {
+        "--comp-testimonial-bg": { "references": "--prim-navy-50" },
+        "--comp-testimonial-quote-color": { "references": "--prim-teal-500" },
+        "--comp-testimonial-text-color": { "references": "--prim-gray-700" },
+        "--comp-testimonial-author-color": { "references": "--prim-navy-800" },
+        "--comp-testimonial-role-color": { "references": "--prim-gray-500" },
+        "--comp-testimonial-border-left": { "value": "4px solid var(--prim-teal-500)" },
+        "--comp-testimonial-radius": { "references": "--prim-radius-lg" }
+      }
+    },
+
+    "footer": {
+      "shadcnMapping": "custom:Footer",
+      "figmaMakeHint": "Partners& footer with navy background, multi-column layout",
+      "tokens": {
+        "--comp-footer-bg": { "references": "--prim-navy-900" },
+        "--comp-footer-text": { "references": "--prim-navy-200" },
+        "--comp-footer-heading": { "references": "--prim-white" },
+        "--comp-footer-link": { "references": "--prim-navy-300" },
+        "--comp-footer-link-hover": { "references": "--prim-teal-400" },
+        "--comp-footer-border": { "references": "--prim-navy-700" },
+        "--comp-footer-padding-y": { "references": "--prim-space-16" }
+      }
+    },
+
+    "valuesPACE": {
+      "shadcnMapping": "custom:ValuesGrid",
+      "figmaMakeHint": "Partners& PACE values display — Progressive, Approachable, Collaborative, Enablers",
+      "tokens": {
+        "--comp-pace-progressive-color": { "references": "--prim-teal-600" },
+        "--comp-pace-approachable-color": { "references": "--prim-navy-500" },
+        "--comp-pace-collaborative-color": { "references": "--prim-teal-400" },
+        "--comp-pace-enablers-color": { "references": "--prim-navy-700" },
+        "--comp-pace-card-radius": { "references": "--prim-radius-xl" },
+        "--comp-pace-icon-size": { "value": "64px" }
+      }
+    }
+  },
+
+  "figmaMakeInstructions": {
+    "@type": "ds:FigmaMakeSpec",
+    "description": "Compact specification for pasting into Figma Make project instructions to achieve token-aware code generation",
+    "usageInstructions": [
+      "Copy the tokenArchitecture.criticalRules and paste into Figma Make Project Instructions",
+      "Include the full semantic and component token sections relevant to the components being generated",
+      "Figma Make will then emit var(--comp-*) and var(--sem-*) references instead of hardcoded values",
+      "The generated CSS custom properties can be defined in globals.css or a theme provider"
+    ],
+    "codePatternExample": {
+      "component": "ServiceCard",
+      "correctCode": "<Card className=\"group\" style={{background: 'var(--comp-svc-card-bg)', borderRadius: 'var(--comp-svc-card-radius)'}}>...",
+      "incorrectCode": "<Card className=\"bg-white rounded-xl\">...",
+      "explanation": "Always use CSS custom property references via var(), never Tailwind utility classes for brand values"
+    }
+  },
+
+  "brandAnalysisSource": {
+    "@type": "ds:BrandAnalysis",
+    "description": "Brand intelligence extracted from partnersand.com to inform token values",
+    "sourceUrl": "https://www.partnersand.com",
+    "analysisDate": "2026-02-02",
+    "brandIdentity": {
+      "primaryPalette": "Deep navy (#0f2240 range) with teal (#0f8585 range) accents",
+      "tonality": "Professional, trustworthy, modern, partnership-oriented",
+      "typographyStyle": "Clean sans-serif, strong heading hierarchy, excellent readability",
+      "layoutPatterns": "Hero sections with navy gradients, card-based service grids, mega-menu navigation, testimonial carousels",
+      "values": {
+        "acronym": "PACE",
+        "P": "Progressive",
+        "A": "Approachable",
+        "C": "Collaborative",
+        "E": "Enablers"
+      }
+    },
+    "validationNote": "Token hex values are approximations from website analysis. Validate against Partners& brand guidelines PDF or Figma brand file for pixel-perfect accuracy."
+  }
+}

@@ -1,0 +1,48 @@
+%% Partners& BSC Strategy Map — PF-Instance
+%% Four-perspective cause-effect chain for AI-enhanced insurance advisory transformation
+
+flowchart TB
+    subgraph F["Financial Perspective"]
+        direction LR
+        F1["F1: £2m+ Incremental Revenue"]
+        F2["F2: +5pt Operating Margin"]
+        F3["F3: +25% Revenue per Employee"]
+    end
+
+    subgraph C["Customer Perspective"]
+        direction LR
+        C1["C1: NPS 70+"]
+        C2["C2: 95%+ Client Retention"]
+        C3["C3: 2.5+ Products per Client"]
+    end
+
+    subgraph P["Internal Process Perspective"]
+        direction LR
+        IP1["IP1: 60% to less than 15% Semi-Manual"]
+        IP2["IP2: 200+ Initiatives Y1"]
+        IP3["IP3: -40% Quote-to-Bind Time"]
+    end
+
+    subgraph L["Learning and Growth Perspective"]
+        direction LR
+        LG1["LG1: 80%+ AI Literacy"]
+        LG2["LG2: Enterprise Platform Live"]
+        LG3["LG3: 80%+ Engagement"]
+    end
+
+    LG1 -->|"enables"| IP2
+    LG2 -->|"enables"| IP1
+    LG3 -->|"sustains"| C1
+    IP1 -->|"frees capacity"| C1
+    IP1 -->|"reduces cost"| F2
+    IP2 -->|"delivers value"| F1
+    IP3 -->|"improves"| C1
+    C1 -->|"drives"| C2
+    C2 -->|"compounds"| F1
+    C3 -->|"grows"| F1
+    IP1 -->|"enables"| F3
+
+    style F fill:#c8e6c9
+    style C fill:#bbdefb
+    style P fill:#fff9c4
+    style L fill:#ffccbc
