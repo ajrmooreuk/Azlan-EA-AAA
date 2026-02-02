@@ -1,0 +1,72 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-EFS-001",
+  "name": "EFS Ontology (Epics/Features/Stories)",
+  "description": "Epics-Features-Stories ontology for agile product development, backlog management, and value delivery specification",
+  "version": "3.0.0",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/efs/",
+  "prefix": "efs:",
+  "status": "near-compliance",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "fail",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-01-28",
+  "gatesPassed": 6,
+  "gatesFailed": 1,
+  "artifacts": {
+    "ontology": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/efs-ontology.jsonld",
+    "interfaces": [
+      "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/gtm-interface.jsonld",
+      "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/pmf-interface.jsonld"
+    ],
+    "documentation": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/readme.md",
+    "specification": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/EFS-ONTOLOGY-SPEC.md",
+    "lineageSpec": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/EFS-Lineage-Specification-v3.0.0.md",
+    "lineageDiagrams": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/efs-lineage-diagrams-v3.0.0.md",
+    "architecture": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/efs-architecture.mermaid",
+    "schemaMappings": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/schema-mappings (1).md",
+    "validationReport": "../unified-registry/validation-reports/EFS-OAA-v5-Validation-Report-v3.0.0.md",
+    "visualGuide": null,
+    "glossary": null,
+    "testData": null
+  },
+  "lineageModel": {
+    "description": "5-Layer Lineage connecting Strategy to Specification",
+    "layers": [
+      "LAYER 1: VSOM/VSEM (Strategy)",
+      "LAYER 2: OKR/KPI (Context)",
+      "LAYER 3: Value Proposition (IC + RRR + ORG Context)",
+      "LAYER 4: PMF (ICP/Personas/Pains/Gains/Benefits)",
+      "LAYER 5: EFS (Epics/Features/Stories/Tasks)"
+    ],
+    "mappings": {
+      "pains": "Epics",
+      "gains": "Features",
+      "benefits": "Stories (So That...)",
+      "personas": "Stories (As A...)"
+    }
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-OKR-001",
+    "Entry-ONT-VP-001",
+    "Entry-ONT-PMF-001",
+    "Entry-ONT-RRR-001"
+  ],
+  "dependents": [],
+  "layer": "LAYER 5: SPECIFICATION",
+  "domain": "Product Development",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-01-28",
+  "notes": "WORKFLOW D validated 2026-01-28. Most comprehensive ontology with 19 entities, 31 relationships, 12 business rules. G5 FAIL: Needs test data (60-20-10-10). Has complete lineage model, interfaces, and architecture docs."
+}
