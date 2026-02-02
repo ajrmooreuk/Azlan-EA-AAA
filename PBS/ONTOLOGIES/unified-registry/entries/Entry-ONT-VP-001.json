@@ -3,43 +3,134 @@
   "@type": "OntologyRegistryEntry",
   "@id": "Entry-ONT-VP-001",
   "name": "Value Proposition Ontology",
-  "description": "Value Proposition ontology defining IC (Ideal Customer), organizational context, and value delivery mechanisms",
-  "version": "1.0.0",
+  "description": "Comprehensive ontology for developing, validating, and articulating value propositions. Links VSOM strategic layer to EFS execution layer through ICP-driven problem-solution mapping. Scoped by OrganizationContext for PFI-instance deployment.",
+  "version": "1.1.0",
   "oaaVersion": "5.0.0",
-  "namespace": "https://platformcore.io/ontology/vp/",
+  "namespace": "https://oaa-ontology.org/v5/value-proposition/",
   "prefix": "vp:",
-  "status": "pending-review",
+  "status": "near-compliance",
   "complianceStatus": {
-    "gate1": "pending",
-    "gate2": "pending",
-    "gate2b": "pending",
-    "gate2c": "pending",
-    "gate3": "pending",
-    "gate4": "pending",
-    "gate5": "pending",
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
     "gate6": "pass"
   },
   "artifacts": {
-    "ontology": null,
-    "documentation": "../foundation-ont/value-proposition-ont/VE-AgentSDK-Scope-v1.0.0.md",
+    "ontology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-v1.1.0-oaa-v5.jsonld",
+    "legacyOntology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-v1 (1).json",
+    "documentation": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/VALUE-PROPOSITION-ONTOLOGY-SUMMARY (1).md",
+    "frameworkGuide": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-framework-guide (1).md",
     "diagrams": [
-      "../foundation-ont/value-proposition-ont/PF-Core_VE_GTM_Diagram-Ontology_v0.1.0.mermaid",
-      "../foundation-ont/value-proposition-ont/PF-Core_VE_PMF_Diagram-Ontology_v2.0.0.mermaid"
+      "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-diagram (1).mermaid"
     ],
     "visualGuide": null,
-    "glossary": null,
-    "testData": null,
-    "validationReport": null
+    "glossary": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-glossary (1).json",
+    "testData": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/vp-test-data-v1.1.0.json",
+    "validationReport": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-validation-report (1).json"
   },
-  "components": {
-    "ic": "Ideal Customer definition and targeting",
-    "rrr": "Integration with Roles/RACI/RBAC (from Entry-ONT-RRR-001)",
-    "orgContext": "Organizational context relating back to VSOM"
+  "entities": {
+    "count": 14,
+    "list": [
+      "ValueProposition",
+      "IdealCustomerProfile",
+      "Problem",
+      "PainPoint",
+      "Gain",
+      "Solution",
+      "Benefit",
+      "Differentiator",
+      "CompetitiveAlternative",
+      "ValidationEvidence",
+      "SuccessMetric",
+      "Stakeholder",
+      "MessagingFramework"
+    ]
   },
+  "relationships": {
+    "count": 23,
+    "internal": 17,
+    "crossOntology": 6,
+    "keyBridges": [
+      {
+        "name": "alignsToObjective",
+        "from": "vp:ValueProposition",
+        "to": "vsom:ObjectivesComponent",
+        "purpose": "VSOM lineage - strategy to value"
+      },
+      {
+        "name": "mapsToEpic",
+        "from": "vp:Problem",
+        "to": "efs:Epic",
+        "purpose": "EFS bridge - problem to execution"
+      },
+      {
+        "name": "manifestsAsPersona",
+        "from": "vp:IdealCustomerProfile",
+        "to": "efs:Persona",
+        "purpose": "EFS bridge - ICP to user stories"
+      },
+      {
+        "name": "realizesInStory",
+        "from": "vp:Benefit",
+        "to": "efs:UserStory",
+        "purpose": "EFS bridge - benefit to story outcome"
+      },
+      {
+        "name": "belongsToOrgContext",
+        "from": "vp:ValueProposition",
+        "to": "org:OrganizationContext",
+        "purpose": "PFI-instance scoping"
+      }
+    ]
+  },
+  "businessRules": {
+    "count": 16,
+    "format": "IF-THEN",
+    "severityBreakdown": {
+      "error": 14,
+      "warning": 2
+    }
+  },
+  "testData": {
+    "distribution": "60-20-10-10",
+    "totalInstances": 30,
+    "happyPath": 18,
+    "edgeCases": 6,
+    "errorScenarios": 3,
+    "boundaryTests": 3
+  },
+  "joinPatterns": [
+    {
+      "id": "JP-VP-001",
+      "name": "VSOM-to-VP Strategic Alignment",
+      "path": "vsom:ObjectivesComponent → vp:alignsToObjective ← vp:ValueProposition"
+    },
+    {
+      "id": "JP-VP-002",
+      "name": "VP-to-EFS Execution Mapping",
+      "path": "vp:Problem → vp:mapsToEpic → efs:Epic"
+    },
+    {
+      "id": "JP-VP-003",
+      "name": "ICP-to-Persona Bridge",
+      "path": "vp:IdealCustomerProfile → vp:manifestsAsPersona → efs:Persona"
+    },
+    {
+      "id": "JP-VP-004",
+      "name": "Org-Context Scoping",
+      "path": "org:OrganizationContext → vp:hasValueProposition → vp:ValueProposition"
+    }
+  ],
   "dependencies": [
+    "Entry-ONT-VSOM-001",
     "Entry-ONT-OKR-001",
     "Entry-ONT-RRR-001",
-    "Entry-ONT-VSOM-001"
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-ORG-CONTEXT-001"
   ],
   "dependents": [
     "Entry-ONT-PMF-001",
@@ -47,8 +138,20 @@
   ],
   "layer": "LAYER 3: VALUE DEFINITION",
   "domain": "Value Engineering",
-  "maintainer": "Azlan EA-AAA",
-  "created": "2026-01-28",
-  "lastModified": "2026-01-28",
-  "notes": "[OAA-PENDING] Has scope document and diagrams but requires formal JSONLD ontology creation via WORKFLOW A"
+  "maintainer": "PFC Core Capability Framework",
+  "created": "2025-10-08",
+  "lastModified": "2026-02-02",
+  "versionHistory": [
+    {
+      "version": "1.1.0",
+      "date": "2026-02-02",
+      "changes": "OAA v5.0.0 compliance, VSOM lineage, EFS bridges, Org context scoping, G5 test data"
+    },
+    {
+      "version": "1.0.0",
+      "date": "2025-10-08",
+      "changes": "Initial VP ontology in legacy format"
+    }
+  ],
+  "notes": "VP v1.1.0 now OAA v5.0.0 compliant with full VSOM-VP-EFS lineage. Critical bridges established for PFI-instance builds. Ready for BAIV AI Visibility product VP instantiation."
 }

@@ -1,0 +1,803 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "vp": "https://oaa-ontology.org/v5/value-proposition/",
+    "vsom": "https://oaa-ontology.org/v5/vsom/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "efs": "https://oaa-ontology.org/v5/efs/",
+    "pf": "https://platform-foundation.io/ontology/v1/",
+    "raci": "https://platform-foundation.io/ontology/v1/raci/",
+    "rbac": "https://platform-foundation.io/ontology/v1/rbac/",
+    "baiv": "https://baiv.co.uk/ontology/"
+  },
+  "@id": "baiv:vp-instance-aiv-rrr-enhanced-v1.1.0",
+  "@type": "Dataset",
+  "name": "BAIV AI Visibility VP Instance - RRR Enhanced",
+  "description": "Enhanced VP instance with hierarchical ICP structure, role-based problem decomposition, and RACI integration for BAIV AI Visibility platform",
+  "version": "1.1.0",
+  "dateCreated": "2026-02-02",
+  "conformsTo": ["vp:value-proposition-ontology-v1.1.0", "pf:ontology:roles-raci-rbac-v3.0.0"],
+  "organizationContext": "ctx:baiv-org",
+  "enhancementFeatures": [
+    "Hierarchical ICP structure (CMO → Directors → Managers)",
+    "Role-based problem decomposition with roll-up",
+    "RACI assignments for VP activities",
+    "RRR ontology cross-references"
+  ],
+
+  "instances": {
+    "organizationContext": {
+      "@id": "ctx:baiv-org",
+      "@type": "org:OrganizationContext",
+      "contextId": "ctx:baiv-org",
+      "organizationRef": "org:baiv-limited",
+      "description": "BAIV Limited - AI Visibility SaaS platform provider",
+      "marketingMaturity": {
+        "level": 3,
+        "hasMarketingDirector": true,
+        "marketingTeamSize": 8,
+        "functionalRoles": ["Content Marketing", "SEO", "Demand Generation", "Marketing Operations", "Brand"],
+        "roleHierarchy": {
+          "cmoLevel": 1,
+          "directorLevel": 2,
+          "managerLevel": 3
+        }
+      }
+    },
+
+    "vsomObjective": {
+      "@id": "vsom:obj-capture-ai-market",
+      "@type": "vsom:ObjectivesComponent",
+      "objectiveId": "vsom:obj-capture-ai-market",
+      "name": "Capture AI Search Market Leadership",
+      "objectiveType": "Strategic",
+      "targetValue": 25,
+      "baselineValue": 0,
+      "deadline": "2026-12-31",
+      "status": "InProgress",
+      "description": "Establish BAIV as the leading AI visibility platform with 25% market share in AI search optimization tools",
+      "accountableRole": "role:cmo"
+    },
+
+    "roleHierarchy": {
+      "description": "Marketing team role hierarchy from RRR ontology",
+      "roles": [
+        {
+          "@id": "role:cmo",
+          "@type": "pf:ExecutiveRole",
+          "roleCode": "CMO",
+          "roleTitle": "Chief Marketing Officer",
+          "roleCategory": "Revenue Customer CSuite",
+          "seniorityLevel": 1,
+          "strategicFocus": "AI Visibility Market Leadership",
+          "vsomComponent": "Marketing Strategy & Brand",
+          "bscPerspective": "Customer",
+          "aiVisibilityRole": "Executive AI Strategy & Market Positioning"
+        },
+        {
+          "@id": "role:vp-marketing",
+          "@type": "pf:FunctionalRole",
+          "roleTitle": "VP Marketing",
+          "function": "Marketing",
+          "seniorityLevel": 2,
+          "reportsTo": "role:cmo",
+          "strategicFocus": "Marketing Execution & Channel Strategy"
+        },
+        {
+          "@id": "role:content-director",
+          "@type": "pf:FunctionalRole",
+          "roleTitle": "Content Marketing Director",
+          "function": "Marketing",
+          "seniorityLevel": 3,
+          "reportsTo": "role:vp-marketing",
+          "strategicFocus": "Content Strategy for AI Visibility"
+        },
+        {
+          "@id": "role:seo-manager",
+          "@type": "pf:FunctionalRole",
+          "roleTitle": "SEO Manager",
+          "function": "Marketing",
+          "seniorityLevel": 4,
+          "reportsTo": "role:content-director",
+          "strategicFocus": "AI-Native SEO & Optimization"
+        },
+        {
+          "@id": "role:content-manager",
+          "@type": "pf:FunctionalRole",
+          "roleTitle": "Content Manager",
+          "function": "Marketing",
+          "seniorityLevel": 4,
+          "reportsTo": "role:content-director",
+          "strategicFocus": "Content Production & LLM Optimization"
+        },
+        {
+          "@id": "role:demandgen-director",
+          "@type": "pf:FunctionalRole",
+          "roleTitle": "Demand Generation Director",
+          "function": "Marketing",
+          "seniorityLevel": 3,
+          "reportsTo": "role:vp-marketing",
+          "strategicFocus": "Pipeline & Performance Marketing"
+        },
+        {
+          "@id": "role:digital-marketing-manager",
+          "@type": "pf:FunctionalRole",
+          "roleTitle": "Digital Marketing Manager",
+          "function": "Marketing",
+          "seniorityLevel": 4,
+          "reportsTo": "role:demandgen-director",
+          "strategicFocus": "Campaign Performance & AI Attribution"
+        },
+        {
+          "@id": "role:marketing-ops-manager",
+          "@type": "pf:FunctionalRole",
+          "roleTitle": "Marketing Operations Manager",
+          "function": "Marketing",
+          "seniorityLevel": 4,
+          "reportsTo": "role:demandgen-director",
+          "strategicFocus": "Marketing Technology & Measurement"
+        }
+      ]
+    },
+
+    "hierarchicalICPs": {
+      "description": "Role-based ICP hierarchy - CMO cascades to marketing team",
+
+      "strategicLevel": {
+        "@id": "icp:cmo-strategic",
+        "@type": ["vp:IdealCustomerProfile", "vp:RoleBasedICP"],
+        "icpId": "icp:cmo-strategic",
+        "name": "CMO - Strategic AI Visibility Decision Maker",
+        "roleRef": "role:cmo",
+        "seniorityLevel": 1,
+        "functionScope": "Strategic",
+        "customerType": "B2B",
+        "segmentDescription": "Chief Marketing Officers at mid-market B2B companies ($10M-$100M ARR) responsible for overall marketing strategy, budget allocation, and brand visibility in emerging AI-driven discovery channels. Ultimate decision maker for AI visibility investments.",
+        "willingnessToPayIndicator": "High",
+        "decisionAuthority": {
+          "budgetRange": ">$50K annual",
+          "approvalLevel": "Final",
+          "stakeholderType": "Economic Buyer"
+        },
+        "strategicProblems": ["prob:strategic-ai-invisibility", "prob:strategic-competitive-gap", "prob:strategic-budget-uncertainty"],
+        "relationships": {
+          "hasSubICPs": ["icp:vp-marketing-tactical", "icp:brand-director-tactical"],
+          "manifestsAsPersona": ["efs:persona-marketing-maya"],
+          "icpHasStakeholder": ["sh:cmo-stakeholder"]
+        }
+      },
+
+      "tacticalLevel": [
+        {
+          "@id": "icp:vp-marketing-tactical",
+          "@type": ["vp:IdealCustomerProfile", "vp:RoleBasedICP"],
+          "icpId": "icp:vp-marketing-tactical",
+          "name": "VP Marketing - Tactical Channel Strategy Owner",
+          "roleRef": "role:vp-marketing",
+          "parentICP": "icp:cmo-strategic",
+          "icpReportsTo": "icp:cmo-strategic",
+          "seniorityLevel": 2,
+          "functionScope": "Tactical",
+          "customerType": "B2B",
+          "segmentDescription": "VP/Head of Marketing responsible for translating CMO strategy into channel tactics, team coordination, and tool selection. Owns AI visibility channel as part of broader digital marketing mix.",
+          "willingnessToPayIndicator": "Medium",
+          "decisionAuthority": {
+            "budgetRange": "$10K-$50K annual",
+            "approvalLevel": "Recommender",
+            "stakeholderType": "Technical Evaluator"
+          },
+          "tacticalProblems": ["prob:tactical-channel-fragmentation", "prob:tactical-tool-selection", "prob:tactical-team-capability"],
+          "relationships": {
+            "hasSubICPs": ["icp:content-director-tactical", "icp:demandgen-director-tactical"],
+            "icpReportsTo": "icp:cmo-strategic",
+            "icpHasStakeholder": ["sh:vp-marketing-stakeholder"]
+          }
+        },
+        {
+          "@id": "icp:content-director-tactical",
+          "@type": ["vp:IdealCustomerProfile", "vp:RoleBasedICP"],
+          "icpId": "icp:content-director-tactical",
+          "name": "Content Marketing Director - Content Strategy for AI",
+          "roleRef": "role:content-director",
+          "parentICP": "icp:vp-marketing-tactical",
+          "icpReportsTo": "icp:vp-marketing-tactical",
+          "seniorityLevel": 3,
+          "functionScope": "Tactical",
+          "customerType": "B2B",
+          "segmentDescription": "Content Marketing Director responsible for content strategy, SEO direction, and ensuring content is optimized for both traditional and AI-driven discovery. Champion for AI visibility within content team.",
+          "willingnessToPayIndicator": "Medium",
+          "tacticalProblems": ["prob:tactical-content-ai-alignment", "prob:tactical-seo-ai-conflict"],
+          "relationships": {
+            "hasSubICPs": ["icp:seo-manager-operational", "icp:content-manager-operational"],
+            "icpReportsTo": "icp:vp-marketing-tactical",
+            "icpHasStakeholder": ["sh:content-director-stakeholder"]
+          }
+        },
+        {
+          "@id": "icp:demandgen-director-tactical",
+          "@type": ["vp:IdealCustomerProfile", "vp:RoleBasedICP"],
+          "icpId": "icp:demandgen-director-tactical",
+          "name": "Demand Generation Director - AI Channel Performance",
+          "roleRef": "role:demandgen-director",
+          "parentICP": "icp:vp-marketing-tactical",
+          "icpReportsTo": "icp:vp-marketing-tactical",
+          "seniorityLevel": 3,
+          "functionScope": "Tactical",
+          "customerType": "B2B",
+          "segmentDescription": "Demand Generation Director responsible for pipeline, lead generation, and performance marketing. Needs to understand AI channel contribution to pipeline and optimize accordingly.",
+          "willingnessToPayIndicator": "Medium",
+          "tacticalProblems": ["prob:tactical-ai-attribution", "prob:tactical-pipeline-uncertainty"],
+          "relationships": {
+            "hasSubICPs": ["icp:digital-marketing-manager-operational", "icp:marketing-ops-manager-operational"],
+            "icpReportsTo": "icp:vp-marketing-tactical",
+            "icpHasStakeholder": ["sh:demandgen-director-stakeholder"]
+          }
+        }
+      ],
+
+      "operationalLevel": [
+        {
+          "@id": "icp:seo-manager-operational",
+          "@type": ["vp:IdealCustomerProfile", "vp:RoleBasedICP"],
+          "icpId": "icp:seo-manager-operational",
+          "name": "SEO Manager - AI-Native Optimization Practitioner",
+          "roleRef": "role:seo-manager",
+          "parentICP": "icp:content-director-tactical",
+          "icpReportsTo": "icp:content-director-tactical",
+          "seniorityLevel": 4,
+          "functionScope": "Operational",
+          "customerType": "B2B",
+          "segmentDescription": "SEO Manager executing optimization tactics. Frustrated that traditional SEO playbook doesn't work for AI. Needs new frameworks, tools, and metrics for AI-native optimization.",
+          "willingnessToPayIndicator": "Low",
+          "decisionAuthority": {
+            "budgetRange": "<$5K",
+            "approvalLevel": "User/Influencer",
+            "stakeholderType": "Primary User"
+          },
+          "operationalProblems": ["prob:op-traditional-seo-ineffective", "prob:op-no-ai-optimization-playbook", "prob:op-keyword-strategy-gaps"],
+          "relationships": {
+            "icpReportsTo": "icp:content-director-tactical",
+            "manifestsAsPersona": ["efs:persona-seo-sam"],
+            "icpHasStakeholder": ["sh:seo-manager-stakeholder"]
+          }
+        },
+        {
+          "@id": "icp:content-manager-operational",
+          "@type": ["vp:IdealCustomerProfile", "vp:RoleBasedICP"],
+          "icpId": "icp:content-manager-operational",
+          "name": "Content Manager - LLM-Optimized Content Creator",
+          "roleRef": "role:content-manager",
+          "parentICP": "icp:content-director-tactical",
+          "icpReportsTo": "icp:content-director-tactical",
+          "seniorityLevel": 4,
+          "functionScope": "Operational",
+          "customerType": "B2B",
+          "segmentDescription": "Content Manager creating and optimizing content. Needs guidance on how to structure content for LLM retrieval, what metadata matters, and how to measure AI content effectiveness.",
+          "willingnessToPayIndicator": "Low",
+          "operationalProblems": ["prob:op-content-structure-unknown", "prob:op-metadata-uncertainty", "prob:op-no-ai-content-feedback"],
+          "relationships": {
+            "icpReportsTo": "icp:content-director-tactical",
+            "manifestsAsPersona": ["efs:persona-content-casey"],
+            "icpHasStakeholder": ["sh:content-manager-stakeholder"]
+          }
+        },
+        {
+          "@id": "icp:digital-marketing-manager-operational",
+          "@type": ["vp:IdealCustomerProfile", "vp:RoleBasedICP"],
+          "icpId": "icp:digital-marketing-manager-operational",
+          "name": "Digital Marketing Manager - AI Campaign Optimizer",
+          "roleRef": "role:digital-marketing-manager",
+          "parentICP": "icp:demandgen-director-tactical",
+          "icpReportsTo": "icp:demandgen-director-tactical",
+          "seniorityLevel": 4,
+          "functionScope": "Operational",
+          "customerType": "B2B",
+          "segmentDescription": "Digital Marketing Manager running campaigns. Needs to understand how AI visibility impacts campaign performance and how to optimize campaigns for AI-discovered leads.",
+          "willingnessToPayIndicator": "Low",
+          "operationalProblems": ["prob:op-campaign-ai-impact-unknown", "prob:op-ai-lead-quality-uncertain"],
+          "relationships": {
+            "icpReportsTo": "icp:demandgen-director-tactical",
+            "manifestsAsPersona": ["efs:persona-digital-dana"],
+            "icpHasStakeholder": ["sh:digital-marketing-stakeholder"]
+          }
+        },
+        {
+          "@id": "icp:marketing-ops-manager-operational",
+          "@type": ["vp:IdealCustomerProfile", "vp:RoleBasedICP"],
+          "icpId": "icp:marketing-ops-manager-operational",
+          "name": "Marketing Operations Manager - AI Visibility Measurement",
+          "roleRef": "role:marketing-ops-manager",
+          "parentICP": "icp:demandgen-director-tactical",
+          "icpReportsTo": "icp:demandgen-director-tactical",
+          "seniorityLevel": 4,
+          "functionScope": "Operational",
+          "customerType": "B2B",
+          "segmentDescription": "Marketing Operations Manager responsible for marketing technology stack and measurement. Needs to integrate AI visibility metrics into existing reporting and attribution models.",
+          "willingnessToPayIndicator": "Low",
+          "operationalProblems": ["prob:op-no-ai-attribution", "prob:op-reporting-gaps", "prob:op-tool-integration"],
+          "relationships": {
+            "icpReportsTo": "icp:demandgen-director-tactical",
+            "manifestsAsPersona": ["efs:persona-ops-olivia"],
+            "icpHasStakeholder": ["sh:marketing-ops-stakeholder"]
+          }
+        }
+      ]
+    },
+
+    "hierarchicalProblems": {
+      "description": "Problems organized by level with roll-up relationships",
+
+      "strategicProblems": [
+        {
+          "@id": "prob:strategic-ai-invisibility",
+          "@type": "vp:Problem",
+          "problemId": "prob:strategic-ai-invisibility",
+          "problemStatement": "CMO cannot demonstrate brand presence in AI-driven discovery channels, creating strategic blind spot as 40%+ of B2B research now involves AI assistants. Board and investors questioning AI readiness.",
+          "problemType": "Functional",
+          "severity": "Critical",
+          "frequency": "Constant",
+          "scopeLevel": "Strategic",
+          "ownerRole": "role:cmo",
+          "isGrowing": true,
+          "aggregatesFrom": ["prob:tactical-channel-fragmentation", "prob:tactical-team-capability"],
+          "relationships": {
+            "problemHasPainPoint": ["pain:strategic-board-pressure", "pain:strategic-competitive-gap"],
+            "mapsToEpic": "efs:epic-ai-visibility-platform"
+          }
+        },
+        {
+          "@id": "prob:strategic-competitive-gap",
+          "@type": "vp:Problem",
+          "problemId": "prob:strategic-competitive-gap",
+          "problemStatement": "Competitors are being recommended by AI assistants while our brand remains invisible, eroding market position in increasingly AI-mediated buyer journeys.",
+          "problemType": "Economic",
+          "severity": "Critical",
+          "frequency": "Constant",
+          "scopeLevel": "Strategic",
+          "ownerRole": "role:cmo",
+          "aggregatesFrom": ["prob:tactical-content-ai-alignment"],
+          "relationships": {
+            "problemHasPainPoint": ["pain:strategic-market-share-loss"],
+            "mapsToEpic": "efs:epic-competitive-intelligence"
+          }
+        },
+        {
+          "@id": "prob:strategic-budget-uncertainty",
+          "@type": "vp:Problem",
+          "problemId": "prob:strategic-budget-uncertainty",
+          "problemStatement": "Cannot justify AI visibility investment to board without clear ROI metrics. Traditional marketing metrics don't capture AI channel value.",
+          "problemType": "Economic",
+          "severity": "Major",
+          "frequency": "Frequent",
+          "scopeLevel": "Strategic",
+          "ownerRole": "role:cmo",
+          "aggregatesFrom": ["prob:tactical-ai-attribution", "prob:tactical-pipeline-uncertainty"],
+          "relationships": {
+            "problemHasPainPoint": ["pain:strategic-roi-justification"],
+            "mapsToEpic": "efs:epic-analytics-reporting"
+          }
+        }
+      ],
+
+      "tacticalProblems": [
+        {
+          "@id": "prob:tactical-channel-fragmentation",
+          "@type": "vp:Problem",
+          "problemId": "prob:tactical-channel-fragmentation",
+          "problemStatement": "AI visibility fragmented across ChatGPT, Claude, Perplexity, Google AI Overviews with no unified view. Team lacks coordinated approach across platforms.",
+          "problemType": "Functional",
+          "severity": "Major",
+          "frequency": "Constant",
+          "scopeLevel": "Tactical",
+          "ownerRole": "role:vp-marketing",
+          "aggregatesFrom": ["prob:op-traditional-seo-ineffective", "prob:op-campaign-ai-impact-unknown"],
+          "problemRollsUpTo": "prob:strategic-ai-invisibility",
+          "relationships": {
+            "problemHasPainPoint": ["pain:tactical-no-unified-view"]
+          }
+        },
+        {
+          "@id": "prob:tactical-team-capability",
+          "@type": "vp:Problem",
+          "problemId": "prob:tactical-team-capability",
+          "problemStatement": "Marketing team trained in traditional SEO and digital marketing. Lack skills and frameworks for AI-native optimization. Uncertainty about how to upskill.",
+          "problemType": "Functional",
+          "severity": "Major",
+          "frequency": "Constant",
+          "scopeLevel": "Tactical",
+          "ownerRole": "role:vp-marketing",
+          "aggregatesFrom": ["prob:op-no-ai-optimization-playbook", "prob:op-content-structure-unknown"],
+          "problemRollsUpTo": "prob:strategic-ai-invisibility",
+          "relationships": {
+            "problemHasPainPoint": ["pain:tactical-skill-gap"]
+          }
+        },
+        {
+          "@id": "prob:tactical-content-ai-alignment",
+          "@type": "vp:Problem",
+          "problemId": "prob:tactical-content-ai-alignment",
+          "problemStatement": "Content strategy optimized for Google but not for LLM retrieval patterns. Content team needs new guidelines and feedback loops for AI optimization.",
+          "problemType": "Functional",
+          "severity": "Major",
+          "frequency": "Frequent",
+          "scopeLevel": "Tactical",
+          "ownerRole": "role:content-director",
+          "aggregatesFrom": ["prob:op-content-structure-unknown", "prob:op-metadata-uncertainty", "prob:op-keyword-strategy-gaps"],
+          "problemRollsUpTo": "prob:strategic-competitive-gap",
+          "relationships": {
+            "problemHasPainPoint": ["pain:tactical-content-misalignment"]
+          }
+        },
+        {
+          "@id": "prob:tactical-ai-attribution",
+          "@type": "vp:Problem",
+          "problemId": "prob:tactical-ai-attribution",
+          "problemStatement": "Cannot attribute leads, pipeline, or revenue to AI discovery channel. Flying blind on AI channel contribution and optimization.",
+          "problemType": "Functional",
+          "severity": "Major",
+          "frequency": "Constant",
+          "scopeLevel": "Tactical",
+          "ownerRole": "role:demandgen-director",
+          "aggregatesFrom": ["prob:op-no-ai-attribution", "prob:op-reporting-gaps"],
+          "problemRollsUpTo": "prob:strategic-budget-uncertainty",
+          "relationships": {
+            "problemHasPainPoint": ["pain:tactical-attribution-impossible"]
+          }
+        },
+        {
+          "@id": "prob:tactical-pipeline-uncertainty",
+          "@type": "vp:Problem",
+          "problemId": "prob:tactical-pipeline-uncertainty",
+          "problemStatement": "Unknown how much pipeline is influenced by AI discovery. Cannot forecast or plan around AI channel contribution.",
+          "problemType": "Economic",
+          "severity": "Moderate",
+          "frequency": "Frequent",
+          "scopeLevel": "Tactical",
+          "ownerRole": "role:demandgen-director",
+          "aggregatesFrom": ["prob:op-ai-lead-quality-uncertain"],
+          "problemRollsUpTo": "prob:strategic-budget-uncertainty",
+          "relationships": {
+            "problemHasPainPoint": ["pain:tactical-forecast-blind"]
+          }
+        }
+      ],
+
+      "operationalProblems": [
+        {
+          "@id": "prob:op-traditional-seo-ineffective",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-traditional-seo-ineffective",
+          "problemStatement": "Traditional SEO tactics (keyword density, backlinks, meta tags) don't influence AI assistant citations. Current SEO work not translating to AI visibility.",
+          "problemType": "Functional",
+          "severity": "Moderate",
+          "frequency": "Constant",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:seo-manager",
+          "problemRollsUpTo": "prob:tactical-channel-fragmentation",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-seo-tactics-useless"]
+          }
+        },
+        {
+          "@id": "prob:op-no-ai-optimization-playbook",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-no-ai-optimization-playbook",
+          "problemStatement": "No established playbook or best practices for AI-native optimization. SEO team improvising without guidance.",
+          "problemType": "Functional",
+          "severity": "Moderate",
+          "frequency": "Constant",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:seo-manager",
+          "problemRollsUpTo": "prob:tactical-team-capability",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-no-guidance"]
+          }
+        },
+        {
+          "@id": "prob:op-keyword-strategy-gaps",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-keyword-strategy-gaps",
+          "problemStatement": "Keyword strategy built for search engine rankings doesn't map to how LLMs retrieve and cite information. Need new keyword/entity approach.",
+          "problemType": "Functional",
+          "severity": "Moderate",
+          "frequency": "Frequent",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:seo-manager",
+          "problemRollsUpTo": "prob:tactical-content-ai-alignment",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-keyword-mismatch"]
+          }
+        },
+        {
+          "@id": "prob:op-content-structure-unknown",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-content-structure-unknown",
+          "problemStatement": "Don't know how to structure content for optimal LLM retrieval. No feedback on what content structure actually works.",
+          "problemType": "Functional",
+          "severity": "Moderate",
+          "frequency": "Constant",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:content-manager",
+          "problemRollsUpTo": "prob:tactical-content-ai-alignment",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-structure-mystery"]
+          }
+        },
+        {
+          "@id": "prob:op-metadata-uncertainty",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-metadata-uncertainty",
+          "problemStatement": "Unclear which metadata, schema markup, or structured data matters for AI citation. Different AI systems may use different signals.",
+          "problemType": "Functional",
+          "severity": "Minor",
+          "frequency": "Frequent",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:content-manager",
+          "problemRollsUpTo": "prob:tactical-content-ai-alignment",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-metadata-confusion"]
+          }
+        },
+        {
+          "@id": "prob:op-no-ai-content-feedback",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-no-ai-content-feedback",
+          "problemStatement": "No feedback loop on whether content changes improve AI citation. Cannot iterate without measurement.",
+          "problemType": "Functional",
+          "severity": "Moderate",
+          "frequency": "Constant",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:content-manager",
+          "problemRollsUpTo": "prob:tactical-team-capability",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-no-iteration"]
+          }
+        },
+        {
+          "@id": "prob:op-campaign-ai-impact-unknown",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-campaign-ai-impact-unknown",
+          "problemStatement": "Unknown how AI visibility affects campaign performance. Cannot optimize campaigns for AI-influenced buyer journeys.",
+          "problemType": "Functional",
+          "severity": "Minor",
+          "frequency": "Frequent",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:digital-marketing-manager",
+          "problemRollsUpTo": "prob:tactical-channel-fragmentation",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-campaign-blind"]
+          }
+        },
+        {
+          "@id": "prob:op-ai-lead-quality-uncertain",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-ai-lead-quality-uncertain",
+          "problemStatement": "Cannot identify which leads came through AI discovery or their quality vs other channels.",
+          "problemType": "Functional",
+          "severity": "Minor",
+          "frequency": "Frequent",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:digital-marketing-manager",
+          "problemRollsUpTo": "prob:tactical-pipeline-uncertainty",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-lead-source-unknown"]
+          }
+        },
+        {
+          "@id": "prob:op-no-ai-attribution",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-no-ai-attribution",
+          "problemStatement": "No mechanism to track AI channel as lead source in CRM/marketing automation. Attribution model doesn't include AI discovery.",
+          "problemType": "Functional",
+          "severity": "Moderate",
+          "frequency": "Constant",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:marketing-ops-manager",
+          "problemRollsUpTo": "prob:tactical-ai-attribution",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-crm-gap"]
+          }
+        },
+        {
+          "@id": "prob:op-reporting-gaps",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-reporting-gaps",
+          "problemStatement": "Executive dashboards don't include AI visibility metrics. CMO asks about AI performance and ops can't answer.",
+          "problemType": "Functional",
+          "severity": "Moderate",
+          "frequency": "Frequent",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:marketing-ops-manager",
+          "problemRollsUpTo": "prob:tactical-ai-attribution",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-reporting-incomplete"]
+          }
+        },
+        {
+          "@id": "prob:op-tool-integration",
+          "@type": "vp:Problem",
+          "problemId": "prob:op-tool-integration",
+          "problemStatement": "AI visibility tool needs to integrate with existing martech stack (HubSpot, Google Analytics, Salesforce). Integration complexity is a barrier.",
+          "problemType": "Functional",
+          "severity": "Minor",
+          "frequency": "Occasional",
+          "scopeLevel": "Operational",
+          "ownerRole": "role:marketing-ops-manager",
+          "relationships": {
+            "problemHasPainPoint": ["pain:op-integration-burden"]
+          }
+        }
+      ]
+    },
+
+    "raciMatrix": {
+      "description": "RACI assignments for VP-related activities",
+      "assignments": [
+        {
+          "@id": "raci:vp-validation",
+          "@type": "vp:VPRACIAssignment",
+          "vpActivity": "VP_Validation",
+          "vpEntityRef": "vp:baiv-ai-visibility",
+          "raciAssignments": [
+            {"role": "role:cmo", "raciType": "Accountable", "context": "Ultimate owner of value proposition validity"},
+            {"role": "role:vp-marketing", "raciType": "Responsible", "context": "Executes validation activities"},
+            {"role": "role:content-director", "raciType": "Consulted", "context": "Content alignment input"},
+            {"role": "role:demandgen-director", "raciType": "Consulted", "context": "Pipeline impact input"},
+            {"role": "role:seo-manager", "raciType": "Informed", "context": "SEO implications awareness"}
+          ]
+        },
+        {
+          "@id": "raci:problem-discovery",
+          "@type": "vp:VPRACIAssignment",
+          "vpActivity": "Problem_Discovery",
+          "raciAssignments": [
+            {"role": "role:cmo", "raciType": "Accountable", "context": "Strategic problem prioritization"},
+            {"role": "role:vp-marketing", "raciType": "Responsible", "context": "Coordinates problem discovery across team"},
+            {"role": "role:content-director", "raciType": "Responsible", "context": "Content-related problems"},
+            {"role": "role:demandgen-director", "raciType": "Responsible", "context": "Demand gen problems"},
+            {"role": "role:seo-manager", "raciType": "Responsible", "context": "SEO/optimization problems"},
+            {"role": "role:content-manager", "raciType": "Responsible", "context": "Content production problems"},
+            {"role": "role:marketing-ops-manager", "raciType": "Responsible", "context": "Measurement problems"}
+          ]
+        },
+        {
+          "@id": "raci:pain-resolution",
+          "@type": "vp:VPRACIAssignment",
+          "vpActivity": "Pain_Resolution",
+          "raciAssignments": [
+            {"role": "role:cmo", "raciType": "Accountable", "context": "Ensures pain points are addressed"},
+            {"role": "role:vp-marketing", "raciType": "Accountable", "context": "Tactical pain resolution ownership"},
+            {"role": "role:content-director", "raciType": "Responsible", "context": "Content-related pains"},
+            {"role": "role:demandgen-director", "raciType": "Responsible", "context": "Attribution/measurement pains"},
+            {"role": "role:seo-manager", "raciType": "Responsible", "context": "SEO optimization pains"},
+            {"role": "role:content-manager", "raciType": "Responsible", "context": "Content structure pains"},
+            {"role": "role:marketing-ops-manager", "raciType": "Responsible", "context": "Integration/reporting pains"}
+          ]
+        },
+        {
+          "@id": "raci:benefit-measurement",
+          "@type": "vp:VPRACIAssignment",
+          "vpActivity": "Benefit_Measurement",
+          "raciAssignments": [
+            {"role": "role:cmo", "raciType": "Accountable", "context": "ROI demonstration to board"},
+            {"role": "role:demandgen-director", "raciType": "Responsible", "context": "Pipeline/revenue metrics"},
+            {"role": "role:marketing-ops-manager", "raciType": "Responsible", "context": "Implements measurement"},
+            {"role": "role:vp-marketing", "raciType": "Consulted", "context": "Metric definition input"},
+            {"role": "role:content-director", "raciType": "Informed", "context": "Content effectiveness awareness"}
+          ]
+        },
+        {
+          "@id": "raci:messaging-development",
+          "@type": "vp:VPRACIAssignment",
+          "vpActivity": "Messaging_Development",
+          "raciAssignments": [
+            {"role": "role:cmo", "raciType": "Accountable", "context": "Brand messaging approval"},
+            {"role": "role:content-director", "raciType": "Responsible", "context": "Develops messaging framework"},
+            {"role": "role:vp-marketing", "raciType": "Responsible", "context": "Channel-specific messaging"},
+            {"role": "role:demandgen-director", "raciType": "Consulted", "context": "Campaign messaging input"},
+            {"role": "role:content-manager", "raciType": "Informed", "context": "Content alignment"}
+          ]
+        }
+      ]
+    },
+
+    "problemRollUpSummary": {
+      "description": "Aggregated view of problems rolling up from operational to strategic",
+      "strategicView": {
+        "prob:strategic-ai-invisibility": {
+          "severity": "Critical",
+          "rootCauses": {
+            "tactical": ["prob:tactical-channel-fragmentation", "prob:tactical-team-capability"],
+            "operational": [
+              "prob:op-traditional-seo-ineffective",
+              "prob:op-no-ai-optimization-playbook",
+              "prob:op-content-structure-unknown",
+              "prob:op-campaign-ai-impact-unknown"
+            ]
+          },
+          "impactedRoles": ["role:cmo", "role:vp-marketing", "role:seo-manager", "role:content-manager"],
+          "resolution": "BAIV AI Visibility Platform addresses all levels"
+        },
+        "prob:strategic-budget-uncertainty": {
+          "severity": "Major",
+          "rootCauses": {
+            "tactical": ["prob:tactical-ai-attribution", "prob:tactical-pipeline-uncertainty"],
+            "operational": [
+              "prob:op-no-ai-attribution",
+              "prob:op-reporting-gaps",
+              "prob:op-ai-lead-quality-uncertain"
+            ]
+          },
+          "impactedRoles": ["role:cmo", "role:demandgen-director", "role:marketing-ops-manager"],
+          "resolution": "BAIV Analytics & Attribution features"
+        }
+      }
+    },
+
+    "valueProposition": {
+      "@id": "vp:baiv-ai-visibility",
+      "note": "Updated to reference hierarchical ICPs",
+      "relationships": {
+        "targetsICP": [
+          "icp:cmo-strategic",
+          "icp:vp-marketing-tactical",
+          "icp:content-director-tactical",
+          "icp:demandgen-director-tactical",
+          "icp:seo-manager-operational",
+          "icp:content-manager-operational",
+          "icp:marketing-ops-manager-operational"
+        ],
+        "addressesProblem": {
+          "strategic": ["prob:strategic-ai-invisibility", "prob:strategic-competitive-gap", "prob:strategic-budget-uncertainty"],
+          "tactical": ["prob:tactical-channel-fragmentation", "prob:tactical-team-capability", "prob:tactical-content-ai-alignment", "prob:tactical-ai-attribution"],
+          "operational": ["prob:op-traditional-seo-ineffective", "prob:op-no-ai-optimization-playbook", "prob:op-content-structure-unknown", "prob:op-no-ai-attribution", "prob:op-reporting-gaps"]
+        }
+      }
+    },
+
+    "efsPersonaMapping": {
+      "description": "How hierarchical ICPs map to EFS Personas for user story writing",
+      "mappings": [
+        {
+          "icp": "icp:cmo-strategic",
+          "persona": "efs:persona-marketing-maya",
+          "storyPrefix": "As a CMO",
+          "userStoryFocus": "Strategic visibility, ROI demonstration, competitive positioning"
+        },
+        {
+          "icp": "icp:seo-manager-operational",
+          "persona": "efs:persona-seo-sam",
+          "storyPrefix": "As an SEO Manager",
+          "userStoryFocus": "AI optimization playbook, tactical guidance, performance feedback"
+        },
+        {
+          "icp": "icp:content-manager-operational",
+          "persona": "efs:persona-content-casey",
+          "storyPrefix": "As a Content Manager",
+          "userStoryFocus": "Content structure guidance, LLM optimization, feedback loops"
+        },
+        {
+          "icp": "icp:marketing-ops-manager-operational",
+          "persona": "efs:persona-ops-olivia",
+          "storyPrefix": "As a Marketing Ops Manager",
+          "userStoryFocus": "Integration, reporting, attribution implementation"
+        }
+      ]
+    }
+  },
+
+  "validationSummary": {
+    "rrrIntegration": {
+      "rolesLinked": 8,
+      "icpHierarchyDepth": 4,
+      "raciActivities": 5,
+      "problemRollUpLevels": 3
+    },
+    "businessRulesValidated": [
+      "BR-VP-017: ICP hierarchy matches role.reportsTo ✅",
+      "BR-VP-018: Problem severity roll-up valid ✅",
+      "BR-VP-019: RACI has one Accountable per activity ✅",
+      "BR-VP-020: ICP seniority levels ascending ✅"
+    ]
+  }
+}

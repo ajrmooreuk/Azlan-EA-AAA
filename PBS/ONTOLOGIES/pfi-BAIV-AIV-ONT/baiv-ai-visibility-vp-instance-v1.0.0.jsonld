@@ -1,0 +1,616 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "vp": "https://oaa-ontology.org/v5/value-proposition/",
+    "vsom": "https://oaa-ontology.org/v5/vsom/",
+    "org": "https://oaa-ontology.org/v5/organization/",
+    "efs": "https://oaa-ontology.org/v5/efs/",
+    "baiv": "https://baiv.co.uk/ontology/"
+  },
+  "@id": "baiv:vp-instance-aiv-v1",
+  "@type": "Dataset",
+  "name": "BAIV AI Visibility Value Proposition Instance",
+  "description": "Production VP instance for BAIV AI Visibility platform, demonstrating complete VSOM→VP→EFS lineage",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-02",
+  "conformsTo": "vp:value-proposition-ontology-v1.1.0",
+  "organizationContext": "ctx:baiv-org",
+
+  "instances": {
+    "organizationContext": {
+      "@id": "ctx:baiv-org",
+      "@type": "org:OrganizationContext",
+      "contextId": "ctx:baiv-org",
+      "organizationRef": "org:baiv-limited",
+      "description": "BAIV Limited - AI Visibility SaaS platform provider",
+      "products": [
+        {
+          "productId": "prod:aiv-platform",
+          "name": "AI Visibility Platform",
+          "category": "MarTech SaaS",
+          "segment": "AI Search Optimization",
+          "status": "active"
+        }
+      ],
+      "brands": [
+        {
+          "brandId": "brand:baiv",
+          "name": "BAIV",
+          "description": "Brand AI Visibility - Making brands discoverable by AI assistants",
+          "isPrimaryBrand": true
+        }
+      ],
+      "maturity": {
+        "sizeMaturity": {"level": 1, "headcount": 5},
+        "aiMaturity": {"maturityLevel": "implementing", "aiVisibilityAwareness": "high"}
+      }
+    },
+
+    "vsomObjective": {
+      "@id": "vsom:obj-capture-ai-market",
+      "@type": "vsom:ObjectivesComponent",
+      "objectiveId": "vsom:obj-capture-ai-market",
+      "name": "Capture AI Search Market Leadership",
+      "objectiveType": "Strategic",
+      "targetValue": 25,
+      "baselineValue": 0,
+      "deadline": "2026-12-31",
+      "status": "InProgress",
+      "description": "Establish BAIV as the leading AI visibility platform with 25% market share in AI search optimization tools"
+    },
+
+    "valueProposition": {
+      "@id": "vp:baiv-ai-visibility",
+      "@type": "vp:ValueProposition",
+      "vpId": "vp:baiv-ai-visibility",
+      "name": "BAIV AI Visibility Platform Value Proposition",
+      "primaryStatement": "For mid-market B2B companies who struggle to be discovered by AI assistants like ChatGPT, Claude, and Perplexity when potential customers ask buying-related questions, our AI Visibility platform provides comprehensive monitoring, optimization, and citation tracking that increases brand mentions by 30% within 90 days, unlike traditional SEO tools that focus only on search engines, because we use proprietary AI-native optimization techniques specifically designed for how large language models retrieve and cite information.",
+      "alternativeStatement": "BAIV enables B2B marketers to get discovered by AI assistants through real-time citation tracking, content optimization, and competitive intelligence - because the brands AI recommends are the brands that win.",
+      "keyBenefits": "30% increase in AI citations within 90 days; Real-time visibility into AI assistant responses; Competitive intelligence on competitor AI positioning; Actionable optimization recommendations",
+      "uniqueDifferentiators": "AI-native approach built for LLM retrieval patterns; Real-time multi-platform citation tracking; Proprietary AI optimization methodology; First-mover in dedicated AI visibility market",
+      "organizationContextRef": "ctx:baiv-org",
+      "status": "Active",
+      "validationDate": "2026-01-30",
+      "relationships": {
+        "alignsToObjective": ["vsom:obj-capture-ai-market"],
+        "drivesOutcome": ["vsom:outcome-market-leadership"],
+        "targetsICP": ["icp:midmarket-b2b-cmo", "icp:growth-stage-marketer"],
+        "addressesProblem": ["prob:ai-invisibility", "prob:legacy-seo-ineffective"],
+        "offeredThrough": "sol:aiv-platform",
+        "supportedByEvidence": ["evid:customer-discovery", "evid:pilot-program", "evid:market-research"],
+        "communicatedVia": "msg:baiv-primary",
+        "differentiatesFrom": ["alt:semrush", "alt:ahrefs", "alt:do-nothing"]
+      }
+    },
+
+    "idealCustomerProfiles": [
+      {
+        "@id": "icp:midmarket-b2b-cmo",
+        "@type": "vp:IdealCustomerProfile",
+        "icpId": "icp:midmarket-b2b-cmo",
+        "name": "Mid-Market B2B CMO",
+        "customerType": "B2B",
+        "segmentDescription": "Chief Marketing Officers at B2B SaaS and professional services companies with $10M-$100M ARR, responsible for digital presence, lead generation, and brand visibility in increasingly AI-driven discovery channels",
+        "demographics": "B2B SaaS, Professional Services, FinTech, HealthTech; 50-500 employees; US, UK, AU primary markets",
+        "firmographics": "Series B-D funded or profitable; Modern tech stack; Growth-focused; Marketing team of 3-15 people",
+        "psychographics": "Data-driven decision maker; Early adopter mindset; ROI-focused; Concerned about AI disruption to traditional marketing; Reads industry publications on AI trends",
+        "willingnessToPayIndicator": "High",
+        "marketSize": 45000,
+        "acquisitionCost": 2500,
+        "lifetimeValue": 36000,
+        "relationships": {
+          "icpHasStakeholder": ["sh:cmo", "sh:content-lead", "sh:demand-gen"],
+          "manifestsAsPersona": ["efs:persona-marketing-maya"]
+        }
+      },
+      {
+        "@id": "icp:growth-stage-marketer",
+        "@type": "vp:IdealCustomerProfile",
+        "icpId": "icp:growth-stage-marketer",
+        "name": "Growth-Stage Marketing Leader",
+        "customerType": "B2B",
+        "segmentDescription": "VP Marketing or Head of Growth at fast-growing startups (Series A-B) who need to establish brand presence in emerging AI discovery channels before competitors",
+        "demographics": "Tech startups, SaaS; 20-100 employees; Primarily US tech hubs",
+        "firmographics": "Series A-B funded; High growth trajectory; Lean marketing team of 1-5; Scrappy and experimental",
+        "psychographics": "Growth hacker mentality; Comfortable with new tools; Looking for competitive edge; Active in marketing communities",
+        "willingnessToPayIndicator": "Medium",
+        "marketSize": 85000,
+        "acquisitionCost": 1500,
+        "lifetimeValue": 18000,
+        "relationships": {
+          "icpHasStakeholder": ["sh:vp-marketing", "sh:founder"],
+          "manifestsAsPersona": ["efs:persona-growth-greg"]
+        }
+      }
+    ],
+
+    "problems": [
+      {
+        "@id": "prob:ai-invisibility",
+        "@type": "vp:Problem",
+        "problemId": "prob:ai-invisibility",
+        "problemStatement": "B2B marketing leaders struggle with complete invisibility to AI assistants (ChatGPT, Claude, Perplexity, Google AI Overviews) when potential customers ask buying-related questions, resulting in missed discovery opportunities as 40%+ of B2B research now involves AI assistants",
+        "problemType": "Functional",
+        "severity": "Critical",
+        "frequency": "Constant",
+        "isGrowing": true,
+        "marketSizeImpact": 5000000000,
+        "relationships": {
+          "problemHasPainPoint": ["pain:no-citations", "pain:competitor-visibility", "pain:no-measurement", "pain:content-not-optimized"],
+          "problemValidatedBy": ["evid:customer-discovery", "evid:market-research"],
+          "mapsToEpic": "efs:epic-ai-visibility-core"
+        }
+      },
+      {
+        "@id": "prob:legacy-seo-ineffective",
+        "@type": "vp:Problem",
+        "problemId": "prob:legacy-seo-ineffective",
+        "problemStatement": "Traditional SEO tools and strategies designed for Google search rankings are ineffective for AI assistant discovery because LLMs use fundamentally different retrieval and citation mechanisms than search engine crawlers",
+        "problemType": "Functional",
+        "severity": "Major",
+        "frequency": "Frequent",
+        "isGrowing": true,
+        "relationships": {
+          "problemHasPainPoint": ["pain:wasted-seo-spend", "pain:outdated-playbook"],
+          "problemValidatedBy": ["evid:customer-discovery"],
+          "mapsToEpic": "efs:epic-ai-optimization"
+        }
+      }
+    ],
+
+    "painPoints": [
+      {
+        "@id": "pain:no-citations",
+        "@type": "vp:PainPoint",
+        "painId": "pain:no-citations",
+        "painDescription": "Brand is never mentioned or cited when AI assistants answer industry-related questions that should include us",
+        "painDimfurther context see pull from github if not in azlanension": "Functional",
+        "customerImpact": "Missed discovery opportunities as potential customers increasingly use AI for research and recommendations",
+        "quantifiedImpact": 125000,
+        "impactUnit": "Currency"
+      },
+      {
+        "@id": "pain:competitor-visibility",
+        "@type": "vp:PainPoint",
+        "painId": "pain:competitor-visibility",
+        "painDescription": "Competitors are being cited and recommended by AI assistants while our brand remains invisible in AI-generated responses",
+        "painDimension": "Economic",
+        "customerImpact": "Losing market share and competitive positioning as AI-savvy competitors gain AI visibility advantage",
+        "quantifiedImpact": 15,
+        "impactUnit": "Percentage"
+      },
+      {
+        "@id": "pain:no-measurement",
+        "@type": "vp:PainPoint",
+        "painId": "pain:no-measurement",
+        "painDescription": "No way to measure, track, or report on AI visibility - flying blind in an increasingly important channel",
+        "painDimension": "Functional",
+        "customerImpact": "Cannot demonstrate ROI or justify investment in AI visibility initiatives",
+        "quantifiedImpact": 20,
+        "impactUnit": "Hours"
+      },
+      {
+        "@id": "pain:content-not-optimized",
+        "@type": "vp:PainPoint",
+        "painId": "pain:content-not-optimized",
+        "painDescription": "Existing content is not structured or formatted for AI retrieval - no clear guidance on what to fix",
+        "painDimension": "Functional",
+        "customerImpact": "Content investment not yielding AI visibility returns despite quality",
+        "quantifiedImpact": 40,
+        "impactUnit": "Percentage"
+      },
+      {
+        "@id": "pain:wasted-seo-spend",
+        "@type": "vp:PainPoint",
+        "painId": "pain:wasted-seo-spend",
+        "painDescription": "Continuing to invest in traditional SEO tactics that don't translate to AI discovery",
+        "painDimension": "Economic",
+        "customerImpact": "Marketing budget inefficiency as channel effectiveness shifts",
+        "quantifiedImpact": 50000,
+        "impactUnit": "Currency"
+      },
+      {
+        "@id": "pain:outdated-playbook",
+        "@type": "vp:PainPoint",
+        "painId": "pain:outdated-playbook",
+        "painDescription": "Team's skills and playbooks are based on traditional SEO, not AI optimization",
+        "painDimension": "Emotional",
+        "customerImpact": "Team anxiety about relevance and effectiveness in changing landscape"
+      }
+    ],
+
+    "gains": [
+      {
+        "@id": "gain:ai-discovery",
+        "@type": "vp:Gain",
+        "gainId": "gain:ai-discovery",
+        "gainDescription": "Being discovered and recommended by AI assistants when prospects ask relevant industry questions",
+        "gainType": "Desired",
+        "gainCategory": "Economic",
+        "priority": "Critical",
+        "quantifiedValue": 500000,
+        "relationships": {
+          "gainMapsToFeature": "efs:feature-citation-optimization"
+        }
+      },
+      {
+        "@id": "gain:competitive-intel",
+        "@type": "vp:Gain",
+        "gainId": "gain:competitive-intel",
+        "gainDescription": "Understanding how competitors are positioned in AI responses and identifying gaps to exploit",
+        "gainType": "Expected",
+        "gainCategory": "Functional",
+        "priority": "High",
+        "relationships": {
+          "gainMapsToFeature": "efs:feature-competitor-tracking"
+        }
+      },
+      {
+        "@id": "gain:measurable-roi",
+        "@type": "vp:Gain",
+        "gainId": "gain:measurable-roi",
+        "gainDescription": "Ability to measure, track, and report on AI visibility metrics to demonstrate marketing ROI",
+        "gainType": "Required",
+        "gainCategory": "Functional",
+        "priority": "High",
+        "relationships": {
+          "gainMapsToFeature": "efs:feature-analytics-dashboard"
+        }
+      }
+    ],
+
+    "solution": {
+      "@id": "sol:aiv-platform",
+      "@type": "vp:Solution",
+      "solutionId": "sol:aiv-platform",
+      "name": "BAIV AI Visibility Platform",
+      "description": "Comprehensive SaaS platform for monitoring, analyzing, and optimizing brand visibility across AI answer engines including ChatGPT, Claude, Perplexity, Google AI Overviews, and emerging AI assistants. Provides real-time citation tracking, content optimization recommendations, and competitive intelligence.",
+      "coreFunctionality": "Multi-platform AI citation monitoring; Content optimization scoring and recommendations; Competitive AI positioning analysis; Performance analytics and reporting; Query-based visibility tracking",
+      "deliveryMethod": "SaaS",
+      "pricingModel": "Subscription",
+      "timeToValue": "P14D",
+      "relationships": {
+        "solutionAddressesProblem": ["prob:ai-invisibility", "prob:legacy-seo-ineffective"],
+        "solutionDeliversBenefit": ["ben:increased-citations", "ben:competitive-intel", "ben:actionable-insights", "ben:time-savings"],
+        "solutionDifferentiatedBy": ["diff:ai-native", "diff:multi-platform", "diff:real-time", "diff:first-mover"],
+        "solutionDeliversGain": ["gain:ai-discovery", "gain:competitive-intel", "gain:measurable-roi"]
+      }
+    },
+
+    "benefits": [
+      {
+        "@id": "ben:increased-citations",
+        "@type": "vp:Benefit",
+        "benefitId": "ben:increased-citations",
+        "benefitDescription": "30% increase in AI assistant citations within 90 days of implementation through targeted content optimization",
+        "benefitType": "Quantifiable",
+        "benefitCategory": "RevenueGrowth",
+        "quantifiedValue": 30,
+        "measurementMethod": "Automated citation tracking across ChatGPT, Claude, Perplexity, and Google AI Overviews",
+        "realizationTimeframe": "P90D",
+        "relationships": {
+          "benefitMitigatesPain": ["pain:no-citations", "pain:competitor-visibility"],
+          "benefitEvidencedBy": ["evid:pilot-program"],
+          "realizesInStory": ["efs:story-citation-increase"],
+          "benefitMeasuredBy": ["sm:citation-rate"]
+        }
+      },
+      {
+        "@id": "ben:competitive-intel",
+        "@type": "vp:Benefit",
+        "benefitId": "ben:competitive-intel",
+        "benefitDescription": "Real-time visibility into competitor AI positioning with weekly trend analysis and gap identification",
+        "benefitType": "Qualitative",
+        "benefitCategory": "StrategicAdvantage",
+        "relationships": {
+          "benefitMitigatesPain": ["pain:competitor-visibility"],
+          "realizesInStory": ["efs:story-competitor-dashboard"]
+        }
+      },
+      {
+        "@id": "ben:actionable-insights",
+        "@type": "vp:Benefit",
+        "benefitId": "ben:actionable-insights",
+        "benefitDescription": "Specific, prioritized content optimization recommendations that teams can act on immediately",
+        "benefitType": "Qualitative",
+        "benefitCategory": "ExperienceImprovement",
+        "relationships": {
+          "benefitMitigatesPain": ["pain:content-not-optimized", "pain:outdated-playbook"],
+          "realizesInStory": ["efs:story-optimization-recs"]
+        }
+      },
+      {
+        "@id": "ben:time-savings",
+        "@type": "vp:Benefit",
+        "benefitId": "ben:time-savings",
+        "benefitDescription": "Reduce manual AI monitoring from 20+ hours/week to automated real-time tracking",
+        "benefitType": "Quantifiable",
+        "benefitCategory": "TimeSavings",
+        "quantifiedValue": 20,
+        "measurementMethod": "Hours saved per week vs manual monitoring approach",
+        "relationships": {
+          "benefitMitigatesPain": ["pain:no-measurement"],
+          "realizesInStory": ["efs:story-automated-tracking"]
+        }
+      }
+    ],
+
+    "differentiators": [
+      {
+        "@id": "diff:ai-native",
+        "@type": "vp:Differentiator",
+        "differentiatorId": "diff:ai-native",
+        "differentiatorDescription": "Purpose-built for AI answer engines with proprietary understanding of LLM retrieval patterns, not retrofitted from traditional SEO tools",
+        "differentiatorType": "Technology",
+        "competitiveAdvantage": "Deep integration with how LLMs actually retrieve and cite information vs surface-level keyword matching",
+        "defensibility": "High",
+        "customerImportance": "High"
+      },
+      {
+        "@id": "diff:multi-platform",
+        "@type": "vp:Differentiator",
+        "differentiatorId": "diff:multi-platform",
+        "differentiatorDescription": "Unified monitoring across ChatGPT, Claude, Perplexity, Google AI Overviews, and emerging AI platforms",
+        "differentiatorType": "Capability",
+        "competitiveAdvantage": "Single pane of glass for all AI visibility vs fragmented point solutions",
+        "defensibility": "Medium",
+        "customerImportance": "High"
+      },
+      {
+        "@id": "diff:real-time",
+        "@type": "vp:Differentiator",
+        "differentiatorId": "diff:real-time",
+        "differentiatorDescription": "Real-time citation tracking and alerting vs batch processing or manual checks",
+        "differentiatorType": "Technology",
+        "competitiveAdvantage": "Immediate visibility into AI positioning changes and competitive movements",
+        "defensibility": "Medium",
+        "customerImportance": "Medium"
+      },
+      {
+        "@id": "diff:first-mover",
+        "@type": "vp:Differentiator",
+        "differentiatorId": "diff:first-mover",
+        "differentiatorDescription": "First dedicated AI visibility platform in market, establishing category leadership and best practices",
+        "differentiatorType": "BusinessModel",
+        "competitiveAdvantage": "Brand recognition as AI visibility pioneer, accumulating data and insights ahead of competitors",
+        "defensibility": "High",
+        "customerImportance": "Medium"
+      }
+    ],
+
+    "competitiveAlternatives": [
+      {
+        "@id": "alt:semrush",
+        "@type": "vp:CompetitiveAlternative",
+        "alternativeId": "alt:semrush",
+        "name": "Semrush",
+        "alternativeType": "Substitute",
+        "marketShare": 25,
+        "strengths": "Established brand; Comprehensive SEO features; Large user base; Strong integrations",
+        "weaknesses": "Built for traditional search engines; No dedicated AI visibility features; Keyword-focused approach doesn't translate to AI; Slow to adapt to AI shift",
+        "pricingComparison": "Similar"
+      },
+      {
+        "@id": "alt:ahrefs",
+        "@type": "vp:CompetitiveAlternative",
+        "alternativeId": "alt:ahrefs",
+        "name": "Ahrefs",
+        "alternativeType": "Substitute",
+        "marketShare": 20,
+        "strengths": "Strong backlink analysis; Good content explorer; Trusted by SEO professionals",
+        "weaknesses": "Google-centric; No AI assistant tracking; Traditional SEO paradigm; Would need significant pivot to compete",
+        "pricingComparison": "Similar"
+      },
+      {
+        "@id": "alt:do-nothing",
+        "@type": "vp:CompetitiveAlternative",
+        "alternativeId": "alt:do-nothing",
+        "name": "Manual Monitoring / Do Nothing",
+        "alternativeType": "DoNothing",
+        "marketShare": 40,
+        "strengths": "No cost; No implementation effort; Status quo comfort",
+        "weaknesses": "Falling behind AI-optimized competitors; Missing emerging channel; Manual effort unsustainable; No systematic approach"
+      }
+    ],
+
+    "validationEvidence": [
+      {
+        "@id": "evid:customer-discovery",
+        "@type": "vp:ValidationEvidence",
+        "evidenceId": "evid:customer-discovery",
+        "evidenceType": "CustomerInterview",
+        "evidenceSource": "Discovery interviews with 25 mid-market B2B CMOs",
+        "evidenceDate": "2025-12-15",
+        "evidenceDescription": "23 of 25 CMOs (92%) expressed significant concern about AI visibility and indicated willingness to invest in dedicated solutions. Top concerns: competitor visibility (88%), measurement gaps (84%), content optimization uncertainty (76%)",
+        "evidenceStrength": "Strong",
+        "sampleSize": 25
+      },
+      {
+        "@id": "evid:pilot-program",
+        "@type": "vp:ValidationEvidence",
+        "evidenceId": "evid:pilot-program",
+        "evidenceType": "UsageAnalytics",
+        "evidenceSource": "Beta customer pilot program - 5 mid-market B2B companies",
+        "evidenceDate": "2026-01-30",
+        "evidenceDescription": "5 pilot customers achieved average 28% increase in AI citations over 60-day period. 100% reported they would continue using the platform. NPS score of 72.",
+        "evidenceStrength": "Strong",
+        "sampleSize": 5
+      },
+      {
+        "@id": "evid:market-research",
+        "@type": "vp:ValidationEvidence",
+        "evidenceId": "evid:market-research",
+        "evidenceType": "MarketResearch",
+        "evidenceSource": "Gartner, Forrester, and internal analysis",
+        "evidenceDate": "2026-01-15",
+        "evidenceDescription": "42% of B2B buyers now use AI assistants for research (up from 18% in 2024). AI visibility tools market projected to reach $2.3B by 2028. No dominant player in dedicated AI visibility category.",
+        "evidenceStrength": "Strong"
+      }
+    ],
+
+    "successMetrics": [
+      {
+        "@id": "sm:citation-rate",
+        "@type": "vp:SuccessMetric",
+        "metricId": "sm:citation-rate",
+        "name": "AI Citation Rate",
+        "description": "Percentage of relevant AI queries that cite or mention the customer's brand",
+        "baseline": 2,
+        "target": 15,
+        "measurementMethod": "Automated tracking of brand mentions across ChatGPT, Claude, Perplexity responses to industry-relevant queries",
+        "measurementFrequency": "P7D",
+        "relationships": {
+          "metricMapsToAC": "efs:ac-citation-increase"
+        }
+      },
+      {
+        "@id": "sm:competitive-gap",
+        "@type": "vp:SuccessMetric",
+        "metricId": "sm:competitive-gap",
+        "name": "Competitive Citation Gap",
+        "description": "Difference between customer citation rate and top competitor citation rate",
+        "baseline": -25,
+        "target": 5,
+        "measurementMethod": "Comparative analysis of citation rates across defined competitor set",
+        "measurementFrequency": "P7D"
+      }
+    ],
+
+    "stakeholders": [
+      {
+        "@id": "sh:cmo",
+        "@type": "vp:Stakeholder",
+        "stakeholderId": "sh:cmo",
+        "name": "Chief Marketing Officer",
+        "stakeholderRole": "DecisionMaker",
+        "influenceLevel": "High",
+        "interests": "ROI demonstration; Competitive advantage; Brand visibility; Board-ready metrics",
+        "objections": "Budget allocation; Unproven category; Integration with existing stack"
+      },
+      {
+        "@id": "sh:content-lead",
+        "@type": "vp:Stakeholder",
+        "stakeholderId": "sh:content-lead",
+        "name": "Content Marketing Lead",
+        "stakeholderRole": "PrimaryUser",
+        "influenceLevel": "Medium",
+        "interests": "Actionable optimization guidance; Easy-to-use interface; Clear content priorities",
+        "objections": "Another tool to learn; Integration with content workflows"
+      },
+      {
+        "@id": "sh:demand-gen",
+        "@type": "vp:Stakeholder",
+        "stakeholderId": "sh:demand-gen",
+        "name": "Demand Generation Manager",
+        "stakeholderRole": "Influencer",
+        "influenceLevel": "Medium",
+        "interests": "Lead source attribution; Channel performance data; Competitive intel",
+        "objections": "Attribution complexity; Unproven channel impact"
+      }
+    ],
+
+    "messagingFramework": {
+      "@id": "msg:baiv-primary",
+      "@type": "vp:MessagingFramework",
+      "frameworkId": "msg:baiv-primary",
+      "primaryMessage": "Get discovered by AI assistants before your competitors do",
+      "supportingMessages": "Track AI citations in real-time across ChatGPT, Claude, and Perplexity; Optimize content for AI retrieval with actionable recommendations; Monitor competitor AI positioning and identify gaps; Measure and report on AI visibility ROI",
+      "emotionalHooks": "Don't let AI make your brand invisible; Be part of the conversation when it matters most; Your competitors are already optimizing for AI - are you?",
+      "useCustomerLanguage": true,
+      "relationships": {
+        "messagingTargetsStakeholder": ["sh:cmo", "sh:content-lead", "sh:demand-gen"]
+      }
+    },
+
+    "efsMapping": {
+      "description": "Cross-references to EFS ontology entities for execution layer",
+      "epics": [
+        {
+          "@id": "efs:epic-ai-visibility-core",
+          "name": "AI Visibility Core Platform",
+          "linkedProblem": "prob:ai-invisibility",
+          "status": "Defined"
+        },
+        {
+          "@id": "efs:epic-ai-optimization",
+          "name": "AI Content Optimization Engine",
+          "linkedProblem": "prob:legacy-seo-ineffective",
+          "status": "Defined"
+        }
+      ],
+      "features": [
+        {
+          "@id": "efs:feature-citation-optimization",
+          "name": "Citation Optimization Recommendations",
+          "linkedGain": "gain:ai-discovery"
+        },
+        {
+          "@id": "efs:feature-competitor-tracking",
+          "name": "Competitive AI Tracking Dashboard",
+          "linkedGain": "gain:competitive-intel"
+        },
+        {
+          "@id": "efs:feature-analytics-dashboard",
+          "name": "AI Visibility Analytics Dashboard",
+          "linkedGain": "gain:measurable-roi"
+        }
+      ],
+      "personas": [
+        {
+          "@id": "efs:persona-marketing-maya",
+          "name": "Marketing Maya",
+          "linkedICP": "icp:midmarket-b2b-cmo",
+          "description": "CMO at mid-market B2B SaaS, data-driven, concerned about AI disruption"
+        },
+        {
+          "@id": "efs:persona-growth-greg",
+          "name": "Growth Greg",
+          "linkedICP": "icp:growth-stage-marketer",
+          "description": "VP Marketing at growth-stage startup, scrappy and experimental"
+        }
+      ],
+      "stories": [
+        {
+          "@id": "efs:story-citation-increase",
+          "userStory": "As Marketing Maya, I want to see my AI citation rate increase so that my brand is discovered when prospects use AI assistants",
+          "linkedBenefit": "ben:increased-citations"
+        },
+        {
+          "@id": "efs:story-competitor-dashboard",
+          "userStory": "As Marketing Maya, I want to see how competitors are positioned in AI responses so that I can identify gaps to exploit",
+          "linkedBenefit": "ben:competitive-intel"
+        }
+      ],
+      "acceptanceCriteria": [
+        {
+          "@id": "efs:ac-citation-increase",
+          "criteria": "GIVEN the platform has been active for 90 days WHEN I view my analytics dashboard THEN I should see at least 30% improvement in citation rate from baseline",
+          "linkedMetric": "sm:citation-rate"
+        }
+      ]
+    }
+  },
+
+  "validationSummary": {
+    "lineageComplete": true,
+    "vsomLink": "vsom:obj-capture-ai-market",
+    "efsLinks": {
+      "epics": 2,
+      "features": 3,
+      "personas": 2,
+      "stories": 2,
+      "acceptanceCriteria": 1
+    },
+    "businessRulesValidated": [
+      "BR-VP-001: primaryStatement >= 50 chars ✅",
+      "BR-VP-002: targetsICP relationship exists ✅",
+      "BR-VP-003: addressesProblem relationship exists ✅",
+      "BR-VP-004: supportedByEvidence relationship exists ✅",
+      "BR-VP-005: alignsToObjective relationship exists ✅",
+      "BR-VP-006: organizationContextRef defined ✅",
+      "BR-VP-007: Problems have pain points ✅",
+      "BR-VP-008: Problems validated by evidence ✅",
+      "BR-VP-009: Critical problems map to epics ✅"
+    ]
+  }
+}
