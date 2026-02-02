@@ -170,13 +170,53 @@
     },
     {
       "@id": "Entry-ONT-ALZ-001",
-      "name": "ALZ Ontology (MCSB Domain)",
-      "namespace": "alz:",
+      "name": "MCSB Ontology (Microsoft Cloud Security Benchmark v1)",
+      "namespace": "mcsb:",
       "status": "compliant",
       "gatesPassed": 7,
       "gatesFailed": 0,
       "validatedDate": "2026-02-02",
       "path": "./entries/Entry-ONT-ALZ-001.json"
+    },
+    {
+      "@id": "Entry-ONT-EA-001",
+      "name": "EA Ontology (Enterprise Architecture Portfolio)",
+      "namespace": "ea:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-EA-001.json"
+    },
+    {
+      "@id": "Entry-ONT-MCSB2-001",
+      "name": "MCSB v2 Ontology (Microsoft Cloud Security Benchmark v2)",
+      "namespace": "mcsb2:",
+      "status": "placeholder",
+      "gatesPassed": 0,
+      "gatesFailed": 0,
+      "validatedDate": null,
+      "path": "./entries/Entry-ONT-MCSB2-001.json"
+    },
+    {
+      "@id": "Entry-ONT-AIR-001",
+      "name": "AIR Ontology (AI Readiness Assessment)",
+      "namespace": "air:",
+      "status": "placeholder",
+      "gatesPassed": 0,
+      "gatesFailed": 0,
+      "validatedDate": null,
+      "path": "./entries/Entry-ONT-AIR-001.json"
+    },
+    {
+      "@id": "Entry-ONT-GDPR-001",
+      "name": "GDPR Ontology (General Data Protection Regulation)",
+      "namespace": "gdpr:",
+      "status": "placeholder",
+      "gatesPassed": 0,
+      "gatesFailed": 0,
+      "validatedDate": null,
+      "path": "./entries/Entry-ONT-GDPR-001.json"
     }
   ],
   "namespaceRegistry": {
@@ -197,7 +237,11 @@
     "ppm": "https://platformcore.io/ontology/ppm/",
     "pe": "https://platformcore.io/ontology/pe/",
     "efs": "https://platformcore.io/ontology/efs/",
-    "alz": "https://platformcore.io/ontology/alz/"
+    "mcsb": "https://platformcore.io/ontology/mcsb/",
+    "mcsb2": "https://platformcore.io/ontology/mcsb2/",
+    "ea": "https://platformcore.io/ontology/ea/",
+    "air": "https://platformcore.io/ontology/air/",
+    "gdpr": "https://platformcore.io/ontology/gdpr/"
   },
   "seriesRegistry": {
     "VE-Series": {
@@ -208,12 +252,17 @@
     "PE-Series": {
       "name": "Process Engineering Series",
       "description": "Execution and process management ontologies",
-      "ontologies": ["PPM", "PE", "EFS"]
+      "ontologies": ["PPM", "PE", "EFS", "EA"]
+    },
+    "Security-Series": {
+      "name": "Security & Compliance Series",
+      "description": "Security benchmarks and compliance ontologies",
+      "ontologies": ["MCSB", "MCSB2", "GDPR"]
     },
     "Foundation": {
       "name": "Foundation Ontologies",
       "description": "Core organizational and context ontologies",
-      "ontologies": ["ORG", "ORG-CONTEXT", "ORG-MAT"]
+      "ontologies": ["ORG", "ORG-CONTEXT", "ORG-MAT", "AIR"]
     },
     "Competitive": {
       "name": "Competitive Analysis Ontologies",
@@ -227,23 +276,23 @@
     }
   },
   "statistics": {
-    "totalOntologies": 17,
-    "compliant": 15,
+    "totalOntologies": 21,
+    "compliant": 16,
     "nearCompliance": 0,
     "partialCompliance": 0,
     "pendingReview": 0,
-    "placeholder": 1,
+    "placeholder": 4,
     "deprecated": 0
   },
   "validationSummary": {
-    "validated": 16,
+    "validated": 17,
     "validatedOntologies": [
       "EMC", "ORG", "ORG-CONTEXT", "ORG-MAT",
       "CA", "CL", "GA",
       "VSOM", "OKR", "VP", "RRR", "PMF",
-      "PPM", "PE", "EFS", "ALZ"
+      "PPM", "PE", "EFS", "MCSB", "EA"
     ],
-    "placeholders": ["KPI"],
+    "placeholders": ["KPI", "MCSB2", "AIR", "GDPR"],
     "oaaVersion": "5.0.0",
     "lastFullValidation": "2026-02-02"
   },
