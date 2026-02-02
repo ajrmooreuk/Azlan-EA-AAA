@@ -1945,15 +1945,15 @@
         }
       },
       {
-        "dimension": "rogContext",
-        "description": "Role-Org-Governance context - organizational governance model",
+        "dimension": "orgRolesGovernance",
+        "description": "ORG (Organization-Roles-Governance) - defines governance model for how roles are structured and governed",
         "values": ["Startup", "ScaleUp", "MidMarket", "Enterprise", "PublicCompany"],
         "filterLogic": "Apply organizationSizeDefinitions and maturityGuidance to determine applicable roles"
       },
       {
         "dimension": "orgContext",
-        "description": "Organization-specific context including maturity level",
-        "attributes": ["orgSize", "orgMaturityLevel", "industryVertical", "regulatoryRequirements"],
+        "description": "Organization-specific context including maturity level, size, and regulatory environment",
+        "attributes": ["orgSize", "orgMaturityLevel", "industryVertical", "regulatoryRequirements", "governanceModel"],
         "filterLogic": "Use maturityGuidance.levels to determine recommended roles based on orgSize and maturityLevel"
       }
     ],
@@ -1984,7 +1984,7 @@
     },
     "ontologyReferences": {
       "description": "Related ontologies for context determination",
-      "rogOntology": "pf:ROG-ONT (Role-Org-Governance)",
+      "orgOntology": "pf:ORG-ONT (Organization-Roles-Governance)",
       "orgContextOntology": "pf:OAA-ONT (Ontology-Aware Architecture)",
       "rrrOntology": "pf:RRR-ONT-v3.1.0"
     }
