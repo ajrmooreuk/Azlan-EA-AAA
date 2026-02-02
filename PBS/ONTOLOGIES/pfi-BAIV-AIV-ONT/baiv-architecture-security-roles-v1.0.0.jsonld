@@ -1,0 +1,1199 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform-foundation.io/ontology/v1/",
+    "baiv": "https://beaivisible.com/ontology/",
+    "rrr": "https://platform-foundation.io/ontology/v1/rrr/",
+    "sa": "https://platform-foundation.io/ontology/v1/solution-architecture/"
+  },
+  "@type": "Dataset",
+  "@id": "baiv:architecture-security-roles-v1.0.0",
+  "name": "BAIV Architecture & Security Roles",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-02",
+  "description": "Architectural and security role instances for BAIV. Includes Enterprise Architect hierarchy (Solution, Security, Data, Integration Architects) reporting to CTO, and Security leadership (CSO, CISO) reporting to CEO. Follows RRR v3.1.0 schema.",
+  "conformsTo": "pf:ontology:roles-raci-rbac-v3.1.0",
+  "sourceImport": "RRR-Sol-Architect-role-import/solution-architecture-ontology-v1.0.0-draft",
+  "organization": {
+    "@id": "baiv:organization:beaivisible",
+    "@type": "Organization",
+    "name": "Be AI Visible (BAIV)"
+  },
+
+  "executiveRoles": [
+    {
+      "@id": "baiv:role:cso",
+      "@type": "pf:ExecutiveRole",
+      "roleCode": "CSO",
+      "roleTitle": "Chief Security Officer",
+      "reportsTo": "baiv:role:ceo",
+      "isOptional": true,
+      "typicalOrgSize": "mid-market (200-1000)",
+      "functionalDomain": "Security",
+      "seniorityLevel": 1,
+      "roleCategory": "Risk Governance CSuite",
+      "strategicFocus": "Enterprise Security & Risk Management",
+      "vsomComponent": "Operations & Governance",
+      "bscPerspective": "Risk/Governance",
+      "aiVisibilityRole": "Security governance for AI systems, data protection compliance, risk assessment for AI visibility initiatives",
+
+      "coreResponsibilities": [
+        "Enterprise security strategy and vision",
+        "Security risk management and governance",
+        "Physical and cyber security integration",
+        "Security compliance and regulatory affairs",
+        "Crisis management and incident response leadership",
+        "Security culture and awareness programs",
+        "Third-party and supply chain security",
+        "Business continuity and disaster recovery strategy",
+        "Security budget and resource allocation",
+        "Executive security briefings and Board reporting",
+        "Security team leadership and development",
+        "Insurance and liability management",
+        "Privacy program oversight",
+        "Security vendor and partner management",
+        "Security metrics and KPI development"
+      ],
+
+      "keyDecisions": [
+        "Enterprise security strategy and priorities",
+        "Security investment and budget allocation",
+        "Risk appetite and tolerance thresholds",
+        "Security technology platform selection",
+        "Security organizational structure",
+        "Incident response protocols and escalation",
+        "Crisis management and communication approach",
+        "Third-party security requirements",
+        "Security policy framework and standards",
+        "Compliance program priorities",
+        "Security awareness program design",
+        "Business continuity approach",
+        "Insurance coverage and requirements",
+        "Security team hiring and development",
+        "Vendor security assessment criteria"
+      ],
+
+      "raciAccountable": [
+        "Enterprise security strategy",
+        "Security risk posture",
+        "Security compliance (SOC2, ISO 27001, GDPR)",
+        "Crisis and incident response effectiveness",
+        "Physical and logical security integration",
+        "Security culture and awareness",
+        "Third-party risk management",
+        "Business continuity and disaster recovery",
+        "Security budget and ROI",
+        "Executive and Board security reporting",
+        "Security team performance",
+        "Privacy program compliance",
+        "Insurance and liability management",
+        "Security vendor relationships",
+        "Enterprise-wide security policies"
+      ],
+
+      "raciResponsible": [
+        "Security strategy execution",
+        "Risk assessment and mitigation planning",
+        "Security policy development and enforcement",
+        "Compliance audit coordination",
+        "Crisis management leadership",
+        "Security awareness program delivery",
+        "Incident response coordination",
+        "Security metrics reporting",
+        "Vendor security assessments",
+        "Security team hiring and development",
+        "Board security presentations",
+        "Insurance renewal coordination",
+        "Business continuity testing oversight"
+      ],
+
+      "raciConsulted": [
+        "Technology architecture decisions",
+        "Product development security requirements",
+        "Marketing data handling practices",
+        "HR data protection policies",
+        "Financial systems security",
+        "Customer data handling",
+        "M&A security due diligence",
+        "Strategic partnerships security assessment",
+        "New market entry compliance",
+        "AI/ML data governance"
+      ],
+
+      "raciInformed": [
+        "Product development progress",
+        "Technology infrastructure changes",
+        "Customer onboarding processes",
+        "Financial performance",
+        "Organizational changes",
+        "Legal matters affecting security",
+        "Market trends and competitive intelligence",
+        "Executive leadership changes",
+        "Board meeting outcomes"
+      ],
+
+      "raciRules": [
+        "CSO reports directly to CEO on security matters",
+        "Security incidents affecting customers require CEO notification within 1 hour",
+        "Security budget decisions >$250K require CEO approval",
+        "Board must be informed of material security risks quarterly",
+        "All third-party vendors require CSO security approval",
+        "Crisis communications require CEO coordination"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "CEO",
+          "focus": "Security strategy, Board reporting, crisis management, risk appetite",
+          "frequency": "Weekly",
+          "decisionAuthority": "CEO decides strategy; CSO accountable for execution"
+        },
+        {
+          "with": "CTO",
+          "focus": "Technology security, architecture security, cybersecurity integration",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for technical security"
+        },
+        {
+          "with": "CFO",
+          "focus": "Security budgets, insurance, financial risk, compliance costs",
+          "frequency": "Monthly",
+          "decisionAuthority": "CSO leads security; CFO consulted on financial impact"
+        },
+        {
+          "with": "CLO/General Counsel",
+          "focus": "Regulatory compliance, privacy laws, legal risk, incident disclosure",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for compliance"
+        },
+        {
+          "with": "CISO",
+          "focus": "Cybersecurity strategy, technical implementation, threat intelligence",
+          "frequency": "Daily",
+          "decisionAuthority": "CSO decides strategy; CISO accountable for cyber execution"
+        }
+      ],
+
+      "delegatesTo": [
+        {
+          "role": "CISO",
+          "scope": "Cybersecurity operations, technical security, threat management",
+          "autonomyLimit": "Strategic cyber decisions require CSO approval"
+        },
+        {
+          "role": "Director of Physical Security",
+          "scope": "Facilities security, access control, executive protection",
+          "autonomyLimit": "Policy changes require CSO approval"
+        },
+        {
+          "role": "Director of Compliance",
+          "scope": "Regulatory compliance, audit coordination, certification management",
+          "autonomyLimit": "Strategic compliance decisions require CSO approval"
+        }
+      ],
+
+      "fallbackRole": "CEO (strategic only; may delegate to CISO or CTO for operational security)"
+    },
+
+    {
+      "@id": "baiv:role:ciso",
+      "@type": "pf:ExecutiveRole",
+      "roleCode": "CISO",
+      "roleTitle": "Chief Information Security Officer",
+      "reportsTo": "baiv:role:cso",
+      "isOptional": true,
+      "typicalOrgSize": "mid-market (200-1000)",
+      "functionalDomain": "Technology",
+      "seniorityLevel": 2,
+      "roleCategory": "Risk Governance CSuite",
+      "strategicFocus": "Information & Cybersecurity",
+      "vsomComponent": "Operations & Technology",
+      "bscPerspective": "Technology",
+      "aiVisibilityRole": "AI/ML security, LLM data protection, secure AI infrastructure, prompt injection prevention",
+
+      "coreResponsibilities": [
+        "Information security strategy and program",
+        "Cybersecurity architecture and operations",
+        "Threat intelligence and vulnerability management",
+        "Security operations center (SOC) management",
+        "Identity and access management (IAM)",
+        "Data protection and encryption",
+        "Application security and DevSecOps",
+        "Cloud security architecture",
+        "Penetration testing and red team programs",
+        "Security incident detection and response",
+        "Security awareness technical training",
+        "Security tool and technology management",
+        "Compliance technical controls (SOC2, ISO)",
+        "AI/ML security and governance",
+        "Security automation and orchestration"
+      ],
+
+      "keyDecisions": [
+        "Cybersecurity architecture and design",
+        "Security tooling and technology selection",
+        "Threat response and remediation priorities",
+        "Vulnerability management approach",
+        "IAM architecture and policies",
+        "Encryption and data protection standards",
+        "SOC operational model and staffing",
+        "Penetration testing scope and frequency",
+        "Security automation priorities",
+        "DevSecOps integration approach",
+        "Cloud security controls and configuration",
+        "AI/ML security requirements",
+        "Security monitoring and alerting thresholds",
+        "Technical security team structure",
+        "Security vendor technical evaluation"
+      ],
+
+      "raciAccountable": [
+        "Cybersecurity program effectiveness",
+        "Security architecture and design",
+        "Threat detection and response capability",
+        "Vulnerability management program",
+        "IAM program and access controls",
+        "Data protection controls",
+        "Application security program",
+        "Cloud security posture",
+        "SOC performance and metrics",
+        "Security incident technical response",
+        "Technical compliance controls",
+        "Security tool ROI and effectiveness",
+        "AI/ML security controls",
+        "DevSecOps integration",
+        "Security automation program"
+      ],
+
+      "raciResponsible": [
+        "Security architecture execution",
+        "Threat hunting and intelligence analysis",
+        "Vulnerability assessment and patching",
+        "Security monitoring and alerting",
+        "Incident investigation and forensics",
+        "Security tool implementation and management",
+        "Penetration test coordination",
+        "Security control testing and validation",
+        "Technical compliance evidence gathering",
+        "Security training content development",
+        "Cloud security configuration",
+        "AI system security reviews",
+        "Security automation development"
+      ],
+
+      "raciConsulted": [
+        "Technology architecture decisions",
+        "Cloud infrastructure design",
+        "Application development practices",
+        "Data architecture and governance",
+        "Vendor technology selection",
+        "Product security requirements",
+        "AI/ML model deployment",
+        "Infrastructure changes",
+        "Third-party integrations",
+        "Compliance program priorities"
+      ],
+
+      "raciInformed": [
+        "Business strategy changes",
+        "Product roadmap updates",
+        "Customer requirements",
+        "Financial performance",
+        "Organizational changes",
+        "Market trends",
+        "Competitive intelligence",
+        "Legal matters"
+      ],
+
+      "raciRules": [
+        "CISO reports to CSO on information security matters",
+        "Critical security incidents require CSO notification within 30 minutes",
+        "Security architecture changes affecting business require CSO approval",
+        "CTO consultation required for technology security decisions",
+        "Penetration test findings escalated based on severity (Critical within 4 hours)"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "CSO",
+          "focus": "Cybersecurity strategy, risk reporting, incident escalation",
+          "frequency": "Daily",
+          "decisionAuthority": "CSO decides strategy; CISO accountable for execution"
+        },
+        {
+          "with": "CTO",
+          "focus": "Technology security, architecture, infrastructure security",
+          "frequency": "Daily",
+          "decisionAuthority": "Consensus required for technical security decisions"
+        },
+        {
+          "with": "Enterprise Architect",
+          "focus": "Security architecture patterns, secure design principles",
+          "frequency": "Weekly",
+          "decisionAuthority": "CISO leads security architecture; EA consulted on integration"
+        },
+        {
+          "with": "VP Engineering",
+          "focus": "DevSecOps, application security, secure development practices",
+          "frequency": "Weekly",
+          "decisionAuthority": "CISO leads security; VP Engineering accountable for implementation"
+        },
+        {
+          "with": "Data Architect",
+          "focus": "Data security, encryption, data classification, privacy controls",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for data security"
+        }
+      ],
+
+      "delegatesTo": [
+        {
+          "role": "Director of Security Operations",
+          "scope": "SOC management, incident response, threat detection",
+          "autonomyLimit": "Critical incidents escalate to CISO"
+        },
+        {
+          "role": "Director of Security Engineering",
+          "scope": "Security architecture, tooling, automation, DevSecOps",
+          "autonomyLimit": "Architecture changes require CISO approval"
+        },
+        {
+          "role": "Security Architect",
+          "scope": "Security design, patterns, technical standards",
+          "autonomyLimit": "Strategic architecture decisions require CISO approval"
+        }
+      ],
+
+      "fallbackRole": "CSO (strategic only; may delegate to CTO or Director of Security Operations)"
+    }
+  ],
+
+  "functionalRoles": [
+    {
+      "@id": "baiv:role:enterprise-architect",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "EA",
+      "roleTitle": "Enterprise Architect",
+      "reportsTo": "baiv:role:cto",
+      "isOptional": false,
+      "typicalOrgSize": "scale-up (50-200)",
+      "functionalDomain": "Technology",
+      "function": "Technology",
+      "seniorityLevel": 2,
+      "strategicFocus": "Enterprise Architecture & Technical Strategy",
+      "vsomComponent": "Strategy & Operations",
+      "bscPerspective": "Technology",
+      "aiVisibilityRole": "AI platform architecture, LLM integration patterns, ontology-driven design governance",
+
+      "coreResponsibilities": [
+        "Enterprise architecture vision and strategy",
+        "Technology roadmap and standards governance",
+        "Architecture review board leadership",
+        "Cross-functional architecture alignment",
+        "Technology portfolio management",
+        "Architecture patterns and principles",
+        "Technical debt strategic management",
+        "Architecture documentation and governance",
+        "Vendor technology evaluation and selection",
+        "Cloud and infrastructure architecture strategy",
+        "Data architecture oversight",
+        "Integration architecture strategy",
+        "Security architecture alignment",
+        "Architecture team leadership and mentoring",
+        "Stakeholder architecture communication"
+      ],
+
+      "keyDecisions": [
+        "Enterprise architecture principles and standards",
+        "Technology stack and platform decisions",
+        "Architecture pattern adoption and governance",
+        "Technical debt prioritization strategy",
+        "Cross-system integration approach",
+        "Cloud architecture strategy",
+        "Data architecture direction",
+        "Architecture review criteria and process",
+        "Vendor and technology evaluation criteria",
+        "Architecture team structure and roles",
+        "Architecture documentation standards",
+        "Technology portfolio rationalization",
+        "Architecture transition planning",
+        "Reference architecture definitions"
+      ],
+
+      "raciAccountable": [
+        "Enterprise architecture strategy",
+        "Architecture standards and governance",
+        "Technology roadmap alignment",
+        "Architecture review board effectiveness",
+        "Cross-functional architecture consistency",
+        "Technical debt strategy",
+        "Architecture documentation quality",
+        "Architecture team performance",
+        "Technology portfolio optimization",
+        "Architecture principles adoption"
+      ],
+
+      "raciResponsible": [
+        "Architecture strategy execution",
+        "Architecture review facilitation",
+        "Standards definition and communication",
+        "Technology evaluation coordination",
+        "Architecture mentoring and coaching",
+        "Cross-team architecture alignment",
+        "Architecture documentation maintenance",
+        "Architecture risk identification",
+        "Technology trend analysis",
+        "Architecture decision records"
+      ],
+
+      "raciConsulted": [
+        "Product roadmap and prioritization",
+        "Security architecture decisions",
+        "Data governance policies",
+        "DevOps and infrastructure decisions",
+        "Vendor contract negotiations",
+        "Budget allocation for technology",
+        "Organizational structure changes",
+        "M&A technical due diligence"
+      ],
+
+      "raciInformed": [
+        "Business strategy updates",
+        "Product development progress",
+        "Security incidents",
+        "Financial performance",
+        "Customer feedback",
+        "Market trends",
+        "Competitive developments"
+      ],
+
+      "raciRules": [
+        "All major architecture decisions require EA review",
+        "Technology stack changes require Architecture Review Board approval",
+        "EA reports to CTO for strategic architecture matters",
+        "Security Architect consultation required for security-impacting decisions",
+        "Architecture exceptions require documented ADR with EA approval"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "CTO",
+          "focus": "Technology strategy, architecture vision, major technology decisions",
+          "frequency": "Weekly",
+          "decisionAuthority": "CTO decides strategy; EA accountable for architecture execution"
+        },
+        {
+          "with": "Solution Architect",
+          "focus": "Solution design, architecture patterns, implementation guidance",
+          "frequency": "Daily",
+          "decisionAuthority": "EA provides governance; Solution Architect executes designs"
+        },
+        {
+          "with": "Data Architect",
+          "focus": "Data architecture, data governance, data platform strategy",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for data architecture"
+        },
+        {
+          "with": "Security Architect",
+          "focus": "Security architecture, secure design patterns, compliance architecture",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for security architecture"
+        },
+        {
+          "with": "Integration Architect",
+          "focus": "Integration patterns, API strategy, system connectivity",
+          "frequency": "Weekly",
+          "decisionAuthority": "EA provides governance; Integration Architect executes"
+        },
+        {
+          "with": "CPO",
+          "focus": "Product architecture, technical feasibility, platform capabilities",
+          "frequency": "Weekly",
+          "decisionAuthority": "CPO leads product; EA consulted on architecture"
+        }
+      ],
+
+      "delegatesTo": [
+        {
+          "role": "Solution Architect",
+          "scope": "Solution design, HLD/LLD development, implementation architecture",
+          "autonomyLimit": "Cross-cutting architectural decisions require EA approval"
+        },
+        {
+          "role": "Data Architect",
+          "scope": "Data modeling, data platform architecture, data governance",
+          "autonomyLimit": "Enterprise data strategy changes require EA alignment"
+        },
+        {
+          "role": "Security Architect",
+          "scope": "Security architecture, secure design patterns, security standards",
+          "autonomyLimit": "Enterprise security architecture changes require EA and CISO alignment"
+        },
+        {
+          "role": "Integration Architect",
+          "scope": "Integration design, API architecture, system connectivity",
+          "autonomyLimit": "Enterprise integration patterns require EA approval"
+        }
+      ],
+
+      "fallbackRole": "CTO (strategic only; may delegate to Solution Architect for operational matters)"
+    },
+
+    {
+      "@id": "baiv:role:solution-architect",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "SA",
+      "roleTitle": "Solution Architect",
+      "reportsTo": "baiv:role:enterprise-architect",
+      "isOptional": false,
+      "typicalOrgSize": "scale-up (50-200)",
+      "functionalDomain": "Technology",
+      "function": "Technology",
+      "seniorityLevel": 3,
+      "strategicFocus": "Solution Design & Implementation Architecture",
+      "vsomComponent": "Operations",
+      "bscPerspective": "Internal Process",
+      "aiVisibilityRole": "AI agent architecture, solution design for AI visibility platform, ontology-driven solution patterns",
+
+      "coreResponsibilities": [
+        "Solution architecture design (HLD/LLD)",
+        "Technical requirements analysis",
+        "Component and integration design",
+        "Architecture documentation",
+        "Technical feasibility assessment",
+        "Solution patterns application",
+        "Agent orchestration architecture",
+        "Database and API architecture",
+        "Performance and scalability design",
+        "Security architecture implementation",
+        "DevOps architecture support",
+        "Technical debt identification",
+        "Architecture decision records (ADRs)",
+        "Downstream agent context packaging",
+        "Ontology compliance validation"
+      ],
+
+      "keyDecisions": [
+        "Solution component selection",
+        "Integration approach and patterns",
+        "Database schema design direction",
+        "API contract definitions",
+        "Performance optimization approach",
+        "Security control implementation",
+        "Agent handoff specifications",
+        "Technology component selection within guidelines",
+        "Solution documentation structure",
+        "Technical approach for features",
+        "Build vs buy recommendations",
+        "Solution testing approach"
+      ],
+
+      "raciAccountable": [
+        "Solution architecture quality",
+        "HLD and LLD delivery",
+        "Technical requirements accuracy",
+        "Solution documentation completeness",
+        "Architecture compliance",
+        "Agent context package quality",
+        "Solution feasibility assessment",
+        "ADR documentation",
+        "Ontology alignment in solutions"
+      ],
+
+      "raciResponsible": [
+        "Solution design execution",
+        "HLD/LLD document creation",
+        "Technical specifications writing",
+        "Architecture review participation",
+        "POC and prototype development",
+        "Technical debt documentation",
+        "Agent handoff coordination",
+        "Integration design execution",
+        "Security pattern application",
+        "Performance design implementation"
+      ],
+
+      "raciConsulted": [
+        "Enterprise architecture standards",
+        "Security architecture requirements",
+        "Data architecture patterns",
+        "Infrastructure decisions",
+        "Product requirements refinement",
+        "Technology selection outside guidelines",
+        "Cross-team integration points"
+      ],
+
+      "raciInformed": [
+        "Enterprise architecture changes",
+        "Security policy updates",
+        "Product roadmap changes",
+        "Technology stack updates",
+        "Organizational changes"
+      ],
+
+      "raciRules": [
+        "Solution designs must align with EA standards and patterns",
+        "Cross-cutting solutions require EA review",
+        "Security-impacting designs require Security Architect review",
+        "Data model changes require Data Architect consultation",
+        "All solutions must include ADRs for significant decisions"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "Enterprise Architect",
+          "focus": "Architecture alignment, standards compliance, governance",
+          "frequency": "Daily",
+          "decisionAuthority": "EA provides governance; SA executes designs"
+        },
+        {
+          "with": "Security Architect",
+          "focus": "Security design, secure patterns, threat modeling",
+          "frequency": "Weekly",
+          "decisionAuthority": "Security Architect leads security; SA integrates"
+        },
+        {
+          "with": "Data Architect",
+          "focus": "Data modeling, schema design, data flows",
+          "frequency": "Weekly",
+          "decisionAuthority": "Data Architect leads data; SA integrates"
+        },
+        {
+          "with": "VP Engineering",
+          "focus": "Implementation feasibility, development practices, team capabilities",
+          "frequency": "Weekly",
+          "decisionAuthority": "SA leads design; VP Engineering leads implementation"
+        },
+        {
+          "with": "VP Product Management",
+          "focus": "Requirements clarification, technical feasibility, scope alignment",
+          "frequency": "Weekly",
+          "decisionAuthority": "Product leads requirements; SA leads technical design"
+        }
+      ],
+
+      "agentCapabilities": {
+        "description": "Solution Architect Agent capabilities from imported specification",
+        "agentName": "pf-core-solution-architect",
+        "primaryFunctions": [
+          "Automated HLD/LLD generation from requirements",
+          "Ontology compliance validation",
+          "Pattern matching and application",
+          "Agent context package generation",
+          "VSOM alignment verification"
+        ],
+        "targetAgents": [
+          "database-designer",
+          "ui-ux-builder",
+          "integration-agent",
+          "security-agent",
+          "devops-agent"
+        ]
+      },
+
+      "fallbackRole": "Enterprise Architect"
+    },
+
+    {
+      "@id": "baiv:role:security-architect",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "SEC-ARCH",
+      "roleTitle": "Security Architect",
+      "reportsTo": "baiv:role:enterprise-architect",
+      "isOptional": false,
+      "typicalOrgSize": "scale-up (50-200)",
+      "functionalDomain": "Security",
+      "function": "Security",
+      "seniorityLevel": 3,
+      "strategicFocus": "Security Architecture & Secure Design",
+      "vsomComponent": "Operations",
+      "bscPerspective": "Risk/Governance",
+      "aiVisibilityRole": "AI security patterns, LLM security architecture, prompt injection prevention, AI data protection design",
+
+      "coreResponsibilities": [
+        "Security architecture design and patterns",
+        "Threat modeling and risk assessment",
+        "Security requirements definition",
+        "Secure design review and guidance",
+        "Authentication and authorization architecture",
+        "Encryption and data protection design",
+        "Network and infrastructure security design",
+        "Application security architecture",
+        "Cloud security architecture",
+        "API security design",
+        "Security compliance architecture (SOC2, ISO)",
+        "Zero trust architecture implementation",
+        "Security documentation and standards",
+        "DevSecOps architecture support",
+        "AI/ML security architecture"
+      ],
+
+      "keyDecisions": [
+        "Security architecture patterns",
+        "Authentication mechanism selection",
+        "Authorization model design",
+        "Encryption approach and key management",
+        "Network security design",
+        "Security control implementation approach",
+        "Compliance control architecture",
+        "Security testing approach",
+        "API security standards",
+        "Cloud security configuration patterns",
+        "AI security control design"
+      ],
+
+      "raciAccountable": [
+        "Security architecture quality",
+        "Threat model accuracy",
+        "Security requirements completeness",
+        "Secure design pattern library",
+        "Authentication architecture",
+        "Authorization architecture",
+        "Data protection architecture",
+        "Compliance architecture",
+        "Security documentation"
+      ],
+
+      "raciResponsible": [
+        "Security architecture design",
+        "Threat modeling execution",
+        "Security requirements documentation",
+        "Secure design reviews",
+        "Security pattern documentation",
+        "Security architecture reviews",
+        "Compliance control design",
+        "Security testing coordination",
+        "AI security assessment"
+      ],
+
+      "raciConsulted": [
+        "Solution architecture design",
+        "Data architecture decisions",
+        "Infrastructure architecture",
+        "Application development practices",
+        "Vendor security assessment",
+        "Technology selection",
+        "Product security requirements"
+      ],
+
+      "raciInformed": [
+        "Product roadmap changes",
+        "Technology updates",
+        "Security incidents",
+        "Compliance changes",
+        "Organizational changes"
+      ],
+
+      "raciRules": [
+        "All solutions require Security Architect review for security-impacting changes",
+        "Security architecture must align with CISO security strategy",
+        "Critical security findings require immediate escalation to CISO",
+        "EA alignment required for enterprise security patterns"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "Enterprise Architect",
+          "focus": "Security integration with enterprise architecture",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for security architecture"
+        },
+        {
+          "with": "CISO",
+          "focus": "Security strategy alignment, standards, compliance",
+          "frequency": "Weekly",
+          "decisionAuthority": "CISO leads strategy; Security Architect executes"
+        },
+        {
+          "with": "Solution Architect",
+          "focus": "Security requirements for solutions, secure design patterns",
+          "frequency": "Daily",
+          "decisionAuthority": "Security Architect leads security; SA integrates"
+        },
+        {
+          "with": "Data Architect",
+          "focus": "Data security, encryption, data classification",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for data security"
+        }
+      ],
+
+      "fallbackRole": "Enterprise Architect or CISO (depending on matter)"
+    },
+
+    {
+      "@id": "baiv:role:data-architect",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "DATA-ARCH",
+      "roleTitle": "Data Architect",
+      "reportsTo": "baiv:role:enterprise-architect",
+      "isOptional": false,
+      "typicalOrgSize": "scale-up (50-200)",
+      "functionalDomain": "Data & Analytics",
+      "function": "Data",
+      "seniorityLevel": 3,
+      "strategicFocus": "Data Architecture & Governance",
+      "vsomComponent": "Operations & Metrics",
+      "bscPerspective": "Internal Process",
+      "aiVisibilityRole": "AI training data architecture, ontology data modeling, LLM context data design, vector database architecture",
+
+      "coreResponsibilities": [
+        "Data architecture strategy and design",
+        "Data modeling and schema design",
+        "Data governance framework implementation",
+        "Data quality architecture",
+        "Data integration and ETL architecture",
+        "Data platform and infrastructure design",
+        "Master data management architecture",
+        "Data security and privacy design",
+        "Analytics and BI architecture",
+        "Data catalog and metadata management",
+        "Data lineage and traceability",
+        "Ontology-to-database mapping",
+        "JSONB and NoSQL schema design",
+        "Vector database architecture for AI",
+        "Data documentation and standards"
+      ],
+
+      "keyDecisions": [
+        "Data model design and structure",
+        "Database technology selection",
+        "Data integration approach",
+        "Data quality rules and standards",
+        "Master data management approach",
+        "Data governance policies",
+        "Analytics architecture",
+        "Data security controls",
+        "Data retention and archival",
+        "Ontology mapping to data models",
+        "Vector database design for AI"
+      ],
+
+      "raciAccountable": [
+        "Data architecture quality",
+        "Data model accuracy and completeness",
+        "Data governance implementation",
+        "Data quality standards",
+        "Data integration architecture",
+        "Master data architecture",
+        "Analytics data architecture",
+        "Data security controls design",
+        "Ontology-data alignment"
+      ],
+
+      "raciResponsible": [
+        "Data model design execution",
+        "Schema documentation",
+        "Data governance implementation",
+        "Data quality rule definition",
+        "ETL/ELT architecture design",
+        "Metadata management",
+        "Data lineage documentation",
+        "Analytics schema design",
+        "Vector database implementation"
+      ],
+
+      "raciConsulted": [
+        "Solution architecture design",
+        "Security data requirements",
+        "Application data needs",
+        "Reporting requirements",
+        "Compliance data requirements",
+        "AI/ML data requirements",
+        "Integration data requirements"
+      ],
+
+      "raciInformed": [
+        "Product roadmap changes",
+        "Technology updates",
+        "Regulatory changes",
+        "Organizational changes",
+        "Business requirements"
+      ],
+
+      "raciRules": [
+        "All data model changes require Data Architect review",
+        "Enterprise data changes require EA alignment",
+        "Security Architect consultation required for sensitive data",
+        "Ontology changes require Data Architect involvement"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "Enterprise Architect",
+          "focus": "Data architecture alignment with enterprise standards",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for data architecture"
+        },
+        {
+          "with": "Solution Architect",
+          "focus": "Data requirements for solutions, schema design",
+          "frequency": "Daily",
+          "decisionAuthority": "Data Architect leads data; SA integrates"
+        },
+        {
+          "with": "Security Architect",
+          "focus": "Data security, encryption, privacy controls",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for data security"
+        },
+        {
+          "with": "CDO/Head of Data",
+          "focus": "Data strategy, governance, quality",
+          "frequency": "Weekly",
+          "decisionAuthority": "CDO leads strategy; Data Architect executes"
+        }
+      ],
+
+      "fallbackRole": "Enterprise Architect"
+    },
+
+    {
+      "@id": "baiv:role:integration-architect",
+      "@type": "pf:FunctionalRole",
+      "roleCode": "INT-ARCH",
+      "roleTitle": "Integration Architect",
+      "reportsTo": "baiv:role:enterprise-architect",
+      "isOptional": true,
+      "typicalOrgSize": "mid-market (200-1000)",
+      "functionalDomain": "Technology",
+      "function": "Technology",
+      "seniorityLevel": 3,
+      "strategicFocus": "Integration Architecture & API Strategy",
+      "vsomComponent": "Operations",
+      "bscPerspective": "Internal Process",
+      "aiVisibilityRole": "AI API integration, MCP protocol architecture, third-party AI service integration, webhook design for AI events",
+
+      "coreResponsibilities": [
+        "Integration architecture strategy",
+        "API architecture and design",
+        "Event-driven architecture design",
+        "Service mesh and microservices integration",
+        "Third-party integration design",
+        "MCP (Model Context Protocol) architecture",
+        "Webhook and callback architecture",
+        "Message queue and streaming design",
+        "API gateway architecture",
+        "Integration security and authentication",
+        "Data transformation and mapping",
+        "Integration monitoring and observability",
+        "API versioning and lifecycle",
+        "Integration documentation and standards",
+        "iPaaS and integration platform strategy"
+      ],
+
+      "keyDecisions": [
+        "Integration patterns and approaches",
+        "API design standards",
+        "Event architecture patterns",
+        "Message broker selection",
+        "API gateway configuration",
+        "Integration security approach",
+        "Data transformation approach",
+        "Third-party integration approach",
+        "MCP implementation patterns",
+        "API versioning strategy"
+      ],
+
+      "raciAccountable": [
+        "Integration architecture quality",
+        "API architecture standards",
+        "Integration pattern library",
+        "Event architecture design",
+        "Third-party integration success",
+        "MCP architecture",
+        "Integration security",
+        "API documentation"
+      ],
+
+      "raciResponsible": [
+        "Integration design execution",
+        "API specification development",
+        "Event schema design",
+        "Integration testing coordination",
+        "Third-party integration implementation",
+        "MCP implementation",
+        "Integration documentation",
+        "API gateway configuration"
+      ],
+
+      "raciConsulted": [
+        "Solution architecture design",
+        "Security requirements",
+        "Data architecture",
+        "Infrastructure decisions",
+        "Vendor selection",
+        "Product integration requirements"
+      ],
+
+      "raciInformed": [
+        "Product roadmap changes",
+        "Technology updates",
+        "Third-party API changes",
+        "Organizational changes"
+      ],
+
+      "raciRules": [
+        "All external integrations require Integration Architect review",
+        "API changes require Integration Architect approval",
+        "Enterprise integration patterns require EA alignment",
+        "Security Architect review required for authentication/authorization"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "Enterprise Architect",
+          "focus": "Integration standards, patterns, governance",
+          "frequency": "Weekly",
+          "decisionAuthority": "EA provides governance; Integration Architect executes"
+        },
+        {
+          "with": "Solution Architect",
+          "focus": "Solution integration requirements, API design",
+          "frequency": "Daily",
+          "decisionAuthority": "Integration Architect leads integration; SA coordinates"
+        },
+        {
+          "with": "Security Architect",
+          "focus": "API security, authentication, authorization",
+          "frequency": "Weekly",
+          "decisionAuthority": "Security Architect leads security; Integration Architect implements"
+        },
+        {
+          "with": "Data Architect",
+          "focus": "Data integration, transformation, mapping",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for data integration"
+        }
+      ],
+
+      "fallbackRole": "Enterprise Architect or Solution Architect"
+    }
+  ],
+
+  "roleHierarchy": {
+    "description": "Architectural and Security role hierarchy for BAIV",
+    "architectureTrack": {
+      "description": "Architecture roles reporting through CTO",
+      "structure": [
+        {
+          "role": "baiv:role:cto",
+          "directReports": ["baiv:role:enterprise-architect"]
+        },
+        {
+          "role": "baiv:role:enterprise-architect",
+          "reportsTo": "baiv:role:cto",
+          "directReports": [
+            "baiv:role:solution-architect",
+            "baiv:role:security-architect",
+            "baiv:role:data-architect",
+            "baiv:role:integration-architect"
+          ]
+        },
+        {
+          "role": "baiv:role:solution-architect",
+          "reportsTo": "baiv:role:enterprise-architect"
+        },
+        {
+          "role": "baiv:role:security-architect",
+          "reportsTo": "baiv:role:enterprise-architect"
+        },
+        {
+          "role": "baiv:role:data-architect",
+          "reportsTo": "baiv:role:enterprise-architect"
+        },
+        {
+          "role": "baiv:role:integration-architect",
+          "reportsTo": "baiv:role:enterprise-architect"
+        }
+      ]
+    },
+    "securityTrack": {
+      "description": "Security leadership reporting through CEO",
+      "structure": [
+        {
+          "role": "baiv:role:ceo",
+          "directReports": ["baiv:role:cso"]
+        },
+        {
+          "role": "baiv:role:cso",
+          "reportsTo": "baiv:role:ceo",
+          "directReports": ["baiv:role:ciso"]
+        },
+        {
+          "role": "baiv:role:ciso",
+          "reportsTo": "baiv:role:cso",
+          "dotted": ["baiv:role:security-architect"]
+        }
+      ]
+    },
+    "crossFunctional": {
+      "description": "Cross-functional relationships",
+      "dottedLines": [
+        {
+          "from": "baiv:role:security-architect",
+          "to": "baiv:role:ciso",
+          "nature": "Security strategy and standards alignment"
+        },
+        {
+          "from": "baiv:role:enterprise-architect",
+          "to": "baiv:role:cpo",
+          "nature": "Product architecture alignment"
+        }
+      ]
+    }
+  },
+
+  "vpIntegration": {
+    "description": "VP v1.2.0 RoleBasedICP integration for architectural roles",
+    "roleToICPMapping": [
+      {
+        "role": "baiv:role:enterprise-architect",
+        "seniorityLevel": 2,
+        "functionScope": "Tactical",
+        "note": "Architecture strategy and governance"
+      },
+      {
+        "role": "baiv:role:solution-architect",
+        "seniorityLevel": 3,
+        "functionScope": "Tactical",
+        "note": "Solution design and implementation architecture"
+      },
+      {
+        "role": "baiv:role:security-architect",
+        "seniorityLevel": 3,
+        "functionScope": "Tactical",
+        "note": "Security architecture and secure design"
+      },
+      {
+        "role": "baiv:role:data-architect",
+        "seniorityLevel": 3,
+        "functionScope": "Tactical",
+        "note": "Data architecture and governance"
+      },
+      {
+        "role": "baiv:role:cso",
+        "seniorityLevel": 1,
+        "functionScope": "Strategic",
+        "note": "Enterprise security strategy"
+      },
+      {
+        "role": "baiv:role:ciso",
+        "seniorityLevel": 2,
+        "functionScope": "Tactical",
+        "note": "Information security operations"
+      }
+    ]
+  },
+
+  "validation": {
+    "conformsTo": "pf:ontology:roles-raci-rbac-v3.1.0",
+    "solutionArchitectSource": "RRR-Sol-Architect-role-import/solution-architecture-ontology-v1.0.0-draft",
+    "businessRulesValidated": [
+      "BR-RRR-003: No circular reporting - hierarchy validated",
+      "BR-RRR-004: Active assignments - all roles have reportsTo",
+      "BR-RRR-006: C-Suite seniorityLevel=1 (CSO verified)"
+    ]
+  }
+}
