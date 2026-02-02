@@ -1,0 +1,86 @@
+flowchart TB
+    subgraph GOV["Governance Layer"]
+        BOARD["Board of Directors"]
+        CEO["Chief Executive Officer"]
+    end
+    
+    subgraph COO_CORE["COO Role Core"]
+        COO["Chief Operating Officer"]
+        PURPOSE["Core Purpose:<br/>Strategy-to-Execution Translation<br/>Operational Excellence<br/>Cross-Functional Integration"]
+    end
+    
+    subgraph VSOM["VSOM Alignment"]
+        VISION["Vision Alignment"]
+        STRATEGY["Operations Strategy<br/>(Delegated Accountability)"]
+        OBJECTIVES["Operational Objectives"]
+        METRICS["Performance Metrics"]
+    end
+    
+    subgraph FUNCTIONAL["Functional Domains"]
+        subgraph CORE_OPS["Core Operations"]
+            OPS_MGT["Operations Management"]
+            SUPPLY["Supply Chain"]
+            QUALITY["Quality Management"]
+            FACILITIES["Facilities & Infrastructure"]
+            BCP["Business Continuity"]
+        end
+        
+        subgraph EXTENDED["Extended Domains (Variable)"]
+            CUST_OPS["Customer Operations"]
+            TECH_OPS["Technology Operations"]
+            HR_OPS["People Operations"]
+            FIN_OPS["Finance Operations"]
+        end
+        
+        subgraph AI_OPS["AI-Augmented Operations"]
+            IPA["Intelligent Process Automation"]
+            PRED["Predictive Operations"]
+            INTEL["Operations Intelligence"]
+            AUTO["Autonomous Operations"]
+        end
+    end
+    
+    subgraph REPORTS["Reporting Structure"]
+        VP_OPS["VP Operations"]
+        VP_SC["VP Supply Chain"]
+        VP_Q["VP Quality"]
+        VP_MFG["VP Manufacturing"]
+        REGIONAL["Regional Leaders"]
+    end
+    
+    subgraph PEERS["C-Suite Collaboration"]
+        CFO["CFO"]
+        CTO["CTO"]
+        CMO["CMO"]
+        CPO["CPO"]
+        CHRO["CHRO"]
+    end
+    
+    subgraph EXTENSIONS["Extension Architecture"]
+        SECTOR["Sector Extensions"]
+        ORG["Organization Extensions"]
+        SCALE["Scale/Size Extensions"]
+        MATURITY["Maturity Extensions"]
+        PORTFOLIO["Portfolio Extensions"]
+    end
+    
+    BOARD -->|"Ultimate Accountability"| CEO
+    CEO -->|"Direct Line"| COO
+    COO --- PURPOSE
+    
+    COO -->|"Formulates & Executes"| VSOM
+    VISION --> STRATEGY --> OBJECTIVES --> METRICS
+    
+    COO -->|"Primary Accountability"| CORE_OPS
+    COO -->|"Variable Accountability"| EXTENDED
+    COO -->|"Technology Enablement"| AI_OPS
+    
+    COO -->|"Direct Reports"| REPORTS
+    COO <-->|"Strategic Partnership"| PEERS
+    
+    COO_CORE -.->|"Specializes via"| EXTENSIONS
+    SECTOR -.-> FUNCTIONAL
+    ORG -.-> FUNCTIONAL
+    SCALE -.-> REPORTS
+    MATURITY -.-> VSOM
+    PORTFOLIO -.-> CORE_OPS

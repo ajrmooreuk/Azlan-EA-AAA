@@ -1,0 +1,1178 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://pf-framework.org/ontology/",
+    "csuite": "https://pf-framework.org/ontology/csuite/",
+    "ops": "https://pf-framework.org/ontology/operations/",
+    "gov": "https://pf-framework.org/ontology/governance/",
+    "strat": "https://pf-framework.org/ontology/strategy/",
+    "ext": "https://pf-framework.org/ontology/extensions/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@id": "csuite:ChiefOperatingOfficer",
+  "@type": ["Role", "csuite:ExecutiveRole"],
+  "name": "Chief Operating Officer",
+  "alternateName": ["COO", "Chief Operations Officer"],
+  "version": "2.0.0",
+  "dateCreated": "2025-01-01",
+  "description": "Enterprise-scope ontology defining the Chief Operating Officer role with delegated functional strategy accountability for organizational Operations Strategy, reporting to CEO with Board accountability cascade.",
+  
+  "pf:ontologyMetadata": {
+    "@type": "pf:OntologyDefinition",
+    "pf:frameworkAlignment": "PF Core Value Engineering",
+    "pf:vsomIntegration": true,
+    "pf:extensionArchitecture": "Modular",
+    "pf:scopeLevel": "Enterprise-Generic",
+    "pf:specializationReadiness": ["Sector", "Organization", "Scale", "Maturity", "Portfolio"]
+  },
+
+  "csuite:roleDefinition": {
+    "@type": "csuite:ExecutiveRoleDefinition",
+    "@id": "csuite:COO-RoleDefinition",
+    
+    "csuite:corePurpose": {
+      "@type": "csuite:RolePurpose",
+      "description": "Translate organizational strategy into operational excellence through systematic execution, process optimization, and resource orchestration while ensuring sustainable value delivery across all operational domains.",
+      "csuite:valueProposition": [
+        "Strategy-to-Execution Translation",
+        "Operational Excellence Delivery",
+        "Cross-Functional Integration",
+        "Scalable Systems Architecture",
+        "Sustainable Performance Optimization"
+      ]
+    },
+
+    "csuite:accountabilityChain": {
+      "@type": "csuite:GovernanceAccountability",
+      "csuite:primaryAccountability": {
+        "@type": "csuite:AccountabilityRelationship",
+        "csuite:accountableTo": {
+          "@type": "csuite:ExecutiveRole",
+          "@id": "csuite:ChiefExecutiveOfficer",
+          "name": "Chief Executive Officer"
+        },
+        "csuite:accountabilityType": "Direct-Line",
+        "csuite:accountabilityScope": [
+          "Operational Performance",
+          "Strategy Execution",
+          "Resource Utilization",
+          "Process Efficiency",
+          "Operational Risk Management"
+        ]
+      },
+      "csuite:ultimateAccountability": {
+        "@type": "gov:BoardAccountability",
+        "csuite:accountableTo": {
+          "@type": "Organization",
+          "@id": "gov:BoardOfDirectors",
+          "name": "Board of Directors"
+        },
+        "csuite:accountabilityType": "Delegated-via-CEO",
+        "csuite:accountabilityScope": [
+          "Operational Strategy Alignment",
+          "Fiduciary Operational Performance",
+          "Risk Governance Compliance",
+          "Stakeholder Value Delivery"
+        ]
+      }
+    },
+
+    "csuite:strategyInfluence": {
+      "@type": "strat:StrategyInfluenceModel",
+      "strat:influenceLevel": "Substantial",
+      "strat:influenceScope": [
+        {
+          "@type": "strat:InfluenceDomain",
+          "name": "Overall Organizational Strategy",
+          "strat:influenceType": "Advisory-Input",
+          "strat:contributionAreas": [
+            "Operational Feasibility Assessment",
+            "Execution Capacity Evaluation",
+            "Resource Requirement Forecasting",
+            "Implementation Timeline Estimation",
+            "Risk Identification"
+          ]
+        },
+        {
+          "@type": "strat:InfluenceDomain",
+          "name": "Operations Strategy",
+          "strat:influenceType": "Delegated-Accountability",
+          "strat:contributionAreas": [
+            "Strategy Formulation",
+            "Strategy Execution",
+            "Performance Management",
+            "Continuous Improvement"
+          ]
+        }
+      ]
+    }
+  },
+
+  "csuite:vsomAlignment": {
+    "@type": "pf:VSOMFramework",
+    "@id": "pf:COO-VSOM-Alignment",
+    "description": "Integration with PF Core Value Engineering VSOM framework",
+    
+    "pf:visionAlignment": {
+      "@type": "pf:VisionComponent",
+      "pf:alignmentResponsibility": "Operational Vision Translation",
+      "pf:deliverables": [
+        "Operational Excellence Vision Statement",
+        "Future State Operating Model",
+        "Capability Development Roadmap",
+        "Technology Enablement Vision"
+      ],
+      "pf:cascadeDirection": "Top-Down-from-Corporate-Vision"
+    },
+
+    "pf:strategyAlignment": {
+      "@type": "pf:StrategyComponent",
+      "pf:accountabilityLevel": "Delegated-Functional-Strategy",
+      "pf:strategyLayers": [
+        {
+          "@type": "pf:StrategyLayer",
+          "name": "Operations Strategy",
+          "pf:accountabilityType": "Primary-Ownership",
+          "pf:scope": "Full-Lifecycle"
+        },
+        {
+          "@type": "pf:StrategyLayer",
+          "name": "Corporate Strategy",
+          "pf:accountabilityType": "Contribution-Input",
+          "pf:scope": "Operational-Feasibility-Validation"
+        }
+      ]
+    },
+
+    "pf:objectivesAlignment": {
+      "@type": "pf:ObjectivesComponent",
+      "pf:objectiveCategories": [
+        {
+          "@type": "pf:ObjectiveCategory",
+          "name": "Operational Excellence Objectives",
+          "pf:ownership": "Primary",
+          "pf:examples": [
+            "Process Efficiency Targets",
+            "Quality Standards Achievement",
+            "Cost Optimization Goals",
+            "Delivery Performance Targets"
+          ]
+        },
+        {
+          "@type": "pf:ObjectiveCategory",
+          "name": "Strategic Enablement Objectives",
+          "pf:ownership": "Shared-with-CSuite",
+          "pf:examples": [
+            "Capability Development Milestones",
+            "Technology Adoption Targets",
+            "Scalability Readiness Goals",
+            "Innovation Implementation Objectives"
+          ]
+        }
+      ]
+    },
+
+    "pf:metricsAlignment": {
+      "@type": "pf:MetricsComponent",
+      "pf:metricsFramework": {
+        "@type": "pf:MetricsArchitecture",
+        "pf:primaryMetricsDomains": [
+          {
+            "@type": "pf:MetricsDomain",
+            "name": "Operational Performance Metrics",
+            "pf:metricTypes": [
+              "Efficiency Ratios",
+              "Productivity Indicators",
+              "Quality Scores",
+              "Cycle Time Measures",
+              "Throughput Metrics"
+            ]
+          },
+          {
+            "@type": "pf:MetricsDomain",
+            "name": "Financial Performance Metrics",
+            "pf:metricTypes": [
+              "Cost Performance",
+              "Budget Variance",
+              "ROI on Operations Investments",
+              "Unit Economics"
+            ]
+          },
+          {
+            "@type": "pf:MetricsDomain",
+            "name": "Strategic Performance Metrics",
+            "pf:metricTypes": [
+              "Strategy Execution Progress",
+              "Capability Maturity Scores",
+              "Transformation Milestone Achievement",
+              "Innovation Pipeline Health"
+            ]
+          },
+          {
+            "@type": "pf:MetricsDomain",
+            "name": "Stakeholder Performance Metrics",
+            "pf:metricTypes": [
+              "Customer Satisfaction (Operations-Related)",
+              "Employee Engagement (Operations Functions)",
+              "Partner/Supplier Performance",
+              "Regulatory Compliance Scores"
+            ]
+          }
+        ]
+      }
+    }
+  },
+
+  "ops:functionalDomains": {
+    "@type": "ops:OperationalDomainArchitecture",
+    "@id": "ops:COO-FunctionalDomains",
+    "description": "Enterprise-scope functional domains under COO accountability",
+
+    "ops:coreFunctionalDomains": [
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:OperationsManagement",
+        "name": "Operations Management",
+        "description": "Core operational execution and day-to-day management",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "Production/Service Delivery Operations",
+            "ops:scopeElements": [
+              "Production Planning",
+              "Capacity Management",
+              "Service Delivery Execution",
+              "Quality Assurance",
+              "Performance Monitoring"
+            ]
+          },
+          {
+            "@type": "ops:SubDomain",
+            "name": "Process Management",
+            "ops:scopeElements": [
+              "Process Design",
+              "Process Optimization",
+              "Process Automation",
+              "Continuous Improvement Programs",
+              "Lean/Six Sigma Initiatives"
+            ]
+          },
+          {
+            "@type": "ops:SubDomain",
+            "name": "Resource Management",
+            "ops:scopeElements": [
+              "Resource Allocation",
+              "Capacity Planning",
+              "Asset Utilization",
+              "Workforce Planning (Operations)",
+              "Equipment/Infrastructure Management"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Primary"
+      },
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:SupplyChainManagement",
+        "name": "Supply Chain Management",
+        "description": "End-to-end supply chain oversight and optimization",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "Procurement & Sourcing",
+            "ops:scopeElements": [
+              "Vendor Selection",
+              "Contract Management",
+              "Spend Management",
+              "Supplier Relationship Management",
+              "Strategic Sourcing"
+            ]
+          },
+          {
+            "@type": "ops:SubDomain",
+            "name": "Logistics & Distribution",
+            "ops:scopeElements": [
+              "Inbound Logistics",
+              "Outbound Logistics",
+              "Distribution Network Design",
+              "Transportation Management",
+              "Warehouse Operations"
+            ]
+          },
+          {
+            "@type": "ops:SubDomain",
+            "name": "Inventory Management",
+            "ops:scopeElements": [
+              "Inventory Planning",
+              "Stock Optimization",
+              "Demand Forecasting Integration",
+              "Safety Stock Management",
+              "Inventory Valuation"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Primary"
+      },
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:QualityManagement",
+        "name": "Quality Management",
+        "description": "Enterprise quality assurance and standards",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "Quality Assurance",
+            "ops:scopeElements": [
+              "Quality Standards Definition",
+              "Quality Planning",
+              "Quality Control Processes",
+              "Testing & Validation",
+              "Certification Management"
+            ]
+          },
+          {
+            "@type": "ops:SubDomain",
+            "name": "Compliance & Standards",
+            "ops:scopeElements": [
+              "Regulatory Compliance (Operational)",
+              "Industry Standards Adherence",
+              "Internal Standards Management",
+              "Audit Management",
+              "Corrective Action Programs"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Primary"
+      },
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:FacilitiesManagement",
+        "name": "Facilities & Infrastructure",
+        "description": "Physical and virtual infrastructure management",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "Facilities Operations",
+            "ops:scopeElements": [
+              "Building Management",
+              "Maintenance Programs",
+              "Space Planning",
+              "Environmental Management",
+              "Health & Safety (Facilities)"
+            ]
+          },
+          {
+            "@type": "ops:SubDomain",
+            "name": "Infrastructure Management",
+            "ops:scopeElements": [
+              "Infrastructure Planning",
+              "Capacity Management",
+              "Technology Infrastructure (Shared)",
+              "Business Continuity Infrastructure"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Primary-or-Shared"
+      },
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:BusinessContinuity",
+        "name": "Business Continuity & Resilience",
+        "description": "Operational resilience and continuity planning",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "Business Continuity Planning",
+            "ops:scopeElements": [
+              "BCP Development",
+              "Recovery Strategy Design",
+              "Testing & Exercising",
+              "Plan Maintenance",
+              "Crisis Management Protocols"
+            ]
+          },
+          {
+            "@type": "ops:SubDomain",
+            "name": "Operational Risk Management",
+            "ops:scopeElements": [
+              "Risk Identification",
+              "Risk Assessment",
+              "Mitigation Planning",
+              "Monitoring & Reporting",
+              "Incident Management"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Primary"
+      }
+    ],
+
+    "ops:extendedFunctionalDomains": [
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:CustomerOperations",
+        "name": "Customer Operations",
+        "description": "Customer-facing operational functions",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "Customer Service Operations",
+            "ops:scopeElements": [
+              "Contact Center Operations",
+              "Service Delivery",
+              "Customer Support Processes",
+              "Complaint Resolution",
+              "Service Level Management"
+            ]
+          },
+          {
+            "@type": "ops:SubDomain",
+            "name": "Customer Experience Operations",
+            "ops:scopeElements": [
+              "Journey Touchpoint Operations",
+              "Experience Delivery Execution",
+              "Feedback Processing",
+              "Experience Improvement Programs"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Variable-by-Organization",
+        "ops:commonReportingTo": ["COO", "CCO", "CEO"]
+      },
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:TechnologyOperations",
+        "name": "Technology Operations",
+        "description": "IT and technology operational functions",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "IT Operations",
+            "ops:scopeElements": [
+              "Infrastructure Operations",
+              "Application Support",
+              "IT Service Management",
+              "Security Operations",
+              "DevOps/SRE"
+            ]
+          },
+          {
+            "@type": "ops:SubDomain",
+            "name": "Digital Operations",
+            "ops:scopeElements": [
+              "Digital Platform Operations",
+              "Data Operations",
+              "AI/ML Operations",
+              "Automation Operations"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Variable-by-Organization",
+        "ops:commonReportingTo": ["COO", "CTO", "CIO"]
+      },
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:HROperations",
+        "name": "People Operations",
+        "description": "HR and people operational functions",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "HR Operations",
+            "ops:scopeElements": [
+              "HR Service Delivery",
+              "Payroll Operations",
+              "Benefits Administration",
+              "HR Systems Operations",
+              "Employee Lifecycle Operations"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Variable-by-Organization",
+        "ops:commonReportingTo": ["COO", "CHRO", "CEO"]
+      },
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:FinanceOperations",
+        "name": "Finance Operations",
+        "description": "Financial operational functions",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "Financial Operations",
+            "ops:scopeElements": [
+              "Transaction Processing",
+              "Accounts Payable/Receivable",
+              "Treasury Operations",
+              "Financial Reporting Operations",
+              "Cost Accounting Operations"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Variable-by-Organization",
+        "ops:commonReportingTo": ["COO", "CFO", "CEO"]
+      },
+      {
+        "@type": "ops:FunctionalDomain",
+        "@id": "ops:LegalOperations",
+        "name": "Legal Operations",
+        "description": "Legal and compliance operational functions",
+        "ops:subDomains": [
+          {
+            "@type": "ops:SubDomain",
+            "name": "Legal Operations",
+            "ops:scopeElements": [
+              "Contract Operations",
+              "Legal Service Delivery",
+              "Compliance Operations",
+              "IP Management Operations",
+              "Litigation Support"
+            ]
+          }
+        ],
+        "ops:accountabilityLevel": "Variable-by-Organization",
+        "ops:commonReportingTo": ["COO", "CLO", "CEO"]
+      }
+    ],
+
+    "ops:aiAugmentedOperations": {
+      "@type": "ops:AIOperationsCapability",
+      "@id": "ops:COO-AIAugmentation",
+      "name": "AI-Augmented Operations",
+      "description": "AI and automation capabilities enhancing operational functions",
+      "ops:aiCapabilityAreas": [
+        {
+          "@type": "ops:AICapabilityArea",
+          "name": "Intelligent Process Automation",
+          "ops:applications": [
+            "Robotic Process Automation (RPA)",
+            "Intelligent Document Processing",
+            "Workflow Automation",
+            "Decision Automation",
+            "Predictive Process Optimization"
+          ]
+        },
+        {
+          "@type": "ops:AICapabilityArea",
+          "name": "Predictive Operations",
+          "ops:applications": [
+            "Demand Forecasting",
+            "Predictive Maintenance",
+            "Capacity Prediction",
+            "Quality Prediction",
+            "Risk Prediction"
+          ]
+        },
+        {
+          "@type": "ops:AICapabilityArea",
+          "name": "Operations Intelligence",
+          "ops:applications": [
+            "Real-time Operations Analytics",
+            "Anomaly Detection",
+            "Pattern Recognition",
+            "Optimization Recommendations",
+            "Performance Insights"
+          ]
+        },
+        {
+          "@type": "ops:AICapabilityArea",
+          "name": "Autonomous Operations",
+          "ops:applications": [
+            "Self-Healing Systems",
+            "Autonomous Decision-Making",
+            "Dynamic Resource Allocation",
+            "Adaptive Process Management",
+            "Continuous Optimization"
+          ]
+        }
+      ],
+      "ops:aiGovernance": {
+        "@type": "ops:AIGovernanceFramework",
+        "ops:accountabilityAreas": [
+          "AI Ethics in Operations",
+          "Algorithm Transparency",
+          "Bias Detection & Mitigation",
+          "Human-AI Collaboration Models",
+          "AI Risk Management"
+        ]
+      }
+    }
+  },
+
+  "csuite:reportingStructure": {
+    "@type": "csuite:ReportingArchitecture",
+    "@id": "csuite:COO-ReportingStructure",
+    "description": "Typical reporting relationships for COO role",
+
+    "csuite:directReports": {
+      "@type": "csuite:ReportingRelationship",
+      "description": "Potential direct reports to COO - varies by organization",
+      "csuite:potentialDirectReports": [
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "VP/SVP Operations",
+          "csuite:likelihood": "High",
+          "csuite:scope": "Overall Operations Management"
+        },
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "VP/SVP Supply Chain",
+          "csuite:likelihood": "High",
+          "csuite:scope": "Supply Chain & Logistics"
+        },
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "VP/SVP Quality",
+          "csuite:likelihood": "High",
+          "csuite:scope": "Quality Management"
+        },
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "VP/SVP Manufacturing/Production",
+          "csuite:likelihood": "High",
+          "csuite:scope": "Production Operations"
+        },
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "VP/SVP Customer Operations",
+          "csuite:likelihood": "Medium",
+          "csuite:scope": "Customer Service Operations"
+        },
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "VP/SVP Facilities",
+          "csuite:likelihood": "Medium",
+          "csuite:scope": "Facilities & Real Estate"
+        },
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "Chief Information Officer",
+          "csuite:likelihood": "Variable",
+          "csuite:scope": "Technology Operations"
+        },
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "Chief Human Resources Officer",
+          "csuite:likelihood": "Variable",
+          "csuite:scope": "People Operations"
+        },
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "Regional Operations Leaders",
+          "csuite:likelihood": "High-in-Multi-Region",
+          "csuite:scope": "Geographic Operations"
+        },
+        {
+          "@type": "csuite:ReportingRole",
+          "name": "Business Unit Operations Leaders",
+          "csuite:likelihood": "High-in-Multi-BU",
+          "csuite:scope": "Business Unit Operations"
+        }
+      ]
+    },
+
+    "csuite:peerRelationships": {
+      "@type": "csuite:CollaborativeRelationships",
+      "description": "C-Suite peer collaboration relationships",
+      "csuite:collaborationMatrix": [
+        {
+          "@type": "csuite:PeerRelationship",
+          "csuite:peerRole": "Chief Executive Officer",
+          "csuite:relationshipType": "Direct-Report-Strategic-Partner",
+          "csuite:collaborationAreas": [
+            "Strategy Formulation",
+            "Resource Allocation Decisions",
+            "Enterprise Performance",
+            "Organizational Design"
+          ]
+        },
+        {
+          "@type": "csuite:PeerRelationship",
+          "csuite:peerRole": "Chief Financial Officer",
+          "csuite:relationshipType": "Strategic-Partner",
+          "csuite:collaborationAreas": [
+            "Budget Planning",
+            "Cost Management",
+            "Investment Decisions",
+            "Financial Performance Analysis",
+            "Capital Allocation"
+          ]
+        },
+        {
+          "@type": "csuite:PeerRelationship",
+          "csuite:peerRole": "Chief Technology Officer",
+          "csuite:relationshipType": "Strategic-Partner",
+          "csuite:collaborationAreas": [
+            "Technology Strategy Alignment",
+            "Digital Transformation",
+            "Automation Initiatives",
+            "Technology Operations Integration"
+          ]
+        },
+        {
+          "@type": "csuite:PeerRelationship",
+          "csuite:peerRole": "Chief Marketing Officer",
+          "csuite:relationshipType": "Collaborative",
+          "csuite:collaborationAreas": [
+            "Demand-Supply Alignment",
+            "Campaign Execution Support",
+            "Customer Experience Delivery",
+            "Product Launch Operations"
+          ]
+        },
+        {
+          "@type": "csuite:PeerRelationship",
+          "csuite:peerRole": "Chief Product Officer",
+          "csuite:relationshipType": "Strategic-Partner",
+          "csuite:collaborationAreas": [
+            "Product Development Operations",
+            "Product Launch Execution",
+            "Portfolio Operations",
+            "Innovation Pipeline Support"
+          ]
+        },
+        {
+          "@type": "csuite:PeerRelationship",
+          "csuite:peerRole": "Chief Human Resources Officer",
+          "csuite:relationshipType": "Collaborative",
+          "csuite:collaborationAreas": [
+            "Workforce Planning",
+            "Talent Management",
+            "Organizational Development",
+            "Culture Alignment"
+          ]
+        },
+        {
+          "@type": "csuite:PeerRelationship",
+          "csuite:peerRole": "Chief Revenue Officer",
+          "csuite:relationshipType": "Collaborative",
+          "csuite:collaborationAreas": [
+            "Revenue Operations Support",
+            "Customer Delivery",
+            "Capacity Planning for Growth",
+            "Service Level Commitments"
+          ]
+        }
+      ]
+    }
+  },
+
+  "strat:operationsStrategy": {
+    "@type": "strat:FunctionalStrategy",
+    "@id": "strat:COO-OperationsStrategy",
+    "name": "Operations Strategy Framework",
+    "description": "Framework for COO Operations Strategy formulation and execution",
+
+    "strat:strategyComponents": [
+      {
+        "@type": "strat:StrategyComponent",
+        "name": "Operating Model Design",
+        "strat:elements": [
+          "Process Architecture",
+          "Organizational Structure",
+          "Technology Architecture",
+          "Governance Model",
+          "Performance Management Framework"
+        ]
+      },
+      {
+        "@type": "strat:StrategyComponent",
+        "name": "Capability Strategy",
+        "strat:elements": [
+          "Core Capability Definition",
+          "Capability Gap Analysis",
+          "Build vs Buy vs Partner Decisions",
+          "Capability Development Roadmap",
+          "Capability Maturity Management"
+        ]
+      },
+      {
+        "@type": "strat:StrategyComponent",
+        "name": "Resource Strategy",
+        "strat:elements": [
+          "Human Capital Strategy",
+          "Technology Resource Strategy",
+          "Physical Asset Strategy",
+          "Financial Resource Strategy",
+          "Partner/Ecosystem Strategy"
+        ]
+      },
+      {
+        "@type": "strat:StrategyComponent",
+        "name": "Performance Strategy",
+        "strat:elements": [
+          "Performance Target Setting",
+          "KPI Framework Design",
+          "Measurement System Architecture",
+          "Reporting & Analytics Strategy",
+          "Continuous Improvement Strategy"
+        ]
+      },
+      {
+        "@type": "strat:StrategyComponent",
+        "name": "Risk Strategy",
+        "strat:elements": [
+          "Operational Risk Framework",
+          "Business Continuity Strategy",
+          "Compliance Strategy",
+          "Crisis Management Strategy",
+          "Resilience Building"
+        ]
+      },
+      {
+        "@type": "strat:StrategyComponent",
+        "name": "Innovation Strategy",
+        "strat:elements": [
+          "Process Innovation",
+          "Technology Innovation Adoption",
+          "Business Model Innovation Support",
+          "Experimentation Framework",
+          "Scaling Innovation"
+        ]
+      }
+    ],
+
+    "strat:strategicPlanning": {
+      "@type": "strat:PlanningFramework",
+      "strat:planningHorizons": [
+        {
+          "@type": "strat:PlanningHorizon",
+          "name": "Strategic (3-5 Years)",
+          "strat:focus": [
+            "Operating Model Evolution",
+            "Major Capability Investments",
+            "Technology Platform Decisions",
+            "Organizational Transformation"
+          ]
+        },
+        {
+          "@type": "strat:PlanningHorizon",
+          "name": "Tactical (1-2 Years)",
+          "strat:focus": [
+            "Annual Operating Plan",
+            "Resource Allocation",
+            "Process Improvement Initiatives",
+            "Technology Implementations"
+          ]
+        },
+        {
+          "@type": "strat:PlanningHorizon",
+          "name": "Operational (Quarterly/Monthly)",
+          "strat:focus": [
+            "Capacity Planning",
+            "Performance Management",
+            "Issue Resolution",
+            "Continuous Improvement"
+          ]
+        }
+      ]
+    }
+  },
+
+  "ext:extensionArchitecture": {
+    "@type": "ext:OntologyExtensionFramework",
+    "@id": "ext:COO-Extensions",
+    "description": "Extension points for sector, organizational, and portfolio-specific specializations",
+
+    "ext:extensionPoints": [
+      {
+        "@type": "ext:ExtensionPoint",
+        "@id": "ext:SectorExtension",
+        "name": "Sector-Specific Extension",
+        "description": "Extension point for sector-specific COO role variations",
+        "ext:extensionScope": "Sector",
+        "ext:extensionExamples": [
+          "Manufacturing COO Specialization",
+          "Technology COO Specialization",
+          "Financial Services COO Specialization",
+          "Healthcare COO Specialization",
+          "Retail COO Specialization",
+          "Professional Services COO Specialization"
+        ],
+        "ext:extensionAttributes": [
+          "Sector-Specific Regulatory Requirements",
+          "Industry Operating Models",
+          "Sector Benchmarks & Standards",
+          "Industry-Specific Capabilities"
+        ]
+      },
+      {
+        "@type": "ext:ExtensionPoint",
+        "@id": "ext:OrganizationExtension",
+        "name": "Organization-Specific Extension",
+        "description": "Extension point for organization-specific COO role variations",
+        "ext:extensionScope": "Organization",
+        "ext:extensionAttributes": [
+          "Organization Structure",
+          "Corporate Culture",
+          "Business Model Specifics",
+          "Geographic Footprint",
+          "Organizational Maturity"
+        ]
+      },
+      {
+        "@type": "ext:ExtensionPoint",
+        "@id": "ext:ScaleExtension",
+        "name": "Scale/Size Extension",
+        "description": "Extension point for organization size/scale variations",
+        "ext:extensionScope": "Scale",
+        "ext:extensionVariants": [
+          {
+            "@type": "ext:ScaleVariant",
+            "name": "Startup/Early-Stage",
+            "ext:characteristics": [
+              "Founder-involved Operations",
+              "Generalist COO Role",
+              "Building Foundation",
+              "Rapid Iteration"
+            ]
+          },
+          {
+            "@type": "ext:ScaleVariant",
+            "name": "Growth-Stage",
+            "ext:characteristics": [
+              "Scaling Operations",
+              "Process Institutionalization",
+              "Team Building",
+              "System Implementation"
+            ]
+          },
+          {
+            "@type": "ext:ScaleVariant",
+            "name": "Enterprise/Mature",
+            "ext:characteristics": [
+              "Complex Operations Management",
+              "Optimization Focus",
+              "Large Team Leadership",
+              "Transformation Leadership"
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "ext:ExtensionPoint",
+        "@id": "ext:MaturityExtension",
+        "name": "Organizational Maturity Extension",
+        "description": "Extension point for organizational maturity level variations",
+        "ext:extensionScope": "Maturity",
+        "ext:maturityLevels": [
+          {
+            "@type": "ext:MaturityLevel",
+            "name": "Initial/Ad-Hoc",
+            "ext:cooFocus": [
+              "Basic Process Definition",
+              "Foundation Building",
+              "Initial Governance"
+            ]
+          },
+          {
+            "@type": "ext:MaturityLevel",
+            "name": "Developing/Defined",
+            "ext:cooFocus": [
+              "Process Standardization",
+              "Performance Measurement Setup",
+              "Capability Building"
+            ]
+          },
+          {
+            "@type": "ext:MaturityLevel",
+            "name": "Managed/Measured",
+            "ext:cooFocus": [
+              "Data-Driven Operations",
+              "Continuous Improvement",
+              "Advanced Analytics"
+            ]
+          },
+          {
+            "@type": "ext:MaturityLevel",
+            "name": "Optimizing/Leading",
+            "ext:cooFocus": [
+              "Innovation Leadership",
+              "Best Practice Definition",
+              "Industry Leadership"
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "ext:ExtensionPoint",
+        "@id": "ext:PortfolioExtension",
+        "name": "Portfolio-Specific Extension",
+        "description": "Extension point for brand/product/service portfolio variations",
+        "ext:extensionScope": "Portfolio",
+        "ext:extensionAttributes": [
+          {
+            "@type": "ext:PortfolioAttribute",
+            "name": "Brand Operations",
+            "ext:considerations": [
+              "Brand-Specific Operating Standards",
+              "Brand Experience Delivery",
+              "Multi-Brand Coordination",
+              "Brand Performance Management"
+            ]
+          },
+          {
+            "@type": "ext:PortfolioAttribute",
+            "name": "Product Operations",
+            "ext:considerations": [
+              "Product-Specific Processes",
+              "Product Lifecycle Operations",
+              "Multi-Product Complexity",
+              "Product Performance Management"
+            ]
+          },
+          {
+            "@type": "ext:PortfolioAttribute",
+            "name": "Service Operations",
+            "ext:considerations": [
+              "Service Delivery Models",
+              "Service Quality Standards",
+              "Multi-Service Integration",
+              "Service Performance Management"
+            ]
+          }
+        ]
+      }
+    ],
+
+    "ext:extensionMechanism": {
+      "@type": "ext:ExtensionImplementation",
+      "description": "How extensions connect to base ontology",
+      "ext:inheritanceModel": "Additive-Override",
+      "ext:connectionMethod": "JSON-LD Context Extension",
+      "ext:validationApproach": "Schema Validation with Extension Schemas"
+    }
+  },
+
+  "csuite:competencyFramework": {
+    "@type": "csuite:CompetencyModel",
+    "@id": "csuite:COO-Competencies",
+    "description": "Core competencies required for COO role",
+
+    "csuite:coreCompetencies": [
+      {
+        "@type": "csuite:Competency",
+        "name": "Strategic Operations Leadership",
+        "csuite:components": [
+          "Strategic Thinking",
+          "Systems Thinking",
+          "Change Leadership",
+          "Organizational Design",
+          "Long-term Planning"
+        ]
+      },
+      {
+        "@type": "csuite:Competency",
+        "name": "Operational Excellence",
+        "csuite:components": [
+          "Process Management",
+          "Quality Management",
+          "Performance Optimization",
+          "Continuous Improvement",
+          "Lean/Agile Methodologies"
+        ]
+      },
+      {
+        "@type": "csuite:Competency",
+        "name": "Financial Acumen",
+        "csuite:components": [
+          "Budget Management",
+          "Cost Management",
+          "Financial Analysis",
+          "Investment Decision-Making",
+          "ROI Optimization"
+        ]
+      },
+      {
+        "@type": "csuite:Competency",
+        "name": "Technology Enablement",
+        "csuite:components": [
+          "Digital Transformation",
+          "Technology Strategy",
+          "Data & Analytics",
+          "Automation & AI",
+          "Technology Selection"
+        ]
+      },
+      {
+        "@type": "csuite:Competency",
+        "name": "People Leadership",
+        "csuite:components": [
+          "Team Development",
+          "Talent Management",
+          "Culture Building",
+          "Change Management",
+          "Stakeholder Management"
+        ]
+      },
+      {
+        "@type": "csuite:Competency",
+        "name": "Risk & Governance",
+        "csuite:components": [
+          "Risk Management",
+          "Compliance Management",
+          "Business Continuity",
+          "Governance Frameworks",
+          "Crisis Management"
+        ]
+      }
+    ]
+  },
+
+  "pf:integrationPoints": {
+    "@type": "pf:FrameworkIntegration",
+    "@id": "pf:COO-Integrations",
+    "description": "Integration points with other PF Framework ontologies",
+
+    "pf:relatedOntologies": [
+      {
+        "@type": "pf:OntologyReference",
+        "name": "C-Suite Role Ontologies",
+        "pf:relationshipType": "Peer-Collaboration",
+        "pf:ontologyIds": [
+          "csuite:ChiefExecutiveOfficer",
+          "csuite:ChiefFinancialOfficer",
+          "csuite:ChiefTechnologyOfficer",
+          "csuite:ChiefMarketingOfficer",
+          "csuite:ChiefHumanResourcesOfficer",
+          "csuite:ChiefProductOfficer",
+          "csuite:ChiefRevenueOfficer"
+        ]
+      },
+      {
+        "@type": "pf:OntologyReference",
+        "name": "VSOM Framework",
+        "pf:relationshipType": "Strategic-Alignment",
+        "pf:ontologyId": "pf:VSOMFramework"
+      },
+      {
+        "@type": "pf:OntologyReference",
+        "name": "Value Engineering Process",
+        "pf:relationshipType": "Methodology-Foundation",
+        "pf:ontologyId": "pf:CoreValueEngineering"
+      },
+      {
+        "@type": "pf:OntologyReference",
+        "name": "Sector Ontologies",
+        "pf:relationshipType": "Extension-Target",
+        "pf:ontologyIds": [
+          "ext:ManufacturingSector",
+          "ext:TechnologySector",
+          "ext:FinancialServicesSector",
+          "ext:HealthcareSector",
+          "ext:RetailSector"
+        ]
+      },
+      {
+        "@type": "pf:OntologyReference",
+        "name": "Portfolio Ontologies",
+        "pf:relationshipType": "Extension-Target",
+        "pf:ontologyIds": [
+          "ext:BrandOntology",
+          "ext:ProductOntology",
+          "ext:ServiceOntology"
+        ]
+      }
+    ]
+  }
+}
