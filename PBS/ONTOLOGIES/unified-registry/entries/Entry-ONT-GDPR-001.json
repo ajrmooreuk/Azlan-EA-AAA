@@ -20,6 +20,7 @@
     "gate6": "pending"
   },
   "artifacts": {
+    "folder": "../pfc-ontologies/gov-ONT/gdpr-ONT/",
     "ontology": null,
     "glossary": null,
     "documentation": null,

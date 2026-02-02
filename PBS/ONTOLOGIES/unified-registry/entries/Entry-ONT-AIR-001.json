@@ -20,6 +20,7 @@
     "gate6": "pending"
   },
   "artifacts": {
+    "folder": "../pfc-ontologies/gov-ONT/AIR-ONT/",
     "ontology": null,
     "glossary": null,
     "documentation": null,
