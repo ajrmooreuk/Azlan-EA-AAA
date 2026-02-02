@@ -1,0 +1,41 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-ALZ-001",
+  "name": "ALZ Ontology (MCSB Domain)",
+  "description": "Domain-specific ontology for Alzheimer's/MCSB (Microsoft Cloud Security Benchmark) domain",
+  "version": "1.0.0",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/alz/",
+  "prefix": "alz:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "../pfc-ontologies/ALZ-ONT/MCSB-Ontology-v1.0.0.jsonld",
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "securityBenchmark": "MCSB security benchmark definitions",
+    "controlFamily": "Security control families",
+    "securityControl": "Individual security controls"
+  },
+  "dependencies": [],
+  "dependents": [],
+  "layer": "DOMAIN-SPECIFIC",
+  "domain": "Security/MCSB",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-02",
+  "notes": "Domain-specific ontology for security benchmarking, standalone from main ontology ecosystem."
+}

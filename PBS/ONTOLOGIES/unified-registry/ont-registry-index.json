@@ -3,84 +3,260 @@
   "@type": "OntologyRegistry",
   "@id": "azlan-ont-registry",
   "name": "Azlan Ontology Registry",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "oaaVersion": "5.0.0",
-  "lastUpdated": "2026-01-28",
+  "lastUpdated": "2026-02-02",
   "description": "Unified registry of all ontologies in the Azlan EA-AAA repository",
   "entries": [
     {
+      "@id": "Entry-ONT-EMC-001",
+      "name": "EMC Ontology (Enterprise Model Composition)",
+      "namespace": "emc:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-EMC-001.json"
+    },
+    {
+      "@id": "Entry-ONT-ORG-001",
+      "name": "ORG Ontology (Organization Foundation)",
+      "namespace": "org:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-ORG-001.json"
+    },
+    {
+      "@id": "Entry-ONT-ORG-CTX-001",
+      "name": "ORG-CONTEXT Ontology (Context Hub)",
+      "namespace": "org-ctx:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-ORG-CTX-001.json"
+    },
+    {
+      "@id": "Entry-ONT-ORG-MAT-001",
+      "name": "ORG-MAT Ontology (Organization Maturity)",
+      "namespace": "org-mat:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-ORG-MAT-001.json"
+    },
+    {
+      "@id": "Entry-ONT-CA-001",
+      "name": "CA Ontology (Competitive Analysis)",
+      "namespace": "ca:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-CA-001.json"
+    },
+    {
+      "@id": "Entry-ONT-CL-001",
+      "name": "CL Ontology (Competitive Landscape)",
+      "namespace": "cl:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-CL-001.json"
+    },
+    {
+      "@id": "Entry-ONT-GA-001",
+      "name": "GA Ontology (Gap Analysis)",
+      "namespace": "ga:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-GA-001.json"
+    },
+    {
       "@id": "Entry-ONT-VSOM-001",
-      "name": "VSOM Ontology",
+      "name": "VSOM Ontology (Vision-Strategy-Objectives-Metrics)",
       "namespace": "vsom:",
-      "status": "partial-compliance",
-      "gatesPassed": 6,
-      "gatesFailed": 1,
-      "validatedDate": "2026-01-28",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
       "path": "./entries/Entry-ONT-VSOM-001.json"
+    },
+    {
+      "@id": "Entry-ONT-OKR-001",
+      "name": "OKR Ontology (Objectives & Key Results)",
+      "namespace": "okr:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-OKR-001.json"
+    },
+    {
+      "@id": "Entry-ONT-VP-001",
+      "name": "VP Ontology (Value Proposition)",
+      "namespace": "vp:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-VP-001.json"
     },
     {
       "@id": "Entry-ONT-RRR-001",
       "name": "RRR Ontology (Roles/RACI/RBAC)",
       "namespace": "rrr:",
-      "status": "pending-review",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
       "path": "./entries/Entry-ONT-RRR-001.json"
     },
     {
-      "@id": "Entry-ONT-OKR-001",
-      "name": "OKR Ontology",
-      "namespace": "okr:",
-      "status": "partial-compliance",
-      "gatesPassed": 5,
-      "gatesFailed": 2,
-      "validatedDate": "2026-01-28",
-      "path": "./entries/Entry-ONT-OKR-001.json"
-    },
-    {
       "@id": "Entry-ONT-PMF-001",
-      "name": "PMF/GTM Ontology",
+      "name": "PMF Ontology (Product-Market Fit)",
       "namespace": "pmf:",
-      "status": "pending-review",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
       "path": "./entries/Entry-ONT-PMF-001.json"
     },
     {
-      "@id": "Entry-ONT-VP-001",
-      "name": "Value Proposition Ontology",
-      "namespace": "vp:",
-      "status": "pending-review",
-      "path": "./entries/Entry-ONT-VP-001.json"
+      "@id": "Entry-ONT-KPI-001",
+      "name": "KPI Ontology (Key Performance Indicators)",
+      "namespace": "kpi:",
+      "status": "placeholder",
+      "gatesPassed": 0,
+      "gatesFailed": 0,
+      "validatedDate": null,
+      "path": "./entries/Entry-ONT-KPI-001.json"
+    },
+    {
+      "@id": "Entry-ONT-PPM-001",
+      "name": "PPM Ontology (Portfolio/Programme/Project)",
+      "namespace": "ppm:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-PPM-001.json"
+    },
+    {
+      "@id": "Entry-ONT-PE-001",
+      "name": "PE Ontology (Process Engineering)",
+      "namespace": "pe:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-PE-001.json"
     },
     {
       "@id": "Entry-ONT-EFS-001",
-      "name": "EFS Ontology (Epics/Features/Stories)",
+      "name": "EFS Ontology (Enterprise Framework Services)",
       "namespace": "efs:",
-      "status": "near-compliance",
-      "gatesPassed": 6,
-      "gatesFailed": 1,
-      "validatedDate": "2026-01-28",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
       "path": "./entries/Entry-ONT-EFS-001.json"
+    },
+    {
+      "@id": "Entry-ONT-ALZ-001",
+      "name": "ALZ Ontology (MCSB Domain)",
+      "namespace": "alz:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-ALZ-001.json"
     }
   ],
   "namespaceRegistry": {
+    "pf": "https://platformcore.io/ontology/",
+    "emc": "https://platformcore.io/ontology/emc/",
+    "org": "https://platformcore.io/ontology/org/",
+    "org-ctx": "https://platformcore.io/ontology/org-context/",
+    "org-mat": "https://platformcore.io/ontology/org-maturity/",
+    "ca": "https://platformcore.io/ontology/ca/",
+    "cl": "https://platformcore.io/ontology/cl/",
+    "ga": "https://platformcore.io/ontology/ga/",
     "vsom": "https://platformcore.io/ontology/vsom/",
-    "rrr": "https://platformcore.io/ontology/rrr/",
     "okr": "https://platformcore.io/ontology/okr/",
-    "kpi": "https://platformcore.io/ontology/kpi/",
     "vp": "https://platformcore.io/ontology/vp/",
+    "rrr": "https://platformcore.io/ontology/rrr/",
     "pmf": "https://platformcore.io/ontology/pmf/",
-    "gtm": "https://platformcore.io/ontology/gtm/",
-    "efs": "https://platformcore.io/ontology/efs/"
+    "kpi": "https://platformcore.io/ontology/kpi/",
+    "ppm": "https://platformcore.io/ontology/ppm/",
+    "pe": "https://platformcore.io/ontology/pe/",
+    "efs": "https://platformcore.io/ontology/efs/",
+    "alz": "https://platformcore.io/ontology/alz/"
+  },
+  "seriesRegistry": {
+    "VE-Series": {
+      "name": "Value Engineering Series",
+      "description": "Strategic value definition and measurement ontologies",
+      "ontologies": ["VSOM", "OKR", "VP", "RRR", "PMF", "KPI"]
+    },
+    "PE-Series": {
+      "name": "Process Engineering Series",
+      "description": "Execution and process management ontologies",
+      "ontologies": ["PPM", "PE", "EFS"]
+    },
+    "Foundation": {
+      "name": "Foundation Ontologies",
+      "description": "Core organizational and context ontologies",
+      "ontologies": ["ORG", "ORG-CONTEXT", "ORG-MAT"]
+    },
+    "Competitive": {
+      "name": "Competitive Analysis Ontologies",
+      "description": "Market and competitive intelligence ontologies",
+      "ontologies": ["CA", "CL", "GA"]
+    },
+    "Orchestration": {
+      "name": "Orchestration Layer",
+      "description": "Model composition and integration ontologies",
+      "ontologies": ["EMC"]
+    }
   },
   "statistics": {
-    "totalOntologies": 6,
-    "compliant": 0,
-    "nearCompliance": 1,
-    "partialCompliance": 2,
-    "pendingReview": 3,
+    "totalOntologies": 17,
+    "compliant": 15,
+    "nearCompliance": 0,
+    "partialCompliance": 0,
+    "pendingReview": 0,
+    "placeholder": 1,
     "deprecated": 0
   },
   "validationSummary": {
-    "validated": 3,
-    "validatedOntologies": ["VSOM", "OKR", "EFS"],
-    "remainingForReview": ["RRR", "PMF/GTM", "Value Proposition"]
-  }
+    "validated": 16,
+    "validatedOntologies": [
+      "EMC", "ORG", "ORG-CONTEXT", "ORG-MAT",
+      "CA", "CL", "GA",
+      "VSOM", "OKR", "VP", "RRR", "PMF",
+      "PPM", "PE", "EFS", "ALZ"
+    ],
+    "placeholders": ["KPI"],
+    "oaaVersion": "5.0.0",
+    "lastFullValidation": "2026-02-02"
+  },
+  "pfiInstances": [
+    {
+      "@id": "PFI-BAIV",
+      "name": "BAIV Instance",
+      "description": "Brand AI Visibility PF-Instance",
+      "products": ["AIV"],
+      "instanceOntologies": [
+        "pfi-BAIV-AIV-ONT/RRR-DATA-BAIV-AIV-roles-v1.0.0.jsonld",
+        "pfi-BAIV-AIV-ONT/AIV-Competitive-ONT/"
+      ]
+    }
+  ]
 }

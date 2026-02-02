@@ -1,0 +1,47 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-EMC-001",
+  "name": "EMC Ontology (Enterprise Model Composition)",
+  "description": "Orchestration layer that maps requirement scopes to ontology compositions, enabling filtered enterprise model assembly based on PFC/PFI/Product/ORG context",
+  "version": "1.0.0",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/emc/",
+  "prefix": "emc:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "../pfc-ontologies/EMC-ONT/pf-EMC-ONT-v1.0.0.jsonld",
+    "documentation": null,
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "scopingDimensions": "contextLevel, instanceId, productContext, orgRolesGovernance, orgContext",
+    "requirementCategories": "STRATEGIC, PRODUCT, PPM, COMPETITIVE, ORG-DESIGN, PROCESS, ENTERPRISE, AGENTIC",
+    "compositionRules": "Hub-Spoke, Lineage Chain, Bridge-Join patterns",
+    "agenticBuildSupport": "AI-augmented solution development orchestration"
+  },
+  "dependencies": [],
+  "dependents": [
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-PPM-001"
+  ],
+  "layer": "ORCHESTRATION LAYER",
+  "domain": "Enterprise Model Composition",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-02",
+  "lastModified": "2026-02-02",
+  "notes": "Master orchestration ontology for composing enterprise models based on requirement scope and context filtering."
+}

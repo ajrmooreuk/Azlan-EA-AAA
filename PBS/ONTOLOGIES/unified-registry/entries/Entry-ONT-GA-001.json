@@ -1,0 +1,50 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-GA-001",
+  "name": "GA Ontology (Gap Analysis)",
+  "description": "Gap analysis ontology for identifying gaps, threats, opportunities, and generating prioritized recommendations",
+  "version": "1.0.0",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/ga/",
+  "prefix": "ga:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "../pfc-ontologies/GA-ONT/gap-analysis-v1.0.0-oaa-v5.json",
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "identifiedGap": "Gap identification and classification",
+    "threatAssessment": "Threat analysis and assessment",
+    "opportunityAssessment": "Opportunity identification",
+    "priorityMatrix": "Priority scoring and ranking",
+    "recommendation": "Actionable recommendations generation"
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-CL-001",
+    "Entry-ONT-ORG-MAT-001"
+  ],
+  "dependents": [
+    "Entry-ONT-PPM-001"
+  ],
+  "layer": "ANALYSIS LAYER",
+  "domain": "Gap Analysis",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-02",
+  "notes": "Analysis ontology bridging strategy and execution via recommendations that spawn projects."
+}

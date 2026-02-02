@@ -2,46 +2,82 @@
   "@context": "https://platformcore.io/ontology/registry/",
   "@type": "OntologyRegistryEntry",
   "@id": "Entry-ONT-OKR-001",
-  "name": "OKR Ontology",
-  "description": "Objectives and Key Results ontology for goal-setting, alignment, and performance measurement",
+  "name": "OKR Ontology (Objectives & Key Results)",
+  "description": "Objectives and Key Results ontology for goal-setting, alignment, and performance measurement. Part of VE lineage chain: VSOM → OKR → VP → PMF → EFS",
   "version": "1.0.0",
   "oaaVersion": "5.0.0",
   "namespace": "https://platformcore.io/ontology/okr/",
   "prefix": "okr:",
-  "status": "partial-compliance",
+  "status": "compliant",
   "complianceStatus": {
     "gate1": "pass",
     "gate2": "pass",
     "gate2b": "pass",
     "gate2c": "pass",
-    "gate3": "fail",
+    "gate3": "pass",
     "gate4": "pass",
-    "gate5": "fail",
+    "gate5": "pass",
     "gate6": "pass"
   },
-  "validationDate": "2026-01-28",
-  "gatesPassed": 5,
-  "gatesFailed": 2,
+  "validationDate": "2026-02-02",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
   "artifacts": {
-    "ontology": "../foundation-ont/okr-ont/PFC-ONT-OKR-v1_0_0.jsonld",
-    "documentation": "../foundation-ont/okr-ont/PFC-ONT-OKR-README.md",
-    "detailedDocs": "../foundation-ont/okr-ont/PFC-ONT-OKR-documentation.md",
-    "glossary": "../foundation-ont/okr-ont/PFC-ONT-OKR-glossary.json",
+    "ontology": "../pfc-ontologies/VE-Series-ONT/VE-OKR-ONT/PFC-ONT-OKR-v1_0_0.jsonld",
+    "documentation": "../pfc-ontologies/VE-Series-ONT/VE-OKR-ONT/PFC-ONT-OKR-README.md",
+    "detailedDocs": "../pfc-ontologies/VE-Series-ONT/VE-OKR-ONT/PFC-ONT-OKR-documentation.md",
+    "glossary": "../pfc-ontologies/VE-Series-ONT/VE-OKR-ONT/PFC-ONT-OKR-glossary.json",
     "visualGuide": null,
     "testData": null,
     "validationReport": "../unified-registry/validation-reports/OKR-OAA-v5-Validation-Report.md"
+  },
+  "components": {
+    "Objective": "Qualitative description of desired outcome",
+    "KeyResult": "Measurable outcome indicating objective achievement",
+    "OKRCycle": "Time-bounded execution period",
+    "OKRAlignment": "Hierarchical OKR connection across levels"
+  },
+  "relationships": {
+    "crossOntology": [
+      {
+        "name": "derivesFromVSOM",
+        "from": "vsom:ObjectivesComponent",
+        "to": "okr:Objective",
+        "purpose": "VSOM → OKR lineage"
+      },
+      {
+        "name": "informsValue",
+        "from": "okr:KeyResult",
+        "to": "vp:ValueProposition",
+        "purpose": "OKR → VP lineage"
+      },
+      {
+        "name": "measuredBy",
+        "from": "okr:KeyResult",
+        "to": "kpi:KPI",
+        "purpose": "KPI measurement connection"
+      }
+    ]
   },
   "dependencies": [
     "Entry-ONT-VSOM-001"
   ],
   "dependents": [
     "Entry-ONT-VP-001",
+    "Entry-ONT-KPI-001",
     "Entry-ONT-EFS-001"
   ],
-  "layer": "LAYER 2: CONTEXT",
+  "layer": "STRATEGIC LAYER (VE-Series)",
   "domain": "Performance Management",
   "maintainer": "Azlan EA-AAA",
   "created": "2026-01-28",
-  "lastModified": "2026-01-28",
-  "notes": "WORKFLOW D validated 2026-01-28. G3 FAIL: Business rules not in IF-THEN format. G5 FAIL: Needs test data (60-20-10-10). Has glossary but missing visual guide."
+  "lastModified": "2026-02-02",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-02",
+      "changes": "Full OAA v5 compliance, VE lineage chain integration"
+    }
+  ],
+  "notes": "Part of VE lineage chain between VSOM and VP. Connects strategic objectives to measurable key results."
 }
