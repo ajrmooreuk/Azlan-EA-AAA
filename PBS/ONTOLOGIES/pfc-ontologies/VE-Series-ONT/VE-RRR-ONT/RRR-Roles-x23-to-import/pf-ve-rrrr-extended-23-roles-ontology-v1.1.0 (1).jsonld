@@ -1,0 +1,853 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://pf-core.platform/ontology/",
+    "ve": "https://pf-core.platform/ontology/value-engineering/",
+    "rrrr": "https://pf-core.platform/ontology/roles-raci-rbac-relationships/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@type": "pf:OntologyExtension",
+  "@id": "ve:RRRR-Extended-23-Roles-v1.1.0",
+  "pf:ontologyId": "pf-ve-rrrr-extended-23-roles-ontology",
+  "pf:version": "1.1.0",
+  "pf:name": "VE-RRRR Extended 23 Roles Ontology",
+  "pf:description": "Extended Value Engineering Roles, Responsibilities, RACI, and Relationships ontology covering 23 C-Suite executive roles with VSOM scope, subsumption patterns, and organizational cascade mappings",
+  "pf:extends": ["pf-roles-raci-rbac-ontology-v3.0.0", "pf-ve-rrr-ontology-extension-v1.0.0"],
+  "pf:createdDate": "2025-12-04",
+  "pf:author": "PF-Core Ontology Architect Agent",
+
+  "ve:RoleTaxonomy": {
+    "@type": "rrrr:RoleClassification",
+    "rrrr:categories": [
+      {
+        "@id": "rrrr:L0-Enterprise",
+        "name": "Enterprise Leadership",
+        "tier": 0,
+        "description": "Board and CEO - Ultimate enterprise accountability",
+        "roles": ["CEO", "Board"]
+      },
+      {
+        "@id": "rrrr:L1-CSuite-Core",
+        "name": "Core C-Suite",
+        "tier": 1,
+        "description": "Primary functional executives with direct CEO reporting",
+        "roles": ["CFO", "COO", "CTO", "CMO", "CPO", "CHRO"]
+      },
+      {
+        "@id": "rrrr:L1-CSuite-Extended",
+        "name": "Extended C-Suite",
+        "tier": 1,
+        "description": "Specialized functional executives",
+        "roles": ["CIO", "CISO", "CDO", "CRO", "CCO", "CLO", "CAO", "CSO", "CGO", "CXO", "CAIO", "CKO", "CBO", "CPrO", "CEthO", "CSustO"]
+      },
+      {
+        "@id": "rrrr:L2-Directors",
+        "name": "Directors & VPs",
+        "tier": 2,
+        "description": "Departmental leadership accountable for OKR delivery",
+        "roles": ["VP", "Director", "Head of"]
+      },
+      {
+        "@id": "rrrr:L3-Managers",
+        "name": "Managers & Leads",
+        "tier": 3,
+        "description": "Team leadership and operational execution",
+        "roles": ["Manager", "Lead", "Principal"]
+      },
+      {
+        "@id": "rrrr:L4-ICs",
+        "name": "Individual Contributors",
+        "tier": 4,
+        "description": "Specialized execution roles",
+        "roles": ["Specialist", "Analyst", "Engineer", "Designer"]
+      }
+    ]
+  },
+
+  "ve:CompleteCSuiteRoles": {
+    "@type": "rrrr:RolePatternCollection",
+    "rrrr:totalRoles": 23,
+    "rrrr:rolePatterns": [
+      {
+        "@id": "ve:CEOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CEO-001",
+        "ve:roleCode": "CEO",
+        "ve:roleName": "Chief Executive Officer",
+        "ve:roleCategory": "L0-Enterprise",
+        "ve:primaryContext": "Strategic, Market, Stakeholder, Enterprise",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "ACCOUNTABLE",
+          "ve:strategyRole": "ACCOUNTABLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "INFORMED",
+          "ve:domainQualifier": "Enterprise"
+        },
+        "ve:functionalScope": "Enterprise strategy, stakeholder relations, organizational direction, executive team leadership, board relations",
+        "ve:okrCascadeLevel": 0,
+        "ve:reportsTo": "Board",
+        "ve:directReports": ["CFO", "COO", "CTO", "CMO", "CPO", "CHRO", "CIO", "CISO", "CDO", "CRO", "CLO", "CSO"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CEO subsumes CMO", "ve:applicableOrgSize": ["MICRO", "SMALL"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CEO subsumes COO", "ve:applicableOrgSize": ["MICRO"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CEO subsumes CFO", "ve:applicableOrgSize": ["MICRO"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CEO"
+      },
+      {
+        "@id": "ve:CFOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CFO-002",
+        "ve:roleCode": "CFO",
+        "ve:roleName": "Chief Financial Officer",
+        "ve:roleCategory": "L1-CSuite-Core",
+        "ve:primaryContext": "Financial, Investment, Treasury, Compliance",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Financial"
+        },
+        "ve:functionalScope": "Financial strategy, capital allocation, investment governance, financial reporting, treasury, audit, tax, investor relations",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP Finance", "Controller", "Treasurer", "FP&A Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CFO subsumes CAO", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CFO subsumes CRO (Risk)", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CFO subsumed by CEO", "ve:applicableOrgSize": ["MICRO"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CFO"
+      },
+      {
+        "@id": "ve:COOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-COO-003",
+        "ve:roleCode": "COO",
+        "ve:roleName": "Chief Operating Officer",
+        "ve:roleCategory": "L1-CSuite-Core",
+        "ve:primaryContext": "Operational, Process, Efficiency, Scalability",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "INFORMED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Operational"
+        },
+        "ve:functionalScope": "Operational excellence, process automation, supply chain, capacity planning, facilities, operational efficiency",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP Operations", "Supply Chain Director", "Facilities Director", "Process Excellence Lead"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "COO subsumes CTO (Tech Ops)", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "PARTIAL", "ve:scopeTransferred": ["IT Operations", "Infrastructure"]},
+          {"ve:pattern": "COO subsumes CHRO", "ve:applicableOrgSize": ["SMALL"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "COO subsumes CPrO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "COO subsumed by CEO", "ve:applicableOrgSize": ["MICRO", "SMALL"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "COO subsumed by CFO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:COO"
+      },
+      {
+        "@id": "ve:CTOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CTO-004",
+        "ve:roleCode": "CTO",
+        "ve:roleName": "Chief Technology Officer",
+        "ve:roleCategory": "L1-CSuite-Core",
+        "ve:primaryContext": "Technology, Architecture, Innovation, Platform",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "RESPONSIBLE",
+          "ve:domainQualifier": "Technology"
+        },
+        "ve:functionalScope": "Technology roadmap, platform architecture, AI/ML strategy, security governance, engineering excellence, technical innovation",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP Engineering", "VP Platform", "Architecture Director", "DevOps Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CTO subsumes CISO", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CTO subsumes CIO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CTO subsumes CDO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CTO subsumes CAIO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CTO subsumed by COO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "PARTIAL"},
+          {"ve:pattern": "CTO subsumed by CPO", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CTO"
+      },
+      {
+        "@id": "ve:CMOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CMO-005",
+        "ve:roleCode": "CMO",
+        "ve:roleName": "Chief Marketing Officer",
+        "ve:roleCategory": "L1-CSuite-Core",
+        "ve:primaryContext": "Market, Brand, Customer, Growth, Demand",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Marketing"
+        },
+        "ve:functionalScope": "Market positioning, brand strategy, demand generation, customer experience, marketing operations, content strategy",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP Marketing", "Brand Director", "Demand Gen Director", "Marketing Ops Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CMO subsumes CCO (Comms)", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CMO subsumes CBO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CMO subsumed by CEO", "ve:applicableOrgSize": ["MICRO", "SMALL"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CMO subsumed by CRO (Revenue)", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CMO"
+      },
+      {
+        "@id": "ve:CPOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CPO-006",
+        "ve:roleCode": "CPO",
+        "ve:roleName": "Chief Product Officer",
+        "ve:roleCategory": "L1-CSuite-Core",
+        "ve:primaryContext": "Product, Customer, Market, Innovation",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "RESPONSIBLE",
+          "ve:domainQualifier": "Product"
+        },
+        "ve:functionalScope": "Product strategy, product roadmap, product-market fit, customer insights, product operations, design leadership",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP Product", "Product Directors", "Head of Design", "UX Research Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CPO subsumes CXO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CPO absorbs Design Lead", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CPO subsumed by CEO", "ve:applicableOrgSize": ["MICRO", "SMALL"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:JobPosting"
+      },
+      {
+        "@id": "ve:CHROPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CHRO-007",
+        "ve:roleCode": "CHRO",
+        "ve:roleName": "Chief Human Resources Officer",
+        "ve:roleCategory": "L1-CSuite-Core",
+        "ve:primaryContext": "People, Culture, Talent, Organization",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "People"
+        },
+        "ve:functionalScope": "Talent acquisition, talent development, culture & engagement, compensation & benefits, HR operations, organizational design, DEI",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP HR", "Talent Acquisition Director", "L&D Director", "HRBP Directors", "Compensation Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CHRO subsumes CKO", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CHRO subsumed by COO", "ve:applicableOrgSize": ["SMALL"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CHRO subsumed by CEO", "ve:applicableOrgSize": ["MICRO"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CHRO"
+      },
+      {
+        "@id": "ve:CIOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CIO-008",
+        "ve:roleCode": "CIO",
+        "ve:roleName": "Chief Information Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Information Systems, IT Operations, Enterprise Applications",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "INFORMED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "RESPONSIBLE",
+          "ve:domainQualifier": "Information Technology"
+        },
+        "ve:functionalScope": "IT infrastructure, enterprise applications, IT service management, IT governance, digital workplace, vendor management",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["COO", "CFO"],
+        "ve:directReports": ["VP IT", "Enterprise Apps Director", "IT Ops Director", "Service Desk Manager"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CIO subsumes IT Director", "ve:applicableOrgSize": ["ALL"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CIO subsumed by CTO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CIO subsumed by COO", "ve:applicableOrgSize": ["SMALL"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CIO"
+      },
+      {
+        "@id": "ve:CISOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CISO-009",
+        "ve:roleCode": "CISO",
+        "ve:roleName": "Chief Information Security Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Security, Compliance, Risk, Privacy",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "INFORMED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Security"
+        },
+        "ve:functionalScope": "Cybersecurity strategy, security operations, incident response, security architecture, compliance, risk management, privacy",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["CTO", "CRO (Risk)", "CLO"],
+        "ve:directReports": ["VP Security", "Security Ops Director", "Security Architect", "Compliance Manager"],
+        "ve:regulatoryRelevance": ["NIST 800-53", "ISO 27001", "SOC 2", "GDPR", "PCI-DSS"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CISO subsumed by CTO", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CISO subsumed by CRO (Risk)", "ve:applicableOrgSize": ["LARGE", "ENTERPRISE"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CISO"
+      },
+      {
+        "@id": "ve:CDOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CDO-010",
+        "ve:roleCode": "CDO",
+        "ve:roleName": "Chief Data Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Data, Analytics, AI/ML, Data Governance",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Data"
+        },
+        "ve:functionalScope": "Data strategy, data governance, data architecture, analytics & BI, data quality, master data management, data monetization",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["CTO", "COO"],
+        "ve:directReports": ["VP Data", "Data Engineering Director", "Analytics Director", "Data Governance Manager"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CDO subsumed by CTO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CDO subsumes CAIO (Data scope)", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CDO"
+      },
+      {
+        "@id": "ve:CRORevenuePattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CRO-011",
+        "ve:roleCode": "CRO",
+        "ve:roleName": "Chief Revenue Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:roleVariant": "Revenue",
+        "ve:primaryContext": "Revenue, Sales, Growth, Customer Success",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Revenue"
+        },
+        "ve:functionalScope": "Revenue strategy, sales operations, customer success, revenue enablement, revenue operations, GTM execution",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP Sales", "VP Customer Success", "RevOps Director", "Sales Enablement Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CRO subsumes CMO (GTM)", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL", "ve:scopeTransferred": ["Demand Gen", "GTM Strategy"]},
+          {"ve:pattern": "CRO subsumes CSO (Sales)", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CRO subsumes CCO (Customer)", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CRO"
+      },
+      {
+        "@id": "ve:CRORiskPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CRR-012",
+        "ve:roleCode": "CRO-Risk",
+        "ve:roleName": "Chief Risk Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:roleVariant": "Risk",
+        "ve:primaryContext": "Risk, Compliance, Governance, Resilience",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "INFORMED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Risk"
+        },
+        "ve:functionalScope": "Enterprise risk management, compliance oversight, audit coordination, business continuity, operational risk, financial risk",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["CFO", "Board Risk Committee"],
+        "ve:directReports": ["VP Risk", "Compliance Director", "Internal Audit Director", "BCP Manager"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CRO-Risk subsumes CISO", "ve:applicableOrgSize": ["LARGE", "ENTERPRISE"], "ve:subsumptionType": "PARTIAL", "ve:scopeTransferred": ["Cyber Risk", "Security Compliance"]},
+          {"ve:pattern": "CRO-Risk subsumed by CFO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CRO"
+      },
+      {
+        "@id": "ve:CCOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CCO-013",
+        "ve:roleCode": "CCO",
+        "ve:roleName": "Chief Customer Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:roleVariant": "Customer",
+        "ve:primaryContext": "Customer, Experience, Retention, Advocacy",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Customer"
+        },
+        "ve:functionalScope": "Customer experience, customer success, customer advocacy, voice of customer, customer journey, NPS/CSAT",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["CRO"],
+        "ve:directReports": ["VP Customer Success", "CX Director", "Customer Advocacy Manager", "Support Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CCO subsumed by CRO (Revenue)", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL"},
+          {"ve:pattern": "CCO subsumed by CMO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CCO"
+      },
+      {
+        "@id": "ve:CCOCommsPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CCM-014",
+        "ve:roleCode": "CCO-Comms",
+        "ve:roleName": "Chief Communications Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:roleVariant": "Communications",
+        "ve:primaryContext": "Communications, PR, Corporate Affairs, Stakeholder Relations",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "RESPONSIBLE",
+          "ve:domainQualifier": "Communications"
+        },
+        "ve:functionalScope": "Corporate communications, PR, media relations, internal communications, executive communications, crisis communications",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP Communications", "PR Director", "Internal Comms Director", "Social Media Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CCO-Comms subsumed by CMO", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CCO"
+      },
+      {
+        "@id": "ve:CLOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CLO-015",
+        "ve:roleCode": "CLO",
+        "ve:roleName": "Chief Legal Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Legal, Compliance, Governance, Contracts",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "INFORMED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "CONSULTED",
+          "ve:metricsRole": "RESPONSIBLE",
+          "ve:domainQualifier": "Legal"
+        },
+        "ve:functionalScope": "Legal strategy, contract management, litigation, IP protection, regulatory compliance, corporate governance, M&A legal",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["Board"],
+        "ve:directReports": ["General Counsel", "VP Legal", "Contracts Director", "IP Counsel", "Compliance Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CLO subsumes General Counsel", "ve:applicableOrgSize": ["ALL"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CLO subsumed by CFO", "ve:applicableOrgSize": ["MICRO", "SMALL"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CLO"
+      },
+      {
+        "@id": "ve:CAOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CAO-016",
+        "ve:roleCode": "CAO",
+        "ve:roleName": "Chief Administrative Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Administration, Operations, Corporate Services",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "INFORMED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "RESPONSIBLE",
+          "ve:domainQualifier": "Administration"
+        },
+        "ve:functionalScope": "Corporate administration, facilities, corporate services, administrative operations, office management, procurement",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["COO", "CFO"],
+        "ve:directReports": ["VP Admin", "Facilities Director", "Procurement Director", "Office Manager"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CAO subsumed by COO", "ve:applicableOrgSize": ["ALL"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CAO subsumed by CFO", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CAO"
+      },
+      {
+        "@id": "ve:CSOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CSO-017",
+        "ve:roleCode": "CSO",
+        "ve:roleName": "Chief Strategy Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Strategy, Planning, Corporate Development, M&A",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "RESPONSIBLE",
+          "ve:strategyRole": "ACCOUNTABLE",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "CONSULTED",
+          "ve:domainQualifier": "Strategy"
+        },
+        "ve:functionalScope": "Corporate strategy, strategic planning, M&A strategy, competitive intelligence, strategic partnerships, portfolio management",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP Strategy", "Corp Dev Director", "Strategic Planning Director", "Competitive Intel Manager"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CSO subsumed by CEO", "ve:applicableOrgSize": ["MICRO", "SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CSO"
+      },
+      {
+        "@id": "ve:CGOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CGO-018",
+        "ve:roleCode": "CGO",
+        "ve:roleName": "Chief Growth Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Growth, Expansion, Market Development",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Growth"
+        },
+        "ve:functionalScope": "Growth strategy, market expansion, new market entry, growth experiments, product-led growth, growth operations",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:directReports": ["VP Growth", "Growth Marketing Director", "Market Expansion Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CGO subsumed by CRO", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL"},
+          {"ve:pattern": "CGO subsumed by CMO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CGO"
+      },
+      {
+        "@id": "ve:CXOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CXO-019",
+        "ve:roleCode": "CXO",
+        "ve:roleName": "Chief Experience Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Experience, Design, UX, Journey",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Experience"
+        },
+        "ve:functionalScope": "Customer experience design, employee experience, service design, journey mapping, experience metrics, design systems",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["CPO", "CMO"],
+        "ve:directReports": ["VP Experience", "UX Director", "Service Design Director", "CX Research Director"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CXO subsumed by CPO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CXO subsumed by CCO (Customer)", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CXO"
+      },
+      {
+        "@id": "ve:CAIOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CAIO-020",
+        "ve:roleCode": "CAIO",
+        "ve:roleName": "Chief AI Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "AI, ML, Automation, Intelligence",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "AI"
+        },
+        "ve:functionalScope": "AI strategy, ML operations, AI governance, AI ethics, AI product development, AI platform, AI security",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["CTO", "CDO"],
+        "ve:directReports": ["VP AI/ML", "AI Engineering Director", "MLOps Director", "AI Ethics Manager"],
+        "ve:emergingRole": true,
+        "ve:regulatoryRelevance": ["EU AI Act", "NIST AI RMF"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CAIO subsumed by CTO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CAIO subsumed by CDO", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CAIO"
+      },
+      {
+        "@id": "ve:CKOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CKO-021",
+        "ve:roleCode": "CKO",
+        "ve:roleName": "Chief Knowledge Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Knowledge, Learning, Content, Enablement",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "INFORMED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "RESPONSIBLE",
+          "ve:domainQualifier": "Knowledge"
+        },
+        "ve:functionalScope": "Knowledge management, organizational learning, content strategy, documentation, training enablement, knowledge systems",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["CHRO", "CTO"],
+        "ve:directReports": ["VP Knowledge", "L&D Director", "Content Director", "Knowledge Systems Manager"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CKO subsumed by CHRO", "ve:applicableOrgSize": ["SMALL", "MEDIUM", "LARGE"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CKO subsumed by CDO", "ve:applicableOrgSize": ["MEDIUM", "LARGE"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CKO"
+      },
+      {
+        "@id": "ve:CBOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CBO-022",
+        "ve:roleCode": "CBO",
+        "ve:roleName": "Chief Brand Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Brand, Identity, Reputation, Perception",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Brand"
+        },
+        "ve:functionalScope": "Brand strategy, brand identity, brand architecture, brand governance, brand perception, brand valuation",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["CMO"],
+        "ve:directReports": ["VP Brand", "Brand Strategy Director", "Creative Director", "Brand Research Manager"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CBO subsumed by CMO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CBO"
+      },
+      {
+        "@id": "ve:CPrOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CPRO-023",
+        "ve:roleCode": "CPrO",
+        "ve:roleName": "Chief Procurement Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Procurement, Supply Chain, Vendor, Sourcing",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "INFORMED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Procurement"
+        },
+        "ve:functionalScope": "Procurement strategy, vendor management, sourcing, contract negotiation, supplier relationships, procurement operations",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "COO",
+        "ve:alternativeReportsTo": ["CFO"],
+        "ve:directReports": ["VP Procurement", "Sourcing Director", "Vendor Management Director", "Category Managers"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CPrO subsumed by COO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CPrO subsumed by CFO", "ve:applicableOrgSize": ["SMALL"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CPrO"
+      },
+      {
+        "@id": "ve:CEthOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CETHO-024",
+        "ve:roleCode": "CEthO",
+        "ve:roleName": "Chief Ethics Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Ethics, Integrity, Conduct, Values",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "CONSULTED",
+          "ve:objectivesRole": "RESPONSIBLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Ethics"
+        },
+        "ve:functionalScope": "Ethics policy, code of conduct, ethics training, ethics investigations, AI ethics, privacy ethics, whistleblower management",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["CLO", "Board"],
+        "ve:directReports": ["VP Ethics & Compliance", "Ethics Director", "Investigation Manager"],
+        "ve:emergingRole": true,
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CEthO subsumed by CLO", "ve:applicableOrgSize": ["ALL"], "ve:subsumptionType": "FULL"},
+          {"ve:pattern": "CEthO subsumed by CHRO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "PARTIAL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CEthO"
+      },
+      {
+        "@id": "ve:CSustOPattern",
+        "@type": "ve:RolePattern",
+        "ve:roleId": "CSUITE-CSUSTO-025",
+        "ve:roleCode": "CSustO",
+        "ve:roleName": "Chief Sustainability Officer",
+        "ve:roleCategory": "L1-CSuite-Extended",
+        "ve:primaryContext": "Sustainability, ESG, Environment, Social Responsibility",
+        "ve:vsomAccountability": {
+          "ve:visionRole": "CONSULTED",
+          "ve:strategyRole": "RESPONSIBLE",
+          "ve:objectivesRole": "ACCOUNTABLE",
+          "ve:metricsRole": "ACCOUNTABLE",
+          "ve:domainQualifier": "Sustainability"
+        },
+        "ve:functionalScope": "Sustainability strategy, ESG reporting, environmental impact, carbon footprint, social responsibility, sustainable operations",
+        "ve:okrCascadeLevel": 1,
+        "ve:reportsTo": "CEO",
+        "ve:alternativeReportsTo": ["COO", "Board ESG Committee"],
+        "ve:directReports": ["VP Sustainability", "ESG Director", "Environmental Director", "CSR Manager"],
+        "ve:emergingRole": true,
+        "ve:regulatoryRelevance": ["CSRD", "SEC Climate Rules", "GRI", "SASB"],
+        "ve:commonSubsumptions": [
+          {"ve:pattern": "CSustO subsumed by COO", "ve:applicableOrgSize": ["SMALL", "MEDIUM"], "ve:subsumptionType": "FULL"}
+        ],
+        "ve:schemaOrgMapping": "schema:CSustO"
+      }
+    ]
+  },
+
+  "ve:RACIXModel": {
+    "@type": "rrrr:ResponsibilityModel",
+    "rrrr:modelName": "RACI-X Extended",
+    "rrrr:modelVersion": "1.1.0",
+    "rrrr:roles": [
+      {"code": "R", "name": "Responsible", "description": "Does the work to complete the task"},
+      {"code": "A", "name": "Accountable", "description": "Ultimately answerable for the activity - ONE per activity"},
+      {"code": "C", "name": "Consulted", "description": "Provides input and expertise before decision/action"},
+      {"code": "I", "name": "Informed", "description": "Kept up-to-date on progress and outcomes"},
+      {"code": "S", "name": "Supporting", "description": "Provides resources/expertise without ownership"},
+      {"code": "D", "name": "Delegated", "description": "Accountability retained, responsibility delegated with authority"},
+      {"code": "O", "name": "Overlap", "description": "Formal/informal shared responsibility requiring CollaborationProtocol"}
+    ],
+    "rrrr:validationRules": [
+      "Exactly one Accountable (A) per activity",
+      "At least one Responsible (R) per activity",
+      "Delegated (D) requires explicit DelegationChain definition",
+      "Overlap (O) requires CollaborationProtocol specification"
+    ]
+  },
+
+  "ve:OrganizationSizeDefinitions": {
+    "@type": "rrrr:OrganizationSizeTaxonomy",
+    "rrrr:sizes": [
+      {"code": "MICRO", "name": "Micro", "employeeRange": "1-10", "typicalCSuiteCount": "1-2", "description": "Founder/CEO often covers multiple C-Suite functions"},
+      {"code": "SMALL", "name": "Small", "employeeRange": "11-50", "typicalCSuiteCount": "2-4", "description": "Core C-Suite with significant role subsumption"},
+      {"code": "MEDIUM", "name": "Medium", "employeeRange": "51-250", "typicalCSuiteCount": "4-8", "description": "Expanded C-Suite with selective specialization"},
+      {"code": "LARGE", "name": "Large", "employeeRange": "251-1000", "typicalCSuiteCount": "8-12", "description": "Full C-Suite with most functions represented"},
+      {"code": "ENTERPRISE", "name": "Enterprise", "employeeRange": "1000+", "typicalCSuiteCount": "12-20+", "description": "Complete C-Suite with specialized and emerging roles"}
+    ]
+  },
+
+  "ve:SubsumptionConfiguration": {
+    "@type": "rrrr:SubsumptionModel",
+    "rrrr:subsumptionTypes": [
+      {"code": "FULL", "name": "Full Subsumption", "description": "Complete role absorption - all responsibilities transferred"},
+      {"code": "PARTIAL", "name": "Partial Subsumption", "description": "Specific scope transferred, remainder retained or eliminated"},
+      {"code": "TEMPORARY", "name": "Temporary Subsumption", "description": "Time-bounded coverage (e.g., interim, parental leave)"},
+      {"code": "DELEGATION", "name": "Delegation", "description": "Cascaded authority chain with accountability retained at source"}
+    ],
+    "rrrr:subsumptionProperties": {
+      "scopeTransferred": "Array of specific responsibilities transferred",
+      "effectiveDate": "When subsumption takes effect",
+      "expirationDate": "When subsumption ends (for TEMPORARY)",
+      "retainedBy": "Role retaining accountability in DELEGATION",
+      "collaborationProtocol": "How subsumed and subsuming roles collaborate"
+    }
+  },
+
+  "ve:ManagementTierCascade": {
+    "@type": "rrrr:ManagementHierarchy",
+    "rrrr:tiers": [
+      {"tier": 0, "name": "L0-Enterprise", "typicalRoles": ["CEO", "Board"], "okrLevel": "Enterprise", "accountableTo": "Board/Shareholders"},
+      {"tier": 1, "name": "L1-CSuite", "typicalRoles": ["CFO", "COO", "CTO", "CMO", "CPO", "CHRO", "CIO", "CISO", "CDO", "CRO", "CCO", "CLO", "CAO", "CSO", "CGO", "CXO", "CAIO", "CKO", "CBO", "CPrO", "CEthO", "CSustO"], "okrLevel": "Functional", "accountableTo": "L0"},
+      {"tier": 2, "name": "L2-Directors", "typicalRoles": ["VP", "Director", "Head of"], "okrLevel": "Departmental", "accountableTo": "L1 (OKR Delivery Owners)"},
+      {"tier": 3, "name": "L3-Managers", "typicalRoles": ["Manager", "Lead", "Principal"], "okrLevel": "Team", "accountableTo": "L2"},
+      {"tier": 4, "name": "L4-ICs", "typicalRoles": ["Specialist", "Analyst", "Engineer", "Designer"], "okrLevel": "Individual", "accountableTo": "L3"}
+    ]
+  },
+
+  "ve:DiscoveryQuestions": {
+    "@type": "rrrr:RoleDiscoveryFramework",
+    "rrrr:phases": [
+      {
+        "phase": 1,
+        "name": "Organization Profiling",
+        "questions": [
+          {"id": "DP-001", "question": "What is your organization's approximate employee count?", "mappedTo": "OrganizationSize"},
+          {"id": "DP-002", "question": "What industry vertical are you in?", "mappedTo": "IndustryVertical"},
+          {"id": "DP-003", "question": "What governance model do you follow? (Public, Private, PE-backed, Family-owned, Non-profit)", "mappedTo": "GovernanceModel"},
+          {"id": "DP-004", "question": "How would you describe your organization's AI maturity?", "mappedTo": "AIMaturityLevel"}
+        ]
+      },
+      {
+        "phase": 2,
+        "name": "Role Discovery",
+        "questions": [
+          {"id": "RD-001", "question": "Who is accountable for overall company strategy?", "expectedPattern": ["CEO", "Managing Director"]},
+          {"id": "RD-002", "question": "Who is accountable for financial performance and reporting?", "expectedPattern": ["CFO", "Finance Director", "CEO"]},
+          {"id": "RD-003", "question": "Who is accountable for technology strategy and delivery?", "expectedPattern": ["CTO", "CIO", "VP Engineering", "CEO"]},
+          {"id": "RD-004", "question": "Who is accountable for revenue and sales?", "expectedPattern": ["CRO", "VP Sales", "CEO", "CMO"]},
+          {"id": "RD-005", "question": "Who is accountable for marketing and brand?", "expectedPattern": ["CMO", "VP Marketing", "CEO"]},
+          {"id": "RD-006", "question": "Who is accountable for product strategy?", "expectedPattern": ["CPO", "VP Product", "CTO", "CEO"]},
+          {"id": "RD-007", "question": "Who is accountable for people and culture?", "expectedPattern": ["CHRO", "VP HR", "COO", "CEO"]},
+          {"id": "RD-008", "question": "Who is accountable for operations?", "expectedPattern": ["COO", "VP Operations", "CEO"]},
+          {"id": "RD-009", "question": "Who is accountable for data strategy?", "expectedPattern": ["CDO", "CTO", "CIO"]},
+          {"id": "RD-010", "question": "Who is accountable for security and risk?", "expectedPattern": ["CISO", "CRO-Risk", "CTO", "CLO"]},
+          {"id": "RD-011", "question": "Who is accountable for AI strategy and governance?", "expectedPattern": ["CAIO", "CTO", "CDO"]},
+          {"id": "RD-012", "question": "Who is accountable for sustainability/ESG?", "expectedPattern": ["CSustO", "COO", "CEO"]}
+        ]
+      },
+      {
+        "phase": 3,
+        "name": "Subsumption Detection",
+        "questions": [
+          {"id": "SD-001", "question": "Does [Role X] also cover responsibilities typically held by [Role Y]?", "detectsPattern": "Subsumption"},
+          {"id": "SD-002", "question": "Which specific responsibilities from [Role Y] are covered by [Role X]?", "detectsPattern": "ScopeTransfer"},
+          {"id": "SD-003", "question": "Is this a permanent or interim arrangement?", "detectsPattern": "SubsumptionType"},
+          {"id": "SD-004", "question": "Who else supports these responsibilities?", "detectsPattern": "Overlap"}
+        ]
+      }
+    ]
+  },
+
+  "ve:AgentFunctions": {
+    "@type": "pf:AgentFunctionRegistry",
+    "functions": [
+      {"name": "orgProfileDiscovery", "agent": "RRRDiscoveryAgent", "inputs": ["organizationId", "discoveryContext"], "outputs": ["OrganizationProfile"]},
+      {"name": "rolePatternMatch", "agent": "RRRDiscoveryAgent", "inputs": ["OrganizationProfile", "discoveryResponses"], "outputs": ["RoleInstance[]"]},
+      {"name": "subsumptionDetect", "agent": "RRRDiscoveryAgent", "inputs": ["RoleInstance[]", "discoveryResponses"], "outputs": ["SubsumptionConfiguration[]"]},
+      {"name": "tierCascadeMap", "agent": "RRRDiscoveryAgent", "inputs": ["RoleInstance[]", "OrganizationProfile"], "outputs": ["ManagementTier[]"]},
+      {"name": "resolveEffectiveRACI", "agent": "RACIResolutionAgent", "inputs": ["activity", "RoleInstance[]", "SubsumptionConfiguration[]"], "outputs": ["RACIXAssignment[]"]},
+      {"name": "validateSingleAccountable", "agent": "RACIResolutionAgent", "inputs": ["RACIXAssignment[]"], "outputs": ["ValidationResult"]},
+      {"name": "detectOverlapConflicts", "agent": "RACIResolutionAgent", "inputs": ["RACIXAssignment[]"], "outputs": ["OverlapConflict[]"]},
+      {"name": "generateTierOKRs", "agent": "OKRCascadeAgent", "inputs": ["ManagementTier", "parentOKR", "RoleInstance[]"], "outputs": ["OKR[]"]},
+      {"name": "validateCascadeAlignment", "agent": "OKRCascadeAgent", "inputs": ["OKR[]", "ManagementTier[]"], "outputs": ["CascadeValidationResult"]},
+      {"name": "trackDeliveryAccountability", "agent": "OKRCascadeAgent", "inputs": ["OKR[]", "ManagementTier", "reportingPeriod"], "outputs": ["OKRProgressReport"]}
+    ]
+  }
+}
