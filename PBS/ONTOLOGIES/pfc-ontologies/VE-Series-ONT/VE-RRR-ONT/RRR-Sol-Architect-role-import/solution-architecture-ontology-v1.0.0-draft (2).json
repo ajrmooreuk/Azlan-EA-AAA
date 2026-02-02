@@ -1,0 +1,843 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "baiv": "https://baiv.ai/ontology/",
+    "pf": "https://platform.ai/ontology/",
+    "sa": "https://platform.ai/ontology/solution-architecture/"
+  },
+  "@id": "sa:SolutionArchitectureOntology",
+  "@type": "baiv:OntologyDefinition",
+  
+  "metadata": {
+    "name": "Solution Architecture Ontology",
+    "version": "1.0.0-draft",
+    "status": "draft",
+    "description": "Ontology for Solution Architect Agent operations within PF-Core platform",
+    "schemaOrgAlignment": "95%",
+    "oaaRegistryCompliant": true,
+    "created": "2025-11-30",
+    "lastModified": "2025-11-30",
+    "maintainer": "Platform Architecture Team",
+    "dependencies": [
+      "vsom-ontology",
+      "customer-organization-ontology",
+      "gap-analysis-ontology",
+      "cmo-okr-ontology"
+    ]
+  },
+
+  "entities": [
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:SolutionArchitecture",
+      "name": "SolutionArchitecture",
+      "description": "Root entity representing a complete solution architecture",
+      "schemaOrgBase": "SoftwareApplication",
+      "properties": [
+        {
+          "name": "architectureId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the architecture"
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:name",
+          "description": "Human-readable name for the architecture"
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:description",
+          "description": "Detailed description of the architecture purpose and scope"
+        },
+        {
+          "name": "version",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:version",
+          "description": "Semantic version of the architecture"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["draft", "review", "approved", "implemented", "deprecated"]
+          },
+          "description": "Current lifecycle status of the architecture"
+        },
+        {
+          "name": "vsomAlignment",
+          "type": "Object",
+          "required": true,
+          "description": "VSOM strategic alignment context",
+          "properties": {
+            "strategicObjectiveIds": "ItemList",
+            "okrIds": "ItemList",
+            "valuePropositionId": "Text"
+          }
+        },
+        {
+          "name": "tenantId",
+          "type": "Text",
+          "required": true,
+          "description": "Multi-tenant isolation identifier"
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "required": true,
+          "schemaOrgProperty": "schema:dateCreated"
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "required": true,
+          "schemaOrgProperty": "schema:dateModified"
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:HighLevelDesign",
+      "name": "HighLevelDesign",
+      "description": "High-Level Design specification showing components and integrations",
+      "schemaOrgBase": "TechArticle",
+      "properties": [
+        {
+          "name": "hldId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the HLD"
+        },
+        {
+          "name": "architectureId",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to parent SolutionArchitecture"
+        },
+        {
+          "name": "components",
+          "type": "ItemList",
+          "required": true,
+          "itemType": "sa:ArchitectureComponent",
+          "description": "List of architecture components"
+        },
+        {
+          "name": "integrations",
+          "type": "ItemList",
+          "required": true,
+          "itemType": "sa:IntegrationPoint",
+          "description": "List of integration points"
+        },
+        {
+          "name": "dataFlows",
+          "type": "ItemList",
+          "required": true,
+          "itemType": "sa:DataFlow",
+          "description": "Data flow definitions"
+        },
+        {
+          "name": "securityArchitecture",
+          "type": "Object",
+          "required": true,
+          "description": "Security architecture overview"
+        },
+        {
+          "name": "deploymentArchitecture",
+          "type": "Object",
+          "required": true,
+          "description": "Deployment topology and infrastructure"
+        },
+        {
+          "name": "ontologyCompliance",
+          "type": "Object",
+          "required": true,
+          "description": "Schema.org and OAA Registry compliance scores"
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:LowLevelDesign",
+      "name": "LowLevelDesign",
+      "description": "Low-Level Design with detailed implementation specifications",
+      "schemaOrgBase": "TechArticle",
+      "properties": [
+        {
+          "name": "lldId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the LLD"
+        },
+        {
+          "name": "hldId",
+          "type": "Text",
+          "required": true,
+          "description": "Reference to parent HighLevelDesign"
+        },
+        {
+          "name": "databaseSchemas",
+          "type": "ItemList",
+          "required": true,
+          "itemType": "sa:DatabaseSchema",
+          "description": "Detailed database schema specifications"
+        },
+        {
+          "name": "apiSpecifications",
+          "type": "ItemList",
+          "required": true,
+          "itemType": "sa:APISpecification",
+          "description": "API endpoint specifications"
+        },
+        {
+          "name": "componentDetails",
+          "type": "ItemList",
+          "required": true,
+          "itemType": "sa:ComponentDetail",
+          "description": "Detailed component specifications"
+        },
+        {
+          "name": "agentHandoffPackages",
+          "type": "ItemList",
+          "required": false,
+          "itemType": "sa:AgentContextPackage",
+          "description": "Context packages for downstream agents"
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:ArchitectureComponent",
+      "name": "ArchitectureComponent",
+      "description": "Individual component within the architecture",
+      "schemaOrgBase": "SoftwareSourceCode",
+      "properties": [
+        {
+          "name": "componentId",
+          "type": "Text",
+          "required": true,
+          "description": "Unique identifier for the component"
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:name"
+        },
+        {
+          "name": "type",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "frontend",
+              "backend",
+              "database",
+              "agent",
+              "integration",
+              "infrastructure",
+              "security",
+              "analytics"
+            ]
+          }
+        },
+        {
+          "name": "technology",
+          "type": "Text",
+          "required": true,
+          "description": "Primary technology stack (e.g., Next.js, Supabase, Claude SDK)"
+        },
+        {
+          "name": "responsibilities",
+          "type": "ItemList",
+          "required": true,
+          "description": "List of component responsibilities"
+        },
+        {
+          "name": "dependencies",
+          "type": "ItemList",
+          "required": false,
+          "description": "Component dependencies"
+        },
+        {
+          "name": "interfaces",
+          "type": "ItemList",
+          "required": true,
+          "itemType": "sa:ComponentInterface",
+          "description": "Exposed interfaces"
+        },
+        {
+          "name": "patternIds",
+          "type": "ItemList",
+          "required": false,
+          "description": "Applied architecture patterns"
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:IntegrationPoint",
+      "name": "IntegrationPoint",
+      "description": "Integration point with external system or service",
+      "schemaOrgBase": "WebAPI",
+      "properties": [
+        {
+          "name": "integrationId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:name"
+        },
+        {
+          "name": "integrationType",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["api", "webhook", "mcp", "database", "event", "file"]
+          }
+        },
+        {
+          "name": "direction",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["inbound", "outbound", "bidirectional"]
+          }
+        },
+        {
+          "name": "protocol",
+          "type": "Text",
+          "required": true,
+          "description": "Communication protocol (REST, GraphQL, gRPC, etc.)"
+        },
+        {
+          "name": "authentication",
+          "type": "Object",
+          "required": true,
+          "description": "Authentication mechanism"
+        },
+        {
+          "name": "dataContract",
+          "type": "Object",
+          "required": true,
+          "description": "Data contract specification"
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:DataFlow",
+      "name": "DataFlow",
+      "description": "Data flow between components",
+      "schemaOrgBase": "DataFeed",
+      "properties": [
+        {
+          "name": "flowId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "sourceComponentId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "targetComponentId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "dataType",
+          "type": "Text",
+          "required": true,
+          "description": "Type of data being transferred"
+        },
+        {
+          "name": "frequency",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["realtime", "near-realtime", "batch", "on-demand"]
+          }
+        },
+        {
+          "name": "securityClassification",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["public", "internal", "confidential", "restricted"]
+          }
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:ArchitecturePattern",
+      "name": "ArchitecturePattern",
+      "description": "Reusable architecture pattern",
+      "schemaOrgBase": "HowTo",
+      "properties": [
+        {
+          "name": "patternId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:name"
+        },
+        {
+          "name": "category",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "data-access",
+              "integration",
+              "security",
+              "scalability",
+              "multi-tenancy",
+              "agent-orchestration",
+              "ontology",
+              "ui-ux"
+            ]
+          }
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:description"
+        },
+        {
+          "name": "applicabilityCriteria",
+          "type": "ItemList",
+          "required": true,
+          "description": "When to apply this pattern"
+        },
+        {
+          "name": "implementation",
+          "type": "Object",
+          "required": true,
+          "description": "Implementation guidance"
+        },
+        {
+          "name": "tradeoffs",
+          "type": "Object",
+          "required": true,
+          "description": "Pattern tradeoffs and considerations"
+        },
+        {
+          "name": "relatedPatterns",
+          "type": "ItemList",
+          "required": false,
+          "description": "Related or complementary patterns"
+        },
+        {
+          "name": "transferability",
+          "type": "Object",
+          "required": true,
+          "description": "Cross-venture transferability metadata",
+          "properties": {
+            "baiv": "Boolean",
+            "air": "Boolean",
+            "w4m": "Boolean",
+            "modifications": "ItemList"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:ArchitectureDecisionRecord",
+      "name": "ArchitectureDecisionRecord",
+      "description": "Record of architectural decision with rationale",
+      "schemaOrgBase": "Report",
+      "properties": [
+        {
+          "name": "adrId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "Text",
+          "required": true,
+          "schemaOrgProperty": "schema:headline"
+        },
+        {
+          "name": "status",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["proposed", "accepted", "deprecated", "superseded"]
+          }
+        },
+        {
+          "name": "context",
+          "type": "Text",
+          "required": true,
+          "description": "Decision context and background"
+        },
+        {
+          "name": "decision",
+          "type": "Text",
+          "required": true,
+          "description": "The decision made"
+        },
+        {
+          "name": "rationale",
+          "type": "Text",
+          "required": true,
+          "description": "Reasoning behind the decision"
+        },
+        {
+          "name": "alternatives",
+          "type": "ItemList",
+          "required": true,
+          "description": "Alternatives considered"
+        },
+        {
+          "name": "consequences",
+          "type": "Object",
+          "required": true,
+          "description": "Positive and negative consequences"
+        },
+        {
+          "name": "vsomAlignment",
+          "type": "Object",
+          "required": true,
+          "description": "VSOM strategic alignment"
+        },
+        {
+          "name": "decisionDate",
+          "type": "Date",
+          "required": true
+        },
+        {
+          "name": "decisionMaker",
+          "type": "Text",
+          "required": true,
+          "description": "Agent or human that made the decision"
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:AgentContextPackage",
+      "name": "AgentContextPackage",
+      "description": "Context package for downstream agent handoffs",
+      "schemaOrgBase": "CreativeWork",
+      "properties": [
+        {
+          "name": "packageId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "targetAgent",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": [
+              "database-designer",
+              "ui-ux-builder",
+              "integration-agent",
+              "security-agent",
+              "devops-agent",
+              "qa-agent"
+            ]
+          }
+        },
+        {
+          "name": "architectureContext",
+          "type": "Object",
+          "required": true,
+          "description": "Relevant architecture context for the agent"
+        },
+        {
+          "name": "specifications",
+          "type": "Object",
+          "required": true,
+          "description": "Detailed specifications for the agent's domain"
+        },
+        {
+          "name": "constraints",
+          "type": "ItemList",
+          "required": true,
+          "description": "Constraints the agent must respect"
+        },
+        {
+          "name": "acceptanceCriteria",
+          "type": "ItemList",
+          "required": true,
+          "description": "Criteria for successful completion"
+        },
+        {
+          "name": "dependencies",
+          "type": "ItemList",
+          "required": false,
+          "description": "Dependencies on other agent outputs"
+        },
+        {
+          "name": "ontologyReferences",
+          "type": "ItemList",
+          "required": true,
+          "description": "Relevant ontologies for the agent"
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:DatabaseSchema",
+      "name": "DatabaseSchema",
+      "description": "Database schema specification",
+      "schemaOrgBase": "DataCatalog",
+      "properties": [
+        {
+          "name": "schemaId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "tableName",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "columns",
+          "type": "ItemList",
+          "required": true,
+          "description": "Column definitions"
+        },
+        {
+          "name": "jsonbFields",
+          "type": "ItemList",
+          "required": false,
+          "description": "JSONB field specifications for ontology storage"
+        },
+        {
+          "name": "indexes",
+          "type": "ItemList",
+          "required": true,
+          "description": "Index definitions"
+        },
+        {
+          "name": "relationships",
+          "type": "ItemList",
+          "required": false,
+          "description": "Foreign key relationships"
+        },
+        {
+          "name": "rlsPolicies",
+          "type": "ItemList",
+          "required": true,
+          "description": "Row-Level Security policy definitions"
+        },
+        {
+          "name": "ontologyMapping",
+          "type": "Object",
+          "required": true,
+          "description": "Mapping to ontology entities"
+        }
+      ]
+    },
+    {
+      "@type": "sa:EntityDefinition",
+      "@id": "sa:APISpecification",
+      "name": "APISpecification",
+      "description": "API endpoint specification",
+      "schemaOrgBase": "WebAPI",
+      "properties": [
+        {
+          "name": "apiId",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "endpoint",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "method",
+          "type": "Text",
+          "required": true,
+          "constraints": {
+            "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"]
+          }
+        },
+        {
+          "name": "description",
+          "type": "Text",
+          "required": true
+        },
+        {
+          "name": "requestSchema",
+          "type": "Object",
+          "required": false,
+          "description": "JSON Schema for request body"
+        },
+        {
+          "name": "responseSchema",
+          "type": "Object",
+          "required": true,
+          "description": "JSON Schema for response"
+        },
+        {
+          "name": "authentication",
+          "type": "Text",
+          "required": true,
+          "description": "Authentication requirement"
+        },
+        {
+          "name": "rateLimit",
+          "type": "Object",
+          "required": false,
+          "description": "Rate limiting configuration"
+        },
+        {
+          "name": "ontologyMapping",
+          "type": "Object",
+          "required": true,
+          "description": "Mapping to ontology operations"
+        }
+      ]
+    }
+  ],
+
+  "relationshipMappings": {
+    "description": "How entities relate to each other",
+    "relationships": [
+      {
+        "from": "SolutionArchitecture",
+        "to": "HighLevelDesign",
+        "relationship": "HAS_HLD",
+        "cardinality": "1:N"
+      },
+      {
+        "from": "HighLevelDesign",
+        "to": "LowLevelDesign",
+        "relationship": "HAS_LLD",
+        "cardinality": "1:N"
+      },
+      {
+        "from": "HighLevelDesign",
+        "to": "ArchitectureComponent",
+        "relationship": "CONTAINS_COMPONENT",
+        "cardinality": "1:N"
+      },
+      {
+        "from": "HighLevelDesign",
+        "to": "IntegrationPoint",
+        "relationship": "HAS_INTEGRATION",
+        "cardinality": "1:N"
+      },
+      {
+        "from": "HighLevelDesign",
+        "to": "DataFlow",
+        "relationship": "HAS_DATAFLOW",
+        "cardinality": "1:N"
+      },
+      {
+        "from": "ArchitectureComponent",
+        "to": "ArchitecturePattern",
+        "relationship": "APPLIES_PATTERN",
+        "cardinality": "N:N"
+      },
+      {
+        "from": "SolutionArchitecture",
+        "to": "ArchitectureDecisionRecord",
+        "relationship": "HAS_ADR",
+        "cardinality": "1:N"
+      },
+      {
+        "from": "LowLevelDesign",
+        "to": "AgentContextPackage",
+        "relationship": "GENERATES_PACKAGE",
+        "cardinality": "1:N"
+      },
+      {
+        "from": "LowLevelDesign",
+        "to": "DatabaseSchema",
+        "relationship": "HAS_SCHEMA",
+        "cardinality": "1:N"
+      },
+      {
+        "from": "LowLevelDesign",
+        "to": "APISpecification",
+        "relationship": "HAS_API",
+        "cardinality": "1:N"
+      }
+    ]
+  },
+
+  "usageGuidelines": {
+    "description": "How to use this ontology effectively",
+    "bestPractices": [
+      "Always maintain VSOM alignment in SolutionArchitecture",
+      "Generate HLD before LLD for proper decomposition",
+      "Create ADRs for all significant decisions",
+      "Include ontologyMapping in all database and API specs",
+      "Package context for each downstream agent systematically",
+      "Apply patterns from pattern library where applicable",
+      "Ensure all entities have proper tenant isolation"
+    ],
+    "antiPatterns": [
+      "Creating LLD without approved HLD",
+      "Skipping VSOM alignment validation",
+      "Omitting security considerations",
+      "Missing RLS policy definitions",
+      "Incomplete agent context packages"
+    ]
+  },
+
+  "agentIntegration": {
+    "description": "How agents interact with this ontology",
+    "producers": [
+      {
+        "agent": "pf-core-solution-architect",
+        "produces": ["SolutionArchitecture", "HighLevelDesign", "LowLevelDesign", "ArchitectureDecisionRecord", "AgentContextPackage"]
+      }
+    ],
+    "consumers": [
+      {
+        "agent": "database-designer",
+        "consumes": ["DatabaseSchema", "AgentContextPackage"]
+      },
+      {
+        "agent": "ui-ux-builder",
+        "consumes": ["ArchitectureComponent", "APISpecification", "AgentContextPackage"]
+      },
+      {
+        "agent": "integration-agent",
+        "consumes": ["IntegrationPoint", "DataFlow", "AgentContextPackage"]
+      },
+      {
+        "agent": "ontology-architect",
+        "consumes": ["All entities for compliance validation"]
+      }
+    ]
+  }
+}
