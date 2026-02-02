@@ -1647,154 +1647,154 @@
       "ruleId": "BR-VP-001",
       "name": "VP Requires Primary Statement",
       "condition": "IF a ValueProposition is created",
-      "constraint": "THEN primaryStatement MUST be defined with length >= 50 characters",
+      "action": "THEN primaryStatement MUST be defined with length >= 50 characters",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-002",
       "name": "VP Must Target ICP",
       "condition": "IF a ValueProposition is created",
-      "constraint": "THEN it MUST have at least one targetsICP relationship to IdealCustomerProfile or RoleBasedICP",
+      "action": "THEN it MUST have at least one targetsICP relationship to IdealCustomerProfile or RoleBasedICP",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-003",
       "name": "VP Must Address Problem",
       "condition": "IF a ValueProposition is created",
-      "constraint": "THEN it MUST have at least one addressesProblem relationship",
+      "action": "THEN it MUST have at least one addressesProblem relationship",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-004",
       "name": "VP Must Have Evidence",
       "condition": "IF a ValueProposition has status = 'Validated' OR status = 'Active'",
-      "constraint": "THEN it MUST have at least one supportedByEvidence relationship",
+      "action": "THEN it MUST have at least one supportedByEvidence relationship",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-005",
       "name": "VP Must Align to VSOM Objective",
       "condition": "IF a ValueProposition is created",
-      "constraint": "THEN it MUST have at least one alignsToObjective relationship to vsom:ObjectivesComponent",
+      "action": "THEN it MUST have at least one alignsToObjective relationship to vsom:ObjectivesComponent",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-006",
       "name": "VP Must Be Org Context Scoped",
       "condition": "IF a ValueProposition is created",
-      "constraint": "THEN organizationContextRef MUST reference a valid org:OrganizationContext",
+      "action": "THEN organizationContextRef MUST reference a valid org:OrganizationContext",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-007",
       "name": "Problem Must Have Pain Points",
       "condition": "IF a Problem is created",
-      "constraint": "THEN it MUST have at least one problemHasPainPoint relationship",
+      "action": "THEN it MUST have at least one problemHasPainPoint relationship",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-008",
       "name": "Problem Must Be Validated",
       "condition": "IF a Problem is used in active ValueProposition",
-      "constraint": "THEN it MUST have at least one problemValidatedBy relationship",
+      "action": "THEN it MUST have at least one problemValidatedBy relationship",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-009",
       "name": "Critical Problem Maps to Epic",
       "condition": "IF Problem.severity = 'Critical' OR Problem.severity = 'Major'",
-      "constraint": "THEN Problem SHOULD have mapsToEpic relationship to efs:Epic",
+      "action": "THEN Problem SHOULD have mapsToEpic relationship to efs:Epic",
       "severity": "warning"
     },
     {
       "ruleId": "BR-VP-010",
       "name": "Solution Must Address Problem",
       "condition": "IF a Solution is created",
-      "constraint": "THEN it MUST have at least one solutionAddressesProblem relationship",
+      "action": "THEN it MUST have at least one solutionAddressesProblem relationship",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-011",
       "name": "Solution Must Deliver Benefit",
       "condition": "IF a Solution is created",
-      "constraint": "THEN it MUST have at least one solutionDeliversBenefit relationship",
+      "action": "THEN it MUST have at least one solutionDeliversBenefit relationship",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-012",
       "name": "Solution Must Have Differentiator",
       "condition": "IF a Solution is created",
-      "constraint": "THEN it MUST have at least one solutionDifferentiatedBy relationship",
+      "action": "THEN it MUST have at least one solutionDifferentiatedBy relationship",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-013",
       "name": "Benefit Must Mitigate Pain",
       "condition": "IF a Benefit is created",
-      "constraint": "THEN it MUST have at least one benefitMitigatesPain relationship",
+      "action": "THEN it MUST have at least one benefitMitigatesPain relationship",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-014",
       "name": "ICP Must Have Stakeholder",
       "condition": "IF an IdealCustomerProfile or RoleBasedICP is created",
-      "constraint": "THEN it MUST have at least one icpHasStakeholder relationship",
+      "action": "THEN it MUST have at least one icpHasStakeholder relationship",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-015",
       "name": "ICP Should Map to Persona",
       "condition": "IF an IdealCustomerProfile or RoleBasedICP is used in active ValueProposition",
-      "constraint": "THEN it SHOULD have at least one manifestsAsPersona relationship to efs:Persona",
+      "action": "THEN it SHOULD have at least one manifestsAsPersona relationship to efs:Persona",
       "severity": "warning"
     },
     {
       "ruleId": "BR-VP-016",
       "name": "Benefit Should Realize in Story",
       "condition": "IF a Benefit is in active ValueProposition",
-      "constraint": "THEN it SHOULD have at least one realizesInStory relationship to efs:UserStory",
+      "action": "THEN it SHOULD have at least one realizesInStory relationship to efs:UserStory",
       "severity": "warning"
     },
     {
       "ruleId": "BR-VP-017",
       "name": "ICP Hierarchy Must Match Role Hierarchy",
       "condition": "IF vp:RoleBasedICP.roleRef.reportsTo = roleB",
-      "constraint": "THEN vp:RoleBasedICP.icpReportsTo MUST reference RoleBasedICP where roleRef = roleB",
+      "action": "THEN vp:RoleBasedICP.icpReportsTo MUST reference RoleBasedICP where roleRef = roleB",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-018",
       "name": "Problem Severity Roll-Up Constraint",
       "condition": "IF vp:Problem.problemRollsUpTo = parentProblem",
-      "constraint": "THEN vp:Problem.severity ordinal MUST be <= parentProblem.severity ordinal (Critical=1 > Major=2 > Moderate=3 > Minor=4)",
+      "action": "THEN vp:Problem.severity ordinal MUST be <= parentProblem.severity ordinal (Critical=1 > Major=2 > Moderate=3 > Minor=4)",
       "severity": "warning"
     },
     {
       "ruleId": "BR-VP-019",
       "name": "VP RACI Must Have One Accountable",
       "condition": "IF vp:VPRACIAssignment.vpActivity exists for a specific activity",
-      "constraint": "THEN EXACTLY ONE VPRACIAssignment for that activity MUST have raciType = 'Accountable' AND AT LEAST ONE MUST have raciType = 'Responsible'",
+      "action": "THEN EXACTLY ONE VPRACIAssignment for that activity MUST have raciType = 'Accountable' AND AT LEAST ONE MUST have raciType = 'Responsible'",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-020",
       "name": "ICP Seniority Level Consistency",
       "condition": "IF vp:RoleBasedICP.icpReportsTo = parentICP",
-      "constraint": "THEN vp:RoleBasedICP.seniorityLevel MUST be > parentICP.seniorityLevel (higher number = lower in hierarchy)",
+      "action": "THEN vp:RoleBasedICP.seniorityLevel MUST be > parentICP.seniorityLevel (higher number = lower in hierarchy)",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-021",
       "name": "RoleBasedICP Must Have Role Reference",
       "condition": "IF a RoleBasedICP is created",
-      "constraint": "THEN it MUST have roleRef pointing to valid pf:ExecutiveRole or pf:FunctionalRole",
+      "action": "THEN it MUST have roleRef pointing to valid pf:ExecutiveRole or pf:FunctionalRole",
       "severity": "error"
     },
     {
       "ruleId": "BR-VP-022",
       "name": "Problem Scope Level Must Match ICP Function Scope",
       "condition": "IF vp:Problem is owned by vp:RoleBasedICP via icpHasProblem",
-      "constraint": "THEN vp:Problem.scopeLevel SHOULD match vp:RoleBasedICP.functionScope",
+      "action": "THEN vp:Problem.scopeLevel SHOULD match vp:RoleBasedICP.functionScope",
       "severity": "warning"
     }
   ],
