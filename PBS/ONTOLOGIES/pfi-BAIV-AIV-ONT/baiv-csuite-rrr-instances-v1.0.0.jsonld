@@ -1,0 +1,1174 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "pf": "https://platform-foundation.io/ontology/v1/",
+    "baiv": "https://beaivisible.com/ontology/",
+    "rrr": "https://platform-foundation.io/ontology/v1/rrr/",
+    "vp": "https://platform-foundation.io/ontology/v1/vp/"
+  },
+  "@type": "Dataset",
+  "@id": "baiv:csuite-rrr-instances-v1.0.0",
+  "name": "BAIV C-Suite RRR Instances",
+  "version": "1.0.0",
+  "dateCreated": "2026-02-02",
+  "description": "Fully populated C-Suite role instances for BAIV AI Visibility venture. Includes CEO, CFO, CRO, CPO, CTO, CMO with complete RACI matrices, collaborations, and delegations. Supports VP v1.2.0 RoleBasedICP integration.",
+  "conformsTo": "pf:ontology:roles-raci-rbac-v3.1.0",
+  "organization": {
+    "@id": "baiv:organization:beaivisible",
+    "@type": "Organization",
+    "name": "Be AI Visible (BAIV)",
+    "description": "AI Visibility and Brand Authority platform for B2B marketing leaders"
+  },
+
+  "executiveRoles": [
+    {
+      "@id": "baiv:role:ceo",
+      "@type": "pf:ExecutiveRole",
+      "roleCode": "CEO",
+      "roleTitle": "Chief Executive Officer",
+      "reportsTo": "Board Chair",
+      "isOptional": false,
+      "typicalOrgSize": "any",
+      "functionalDomain": "Executive Leadership",
+      "seniorityLevel": 1,
+      "roleCategory": "Core Traditional CSuite",
+      "strategicFocus": "Corporate Leadership & Vision",
+      "vsomComponent": "Vision & Strategy",
+      "bscPerspective": "Integrated View",
+      "aiVisibilityRole": "Executive sponsor for AI visibility strategy, thought leadership positioning",
+
+      "coreResponsibilities": [
+        "Company vision and strategic direction",
+        "Executive team leadership and development",
+        "Board relationships and governance",
+        "Stakeholder management (investors, partners, analysts)",
+        "Overall company performance and P&L accountability",
+        "Organizational culture and values leadership",
+        "Strategic partnerships and M&A",
+        "Ultimate decision authority and conflict resolution",
+        "Corporate communications and public representation",
+        "Enterprise risk management oversight",
+        "Capital allocation and major investment decisions",
+        "Organizational design and structural alignment",
+        "Executive compensation and succession planning",
+        "Regulatory compliance and corporate governance",
+        "Crisis management and business continuity"
+      ],
+
+      "keyDecisions": [
+        "Company vision, mission, and strategic direction",
+        "Annual strategic plan and multi-year roadmap",
+        "Executive leadership team composition and succession",
+        "Major capital investments and acquisitions (>$5M)",
+        "Organizational structure and reporting lines",
+        "Company-wide resource allocation and budget approval",
+        "Entry into new markets or business lines",
+        "Strategic partnerships and major vendor relationships",
+        "Crisis management and major risk decisions",
+        "Company-wide policy and governance frameworks",
+        "Executive compensation packages and incentives",
+        "IPO timing and investor relations strategy",
+        "Board meeting agendas and governance matters",
+        "Corporate culture initiatives and values",
+        "Final escalation point for unresolved conflicts"
+      ],
+
+      "raciAccountable": [
+        "Company vision and strategic direction",
+        "Overall company performance and results",
+        "Executive leadership team effectiveness",
+        "Board relationships and governance compliance",
+        "Stakeholder management and communications",
+        "Organizational culture and values",
+        "Enterprise risk management",
+        "Major capital allocation decisions",
+        "Strategic partnerships and M&A",
+        "Company-wide transformation initiatives",
+        "Executive succession planning",
+        "Regulatory and legal compliance",
+        "Corporate reputation and brand",
+        "Shareholder value creation",
+        "Final decision authority and conflict resolution"
+      ],
+
+      "raciResponsible": [
+        "Developing annual strategic plan",
+        "Leading executive leadership team meetings",
+        "Presenting to Board of Directors",
+        "Managing investor and analyst relationships",
+        "Representing company externally",
+        "Approving major contracts and commitments",
+        "Conducting executive performance reviews",
+        "Driving organizational alignment",
+        "Managing crisis situations",
+        "Fostering innovation and growth culture",
+        "Ensuring cross-functional collaboration",
+        "Monitoring enterprise KPIs and metrics",
+        "Leading strategic planning sessions",
+        "Approving company-wide communications"
+      ],
+
+      "raciConsulted": [
+        "Detailed functional strategies (Marketing, Sales, Product)",
+        "Technology architecture and platform decisions",
+        "Organizational structure below C-Suite level",
+        "Detailed product roadmap and feature prioritization",
+        "Tactical marketing campaigns and initiatives",
+        "Individual customer or partnership negotiations",
+        "Operational process improvements",
+        "Functional hiring below VP level",
+        "Day-to-day operational decisions"
+      ],
+
+      "raciInformed": [
+        "All C-Suite OKR progress and risks",
+        "Major customer wins or losses",
+        "Significant competitive developments",
+        "Financial performance variance analysis",
+        "Product launch outcomes and metrics",
+        "Employee engagement and culture metrics",
+        "Legal matters and disputes",
+        "Technology incidents and security breaches",
+        "Market trends and industry analysis",
+        "Regulatory changes affecting business",
+        "Major vendor or partnership changes",
+        "Talent acquisition and retention metrics"
+      ],
+
+      "raciRules": [
+        "CEO is ultimate fallback for any C-Suite role per BR-RRR-001",
+        "Board approval required for decisions >$10M or strategic direction changes",
+        "CEO must approve all C-Suite hiring and termination decisions",
+        "CEO consultation required for any decision affecting company reputation",
+        "CEO informed within 24 hours of any crisis or major risk event",
+        "CFO must co-approve all capital allocation >$5M",
+        "CEO chairs all executive leadership team and strategic planning meetings",
+        "Board Chair consultation required before major organizational changes"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "CFO",
+          "focus": "Financial strategy, capital allocation, investor relations, Board prep",
+          "frequency": "Daily",
+          "decisionAuthority": "CEO decides with CFO input; CFO accountable for execution"
+        },
+        {
+          "with": "CRO",
+          "focus": "Revenue strategy, targets, market expansion, major customers",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for revenue strategy"
+        },
+        {
+          "with": "CPO",
+          "focus": "Product vision, innovation priorities, roadmap resource allocation",
+          "frequency": "Weekly",
+          "decisionAuthority": "CEO decides; CPO consulted and accountable for execution"
+        },
+        {
+          "with": "CMO",
+          "focus": "Brand strategy, communications, market positioning, thought leadership",
+          "frequency": "Weekly",
+          "decisionAuthority": "CEO decides; CMO consulted"
+        },
+        {
+          "with": "CTO",
+          "focus": "Technology strategy, innovation, major investments, business model",
+          "frequency": "Monthly",
+          "decisionAuthority": "CEO decides; CTO consulted on feasibility"
+        }
+      ],
+
+      "delegatesTo": [
+        {
+          "role": "CFO",
+          "scope": "Financial operations, treasury, FP&A, audit coordination",
+          "autonomyLimit": "Capital >$5M requires CEO approval"
+        },
+        {
+          "role": "CRO",
+          "scope": "Revenue execution, sales operations, go-to-market execution",
+          "autonomyLimit": "Revenue strategy set jointly with CEO"
+        },
+        {
+          "role": "CPO",
+          "scope": "Product execution, roadmap delivery, development lifecycle",
+          "autonomyLimit": "Major product pivots require CEO approval"
+        },
+        {
+          "role": "CMO",
+          "scope": "Marketing execution, brand management, demand generation",
+          "autonomyLimit": "Brand strategy requires CEO approval"
+        },
+        {
+          "role": "CTO",
+          "scope": "Technology execution, engineering operations, infrastructure",
+          "autonomyLimit": "Technology investments >$500K require CEO approval"
+        }
+      ],
+
+      "fallbackRole": "Board Chair (strategic only; appoints interim CEO for operations)"
+    },
+
+    {
+      "@id": "baiv:role:cfo",
+      "@type": "pf:ExecutiveRole",
+      "roleCode": "CFO",
+      "roleTitle": "Chief Financial Officer",
+      "reportsTo": "baiv:role:ceo",
+      "isOptional": false,
+      "typicalOrgSize": "mid-market (200-1000)",
+      "functionalDomain": "Finance",
+      "seniorityLevel": 1,
+      "roleCategory": "Core Traditional CSuite",
+      "strategicFocus": "Financial Strategy & Stewardship",
+      "vsomComponent": "Metrics & Financial Governance",
+      "bscPerspective": "Financial",
+      "aiVisibilityRole": "ROI validation, budget allocation for AI visibility initiatives",
+
+      "coreResponsibilities": [
+        "Financial strategy and planning",
+        "Financial reporting and disclosure",
+        "Capital allocation and structure optimization",
+        "Treasury and cash management",
+        "Financial risk management",
+        "Investor relations execution",
+        "Statutory compliance and audit coordination",
+        "Financial controls and governance (SOX)",
+        "FP&A and forecasting",
+        "Tax strategy and optimization",
+        "M&A financial due diligence",
+        "Budget process and resource allocation",
+        "Financial systems and technology",
+        "Finance team leadership and development",
+        "Board financial reporting and presentations"
+      ],
+
+      "keyDecisions": [
+        "Financial strategy and priorities",
+        "Capital structure and financing decisions",
+        "Treasury and liquidity management approach",
+        "Financial risk mitigation strategies",
+        "Investment decisions (<$5M autonomous)",
+        "Tax planning and optimization strategies",
+        "Financial systems and technology selection",
+        "Accounting policy and standards adoption",
+        "Budget allocation and reforecasting",
+        "Investor relations messaging and materials",
+        "Audit firm selection and management",
+        "Financial controls and SOX compliance approach",
+        "Procurement and vendor management policies",
+        "Finance team structure and hiring",
+        "Financial performance targets and KPIs"
+      ],
+
+      "raciAccountable": [
+        "Financial reporting accuracy and timeliness",
+        "Statutory compliance (GAAP/IFRS/local standards)",
+        "Capital structure optimization",
+        "Treasury and liquidity management",
+        "Financial risk identification and mitigation",
+        "Audit coordination and results",
+        "Tax compliance and planning",
+        "Financial planning and analysis (FP&A)",
+        "Investor relations execution",
+        "Financial controls and SOX compliance",
+        "Budget process integrity",
+        "Financial systems selection and performance",
+        "Finance team performance and development",
+        "Board financial materials quality",
+        "Procurement and vendor management"
+      ],
+
+      "raciResponsible": [
+        "Monthly/quarterly financial close",
+        "Financial statement preparation",
+        "Cash flow forecasting and monitoring",
+        "Budget consolidation and tracking",
+        "Financial analysis and modeling",
+        "Investor presentations preparation",
+        "Audit facilitation and coordination",
+        "Tax filings and payments",
+        "Treasury operations execution",
+        "Financial policy enforcement",
+        "Scenario planning and sensitivity analysis",
+        "M&A financial modeling and analysis",
+        "Cost optimization initiatives",
+        "Financial reporting to CEO and Board"
+      ],
+
+      "raciConsulted": [
+        "Company strategic planning",
+        "Revenue strategy and pricing decisions",
+        "Product investment and R&D priorities",
+        "Marketing budget allocation and campaigns",
+        "Technology infrastructure investments",
+        "M&A target identification and strategy",
+        "Organizational structure changes",
+        "Executive compensation design",
+        "Major customer contract terms",
+        "Strategic partnership agreements"
+      ],
+
+      "raciInformed": [
+        "Product development progress",
+        "Sales pipeline and forecast",
+        "Marketing campaign results",
+        "Customer success metrics",
+        "Technology roadmap updates",
+        "HR organizational changes",
+        "Legal matters and disputes",
+        "Competitive market developments",
+        "Operational performance metrics",
+        "Strategic initiative progress"
+      ],
+
+      "raciRules": [
+        "CFO must be accountable for: Financial reporting, Statutory compliance, Capital allocation, Financial planning (per BR-RRR-005)",
+        "CFO co-approval required for capital allocation >$5M with CEO",
+        "Board Audit Committee approval required for auditor selection",
+        "CFO must review all contracts >$500K before execution",
+        "CFO consultation required for all pricing strategy decisions",
+        "CFO informed of all budget variances >10% within 48 hours"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "CEO",
+          "focus": "Strategic planning, capital allocation, Board prep, investor relations",
+          "frequency": "Daily",
+          "decisionAuthority": "CEO decides; CFO accountable for execution"
+        },
+        {
+          "with": "CRO",
+          "focus": "Revenue forecasting, pricing strategy, sales compensation, ROI analysis",
+          "frequency": "Weekly",
+          "decisionAuthority": "CRO leads; CFO consulted on financial impact"
+        },
+        {
+          "with": "CPO",
+          "focus": "R&D budgets, product economics, pricing strategy, investment prioritization",
+          "frequency": "Monthly",
+          "decisionAuthority": "Joint decision on product pricing; CPO leads R&D prioritization"
+        },
+        {
+          "with": "CMO",
+          "focus": "Marketing budgets, ROI analysis, CAC/LTV metrics, investment justification",
+          "frequency": "Monthly",
+          "decisionAuthority": "CMO leads; CFO consulted on budget and ROI"
+        },
+        {
+          "with": "CTO",
+          "focus": "Technology budgets, infrastructure costs, CapEx planning, ROI analysis",
+          "frequency": "Monthly",
+          "decisionAuthority": "CTO leads; CFO consulted on financial impact"
+        }
+      ],
+
+      "delegatesTo": [
+        {
+          "role": "VP Finance",
+          "scope": "FP&A, budgeting, forecasting, variance analysis",
+          "autonomyLimit": "<$100K autonomous; strategic changes require CFO"
+        },
+        {
+          "role": "Controller",
+          "scope": "Accounting operations, financial close, reporting, controls",
+          "autonomyLimit": "Policy changes require CFO approval"
+        },
+        {
+          "role": "Treasurer",
+          "scope": "Cash management, banking relationships, payments, FX",
+          "autonomyLimit": "Major transactions require CFO approval"
+        }
+      ],
+
+      "fallbackRole": "CEO (strategic only; may delegate operations to Controller or VP Finance)"
+    },
+
+    {
+      "@id": "baiv:role:cro",
+      "@type": "pf:ExecutiveRole",
+      "roleCode": "CRO",
+      "roleTitle": "Chief Revenue Officer",
+      "reportsTo": "baiv:role:ceo",
+      "isOptional": false,
+      "typicalOrgSize": "mid-market (200-1000)",
+      "functionalDomain": "Sales & Commercial",
+      "seniorityLevel": 1,
+      "roleCategory": "Revenue Customer CSuite",
+      "strategicFocus": "Revenue Growth & Customer Acquisition",
+      "vsomComponent": "Strategy & Operations",
+      "bscPerspective": "Customer",
+      "aiVisibilityRole": "Revenue attribution from AI channels, customer acquisition via AI discovery",
+
+      "coreResponsibilities": [
+        "Revenue strategy across customer lifecycle",
+        "Sales strategy and execution",
+        "Marketing and demand generation coordination",
+        "Customer success and retention",
+        "Revenue operations (RevOps)",
+        "Go-to-market strategy and execution",
+        "Channel and partnership strategy",
+        "Revenue forecasting and planning",
+        "Sales compensation and quota design",
+        "Customer acquisition strategy",
+        "Account management and expansion",
+        "Revenue technology stack (CRM, sales tools)",
+        "Sales and marketing alignment",
+        "Pipeline management and velocity",
+        "Revenue team leadership and development"
+      ],
+
+      "keyDecisions": [
+        "Revenue targets and growth strategies",
+        "Sales organizational structure and territories",
+        "Go-to-market strategy and channel mix",
+        "Sales compensation plans and quotas",
+        "Major customer contract terms and pricing",
+        "Sales and marketing budget allocation",
+        "Customer segmentation and targeting",
+        "Sales process and methodology",
+        "Revenue technology investments",
+        "Partnership and channel strategies",
+        "Sales hiring and team development",
+        "Customer success program design",
+        "Revenue operations processes and tools",
+        "Sales enablement priorities and programs",
+        "Pipeline management and forecasting methodology"
+      ],
+
+      "raciAccountable": [
+        "Revenue targets and performance",
+        "Revenue growth and scalability",
+        "Customer acquisition and retention",
+        "Sales pipeline health and velocity",
+        "Revenue forecasting accuracy",
+        "Go-to-market effectiveness",
+        "Sales team performance and productivity",
+        "Revenue operations efficiency",
+        "Sales and marketing alignment",
+        "Customer lifetime value (LTV)",
+        "Net revenue retention (NRR)",
+        "Sales productivity metrics",
+        "Channel and partner revenue",
+        "Revenue technology ROI",
+        "Revenue team development"
+      ],
+
+      "raciResponsible": [
+        "Revenue strategy execution",
+        "Sales process optimization",
+        "Demand generation campaigns coordination",
+        "Lead qualification and scoring",
+        "Customer journey orchestration",
+        "Sales enablement programs",
+        "Revenue reporting and analysis",
+        "CRM and sales tool management",
+        "Sales compensation administration",
+        "Pipeline review and coaching",
+        "Customer feedback integration",
+        "Win/loss analysis",
+        "Territory and quota planning",
+        "Revenue team hiring and onboarding"
+      ],
+
+      "raciConsulted": [
+        "Product roadmap and feature prioritization",
+        "Pricing strategy and packaging decisions",
+        "Marketing strategy and brand positioning",
+        "Customer success program design",
+        "Technology platform selection",
+        "Company strategic planning",
+        "Financial forecasting and budgeting",
+        "M&A target evaluation (customer fit)",
+        "Geographic expansion decisions",
+        "Organizational design changes"
+      ],
+
+      "raciInformed": [
+        "Product development milestones",
+        "Marketing campaign launches",
+        "Financial performance results",
+        "Technology infrastructure changes",
+        "HR organizational changes",
+        "Legal and compliance matters",
+        "Competitive intelligence",
+        "Market trends and analysis",
+        "Board meeting outcomes",
+        "Executive leadership changes"
+      ],
+
+      "raciRules": [
+        "Revenue targets set jointly with CEO (joint accountability)",
+        "Marketing-sourced revenue targets must align with CMO OKRs (joint A with CMO)",
+        "Major customer contracts >$1M require CEO review",
+        "Sales compensation changes require CFO consultation",
+        "Strategic partnerships require CEO involvement",
+        "Market expansion decisions require CEO approval"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "CEO",
+          "focus": "Revenue strategy, targets, market expansion, major customer relationships",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for revenue strategy"
+        },
+        {
+          "with": "CFO",
+          "focus": "Revenue forecasting, pricing analysis, financial planning, ROI",
+          "frequency": "Weekly",
+          "decisionAuthority": "CRO leads revenue; CFO consulted on financial impact"
+        },
+        {
+          "with": "CMO",
+          "focus": "Demand generation, lead quality, ABM strategy, sales enablement",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for marketing-sourced revenue"
+        },
+        {
+          "with": "CPO",
+          "focus": "Product feedback, roadmap input, launch support, customer needs",
+          "frequency": "Weekly",
+          "decisionAuthority": "CPO leads product; CRO consulted on customer needs"
+        },
+        {
+          "with": "CTO",
+          "focus": "Sales technology, CRM systems, data integration, automation",
+          "frequency": "Monthly",
+          "decisionAuthority": "Consensus required for revenue technology decisions"
+        }
+      ],
+
+      "delegatesTo": [
+        {
+          "role": "VP Sales",
+          "scope": "Sales execution, team management, quota attainment, deals",
+          "autonomyLimit": "<$500K deals autonomous; larger deals escalate to CRO"
+        },
+        {
+          "role": "VP Customer Success",
+          "scope": "Retention, expansion, adoption, customer health scores",
+          "autonomyLimit": "Churn rate >5% escalates to CRO"
+        },
+        {
+          "role": "Director of RevOps",
+          "scope": "CRM management, processes, analytics, forecasting tools",
+          "autonomyLimit": "Tool changes or process redesign require CRO approval"
+        }
+      ],
+
+      "fallbackRole": "CEO (strategic only; may delegate sales execution to VP Sales)"
+    },
+
+    {
+      "@id": "baiv:role:cpo",
+      "@type": "pf:ExecutiveRole",
+      "roleCode": "CPO",
+      "roleTitle": "Chief Product Officer",
+      "reportsTo": "baiv:role:ceo",
+      "isOptional": false,
+      "typicalOrgSize": "mid-market (200-1000)",
+      "functionalDomain": "Product",
+      "seniorityLevel": 1,
+      "roleCategory": "Strategy Innovation CSuite",
+      "strategicFocus": "Product Vision & Innovation",
+      "vsomComponent": "Strategy & Vision",
+      "bscPerspective": "Innovation",
+      "aiVisibilityRole": "AI visibility product features, AI-optimized content strategy for product",
+
+      "coreResponsibilities": [
+        "Product vision and strategy definition",
+        "Product roadmap and prioritization",
+        "Product development lifecycle management",
+        "Product-market fit validation",
+        "Product portfolio management",
+        "User experience and design excellence",
+        "Product launches and go-to-market coordination",
+        "Product analytics and performance metrics",
+        "Product team leadership and development",
+        "Innovation and R&D direction",
+        "Competitive product intelligence",
+        "Product pricing and packaging (jointly with CFO)",
+        "Customer feedback integration",
+        "Product quality and performance standards",
+        "Product operations and processes"
+      ],
+
+      "keyDecisions": [
+        "Product vision and strategic direction",
+        "Product roadmap priorities and resource allocation",
+        "Feature development and backlog prioritization",
+        "Product-market fit validation approach",
+        "Product portfolio decisions (invest/maintain/sunset)",
+        "User experience standards and design principles",
+        "Product launch timing and go-to-market approach",
+        "Product metrics and success criteria",
+        "Innovation investment priorities",
+        "Build vs. buy vs. partner decisions",
+        "Product pricing strategy (with CFO input)",
+        "Product team structure and hiring",
+        "Product operations tools and processes",
+        "Technical debt management priorities",
+        "Product quality and performance standards"
+      ],
+
+      "raciAccountable": [
+        "Product vision and strategy",
+        "Product roadmap delivery",
+        "Product-market fit achievement",
+        "Product quality and performance",
+        "User experience excellence",
+        "Product launches success",
+        "Product team effectiveness",
+        "Product metrics and KPIs",
+        "Innovation pipeline and R&D direction",
+        "Product portfolio optimization",
+        "Product pricing (jointly with CFO)",
+        "Product positioning (jointly with CMO)",
+        "Competitive product differentiation",
+        "Product operations efficiency",
+        "Technical debt management"
+      ],
+
+      "raciResponsible": [
+        "Product strategy execution",
+        "Roadmap management and communication",
+        "Feature prioritization and backlog management",
+        "Product development coordination",
+        "User research and validation",
+        "Product requirements definition",
+        "Launch planning and execution",
+        "Product performance monitoring",
+        "Competitive analysis and intelligence",
+        "Product documentation",
+        "Beta programs and early access management",
+        "Product training and enablement",
+        "Product team hiring and development",
+        "Agile/product development processes"
+      ],
+
+      "raciConsulted": [
+        "Company strategic planning",
+        "Technology architecture decisions",
+        "Revenue and go-to-market strategy",
+        "Marketing positioning and messaging",
+        "Customer success program design",
+        "Sales enablement priorities",
+        "Financial planning and budgeting",
+        "M&A target evaluation (product fit)",
+        "Organizational design changes",
+        "Technology vendor selection"
+      ],
+
+      "raciInformed": [
+        "Sales pipeline and customer feedback",
+        "Marketing campaign results",
+        "Customer success metrics",
+        "Financial performance",
+        "Technology infrastructure changes",
+        "Competitive product launches",
+        "Market trends and research",
+        "Regulatory changes affecting product",
+        "Executive leadership changes",
+        "Board meeting outcomes"
+      ],
+
+      "raciRules": [
+        "Product positioning must be jointly accountable with CMO",
+        "Pricing decisions require CFO consultation (CPO provides input)",
+        "Major product pivots require CEO approval",
+        "Product roadmap reviewed quarterly with CEO",
+        "Launch plans require CMO and CRO approval for GTM readiness"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "CEO",
+          "focus": "Product vision, innovation priorities, strategic direction, roadmap",
+          "frequency": "Weekly",
+          "decisionAuthority": "CEO decides strategy; CPO accountable for execution"
+        },
+        {
+          "with": "CTO",
+          "focus": "Technical feasibility, architecture, platform decisions, engineering",
+          "frequency": "Daily",
+          "decisionAuthority": "Consensus required for technical and product decisions"
+        },
+        {
+          "with": "CMO",
+          "focus": "Product positioning, messaging, GTM strategy, product marketing",
+          "frequency": "Weekly",
+          "decisionAuthority": "CPO leads positioning (jointly accountable with CMO)"
+        },
+        {
+          "with": "CRO",
+          "focus": "Customer needs, sales feedback, pricing, launch coordination",
+          "frequency": "Weekly",
+          "decisionAuthority": "CPO leads product; CRO consulted on customer needs"
+        },
+        {
+          "with": "CFO",
+          "focus": "Product economics, pricing strategy, R&D budgets, investment ROI",
+          "frequency": "Monthly",
+          "decisionAuthority": "Joint decision on pricing; CPO leads R&D priorities"
+        }
+      ],
+
+      "delegatesTo": [
+        {
+          "role": "VP Product Management",
+          "scope": "Roadmap execution, PM team management, feature delivery",
+          "autonomyLimit": "Product strategy changes require CPO approval"
+        },
+        {
+          "role": "Director of UX",
+          "scope": "Design execution, user research, usability testing, prototypes",
+          "autonomyLimit": "Major UX direction changes require CPO approval"
+        },
+        {
+          "role": "Director of Product Ops",
+          "scope": "Product processes, tools, analytics, reporting, operations",
+          "autonomyLimit": "Process framework changes require CPO approval"
+        }
+      ],
+
+      "fallbackRole": "CEO (strategic only; may delegate product execution to VP Product or CTO)"
+    },
+
+    {
+      "@id": "baiv:role:cto",
+      "@type": "pf:ExecutiveRole",
+      "roleCode": "CTO",
+      "roleTitle": "Chief Technology Officer",
+      "reportsTo": "baiv:role:ceo",
+      "isOptional": false,
+      "typicalOrgSize": "mid-market (200-1000)",
+      "functionalDomain": "Technology",
+      "seniorityLevel": 1,
+      "roleCategory": "Core Traditional CSuite",
+      "strategicFocus": "Technology Strategy & Innovation",
+      "vsomComponent": "Operations & Technology",
+      "bscPerspective": "Technology",
+      "aiVisibilityRole": "AI/ML infrastructure, LLM integration, technical AI visibility implementation",
+
+      "coreResponsibilities": [
+        "Technology vision and strategy",
+        "Technical architecture and platform decisions",
+        "Engineering team leadership and culture",
+        "Infrastructure and cloud operations",
+        "Cybersecurity and risk management",
+        "Technology innovation and R&D",
+        "Engineering processes and quality standards",
+        "Technology vendor management",
+        "System reliability and performance (SLAs)",
+        "Data architecture and governance",
+        "DevOps and release management",
+        "Technology budgets and ROI optimization",
+        "Technical debt management strategy",
+        "Compliance and data protection (GDPR, SOC2)",
+        "Emerging technology evaluation and adoption"
+      ],
+
+      "keyDecisions": [
+        "Technology strategy and vision",
+        "Technical architecture and platform choices",
+        "Cloud infrastructure and hosting strategy",
+        "Cybersecurity approach and investments",
+        "Engineering organizational structure",
+        "Technology vendor selection and contracts",
+        "Engineering processes and methodologies",
+        "System reliability and SLA targets",
+        "Data architecture and governance policies",
+        "DevOps and CI/CD pipeline design",
+        "Technology budget allocation and priorities",
+        "Technical debt remediation priorities",
+        "Compliance and security frameworks",
+        "Open source vs. proprietary decisions",
+        "Emerging technology adoption timing"
+      ],
+
+      "raciAccountable": [
+        "Technology strategy and vision",
+        "System reliability and uptime (SLAs)",
+        "Cybersecurity and data protection",
+        "Technical architecture decisions",
+        "Engineering team performance and culture",
+        "Technology innovation direction",
+        "Infrastructure scalability and cost optimization",
+        "Technology risk management",
+        "Engineering quality standards and practices",
+        "Technology vendor relationships and contracts",
+        "Technical debt strategy and management",
+        "Data governance and privacy compliance",
+        "DevOps and CI/CD effectiveness",
+        "Technology budget optimization",
+        "Technical compliance (SOC2, ISO, GDPR)"
+      ],
+
+      "raciResponsible": [
+        "Technology roadmap execution",
+        "Platform architecture design and evolution",
+        "Infrastructure operations and monitoring",
+        "Security implementation and incident response",
+        "Engineering hiring and team development",
+        "Code quality standards enforcement",
+        "System performance optimization",
+        "Incident response and resolution",
+        "Technology vendor evaluation and management",
+        "Technical documentation and knowledge management",
+        "Release planning and deployment",
+        "Technology cost management and optimization",
+        "Innovation experiments and proof-of-concepts",
+        "Technical compliance audits and certifications"
+      ],
+
+      "raciConsulted": [
+        "Product roadmap and feature prioritization",
+        "Company strategic planning",
+        "Data strategy and analytics direction",
+        "Security and privacy policies",
+        "Marketing technology selection",
+        "Sales technology and CRM decisions",
+        "Financial systems and automation",
+        "Organizational design changes",
+        "M&A technical due diligence",
+        "Regulatory compliance approach"
+      ],
+
+      "raciInformed": [
+        "Product development progress",
+        "Business performance metrics",
+        "Customer feedback and issues",
+        "Sales and marketing technology needs",
+        "Financial performance and budgets",
+        "Organizational changes",
+        "Legal and compliance matters",
+        "Market and competitive intelligence",
+        "Executive leadership changes",
+        "Board meeting outcomes"
+      ],
+
+      "raciRules": [
+        "Marketing technology purchases must consult CTO for integration requirements",
+        "Technology investments >$500K require CEO approval",
+        "Security incidents require immediate CEO notification within 1 hour",
+        "Architecture changes affecting business model require CEO review",
+        "CTO consulted on all enterprise-wide technology platform selections",
+        "Major infrastructure migrations require CEO and Board information"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "CEO",
+          "focus": "Technology strategy, innovation priorities, major investments, business model",
+          "frequency": "Monthly",
+          "decisionAuthority": "CEO decides strategy; CTO consulted on feasibility"
+        },
+        {
+          "with": "CPO",
+          "focus": "Product development, technical feasibility, platform architecture, engineering",
+          "frequency": "Daily",
+          "decisionAuthority": "Consensus required for product-technology decisions"
+        },
+        {
+          "with": "CFO",
+          "focus": "Technology budgets, CapEx planning, infrastructure costs, ROI analysis",
+          "frequency": "Monthly",
+          "decisionAuthority": "CTO leads technology; CFO consulted on financial impact"
+        },
+        {
+          "with": "CMO",
+          "focus": "Marketing technology stack, website infrastructure, data integration, analytics",
+          "frequency": "Monthly",
+          "decisionAuthority": "Consensus required for marketing technology decisions"
+        },
+        {
+          "with": "CRO",
+          "focus": "Sales technology, CRM systems, revenue analytics, automation tools",
+          "frequency": "Monthly",
+          "decisionAuthority": "Consensus required for sales technology decisions"
+        }
+      ],
+
+      "delegatesTo": [
+        {
+          "role": "VP Engineering",
+          "scope": "Engineering teams, software delivery, code quality, velocity",
+          "autonomyLimit": "Architecture decisions require CTO approval"
+        },
+        {
+          "role": "VP Infrastructure",
+          "scope": "Cloud operations, DevOps, SRE, system operations, monitoring",
+          "autonomyLimit": "Major migrations require CTO approval"
+        },
+        {
+          "role": "Director of Security",
+          "scope": "Cybersecurity operations, compliance, vulnerability management",
+          "autonomyLimit": "Security incidents escalate to CTO"
+        }
+      ],
+
+      "fallbackRole": "CEO (strategic only) or CPO (for product technology)"
+    },
+
+    {
+      "@id": "baiv:role:cmo",
+      "@type": "pf:ExecutiveRole",
+      "roleCode": "CMO",
+      "roleTitle": "Chief Marketing Officer",
+      "reportsTo": "baiv:role:ceo",
+      "isOptional": false,
+      "typicalOrgSize": "mid-market (200-1000)",
+      "functionalDomain": "Marketing",
+      "seniorityLevel": 1,
+      "roleCategory": "Commercial CSuite",
+      "strategicFocus": "Brand Strategy & Market Positioning",
+      "vsomComponent": "Strategy & Customer",
+      "bscPerspective": "Customer",
+      "aiVisibilityRole": "Primary owner of AI visibility strategy, brand authority in AI/LLM channels, content optimization for AI discovery",
+
+      "coreResponsibilities": [
+        "Brand strategy and positioning",
+        "Marketing strategy and planning",
+        "Demand generation and pipeline management",
+        "Marketing budget allocation and ROI optimization",
+        "Market research and competitive intelligence",
+        "Customer acquisition and retention strategy",
+        "Marketing technology stack management",
+        "Content strategy and thought leadership",
+        "Digital marketing and AI visibility optimization",
+        "Marketing team leadership and development",
+        "Product marketing and go-to-market strategy",
+        "Marketing analytics and performance reporting",
+        "Customer insights and segmentation",
+        "Marketing communications and public relations",
+        "Event strategy and field marketing"
+      ],
+
+      "keyDecisions": [
+        "Brand strategy and positioning direction",
+        "Marketing budget allocation and priorities",
+        "Demand generation strategy and targets",
+        "Content strategy and thought leadership themes",
+        "AI visibility and search optimization approach",
+        "Marketing technology stack selection",
+        "Customer segmentation and targeting strategy",
+        "Campaign strategy and channel mix",
+        "Marketing team structure and hiring",
+        "Product positioning and messaging",
+        "PR and communications strategy",
+        "Event strategy and sponsorships",
+        "Marketing attribution and measurement approach",
+        "Agency and vendor partnerships",
+        "Marketing-sourced revenue targets"
+      ],
+
+      "raciAccountable": [
+        "Brand strategy and market positioning",
+        "Marketing budget and resource allocation",
+        "Demand generation and pipeline targets",
+        "Marketing ROI and performance metrics",
+        "Customer acquisition cost (CAC) optimization",
+        "Marketing technology stack selection",
+        "Market research and competitive intelligence",
+        "Marketing team hiring and development",
+        "Content strategy and thought leadership",
+        "AI visibility and search optimization",
+        "Marketing attribution and analytics",
+        "Product positioning and messaging (jointly with CPO)",
+        "Marketing communications and PR strategy",
+        "Customer segmentation and targeting",
+        "Marketing-driven revenue targets (jointly with CRO)"
+      ],
+
+      "raciResponsible": [
+        "Marketing strategy execution",
+        "Campaign planning and execution",
+        "Content creation and distribution",
+        "Demand generation programs",
+        "Lead nurturing and scoring",
+        "Marketing automation management",
+        "Website optimization and performance",
+        "Social media strategy and execution",
+        "PR and media relations",
+        "Event planning and execution",
+        "Marketing performance reporting",
+        "Competitive analysis and positioning",
+        "Customer testimonials and case studies",
+        "Marketing team development and coaching"
+      ],
+
+      "raciConsulted": [
+        "Company strategic planning",
+        "Product roadmap and prioritization",
+        "Revenue strategy and targets",
+        "Customer success program design",
+        "Technology platform decisions",
+        "Pricing strategy and packaging",
+        "M&A target evaluation (market fit)",
+        "Geographic expansion decisions",
+        "Organizational design changes"
+      ],
+
+      "raciInformed": [
+        "Product development milestones",
+        "Sales pipeline and forecast",
+        "Customer success metrics and NPS",
+        "Financial performance results",
+        "Technology infrastructure changes",
+        "Competitive product launches",
+        "Legal and compliance matters",
+        "Board meeting outcomes",
+        "Executive leadership changes"
+      ],
+
+      "raciRules": [
+        "Marketing-sourced revenue jointly accountable with CRO",
+        "Product positioning jointly accountable with CPO",
+        "Brand strategy decisions require CEO consultation",
+        "Marketing technology purchases require CTO consultation for integration",
+        "Budget changes >15% require CFO approval",
+        "PR crisis communications require CEO approval"
+      ],
+
+      "keyCollaborations": [
+        {
+          "with": "CEO",
+          "focus": "Brand strategy, corporate communications, market positioning, thought leadership",
+          "frequency": "Weekly",
+          "decisionAuthority": "CEO decides; CMO consulted"
+        },
+        {
+          "with": "CRO",
+          "focus": "Revenue alignment, lead generation, ABM strategy, sales enablement",
+          "frequency": "Weekly",
+          "decisionAuthority": "Joint accountability for marketing-sourced revenue"
+        },
+        {
+          "with": "CPO",
+          "focus": "Product positioning, GTM strategy, pricing, product launches",
+          "frequency": "Weekly",
+          "decisionAuthority": "CPO decides (CMO consulted); joint accountability on positioning"
+        },
+        {
+          "with": "CFO",
+          "focus": "Marketing budgets, ROI analysis, investment justification, CAC/LTV",
+          "frequency": "Monthly",
+          "decisionAuthority": "CMO decides (CFO consulted)"
+        },
+        {
+          "with": "CTO",
+          "focus": "Marketing technology, website optimization, data integration, analytics",
+          "frequency": "Monthly",
+          "decisionAuthority": "Consensus required for marketing technology"
+        }
+      ],
+
+      "delegatesTo": [
+        {
+          "role": "VP Marketing",
+          "scope": "Day-to-day marketing operations, campaigns, team coordination",
+          "autonomyLimit": "<$50K autonomous"
+        },
+        {
+          "role": "Director of Demand Generation",
+          "scope": "Lead generation, MQL delivery, marketing automation, conversion optimization",
+          "autonomyLimit": "<$25K autonomous"
+        },
+        {
+          "role": "Director of Brand & Content",
+          "scope": "Content execution, brand guidelines, social media, thought leadership",
+          "autonomyLimit": "<$20K autonomous"
+        },
+        {
+          "role": "Director of Marketing Operations",
+          "scope": "Marketing technology, data management, processes, analytics, reporting",
+          "autonomyLimit": "<$15K autonomous"
+        },
+        {
+          "role": "Director of Product Marketing",
+          "scope": "Product positioning, GTM plans, sales enablement, competitive intelligence",
+          "autonomyLimit": "Positioning changes require CMO approval"
+        }
+      ],
+
+      "fallbackRole": "CEO (strategic only; delegates execution to VP Marketing or CRO)"
+    }
+  ],
+
+  "roleHierarchy": {
+    "description": "Reporting structure for BAIV C-Suite roles",
+    "structure": [
+      {
+        "role": "baiv:role:ceo",
+        "reportsTo": "Board Chair",
+        "directReports": ["baiv:role:cfo", "baiv:role:cro", "baiv:role:cpo", "baiv:role:cto", "baiv:role:cmo"]
+      },
+      {
+        "role": "baiv:role:cfo",
+        "reportsTo": "baiv:role:ceo",
+        "directReports": ["VP Finance", "Controller", "Treasurer"]
+      },
+      {
+        "role": "baiv:role:cro",
+        "reportsTo": "baiv:role:ceo",
+        "directReports": ["VP Sales", "VP Customer Success", "Director of RevOps"]
+      },
+      {
+        "role": "baiv:role:cpo",
+        "reportsTo": "baiv:role:ceo",
+        "directReports": ["VP Product Management", "Director of UX", "Director of Product Ops"]
+      },
+      {
+        "role": "baiv:role:cto",
+        "reportsTo": "baiv:role:ceo",
+        "directReports": ["VP Engineering", "VP Infrastructure", "Director of Security"]
+      },
+      {
+        "role": "baiv:role:cmo",
+        "reportsTo": "baiv:role:ceo",
+        "directReports": ["VP Marketing", "Director of Demand Generation", "Director of Brand & Content", "Director of Marketing Operations", "Director of Product Marketing"]
+      }
+    ]
+  },
+
+  "vpIntegration": {
+    "description": "Cross-reference for VP v1.2.0 RoleBasedICP integration",
+    "roleToICPMapping": [
+      {
+        "role": "baiv:role:cmo",
+        "icpRef": "baiv:icp:cmo",
+        "seniorityLevel": 1,
+        "functionScope": "Strategic",
+        "note": "Primary ICP for BAIV VP - drives AI visibility strategy"
+      },
+      {
+        "role": "baiv:role:ceo",
+        "icpRef": "baiv:icp:ceo",
+        "seniorityLevel": 1,
+        "functionScope": "Strategic",
+        "note": "Executive sponsor for AI visibility initiative"
+      },
+      {
+        "role": "baiv:role:cro",
+        "icpRef": "baiv:icp:cro",
+        "seniorityLevel": 1,
+        "functionScope": "Strategic",
+        "note": "Revenue attribution from AI channels"
+      }
+    ]
+  },
+
+  "validation": {
+    "conformsTo": "pf:ontology:roles-raci-rbac-v3.1.0",
+    "vpCompatibility": "vp:ontology:value-proposition-v1.2.0",
+    "businessRulesValidated": [
+      "BR-RRR-001: CEO fallback rule documented for all roles",
+      "BR-RRR-002: Each RACI activity can have one Accountable",
+      "BR-RRR-003: Each RACI activity has at least one Responsible",
+      "BR-RRR-006: All C-Suite roles have seniorityLevel=1"
+    ]
+  }
+}
