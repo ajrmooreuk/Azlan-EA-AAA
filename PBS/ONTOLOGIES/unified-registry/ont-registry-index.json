@@ -217,6 +217,26 @@
       "gatesFailed": 0,
       "validatedDate": null,
       "path": "./entries/Entry-ONT-GDPR-001.json"
+    },
+    {
+      "@id": "Entry-ONT-AZALZ-001",
+      "name": "Az-ALZ Assessment Ontology (Azure Landing Zone Assessment)",
+      "namespace": "azalz:",
+      "status": "placeholder",
+      "gatesPassed": 0,
+      "gatesFailed": 0,
+      "validatedDate": null,
+      "path": "./entries/Entry-ONT-AZALZ-001.json"
+    },
+    {
+      "@id": "Entry-ONT-SA-001",
+      "name": "SA Ontology (Solution Architecture)",
+      "namespace": "sa:",
+      "status": "compliant",
+      "gatesPassed": 7,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-02",
+      "path": "./entries/Entry-ONT-SA-001.json"
     }
   ],
   "namespaceRegistry": {
@@ -241,7 +261,9 @@
     "mcsb2": "https://platformcore.io/ontology/mcsb2/",
     "ea": "https://platformcore.io/ontology/ea/",
     "air": "https://platformcore.io/ontology/air/",
-    "gdpr": "https://platformcore.io/ontology/gdpr/"
+    "gdpr": "https://platformcore.io/ontology/gdpr/",
+    "azalz": "https://platformcore.io/ontology/azalz/",
+    "sa": "https://platformcore.io/ontology/solution-architecture/"
   },
   "seriesRegistry": {
     "VE-Series": {
@@ -252,12 +274,12 @@
     "PE-Series": {
       "name": "Process Engineering Series",
       "description": "Execution and process management ontologies",
-      "ontologies": ["PPM", "PE", "EFS", "EA"]
+      "ontologies": ["PPM", "PE", "EFS", "EA", "SA"]
     },
     "Security-Series": {
       "name": "Security & Compliance Series",
       "description": "Security benchmarks and compliance ontologies",
-      "ontologies": ["MCSB", "MCSB2", "GDPR"]
+      "ontologies": ["MCSB", "MCSB2", "GDPR", "AZALZ"]
     },
     "Foundation": {
       "name": "Foundation Ontologies",
@@ -276,23 +298,23 @@
     }
   },
   "statistics": {
-    "totalOntologies": 21,
-    "compliant": 16,
+    "totalOntologies": 23,
+    "compliant": 17,
     "nearCompliance": 0,
     "partialCompliance": 0,
     "pendingReview": 0,
-    "placeholder": 4,
+    "placeholder": 5,
     "deprecated": 0
   },
   "validationSummary": {
-    "validated": 17,
+    "validated": 18,
     "validatedOntologies": [
       "EMC", "ORG", "ORG-CONTEXT", "ORG-MAT",
       "CA", "CL", "GA",
       "VSOM", "OKR", "VP", "RRR", "PMF",
-      "PPM", "PE", "EFS", "MCSB", "EA"
+      "PPM", "PE", "EFS", "MCSB", "EA", "SA"
     ],
-    "placeholders": ["KPI", "MCSB2", "AIR", "GDPR"],
+    "placeholders": ["KPI", "MCSB2", "AIR", "GDPR", "AZALZ"],
     "oaaVersion": "5.0.0",
     "lastFullValidation": "2026-02-02"
   },
