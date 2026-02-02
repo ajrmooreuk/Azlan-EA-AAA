@@ -1,0 +1,48 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-ORG-CTX-001",
+  "name": "ORG-CONTEXT Ontology (Context Hub)",
+  "description": "Central context hub that bridges organizational entities to domain-specific ontologies via the bridge pattern",
+  "version": "1.0.1",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/org-context/",
+  "prefix": "org-ctx:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "../pfc-ontologies/ORG-CONTEXT/org-context-ontology-v1.0.1.json",
+    "glossary": "../pfc-ontologies/ORG-CONTEXT/glossary-v1.0.0.json",
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "contextHub": "Central hub for domain context connections",
+    "bridgePatterns": "hasStrategicContext, hasCompetitiveLandscape, hasMaturityProfile, hasGapAnalysis, hasProcessContext"
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-001"
+  ],
+  "dependents": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-CL-001",
+    "Entry-ONT-ORG-MAT-001",
+    "Entry-ONT-GA-001",
+    "Entry-ONT-PE-001"
+  ],
+  "layer": "FOUNDATION LAYER",
+  "domain": "Organization Context",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-02",
+  "notes": "Hub ontology implementing the bridge pattern to connect organizations to all domain contexts."
+}

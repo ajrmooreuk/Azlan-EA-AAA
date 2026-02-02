@@ -1,0 +1,49 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-GDPR-001",
+  "name": "GDPR Ontology (General Data Protection Regulation)",
+  "description": "PLACEHOLDER - GDPR compliance ontology covering data protection principles, lawful bases, data subject rights, controller/processor obligations, and cross-border transfer mechanisms",
+  "version": null,
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/gdpr/",
+  "prefix": "gdpr:",
+  "status": "placeholder",
+  "complianceStatus": {
+    "gate1": "pending",
+    "gate2": "pending",
+    "gate2b": "pending",
+    "gate2c": "pending",
+    "gate3": "pending",
+    "gate4": "pending",
+    "gate5": "pending",
+    "gate6": "pending"
+  },
+  "artifacts": {
+    "ontology": null,
+    "glossary": null,
+    "documentation": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "plannedComponents": {
+    "dataProtectionPrinciples": "Article 5 principles (lawfulness, purpose limitation, data minimization, etc.)",
+    "lawfulBases": "Article 6 lawful bases for processing (consent, contract, legal obligation, etc.)",
+    "dataSubjectRights": "Chapter III rights (access, rectification, erasure, portability, etc.)",
+    "controllerObligations": "Controller responsibilities and accountability measures",
+    "processorObligations": "Processor requirements and contractual obligations",
+    "transferMechanisms": "Cross-border transfer safeguards (SCCs, adequacy decisions, BCRs)",
+    "dpiAssessment": "Data Protection Impact Assessment requirements"
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-001",
+    "Entry-ONT-ALZ-001"
+  ],
+  "dependents": [],
+  "layer": "SECURITY-SERIES",
+  "domain": "Data Protection & Privacy",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-02",
+  "lastModified": "2026-02-02",
+  "notes": "PLACEHOLDER - Awaiting import of GDPR ontology files from GitHub/Claude. Complements MCSB for comprehensive compliance coverage."
+}

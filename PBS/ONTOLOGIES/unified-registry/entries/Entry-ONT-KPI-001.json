@@ -1,0 +1,44 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-KPI-001",
+  "name": "KPI Ontology (Key Performance Indicators)",
+  "description": "Key Performance Indicators ontology for defining and tracking performance metrics",
+  "version": null,
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/kpi/",
+  "prefix": "kpi:",
+  "status": "placeholder",
+  "complianceStatus": {
+    "gate1": "pending",
+    "gate2": "pending",
+    "gate2b": "pending",
+    "gate2c": "pending",
+    "gate3": "pending",
+    "gate4": "pending",
+    "gate5": "pending",
+    "gate6": "pending"
+  },
+  "artifacts": {
+    "ontology": null,
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "kpi": "KPI definition and measurement",
+    "target": "KPI targets and thresholds",
+    "measurement": "KPI measurement tracking"
+  },
+  "dependencies": [
+    "Entry-ONT-VSOM-001",
+    "Entry-ONT-OKR-001"
+  ],
+  "dependents": [],
+  "layer": "STRATEGIC LAYER (VE-Series)",
+  "domain": "Performance Measurement",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-02-02",
+  "lastModified": "2026-02-02",
+  "notes": "PLACEHOLDER - Ontology schema to be developed. Will connect metrics from VSOM to detailed KPI tracking."
+}

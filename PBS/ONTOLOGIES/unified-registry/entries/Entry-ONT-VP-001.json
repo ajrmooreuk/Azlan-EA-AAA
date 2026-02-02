@@ -2,13 +2,13 @@
   "@context": "https://platformcore.io/ontology/registry/",
   "@type": "OntologyRegistryEntry",
   "@id": "Entry-ONT-VP-001",
-  "name": "Value Proposition Ontology",
-  "description": "Comprehensive ontology for developing, validating, and articulating value propositions. Links VSOM strategic layer to EFS execution layer through ICP-driven problem-solution mapping. Scoped by OrganizationContext for PFI-instance deployment.",
-  "version": "1.1.0",
+  "name": "VP Ontology (Value Proposition)",
+  "description": "Comprehensive ontology for developing, validating, and articulating value propositions. Links VSOM strategic layer to EFS execution layer through ICP-driven problem-solution mapping. Part of VE lineage chain: VSOM → OKR → VP → PMF → EFS.",
+  "version": "1.2.0",
   "oaaVersion": "5.0.0",
-  "namespace": "https://oaa-ontology.org/v5/value-proposition/",
+  "namespace": "https://platformcore.io/ontology/vp/",
   "prefix": "vp:",
-  "status": "near-compliance",
+  "status": "compliant",
   "complianceStatus": {
     "gate1": "pass",
     "gate2": "pass",
@@ -20,15 +20,15 @@
     "gate6": "pass"
   },
   "artifacts": {
-    "ontology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-v1.1.0-oaa-v5.jsonld",
-    "legacyOntology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-v1 (1).json",
+    "ontology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/vp-ontology-v1.2.0.jsonld",
+    "legacyOntology": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-v1.1.0-oaa-v5.jsonld",
     "documentation": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/VALUE-PROPOSITION-ONTOLOGY-SUMMARY (1).md",
     "frameworkGuide": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-framework-guide (1).md",
     "diagrams": [
       "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-ontology-diagram (1).mermaid"
     ],
     "visualGuide": null,
-    "glossary": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-glossary (1).json",
+    "glossary": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/vp-glossary-v1.2.0.json",
     "testData": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/vp-test-data-v1.1.0.json",
     "validationReport": "../pfc-ontologies/VE-Series-ONT/VE-VP-ONT/value-proposition-validation-report (1).json"
   },
@@ -60,6 +60,18 @@
         "from": "vp:ValueProposition",
         "to": "vsom:ObjectivesComponent",
         "purpose": "VSOM lineage - strategy to value"
+      },
+      {
+        "name": "informsValue",
+        "from": "okr:KeyResult",
+        "to": "vp:ValueProposition",
+        "purpose": "OKR → VP lineage chain"
+      },
+      {
+        "name": "validatesMarket",
+        "from": "vp:ValueProposition",
+        "to": "pmf:ProductMarketFit",
+        "purpose": "VP → PMF lineage chain"
       },
       {
         "name": "mapsToEpic",
@@ -111,16 +123,26 @@
     },
     {
       "id": "JP-VP-002",
+      "name": "OKR-to-VP Value Chain",
+      "path": "okr:KeyResult → vp:informsValue → vp:ValueProposition"
+    },
+    {
+      "id": "JP-VP-003",
+      "name": "VP-to-PMF Market Validation",
+      "path": "vp:ValueProposition → vp:validatesMarket → pmf:ProductMarketFit"
+    },
+    {
+      "id": "JP-VP-004",
       "name": "VP-to-EFS Execution Mapping",
       "path": "vp:Problem → vp:mapsToEpic → efs:Epic"
     },
     {
-      "id": "JP-VP-003",
+      "id": "JP-VP-005",
       "name": "ICP-to-Persona Bridge",
       "path": "vp:IdealCustomerProfile → vp:manifestsAsPersona → efs:Persona"
     },
     {
-      "id": "JP-VP-004",
+      "id": "JP-VP-006",
       "name": "Org-Context Scoping",
       "path": "org:OrganizationContext → vp:hasValueProposition → vp:ValueProposition"
     }
@@ -130,21 +152,26 @@
     "Entry-ONT-OKR-001",
     "Entry-ONT-RRR-001",
     "Entry-ONT-ORG-001",
-    "Entry-ONT-ORG-CONTEXT-001"
+    "Entry-ONT-ORG-CTX-001"
   ],
   "dependents": [
     "Entry-ONT-PMF-001",
     "Entry-ONT-EFS-001"
   ],
-  "layer": "LAYER 3: VALUE DEFINITION",
+  "layer": "STRATEGIC LAYER (VE-Series)",
   "domain": "Value Engineering",
-  "maintainer": "PFC Core Capability Framework",
+  "maintainer": "Azlan EA-AAA",
   "created": "2025-10-08",
   "lastModified": "2026-02-02",
   "versionHistory": [
     {
-      "version": "1.1.0",
+      "version": "1.2.0",
       "date": "2026-02-02",
+      "changes": "Added VE lineage chain relationships (OKR→VP→PMF), updated namespace to platformcore.io, RRR integration"
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-02-01",
       "changes": "OAA v5.0.0 compliance, VSOM lineage, EFS bridges, Org context scoping, G5 test data"
     },
     {
@@ -153,5 +180,5 @@
       "changes": "Initial VP ontology in legacy format"
     }
   ],
-  "notes": "VP v1.1.0 now OAA v5.0.0 compliant with full VSOM-VP-EFS lineage. Critical bridges established for PFI-instance builds. Ready for BAIV AI Visibility product VP instantiation."
+  "notes": "VP v1.2.0 part of complete VE lineage chain: VSOM → OKR → VP → PMF → EFS. Critical bridges established for PFI-instance builds. Ready for BAIV AI Visibility product VP instantiation."
 }

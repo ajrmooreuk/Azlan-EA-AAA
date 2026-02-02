@@ -1,0 +1,103 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-ALZ-001",
+  "name": "MCSB Ontology (Microsoft Cloud Security Benchmark v1)",
+  "description": "Comprehensive ontology representing the Microsoft Cloud Security Benchmark v1 framework, enabling AI agents to reason about cloud security controls, compliance mappings, implementation guidance, and responsibility assignments across Azure, AWS, and multi-cloud environments",
+  "version": "1.0.0",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/mcsb/",
+  "prefix": "mcsb:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "validationDate": "2026-02-02",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
+  "artifacts": {
+    "ontology": "../pfc-ontologies/ALZ-ONT/MCSB-Ontology-v1.0.0.jsonld",
+    "registryEntry": "../pfc-ontologies/ALZ-ONT/MCSB-Registry-Entry-v1.0.0.json",
+    "glossary": "../pfc-ontologies/ALZ-ONT/MCSB-Glossary-v1.0.0.json",
+    "documentation": "../pfc-ontologies/ALZ-ONT/MCSB-Documentation-v1.0.0.md",
+    "testData": "../pfc-ontologies/ALZ-ONT/MCSB-TestData-v1.0.0.json",
+    "validationReport": "../pfc-ontologies/ALZ-ONT/MCSB-ValidationReport-v1.0.0.json",
+    "changelog": "../pfc-ontologies/ALZ-ONT/MCSB-Changelog-v1.0.0.md"
+  },
+  "entities": {
+    "count": 10,
+    "list": [
+      "ControlDomain",
+      "SecurityControl",
+      "ImplementationGuidance",
+      "ComplianceMapping",
+      "ResponsibilityAssignment",
+      "ComplianceFramework",
+      "CloudPlatform",
+      "CloudService",
+      "SecurityStakeholder",
+      "ControlAssessment"
+    ]
+  },
+  "components": {
+    "controlDomains": "12 control domains with 76 individual security controls",
+    "complianceMappings": "NIST SP800-53, CIS Controls v7.1, CIS Controls v8, PCI-DSS v3.2.1",
+    "platformGuidance": "Azure and AWS implementation guidance",
+    "responsibilityModel": "Shared responsibility assignments",
+    "assessmentTracking": "Control assessment status tracking"
+  },
+  "relationships": {
+    "count": 13,
+    "list": [
+      "belongsToDomain",
+      "hasControl",
+      "hasAzureGuidance",
+      "hasAWSGuidance",
+      "forControl",
+      "hasComplianceMapping",
+      "mapsToControl",
+      "mapsToFramework",
+      "hasResponsibility",
+      "hasStakeholders",
+      "assessedControl",
+      "supportsControls",
+      "belongsToPlatform"
+    ]
+  },
+  "businessRules": {
+    "count": 18,
+    "format": "IF-THEN"
+  },
+  "aiAgentCapabilities": [
+    "Automated compliance assessment against MCSB controls",
+    "Gap analysis between current state and MCSB requirements",
+    "Cross-framework compliance mapping (NIST, CIS, PCI-DSS)",
+    "Platform-specific implementation guidance retrieval",
+    "RACI matrix generation for security controls",
+    "Security posture dashboard generation",
+    "Remediation planning and prioritization"
+  ],
+  "dependencies": [],
+  "dependents": [],
+  "layer": "SECURITY-SERIES",
+  "domain": "Cloud Security & Compliance",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-23",
+  "lastModified": "2026-02-02",
+  "sourceDocument": "PFC-Security_Schedules_Microsoft_cloud_security_benchmark_v1.xlsx",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-01-23",
+      "changes": "Initial creation from MCSB v1 Excel source with 12 control domains, 76 controls, compliance mappings"
+    }
+  ],
+  "notes": "Full OAA v5 compliant with test data (60-20-10-10 distribution), glossary, and validation reports. Source: Microsoft Cloud Security Benchmark v1."
+}

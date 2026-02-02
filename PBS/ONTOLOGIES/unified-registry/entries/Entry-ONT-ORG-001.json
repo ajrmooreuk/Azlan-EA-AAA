@@ -1,0 +1,45 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-ORG-001",
+  "name": "ORG Ontology (Organization Foundation)",
+  "description": "Core organization ontology defining organizational entities, structures, and foundational concepts",
+  "version": "2.1.0",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/org/",
+  "prefix": "org:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "../pfc-ontologies/ORG-ONT/org-ontology-v2.1.0-oaa-v5.json",
+    "glossary": "../pfc-ontologies/ORG-ONT/glossary-v1.0.0.json",
+    "registryEntry": "../pfc-ontologies/ORG-ONT/registry-entry-v3.0.0.json",
+    "testData": "../pfc-ontologies/ORG-ONT/test-data-v1.0.0.json",
+    "validationReport": null
+  },
+  "components": {
+    "organization": "Core organizational entity definition",
+    "structure": "Organizational hierarchy and relationships",
+    "context": "Bridge to ORG-CONTEXT hub"
+  },
+  "dependencies": [],
+  "dependents": [
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-CA-001"
+  ],
+  "layer": "FOUNDATION LAYER",
+  "domain": "Organization",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-02",
+  "notes": "Foundation ontology providing core organizational concepts used across all other ontologies."
+}
