@@ -103,9 +103,11 @@
       "name": "VP Ontology (Value Proposition)",
       "namespace": "vp:",
       "status": "compliant",
-      "gatesPassed": 7,
+      "gatesPassed": 8,
       "gatesFailed": 0,
       "validatedDate": "2026-02-02",
+      "oaaVersion": "6.1.0",
+      "version": "1.2.3",
       "path": "./entries/Entry-ONT-VP-001.json"
     },
     {
@@ -233,9 +235,11 @@
       "name": "SA Ontology (Solution Architecture)",
       "namespace": "sa:",
       "status": "compliant",
-      "gatesPassed": 7,
+      "gatesPassed": 8,
       "gatesFailed": 0,
       "validatedDate": "2026-02-02",
+      "oaaVersion": "6.1.0",
+      "version": "1.0.0",
       "path": "./entries/Entry-ONT-SA-001.json"
     }
   ],
@@ -316,6 +320,7 @@
     ],
     "placeholders": ["KPI", "MCSB2", "AIR", "GDPR", "AZALZ"],
     "oaaVersion": "5.0.0",
+    "oaaVersionNotes": "Base compliance at OAA v5.0.0. VP (v1.2.3) and SA (v1.0.0) upgraded to OAA v6.1.0 with 8-gate validation.",
     "lastFullValidation": "2026-02-02"
   },
   "pfiInstances": [

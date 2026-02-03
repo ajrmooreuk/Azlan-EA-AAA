@@ -20,7 +20,7 @@
     "gate6": "pass"
   },
   "validationDate": "2026-02-02",
-  "gatesPassed": 7,
+  "gatesPassed": 8,
   "gatesFailed": 0,
   "artifacts": {
     "folder": "../pfc-ontologies/audit-assess-ONT/SA-ONT/",
