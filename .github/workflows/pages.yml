@@ -6,6 +6,9 @@ on:
     paths:
       - 'tools/ontology-visualiser/**'
       - 'PBS/TOOLS/ontology-visualiser/**'
+      - 'PBS/ONTOLOGIES/unified-registry/**'
+      - 'PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/**'
+      - 'PBS/AGENTS/oaa-v6/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -34,12 +37,26 @@ jobs:
         run: |
           mkdir -p _site/tools/ontology-visualiser
           mkdir -p _site/PBS/TOOLS/ontology-visualiser
-          # Copy from PBS/TOOLS (primary location)
+          mkdir -p _site/PBS/ONTOLOGIES/unified-registry/entries
+          mkdir -p _site/PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts
+          mkdir -p _site/PBS/AGENTS/oaa-v6
+
+          # Copy visualiser from PBS/TOOLS (primary location)
           cp -r PBS/TOOLS/ontology-visualiser/* _site/PBS/TOOLS/ontology-visualiser/
           # Also deploy to legacy path for backwards compatibility
           cp -r PBS/TOOLS/ontology-visualiser/* _site/tools/ontology-visualiser/
           # Create root index pointing to visualiser
           cp PBS/TOOLS/ontology-visualiser/browser-viewer.html _site/index.html
+
+          # Copy unified registry for local lookups
+          cp PBS/ONTOLOGIES/unified-registry/ont-registry-index.json _site/PBS/ONTOLOGIES/unified-registry/
+          cp -r PBS/ONTOLOGIES/unified-registry/entries/* _site/PBS/ONTOLOGIES/unified-registry/entries/
+
+          # Copy OAA system prompts for reference
+          cp -r PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/* _site/PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/
+
+          # Copy active OAA agent system prompt
+          cp PBS/AGENTS/oaa-v6/system-prompt.md _site/PBS/AGENTS/oaa-v6/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
