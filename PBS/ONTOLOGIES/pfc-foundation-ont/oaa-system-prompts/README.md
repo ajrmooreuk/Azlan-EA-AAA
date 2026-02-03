@@ -1,100 +1,61 @@
-# OAA System Prompts Archive
+# OAA System Prompts - Test Suites & Archives
 
-This folder contains versioned copies of the **Ontology Architect Agent (OAA) System Prompt** - the specification document that defines how AI agents should create, validate, and govern ontologies.
+This folder contains **test suites and supporting artifacts** for the OAA System Prompt. The actual system prompt is maintained elsewhere (see below).
 
-## Important Distinction
+## Single Source of Truth
 
-| Component | What It Is | Location |
-|-----------|------------|----------|
-| **OAA System Prompt** | Specification document defining validation rules, output formats, and workflows | This folder (versioned) |
-| **Active System Prompt** | Current production prompt loaded by agents | `PBS/AGENTS/oaa-v6/system-prompt.md` |
-| **OAA Visualiser** | Browser tool that validates ontologies using OAA rules | `PBS/TOOLS/ontology-visualiser/` |
-| **OAA Agent Instance** | AI agent (Claude, etc.) that loads the system prompt | External (Claude Code, custom agents) |
+| What | Location |
+|------|----------|
+| **Active System Prompt** | `PBS/AGENTS/oaa-v6/system-prompt.md` |
+| **Test Suites** | This folder (`oaa-system-prompts/`) |
+| **Visualiser** | `PBS/TOOLS/ontology-visualiser/` |
 
 ## Folder Structure
 
 ```
 oaa-system-prompts/
-├── README.md                    # This file
-├── oaa-v6.2.0-sys-prompt/       # Current version
-│   ├── OAA_System_Prompt_v6.2.0.md
-│   ├── OAA_Test_Suite_v6.2.0.md
-│   ├── README.md
-│   └── test-cases/
-└── [future versions...]
+├── README.md                      # This file
+└── oaa-v6.2.0-sys-prompt/
+    ├── README.md                  # Points to active prompt
+    └── OAA_Test_Suite_v6.2.0.md   # 72 test cases
 ```
+
+## Why This Structure?
+
+- **Single source of truth**: The system prompt lives in ONE place (`PBS/AGENTS/oaa-v6/`)
+- **No duplication**: Avoids version drift between copies
+- **Test suites here**: Supporting artifacts (test cases) stay with version folders
+- **Clear separation**: Agents folder = active prompts, this folder = tests & archives
 
 ## Current Version
 
 **v6.2.0** (2026-02-03) - Adds Gate 6 Metadata Completeness
 
-## How It Works
+## Component Relationships
 
 ```
-┌─────────────────────┐
-│   User Request      │
-│ "Create ontology"   │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│   AI Agent          │  ◄── Loads system prompt
-│   (Claude Code)     │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│  OAA System Prompt  │  ◄── Defines rules & formats
-│     v6.2.0          │
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│  Output: Ontology   │
-│  JSON-LD + Artifacts│
-└─────────────────────┘
-```
-
-## Validation Flow
-
-The OAA Visualiser provides browser-based validation that mirrors the OAA System Prompt rules:
-
-```
-┌─────────────────────┐     ┌─────────────────────┐
-│  Load Ontology      │────►│  OAA Visualiser     │
-│  (JSON-LD file)     │     │  (browser-viewer)   │
-└─────────────────────┘     └──────────┬──────────┘
-                                       │
-                            ┌──────────▼──────────┐
-                            │  Gate Validation    │
-                            │  G1-G6 Checks       │
-                            └──────────┬──────────┘
-                                       │
-                            ┌──────────▼──────────┐
-                            │  Audit Report       │
-                            │  Export JSON        │
-                            └─────────────────────┘
-```
-
-## Syncing with PF-Core-BAIV
-
-The OAA system prompts are maintained in both:
-- **Azlan-EA-AAA** (this repo) - Primary development
-- **PF-Core-BAIV** - Reference copy
-
-To sync:
-```bash
-# Copy from Azlan to PF-Core-BAIV
-cp -r PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/oaa-v6.2.0-sys-prompt \
-      ~/Documents/PF-Core-BAIV/ontologies/pfc-foundation-ont/oaa-system-prompts/
+┌─────────────────────────────────┐
+│  PBS/AGENTS/oaa-v6/             │
+│  └── system-prompt.md           │◄── SINGLE SOURCE OF TRUTH
+└─────────────────────────────────┘
+              │
+              │ defines validation rules
+              ▼
+┌─────────────────────────────────┐
+│  PBS/TOOLS/ontology-visualiser/ │
+│  └── browser-viewer.html        │◄── Implements OAA rules in JS
+└─────────────────────────────────┘
+              │
+              │ validates against
+              ▼
+┌─────────────────────────────────┐
+│  PBS/ONTOLOGIES/unified-registry│
+│  └── ont-registry-index.json    │◄── Ontology registry
+└─────────────────────────────────┘
 ```
 
 ## Version History
 
-| Version | Date | Key Changes |
-|---------|------|-------------|
-| v6.2.0 | 2026-02-03 | Gate 6 Metadata Completeness |
-| v6.1.0 | 2026-02-01 | Entity Property Format |
-| v6.0.0 | 2026-01-13 | TDD Framework, Quality Gates |
-| v5.0.0 | 2025-12-15 | Initial OAA v5.0.0 Schema |
-| v4.0.x | 2026-01-20 | Legacy (PF-Core-BAIV) |
+| Version | Date | Test Suite |
+|---------|------|------------|
+| v6.2.0 | 2026-02-03 | 72 test cases (Gate 6 added) |
