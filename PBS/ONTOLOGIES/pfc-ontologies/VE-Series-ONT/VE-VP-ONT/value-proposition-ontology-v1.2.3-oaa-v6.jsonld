@@ -23,6 +23,8 @@
   "oaa:previousVersion": "1.2.2",
   "oaa:domain": "Value Engineering, Product Strategy, Customer Value, Organizational Accountability",
   "oaa:status": "Production",
+  "version": "1.2.3",
+  "author": "Azlan EA-AAA / PFC Core Capability Framework",
   "dateCreated": "2025-10-08",
   "dateModified": "2026-02-02",
   "creator": {

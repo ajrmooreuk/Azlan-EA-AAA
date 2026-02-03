@@ -1065,8 +1065,8 @@ function validateG5Completeness(data, parsed) {
     warnings.push('No metadata block found');
   } else {
     const meta = data.metadata || data.registryMetadata || {};
-    if (!meta.version && !data.version) warnings.push('Missing version');
-    if (!meta.author && !meta.creator && !data.author) warnings.push('Missing author/creator');
+    if (!meta.version && !data.version && !data['oaa:moduleVersion'] && !data['owl:versionInfo']) warnings.push('Missing version');
+    if (!meta.author && !meta.creator && !data.author && !data.creator) warnings.push('Missing author/creator');
   }
 
   // Check entity completeness
