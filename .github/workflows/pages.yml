@@ -4,7 +4,6 @@ on:
   push:
     branches: [main]
     paths:
-      - 'tools/ontology-visualiser/**'
       - 'PBS/TOOLS/ontology-visualiser/**'
       - 'PBS/ONTOLOGIES/unified-registry/**'
       - 'PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/**'
