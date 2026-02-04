@@ -33,7 +33,7 @@ export const EDGE_COLORS = {
   'binding': '#FF9800', 'value_chain': '#2196F3', 'default': '#555'
 };
 
-export const REGISTRY_BASE_PATH = '../ONTOLOGIES/unified-registry/';
+export const REGISTRY_BASE_PATH = '../../ONTOLOGIES/unified-registry/';
 
 export const SERIES_COLORS = {
   'VE-Series': '#2196F3',
