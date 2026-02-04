@@ -13,7 +13,13 @@ export const state = {
   registryIndex: null,
   currentRegistryEntry: null,
   lastValidation: null,
-  libraryDB: null
+  libraryDB: null,
+
+  // Multi-ontology state (Phase 1)
+  loadedOntologies: new Map(),
+  mergedGraph: null,
+  seriesData: null,
+  viewMode: 'single'  // 'single' | 'multi'
 };
 
 export const TYPE_COLORS = {
@@ -28,6 +34,16 @@ export const EDGE_COLORS = {
 };
 
 export const REGISTRY_BASE_PATH = '../ONTOLOGIES/unified-registry/';
+
+export const SERIES_COLORS = {
+  'VE-Series': '#2196F3',
+  'PE-Series': '#4CAF50',
+  'Foundation': '#FF9800',
+  'Competitive': '#E91E63',
+  'Security-Series': '#9C27B0',
+  'Orchestration': '#00BCD4',
+  'placeholder': '#616161'
+};
 
 export const DB_NAME = 'OntologyLibrary';
 export const DB_VERSION = 1;

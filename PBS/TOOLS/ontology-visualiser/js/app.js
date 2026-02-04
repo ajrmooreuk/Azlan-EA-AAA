@@ -5,8 +5,9 @@
 
 import { state } from './state.js';
 import { parseOntology } from './ontology-parser.js';
-import { renderGraph, focusNode, focusNodes, togglePhysics, changeLayout, fitGraph, resetGraph } from './graph-renderer.js';
+import { renderGraph, renderMultiGraph, focusNode, focusNodes, togglePhysics, changeLayout, fitGraph, resetGraph } from './graph-renderer.js';
 import { exportAuditFile, exportPNG, downloadOntologyForOAA } from './export.js';
+import { loadFullRegistry, buildMergedGraph, detectCrossReferences } from './multi-loader.js';
 import {
   toggleSidebar, toggleAudit, loadTestDataFile, navigateToNode, switchTab,
   runOAAUpgrade, showOAAModal, closeOAAModal, copyOAACommand, copyPath,
@@ -44,6 +45,7 @@ dropArea.addEventListener('drop', e => {
 
 function loadFile(file) {
   document.getElementById('file-name').textContent = file.name;
+  state.viewMode = 'single';
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
@@ -84,6 +86,7 @@ function loadFromGitHub() {
   const filePath = parts.slice(2).join('/');
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
 
+  state.viewMode = 'single';
   document.getElementById('file-name').textContent = `Loading ${filePath}...`;
   fetch(url, { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3.raw' } })
     .then(res => {
@@ -178,6 +181,7 @@ async function loadFromLibrary(id) {
       return;
     }
 
+    state.viewMode = 'single';
     state.currentData = ontology.data;
     document.getElementById('file-name').textContent = `${ontology.name} (v${ontology.version})`;
 
@@ -321,6 +325,47 @@ function importLibrary() {
 }
 
 // ========================================
+// MULTI-ONTOLOGY REGISTRY LOADING (Phase 1)
+// ========================================
+
+async function loadRegistry() {
+  const fileNameEl = document.getElementById('file-name');
+  const statsEl = document.getElementById('stats');
+
+  fileNameEl.textContent = 'Loading unified registry...';
+  statsEl.textContent = 'Loading...';
+
+  try {
+    const { loadedOntologies, seriesData, namespaceRegistry, stats } =
+      await loadFullRegistry((msg, current, total) => {
+        statsEl.textContent = msg;
+      });
+
+    state.loadedOntologies = loadedOntologies;
+    state.seriesData = seriesData;
+    state.viewMode = 'multi';
+
+    const mergedGraph = buildMergedGraph(loadedOntologies);
+    state.mergedGraph = mergedGraph;
+
+    const crossEdges = detectCrossReferences(loadedOntologies, mergedGraph);
+
+    renderMultiGraph(mergedGraph, crossEdges, seriesData);
+
+    fileNameEl.textContent = `Unified Registry (${stats.total} ontologies, ${stats.placeholders} placeholders)`;
+    dropZone.classList.add('hidden');
+
+    console.log('Registry loaded:', stats);
+
+  } catch (err) {
+    alert('Failed to load registry: ' + err.message);
+    fileNameEl.textContent = '';
+    statsEl.textContent = '';
+    console.error('Registry load error:', err);
+  }
+}
+
+// ========================================
 // MODAL EVENT LISTENERS
 // ========================================
 
@@ -361,6 +406,7 @@ window.switchTab = switchTab;
 // File loading
 window.loadFromGitHub = loadFromGitHub;
 window.loadTestDataFile = loadTestDataFile;
+window.loadRegistry = loadRegistry;
 
 // OAA Upgrade
 window.runOAAUpgrade = runOAAUpgrade;

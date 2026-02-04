@@ -3,7 +3,7 @@
  * Functions that need renderGraph (loadFromLibrary, restoreVersion) are in app.js.
  */
 
-import { state } from './state.js';
+import { state, SERIES_COLORS } from './state.js';
 import { validateOAAv5 } from './audit-engine.js';
 import { getVersionHistory, loadOntologyFromLibrary } from './library-manager.js';
 import { DEFAULT_CATEGORIES } from './state.js';
@@ -78,6 +78,20 @@ export function showNodeDetails(node) {
   detailsHtml += field('Label', node.label);
   detailsHtml += field('Type', node.entityType);
   if (node.description) detailsHtml += field('Description', node.description);
+
+  // Multi-ontology provenance (Phase 1)
+  if (state.viewMode === 'multi' && node.sourceNamespace) {
+    const seriesColor = SERIES_COLORS[node.series] || SERIES_COLORS.placeholder;
+    detailsHtml += field('Source Ontology', node.sourceName || node.sourceNamespace);
+    detailsHtml += field('Series',
+      `<span class="provenance-badge series" style="color:${seriesColor}; border-color:${seriesColor}">${node.series || 'Unknown'}</span>`);
+    if (node.isPlaceholder) {
+      detailsHtml += field('Status', '<span class="provenance-badge placeholder">Placeholder</span>');
+    }
+    if (node.originalId) {
+      detailsHtml += field('Original ID', node.originalId);
+    }
+  }
 
   if (node.properties && typeof node.properties === 'object') {
     for (const [k, v] of Object.entries(node.properties)) {
