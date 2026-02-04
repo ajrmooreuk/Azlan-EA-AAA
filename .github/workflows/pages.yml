@@ -44,8 +44,9 @@ jobs:
           cp -r PBS/TOOLS/ontology-visualiser/* _site/PBS/TOOLS/ontology-visualiser/
           # Also deploy to legacy path for backwards compatibility
           cp -r PBS/TOOLS/ontology-visualiser/* _site/tools/ontology-visualiser/
-          # Create root index pointing to visualiser
-          cp PBS/TOOLS/ontology-visualiser/browser-viewer.html _site/index.html
+          # Create root index redirecting to visualiser (redirect required since
+          # browser-viewer.html uses relative paths to css/ and js/ modules)
+          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=PBS/TOOLS/ontology-visualiser/browser-viewer.html"><title>OAA Visualiser</title></head><body><a href="PBS/TOOLS/ontology-visualiser/browser-viewer.html">Go to OAA Ontology Visualiser</a></body></html>' > _site/index.html
 
           # Copy unified registry for local lookups
           cp PBS/ONTOLOGIES/unified-registry/ont-registry-index.json _site/PBS/ONTOLOGIES/unified-registry/
