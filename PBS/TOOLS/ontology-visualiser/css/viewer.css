@@ -166,3 +166,13 @@ header .stats { font-size: 13px; color: #888; margin-left: auto; }
 .diff-item.removed { color: #fca5a5; }
 .diff-item.changed { color: #ffb48e; }
 .diff-item .diff-icon { font-family: monospace; }
+
+/* Multi-Ontology / Registry Loader (Phase 1) */
+.legend-dot-placeholder { border: 1px dashed #aaa; }
+.legend-dot-crossref { border: 1px solid #FFD700; }
+.registry-loading { display: flex; align-items: center; gap: 10px; padding: 16px; color: #9dfff5; font-size: 13px; }
+.registry-loading .spinner { width: 16px; height: 16px; border: 2px solid #3a3d47; border-top-color: #9dfff5; border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.provenance-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 500; margin-left: 6px; }
+.provenance-badge.series { border: 1px solid currentColor; }
+.provenance-badge.placeholder { background: #616161; color: #ccc; }
