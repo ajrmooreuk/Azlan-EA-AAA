@@ -1,0 +1,635 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "oaa": "https://oaa-ontology.org/v6/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "vsom": "https://oaa-ontology.org/v6/vsom/",
+    "org": "https://oaa-ontology.org/v6/organization/",
+    "cl": "https://oaa-ontology.org/v6/competitive-landscape/",
+    "baiv": "https://beaivisible.com/ontology/"
+  },
+  "@id": "baiv:vsom-ontology",
+  "@type": "owl:Ontology",
+  "name": "BAIV VSOM Ontology",
+  "alternateName": "Be AI Visible Vision-Strategy-Objectives-Metrics Framework",
+  "description": "Complete VSOM ontology for Be AI Visible platform defining the structure and relationships of strategic framework components including value proposition, market strategy, objectives, and success metrics",
+  "version": "1.0.0",
+  "oaa:schemaVersion": "6.1.0",
+  "oaa:moduleVersion": "1.0.0",
+  "oaa:domain": "AI Visibility, Marketing Technology, SaaS Platform, Strategic Management",
+  "oaa:status": "Production",
+  "dateCreated": "2026-02-03",
+  "dateModified": "2026-02-03",
+  "author": "Milana Thornton",
+  "creator": {
+    "@type": "Organization",
+    "@id": "baiv:organization",
+    "name": "Be AI Visible",
+    "description": "AI Visibility optimization platform helping businesses get recommended by ChatGPT, Claude, Perplexity, and Gemini",
+    "url": "https://beaivisible.com"
+  },
+
+  "entities": [
+    {
+      "@id": "vsom:VSOMFramework",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Intangible",
+      "name": "VSOMFramework",
+      "description": "Complete Vision-Strategy-Objectives-Metrics implementation framework defining how organizations establish strategic direction, competitive positioning, measurable goals, and success indicators. Driver is BusinessImpact, Goal is Outcomes, Measure is Value.",
+      "oaa:properties": [
+        {"name": "frameworkId", "type": "xsd:string", "required": true, "description": "Unique identifier for VSOM framework instance"},
+        {"name": "name", "type": "xsd:string", "required": true, "description": "Name of strategic framework"},
+        {"name": "driver", "type": "xsd:string", "required": true, "default": "BusinessImpact", "description": "Primary driver (BusinessImpact)"},
+        {"name": "goal", "type": "xsd:string", "required": true, "default": "Outcomes", "description": "Strategic goal (Outcomes)"},
+        {"name": "measure", "type": "xsd:string", "required": true, "default": "Value", "description": "Success measure (Value)"},
+        {"name": "organizationRef", "type": "xsd:string", "required": true, "description": "Reference to org:Organization"}
+      ]
+    },
+    {
+      "@id": "vsom:VisionComponent",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Thing",
+      "name": "VisionComponent",
+      "description": "Long-term aspirational direction aligned with organizational purpose, typically spanning 3-10 years, defining where the organization aims to be and what it represents in its market",
+      "oaa:properties": [
+        {"name": "visionId", "type": "xsd:string", "required": true, "description": "Unique vision identifier"},
+        {"name": "visionStatement", "type": "xsd:string", "required": true, "description": "Aspirational future state description"},
+        {"name": "coreValues", "type": "xsd:string", "required": false, "description": "Fundamental organizational beliefs and principles"},
+        {"name": "visionHorizon", "type": "xsd:duration", "required": false, "description": "Time horizon for vision realization"},
+        {"name": "aspirationalDirection", "type": "xsd:string", "required": false, "description": "Strategic direction aspired to"},
+        {"name": "purposeAlignment", "type": "xsd:string", "required": false, "description": "Alignment with organizational purpose"},
+        {"name": "marketOpportunity", "type": "xsd:string", "required": false, "description": "Market opportunity being pursued"}
+      ]
+    },
+    {
+      "@id": "vsom:StrategyComponent",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Action",
+      "name": "StrategyComponent",
+      "description": "Multi-layer strategic approach spanning corporate, marketing, operational, and digital strategies with 1-3 year time horizon, defining how organization will achieve its vision through competitive advantage and resource allocation",
+      "oaa:properties": [
+        {"name": "strategyId", "type": "xsd:string", "required": true, "description": "Unique strategy identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "description": "Strategy name"},
+        {"name": "strategyType", "type": "xsd:string", "required": true, "enum": ["Corporate", "Marketing", "Operational", "Digital", "Growth"], "description": "Type of strategy"},
+        {"name": "strategicThrust", "type": "xsd:string", "required": false, "description": "Primary strategic direction and focus"},
+        {"name": "competitiveAdvantage", "type": "xsd:string", "required": false, "description": "Sustainable competitive positioning"},
+        {"name": "resourceRequirements", "type": "xsd:decimal", "required": false, "description": "Budget allocation"},
+        {"name": "actionStatus", "type": "xsd:string", "required": false, "description": "Current status"}
+      ]
+    },
+    {
+      "@id": "vsom:ObjectivesComponent",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Thing",
+      "name": "ObjectivesComponent",
+      "description": "Specific, measurable, achievable, relevant, time-bound goals with quarterly to annual time horizon that cascade from strategy and drive organizational execution",
+      "oaa:properties": [
+        {"name": "objectiveId", "type": "xsd:string", "required": true, "description": "Unique objective identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "description": "Objective name"},
+        {"name": "objectiveType", "type": "xsd:string", "required": true, "enum": ["Strategic", "Tactical", "Operational", "Financial", "Customer"], "description": "Type of objective"},
+        {"name": "targetValue", "type": "xsd:decimal", "required": true, "description": "Target measurement value"},
+        {"name": "baselineValue", "type": "xsd:decimal", "required": false, "description": "Starting measurement value"},
+        {"name": "deadline", "type": "xsd:date", "required": true, "description": "Target completion date"},
+        {"name": "owner", "type": "xsd:string", "required": false, "description": "Accountable person or role"},
+        {"name": "status", "type": "xsd:string", "required": true, "enum": ["NotStarted", "InProgress", "OnTrack", "AtRisk", "Completed"], "description": "Current status"},
+        {"name": "priority", "type": "xsd:integer", "required": false, "description": "Priority ranking (1=highest)"},
+        {"name": "businessImpact", "type": "xsd:string", "required": false, "enum": ["Critical", "High", "Medium", "Low"], "description": "Business impact level"}
+      ]
+    },
+    {
+      "@id": "vsom:MetricsComponent",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:PropertyValue",
+      "name": "MetricsComponent",
+      "description": "Key performance indicators and measurement systems tracking value delivery with continuous monitoring, including thresholds for critical, warning, and target states",
+      "oaa:properties": [
+        {"name": "metricId", "type": "xsd:string", "required": true, "description": "Unique metric identifier"},
+        {"name": "name", "type": "xsd:string", "required": true, "description": "Metric name"},
+        {"name": "value", "type": "xsd:decimal", "required": false, "description": "Current metric value"},
+        {"name": "unitCode", "type": "xsd:string", "required": false, "description": "Unit of measurement"},
+        {"name": "metricType", "type": "xsd:string", "required": true, "enum": ["Leading", "Lagging", "Diagnostic", "Outcome", "Financial", "Customer", "Operational"], "description": "Type of metric"},
+        {"name": "measurementFrequency", "type": "xsd:duration", "required": false, "description": "How often measured"},
+        {"name": "thresholdCritical", "type": "xsd:decimal", "required": false, "description": "Critical threshold requiring immediate action"},
+        {"name": "thresholdWarning", "type": "xsd:decimal", "required": false, "description": "Warning threshold requiring attention"},
+        {"name": "thresholdTarget", "type": "xsd:decimal", "required": false, "description": "Target threshold for success"},
+        {"name": "dataSource", "type": "xsd:string", "required": false, "description": "Source system for metric data"},
+        {"name": "businessImpact", "type": "xsd:string", "required": false, "enum": ["Critical", "High", "Medium", "Low"], "description": "Business impact level"}
+      ]
+    },
+    {
+      "@id": "vsom:PainPointsContext",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Thing",
+      "name": "PainPointsContext",
+      "description": "Validated customer pain points derived from market research, customer interviews, and user feedback that inform value proposition and strategic positioning",
+      "oaa:properties": [
+        {"name": "description", "type": "xsd:string", "required": true, "description": "Context description"},
+        {"name": "sources", "type": "xsd:string", "required": false, "description": "Data sources for pain points"},
+        {"name": "corePainPoints", "type": "xsd:string", "required": false, "description": "List of validated pain points"}
+      ]
+    },
+    {
+      "@id": "vsom:ICPContext",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Thing",
+      "name": "ICPContext",
+      "description": "Ideal Customer Profile context defining target customer segments, their characteristics, pain points, and value alignment with strategic objectives",
+      "oaa:properties": [
+        {"name": "description", "type": "xsd:string", "required": true, "description": "ICP context description"},
+        {"name": "primaryICPs", "type": "xsd:string", "required": false, "description": "List of primary ideal customer profiles"}
+      ]
+    },
+    {
+      "@id": "vsom:CompetitiveContext",
+      "@type": "rdfs:Class",
+      "rdfs:subClassOf": "schema:Thing",
+      "name": "CompetitiveContext",
+      "description": "Competitive landscape analysis including direct competitors, their positioning, strengths, weaknesses, market window, and defensive moat strategy",
+      "oaa:properties": [
+        {"name": "directCompetitors", "type": "xsd:string", "required": false, "description": "List of direct competitors with analysis"},
+        {"name": "marketWindow", "type": "xsd:string", "required": false, "description": "Time window for competitive advantage"},
+        {"name": "defensibility", "type": "xsd:string", "required": false, "description": "Defensive strategy and moat"}
+      ]
+    }
+  ],
+
+  "relationships": [
+    {
+      "@id": "vsom:hasVision",
+      "@type": "rdf:Property",
+      "name": "hasVision",
+      "description": "Relates VSOM framework to its vision component defining long-term aspirational direction",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:VisionComponent"],
+      "cardinality": "1..1",
+      "inverseOf": "vsom:visionOf"
+    },
+    {
+      "@id": "vsom:hasStrategy",
+      "@type": "rdf:Property",
+      "name": "hasStrategy",
+      "description": "Relates VSOM framework to one or more strategy components defining execution approach",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:StrategyComponent"],
+      "cardinality": "1..*",
+      "inverseOf": "vsom:strategyOf"
+    },
+    {
+      "@id": "vsom:hasObjective",
+      "@type": "rdf:Property",
+      "name": "hasObjective",
+      "description": "Relates VSOM framework to one or more objectives components defining measurable goals",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:ObjectivesComponent"],
+      "cardinality": "1..*",
+      "inverseOf": "vsom:objectiveOf"
+    },
+    {
+      "@id": "vsom:hasMetric",
+      "@type": "rdf:Property",
+      "name": "hasMetric",
+      "description": "Relates VSOM framework to one or more metrics components defining success measurement",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:MetricsComponent"],
+      "cardinality": "1..*",
+      "inverseOf": "vsom:metricOf"
+    },
+    {
+      "@id": "vsom:hasPainPointsContext",
+      "@type": "rdf:Property",
+      "name": "hasPainPointsContext",
+      "description": "Relates VSOM framework to customer pain points context informing value proposition",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:PainPointsContext"],
+      "cardinality": "0..1",
+      "inverseOf": "vsom:painPointsContextOf"
+    },
+    {
+      "@id": "vsom:hasICPContext",
+      "@type": "rdf:Property",
+      "name": "hasICPContext",
+      "description": "Relates VSOM framework to ideal customer profile context defining target segments",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:ICPContext"],
+      "cardinality": "0..1",
+      "inverseOf": "vsom:icpContextOf"
+    },
+    {
+      "@id": "vsom:hasCompetitiveContext",
+      "@type": "rdf:Property",
+      "name": "hasCompetitiveContext",
+      "description": "Relates VSOM framework to competitive landscape context informing strategic positioning",
+      "domainIncludes": ["vsom:VSOMFramework"],
+      "rangeIncludes": ["vsom:CompetitiveContext"],
+      "cardinality": "0..1",
+      "inverseOf": "vsom:competitiveContextOf"
+    },
+    {
+      "@id": "vsom:informsStrategy",
+      "@type": "rdf:Property",
+      "name": "informsStrategy",
+      "description": "Vision component informs and guides strategy development",
+      "domainIncludes": ["vsom:VisionComponent"],
+      "rangeIncludes": ["vsom:StrategyComponent"],
+      "cardinality": "0..*",
+      "inverseOf": "vsom:informedByVision"
+    },
+    {
+      "@id": "vsom:definesObjectives",
+      "@type": "rdf:Property",
+      "name": "definesObjectives",
+      "description": "Strategy component defines specific objectives for execution",
+      "domainIncludes": ["vsom:StrategyComponent"],
+      "rangeIncludes": ["vsom:ObjectivesComponent"],
+      "cardinality": "0..*",
+      "inverseOf": "vsom:definedByStrategy"
+    },
+    {
+      "@id": "vsom:measuredBy",
+      "@type": "rdf:Property",
+      "name": "measuredBy",
+      "description": "Objectives are measured by specific metrics",
+      "domainIncludes": ["vsom:ObjectivesComponent"],
+      "rangeIncludes": ["vsom:MetricsComponent"],
+      "cardinality": "1..*",
+      "inverseOf": "vsom:measures"
+    }
+  ],
+
+  "businessRules": [
+    {
+      "@id": "vsom:rule-001",
+      "@type": "oaa:BusinessRule",
+      "name": "Vision Must Have Time Horizon",
+      "description": "IF VisionComponent exists THEN visionHorizon must be defined with minimum 1 year duration",
+      "condition": "IF VisionComponent exists",
+      "action": "THEN visionHorizon must be defined with minimum 1 year duration",
+      "severity": "error",
+      "rationale": "Vision without time horizon lacks strategic clarity and cannot guide long-term planning"
+    },
+    {
+      "@id": "vsom:rule-002",
+      "@type": "oaa:BusinessRule",
+      "name": "Strategy Must Align With Vision Horizon",
+      "description": "IF StrategyComponent exists THEN strategy timeline must fall within VisionComponent time horizon",
+      "condition": "IF StrategyComponent exists AND VisionComponent exists",
+      "action": "THEN strategy timeline must fall within VisionComponent time horizon",
+      "severity": "warning",
+      "rationale": "Strategy that exceeds vision horizon indicates misalignment between strategic and aspirational planning"
+    },
+    {
+      "@id": "vsom:rule-003",
+      "@type": "oaa:BusinessRule",
+      "name": "Objectives Must Have Deadlines",
+      "description": "IF ObjectivesComponent exists THEN deadline must be defined and in the future",
+      "condition": "IF ObjectivesComponent exists",
+      "action": "THEN deadline must be defined and in the future",
+      "severity": "error",
+      "rationale": "Objectives without deadlines lack urgency and cannot drive execution"
+    },
+    {
+      "@id": "vsom:rule-004",
+      "@type": "oaa:BusinessRule",
+      "name": "Objectives Must Have Measurable Targets",
+      "description": "IF ObjectivesComponent exists THEN targetValue must be defined and different from baselineValue",
+      "condition": "IF ObjectivesComponent exists",
+      "action": "THEN targetValue must be defined and different from baselineValue",
+      "severity": "error",
+      "rationale": "Objectives without measurable targets cannot be tracked or achieved"
+    },
+    {
+      "@id": "vsom:rule-005",
+      "@type": "oaa:BusinessRule",
+      "name": "Metrics Must Have Thresholds",
+      "description": "IF MetricsComponent exists THEN at least thresholdTarget must be defined",
+      "condition": "IF MetricsComponent exists",
+      "action": "THEN at least thresholdTarget must be defined",
+      "severity": "warning",
+      "rationale": "Metrics without target thresholds lack clear success criteria"
+    },
+    {
+      "@id": "vsom:rule-006",
+      "@type": "oaa:BusinessRule",
+      "name": "Critical Objectives Require Critical Metrics",
+      "description": "IF ObjectivesComponent.businessImpact = 'Critical' THEN at least one related MetricsComponent must have businessImpact = 'Critical'",
+      "condition": "IF ObjectivesComponent has businessImpact = 'Critical'",
+      "action": "THEN at least one related MetricsComponent must have businessImpact = 'Critical'",
+      "severity": "error",
+      "rationale": "Critical objectives without critical metrics cannot be properly monitored for business-critical issues"
+    },
+    {
+      "@id": "vsom:rule-007",
+      "@type": "oaa:BusinessRule",
+      "name": "Framework Must Have W4M Alignment",
+      "description": "IF VSOMFramework exists THEN driver must be 'BusinessImpact', goal must be 'Outcomes', and measure must be 'Value'",
+      "condition": "IF VSOMFramework exists",
+      "action": "THEN driver must be 'BusinessImpact', goal must be 'Outcomes', and measure must be 'Value'",
+      "severity": "error",
+      "rationale": "VSOM framework must align with W4M core principles: BusinessImpact drives Outcomes measured by Value"
+    },
+    {
+      "@id": "vsom:rule-008",
+      "@type": "oaa:BusinessRule",
+      "name": "Metrics Must Have Data Sources",
+      "description": "IF MetricsComponent.businessImpact = 'Critical' THEN dataSource must be defined",
+      "condition": "IF MetricsComponent has businessImpact = 'Critical'",
+      "action": "THEN dataSource must be defined",
+      "severity": "warning",
+      "rationale": "Critical metrics without defined data sources cannot be reliably tracked"
+    }
+  ],
+
+  "baivInstance": {
+    "@id": "baiv:vsom:framework-instance",
+    "@type": "vsom:VSOMFramework",
+    "frameworkId": "BAIV-VSOM-2026-001",
+    "name": "Be AI Visible - VSOM Framework",
+    "description": "Complete strategic framework for Be AI Visible platform",
+    "driver": "BusinessImpact",
+    "goal": "Outcomes",
+    "measure": "Value",
+    "organizationRef": "org:BeAIVisible",
+    
+    "VisionComponent": {
+      "@type": "vsom:VisionComponent",
+      "visionId": "BAIV-VISION-001",
+      "visionStatement": "When businesses think 'how do I get recommended by AI', they think Be AI Visible. We own the AI Visibility category the way SEO owned Google rankings.",
+      "coreValues": [
+        "Transparency - Make invisible customer journeys visible",
+        "Results - AI citations that convert 21x better aren't theory, they're proven",
+        "Speed - Discovery audits in 2.5 minutes, not 2 weeks",
+        "Intelligence - Multi-platform understanding, not single-platform tracking",
+        "Customer Success - Boots on the ground, not corporate playbooks"
+      ],
+      "visionHorizon": "P3Y",
+      "aspirationalDirection": "Be AI Visible becomes the standard platform for AI visibility optimization across all marketing teams - from solo founders to Fortune 500 CMOs. The category we create becomes as fundamental as SEO.",
+      "purposeAlignment": "Enable businesses to thrive in the AI-mediated discovery era by revealing and optimizing the customer journeys happening inside AI conversations",
+      "marketOpportunity": "40% of purchase decisions now happen in AI conversations before any click. Traditional analytics are blind to this. We make it visible and optimizable.",
+      "timeframe": "3-5 years to category dominance"
+    },
+    
+    "StrategyComponent": [
+      {
+        "@type": "vsom:StrategyComponent",
+        "strategyId": "BAIV-STRAT-001",
+        "name": "AI Visibility Category Creation",
+        "strategyType": "Corporate",
+        "description": "Create and dominate 'AI Visibility Optimization' as a recognized category distinct from SEO, before traditional SEO tools commoditize basic AI tracking",
+        "strategicThrust": "First-mover advantage in AI visibility before SEMrush/Ahrefs add basic AI citation tracking (12-18 month window)",
+        "competitiveAdvantage": "Multi-platform testing (ChatGPT, Claude, Perplexity, Gemini) + Not just scores but actionable implementation + Understanding customer journeys in AI conversations",
+        "resourceRequirements": 200000,
+        "actionStatus": "ActiveActionStatus"
+      },
+      {
+        "@type": "vsom:StrategyComponent",
+        "strategyId": "BAIV-STRAT-002",
+        "name": "Ontology-Driven Platform Architecture",
+        "strategyType": "Digital",
+        "description": "Build platform that semantically understands AI visibility, enabling 10x faster feature development and trivial white-label deployment",
+        "strategicThrust": "Platform that 'knows' WHY features exist, not just WHAT they do - enabling rapid feature generation and instant white-label capability",
+        "competitiveAdvantage": "Feature development in 15 minutes (vs 2-3 hours manual) through ontology-driven scaffolding",
+        "resourceRequirements": 150000,
+        "actionStatus": "ActiveActionStatus"
+      },
+      {
+        "@type": "vsom:StrategyComponent",
+        "strategyId": "BAIV-STRAT-003",
+        "name": "Discovery Audit as Growth Engine",
+        "strategyType": "Growth",
+        "description": "Free/low-cost discovery audit generates qualified pipeline by demonstrating immediate value",
+        "strategicThrust": "2.5-minute audit creates instant value demonstration, converting cold prospects into qualified leads",
+        "competitiveAdvantage": "Speed (2.5 minutes vs weeks) + Actionable insights (not just a score) + Immediate competitive context",
+        "resourceRequirements": 50000,
+        "actionStatus": "ActiveActionStatus"
+      }
+    ],
+    
+    "ObjectivesComponent": [
+      {
+        "@type": "vsom:ObjectivesComponent",
+        "objectiveId": "BAIV-OBJ-001",
+        "name": "Revenue Growth - Agency + Platform Scale",
+        "objectiveType": "Financial",
+        "description": "Scale from 6 agency clients and 0 platform subscribers to 58 agency clients and 1,000 platform subscribers",
+        "targetValue": 466000,
+        "baselineValue": 15000,
+        "deadline": "2026-12-31",
+        "owner": "CEO - Milana Thornton",
+        "status": "InProgress",
+        "priority": 1,
+        "businessImpact": "Critical"
+      },
+      {
+        "@type": "vsom:ObjectivesComponent",
+        "objectiveId": "BAIV-OBJ-002",
+        "name": "Platform MVP1 Launch",
+        "objectiveType": "Operational",
+        "description": "Launch production-ready platform with Discovery & Ongoing Intelligence capabilities",
+        "targetValue": 100,
+        "baselineValue": 87,
+        "deadline": "2026-05-31",
+        "owner": "Platform Architect - Amanda Moore",
+        "status": "InProgress",
+        "priority": 1,
+        "businessImpact": "Critical"
+      },
+      {
+        "@type": "vsom:ObjectivesComponent",
+        "objectiveId": "BAIV-OBJ-003",
+        "name": "Client Success Validation",
+        "objectiveType": "Customer",
+        "description": "Prove product value through consistent client success: 3x citation increase driving measurable conversion improvement",
+        "targetValue": 90,
+        "baselineValue": 100,
+        "deadline": "2026-12-31",
+        "owner": "Client Success Manager",
+        "status": "InProgress",
+        "priority": 1,
+        "businessImpact": "Critical"
+      },
+      {
+        "@type": "vsom:ObjectivesComponent",
+        "objectiveId": "BAIV-OBJ-004",
+        "name": "BAIV's Own AI Visibility",
+        "objectiveType": "Strategic",
+        "description": "Practice what we preach - achieve 50+ AI visibility score for BAIV itself",
+        "targetValue": 50,
+        "baselineValue": 10,
+        "deadline": "2026-12-31",
+        "owner": "CMO - Milana Thornton",
+        "status": "InProgress",
+        "priority": 2,
+        "businessImpact": "High"
+      },
+      {
+        "@type": "vsom:ObjectivesComponent",
+        "objectiveId": "BAIV-OBJ-005",
+        "name": "Market Education & Brand Building",
+        "objectiveType": "Customer",
+        "description": "Build audience and educate market on AI visibility opportunity",
+        "targetValue": 17500,
+        "baselineValue": 0,
+        "deadline": "2026-12-31",
+        "owner": "CMO - Milana Thornton",
+        "status": "InProgress",
+        "priority": 2,
+        "businessImpact": "High"
+      }
+    ],
+    
+    "MetricsComponent": [
+      {
+        "@type": "vsom:MetricsComponent",
+        "metricId": "BAIV-METRIC-001",
+        "name": "Monthly Recurring Revenue (MRR)",
+        "description": "Total monthly recurring revenue from all active clients and subscribers",
+        "value": 15000,
+        "unitCode": "USD",
+        "metricType": "Financial",
+        "measurementFrequency": "P1W",
+        "thresholdCritical": 200000,
+        "thresholdWarning": 350000,
+        "thresholdTarget": 466000,
+        "dataSource": "Billing system + CRM",
+        "businessImpact": "Critical"
+      },
+      {
+        "@type": "vsom:MetricsComponent",
+        "metricId": "BAIV-METRIC-002",
+        "name": "Churn Rate",
+        "description": "Percentage of clients/subscribers who cancel each month - PRIMARY 'oh shit' metric",
+        "value": 0,
+        "unitCode": "percentage",
+        "metricType": "Financial",
+        "measurementFrequency": "P1M",
+        "thresholdCritical": 10,
+        "thresholdWarning": 5,
+        "thresholdTarget": 5,
+        "dataSource": "Billing system",
+        "businessImpact": "Critical"
+      },
+      {
+        "@type": "vsom:MetricsComponent",
+        "metricId": "BAIV-METRIC-003",
+        "name": "Client Citations + Conversions Success Rate",
+        "description": "Percentage of clients achieving both 3x citation increase AND improved conversion rate",
+        "value": 100,
+        "unitCode": "percentage",
+        "metricType": "Customer",
+        "measurementFrequency": "P3M",
+        "thresholdCritical": 70,
+        "thresholdWarning": 80,
+        "thresholdTarget": 90,
+        "dataSource": "Citation tracking system + Client GA4 analytics",
+        "businessImpact": "Critical"
+      },
+      {
+        "@type": "vsom:MetricsComponent",
+        "metricId": "BAIV-METRIC-004",
+        "name": "Active Agency Clients",
+        "description": "Number of active agency/done-for-you clients with paid subscriptions",
+        "value": 6,
+        "unitCode": "clients",
+        "metricType": "Financial",
+        "measurementFrequency": "P1W",
+        "thresholdCritical": 30,
+        "thresholdWarning": 45,
+        "thresholdTarget": 58,
+        "dataSource": "CRM + Billing system",
+        "businessImpact": "Critical"
+      },
+      {
+        "@type": "vsom:MetricsComponent",
+        "metricId": "BAIV-METRIC-005",
+        "name": "Platform Subscribers",
+        "description": "Number of active self-service platform subscriptions",
+        "value": 0,
+        "unitCode": "subscribers",
+        "metricType": "Financial",
+        "measurementFrequency": "P1W",
+        "thresholdCritical": 300,
+        "thresholdWarning": 650,
+        "thresholdTarget": 1000,
+        "dataSource": "Platform billing system",
+        "businessImpact": "Critical"
+      },
+      {
+        "@type": "vsom:MetricsComponent",
+        "metricId": "BAIV-METRIC-006",
+        "name": "BAIV AI Visibility Score",
+        "description": "BAIV's own AI visibility score across all platforms",
+        "value": 10,
+        "unitCode": "score",
+        "metricType": "Outcome",
+        "measurementFrequency": "P1M",
+        "thresholdCritical": 20,
+        "thresholdWarning": 35,
+        "thresholdTarget": 50,
+        "dataSource": "Internal citation tracking",
+        "businessImpact": "High"
+      },
+      {
+        "@type": "vsom:MetricsComponent",
+        "metricId": "BAIV-METRIC-007",
+        "name": "Platform Completion Progress",
+        "description": "Percentage of MVP1 features complete and production-ready",
+        "value": 87,
+        "unitCode": "percentage",
+        "metricType": "Operational",
+        "measurementFrequency": "P1W",
+        "thresholdCritical": 85,
+        "thresholdWarning": 95,
+        "thresholdTarget": 100,
+        "dataSource": "GitHub project tracking",
+        "businessImpact": "Critical"
+      },
+      {
+        "@type": "vsom:MetricsComponent",
+        "metricId": "BAIV-METRIC-008",
+        "name": "Discovery Audit Completion Time",
+        "description": "Average time to complete full discovery audit",
+        "value": 2.5,
+        "unitCode": "minutes",
+        "metricType": "Process",
+        "measurementFrequency": "P1W",
+        "thresholdCritical": 5,
+        "thresholdWarning": 3.5,
+        "thresholdTarget": 2.5,
+        "dataSource": "Platform performance monitoring",
+        "businessImpact": "High"
+      },
+      {
+        "@type": "vsom:MetricsComponent",
+        "metricId": "BAIV-METRIC-009",
+        "name": "Combined Audience Reach",
+        "description": "Total subscribers/followers across all content channels",
+        "value": 0,
+        "unitCode": "followers",
+        "metricType": "Customer",
+        "measurementFrequency": "P1W",
+        "thresholdCritical": 5000,
+        "thresholdWarning": 11000,
+        "thresholdTarget": 17500,
+        "dataSource": "Platform analytics",
+        "businessImpact": "High"
+      }
+    ],
+    
+    "PainPointsContext": {
+      "@type": "vsom:PainPointsContext",
+      "description": "Validated pain points from real customers (Reddit, client interviews, CMO consultation with Noah)"
+    },
+    
+    "ICPContext": {
+      "@type": "vsom:ICPContext",
+      "description": "Ideal customer profiles - all equal priority as this is a new category"
+    },
+    
+    "CompetitiveContext": {
+      "@type": "vsom:CompetitiveContext",
+      "description": "Competitive landscape analysis including SEMrush, Ahrefs, Profound, and Otterly.ai with 12-18 month market window before commoditization"
+    }
+  }
+}
