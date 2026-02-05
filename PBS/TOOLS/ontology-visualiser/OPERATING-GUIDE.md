@@ -1,6 +1,6 @@
 # OAA Ontology Visualiser — Operating Guide
 
-**Version:** 3.0.0
+**Version:** 3.1.0
 **Date:** 2026-02-05
 **Audience:** Team members, stakeholders, and contributors
 
@@ -31,22 +31,22 @@ https://ajrmooreuk.github.io/Azlan-EA-AAA/
 
 ---
 
-## Architecture Overview (v3.0.0)
+## Architecture Overview (v3.1.0)
 
 The visualiser is a zero-build-step browser application using native ES modules:
 
-```
-browser-viewer.html          ← HTML shell (109 lines)
-├── css/viewer.css            ← All styles
+```text
+browser-viewer.html          ← HTML shell (119 lines, incl. breadcrumb bar)
+├── css/viewer.css            ← All styles (incl. breadcrumb + tier toggle)
 └── js/
-    ├── app.js                ← Entry point, event wiring, window bindings
-    ├── state.js              ← Shared state + constants
+    ├── app.js                ← Entry point, navigation orchestration, window bindings
+    ├── state.js              ← Shared state + constants + navigation state
     ├── ontology-parser.js    ← Format detection + parsing (7 formats)
-    ├── graph-renderer.js     ← vis.js rendering (single + multi mode)
-    ├── multi-loader.js       ← Registry batch loading + merged graph
+    ├── graph-renderer.js     ← vis.js rendering (single + Tier 0/1 renderers)
+    ├── multi-loader.js       ← Registry batch loading + series aggregation
     ├── audit-engine.js       ← OAA v6.1.0 validation gates (G1-G6)
     ├── compliance-reporter.js ← Compliance panel rendering
-    ├── ui-panels.js          ← Sidebar, audit, modals, tabs
+    ├── ui-panels.js          ← Sidebar, audit, modals, tabs, tier-aware drill buttons
     ├── library-manager.js    ← IndexedDB ontology library
     ├── github-loader.js      ← Registry integration
     └── export.js             ← PNG, audit JSON, ontology download
@@ -111,7 +111,9 @@ Click Node ──► Sidebar Opens ──► 4 Tabs Available
 
 ### Workflow 3: Drill-Down Navigation
 
-```
+#### Single-Ontology Mode
+
+```text
 Double-Click ──► Focus + Zoom ──► Connections Tab ──► Click Related Node
      │                                                       │
      └───────────────────────────────────────────────────────┘
@@ -124,6 +126,24 @@ Double-Click ──► Focus + Zoom ──► Connections Tab ──► Click Re
 3. Connections tab opens automatically showing incoming/outgoing edges
 4. Click any connection to navigate to that entity
 5. Continue drilling down through the graph
+
+#### Multi-Ontology Mode (Tiered Navigation)
+
+```text
+Tier 0 (6 Series)  ──►  Tier 1 (Ontologies)  ──►  Tier 2 (Entities)
+  double-click             double-click              double-click
+  series node              ontology node              focus+zoom
+       ▲                        ▲                         │
+       └── breadcrumb ──────────┘── breadcrumb ───────────┘
+```
+
+**Steps:**
+1. Click **Load Registry** to enter Tier 0 (6 series super-nodes)
+2. Double-click a series node to drill into its ontologies (Tier 1)
+3. Double-click an ontology node to view its entity graph (Tier 2)
+4. Use the breadcrumb bar to navigate back to any previous tier
+5. Click the **Home** button to return to Tier 0 at any time
+6. At Tier 1, double-click a faded context series node to switch to that series
 
 ---
 
@@ -212,27 +232,49 @@ Audit Shows Failures ──► Click "Upgrade with OAA v6" ──► Copy Comman
 
 ### Workflow 7: Load Full Registry (Multi-Ontology Mode)
 
-```
-Click "Load Registry" ──► Batch Load (23 ontologies) ──► Merged Graph
-                                                              │
-                                                     ┌────────┴────────┐
-                                                     │ Series Colours  │
-                                                     │ Cross-Ref Edges │
-                                                     │ Placeholders    │
-                                                     └─────────────────┘
+```text
+Click "Load Registry" ──► Batch Load (23 ontologies) ──► Tier 0: Series Rollup (6 nodes)
+                                                                │
+                                                       ┌────────┴────────┐
+                                                       │ 6 Series Nodes  │
+                                                       │ Cross-Series    │
+                                                       │ Edges (gold)    │
+                                                       └────────┬────────┘
+                                                                │
+                                              Double-click ─────┴───── Toggle to
+                                              series node              "Ontologies (23)"
+                                                    │                       │
+                                                    ▼                       ▼
+                                           Tier 1: Series         Flat 23-node view
+                                           Drill-Down             (legacy merged graph)
+                                                    │
+                                              Double-click
+                                              ontology node
+                                                    │
+                                                    ▼
+                                           Tier 2: Entity Graph
+                                           (single-ontology renderer)
 ```
 
 **Steps:**
+
 1. Click **Load Registry** in the toolbar
 2. Wait for all 23 ontologies to load from the unified registry
-3. The merged graph displays with:
-   - **Series-based node colours** — each of the 6 series has a distinct colour
-   - **Cross-ontology edges** — gold dashed lines showing relationships between ontologies
-   - **Placeholder nodes** — grey diamonds for ontologies not yet developed (5 placeholders)
-4. Click any node to see its provenance (source ontology, series, placeholder status)
-5. Use the legend (bottom-left) to identify series and cross-ref edges
+3. The **Tier 0 Series Rollup** displays with:
+   - **6 series super-nodes** — large nodes representing each ontology series, labelled with ontology count
+   - **Cross-series edges** — gold dashed lines showing relationships between series, labelled with reference count
+   - **Series/Ontologies toggle** — breadcrumb bar toggle to switch between 6-node and 23-node views
+4. **Drill into a series** (Tier 1): Double-click a series node to see its ontologies
+   - Ontology nodes for the selected series are shown at full opacity
+   - Other series appear as faded context nodes (30% opacity) — click to switch context
+   - Placeholder ontologies shown as dashed-border diamonds (not drillable)
+5. **Drill into an ontology** (Tier 2): Double-click an ontology node to see its entity graph
+   - Full entity-level graph rendered using the single-ontology renderer
+   - Breadcrumb shows: Library > Series > Ontology
+6. **Navigate back**: Use breadcrumb links or Home button to return to any previous tier
 
 **Series Colour Key:**
+
 | Series | Colour | Ontologies |
 |--------|--------|------------|
 | VE-Series (Value Engineering) | Blue | VSOM, OKR, VP, RRR, PMF, KPI |
@@ -243,6 +285,7 @@ Click "Load Registry" ──► Batch Load (23 ontologies) ──► Merged Grap
 | Orchestration | Cyan | EMC |
 
 **Returning to Single Mode:**
+
 - Drag-drop a single file, use file picker, or load from GitHub/Library to return to single-ontology mode
 
 ---
@@ -304,7 +347,7 @@ Click "Load from GitHub" ──► Enter PAT ──► Enter repo/path ──►
 | **Export Audit** | Download audit report as JSON (appears after audit) |
 | **Library** | Browse/load saved ontologies |
 | **Load from GitHub** | Fetch from private GitHub repo |
-| **Load Registry** | Load all 23 ontologies as merged graph |
+| **Load Registry** | Load all 23 ontologies with tiered navigation (series rollup → drill-through) |
 | **+ Test Data** | Overlay test data instances |
 
 ---
@@ -317,7 +360,8 @@ Click "Load from GitHub" ──► Enter PAT ──► Enter repo/path ──►
 | **Drag canvas** | Pan view |
 | **Drag node** | Move node (physics adjusts) |
 | **Click node** | Select + show details sidebar |
-| **Double-click node** | Focus + drill into connections tab |
+| **Double-click node (single mode)** | Focus + drill into connections tab |
+| **Double-click node (multi mode)** | Tier 0: drill into series; Tier 1: drill into ontology/switch series |
 | **Click away** | Deselect |
 | **Escape** | Close any open modal |
 
@@ -360,9 +404,12 @@ Click "Load from GitHub" ──► Enter PAT ──► Enter repo/path ──►
 | Shape | Meaning |
 |-------|---------|
 | Circle (dot) | Standard entity |
+| Large circle (size 45) | Series super-node (Tier 0 only) |
+| Medium circle (size 30) | Ontology node (Tier 1 only) |
 | Star | Agent |
 | Square (box) | Layer |
 | Diamond | Placeholder (multi-mode only) |
+| Faded node (30% opacity) | Context series node (Tier 1 only) |
 
 ### Silo Indicators
 | Visual | Meaning |
@@ -440,4 +487,4 @@ Ontology files for the registry are in `PBS/ONTOLOGIES/pfc-ontologies/`.
 
 ---
 
-*OAA Ontology Visualiser v3.0.0 — Operating Guide*
+*OAA Ontology Visualiser v3.1.0 — Operating Guide*

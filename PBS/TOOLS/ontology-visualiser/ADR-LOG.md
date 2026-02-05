@@ -389,15 +389,19 @@ Decisions that cross enterprise architecture boundaries (e.g., ADR-001 storage a
 
 | Property | Value |
 |----------|-------|
-| Status | **Proposed** |
+| Status | **Accepted** |
 | Date | 2026-02-04 |
-| Decision Maker | Pending |
+| Accepted | 2026-02-05 |
+| Decision Maker | Solution Architect (AI-assisted) |
 | VSOM Alignment | C1 (Client Experience) |
 | Source | FEATURE-SPEC-Graph-Rollup-DrillThrough-v1.0.0.md, Open Question Q2 |
+| Implemented | Phase 2 — `js/graph-renderer.js` `renderTier0()`, `js/app.js` `navigateToTier0()` (PR #45) |
 
 **Context:** When loading the full ontology library, the Tier 0 rollup can show either 6 series nodes (compact) or 23 individual ontology nodes (detailed).
 
-**Decision (proposed):** Default to Series View (6 nodes). User can toggle to Ontology View (23 nodes) via UI control.
+**Decision:** Default to Series View (6 nodes). User can toggle to Ontology View (23 nodes) via breadcrumb bar toggle.
+
+**Implementation:** `loadRegistry()` now calls `navigateToTier0()` which renders 6 series super-nodes via `renderTier0()`. The breadcrumb bar includes a "Series (6) / Ontologies (23)" toggle. Series view shows cross-series edges (gold dashed) with reference counts. Three-tier drill-through: Series → Ontologies → Entity Graph.
 
 **Rationale:**
 - 6 nodes is a clean, comprehensible entry point
