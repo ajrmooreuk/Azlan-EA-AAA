@@ -9,7 +9,7 @@ Aligned to the `sa:ArchitectureDecisionRecord` entity in the Solution Architectu
 | Product | OAA Ontology Visualiser |
 | Repo | Azlan-EA-AAA |
 | Created | 2026-02-04 |
-| Last Updated | 2026-02-04 |
+| Last Updated | 2026-02-05 |
 | VSOM Alignment | L3 (Technology Platform), P1 (Process Excellence) |
 
 ## Role Governance (from RRR Ontology)
@@ -76,9 +76,9 @@ Decisions that cross enterprise architecture boundaries (e.g., ADR-001 storage a
 | [ADR-008](#adr-008) | Theming Source: Figma MCP Primary, CSS Fallback | Accepted | 2026-01-31 |
 | [ADR-009](#adr-009) | Modularisation: Native ES Modules (No Build Step) | Accepted | 2026-02-04 |
 | [ADR-010](#adr-010) | Rollup Default View: Series View (6 Nodes) | Proposed | 2026-02-04 |
-| [ADR-011](#adr-011) | Cross-Ontology Detection: Namespace Prefix Scanning | Proposed | 2026-02-04 |
+| [ADR-011](#adr-011) | Cross-Ontology Detection: Namespace Prefix Scanning | Accepted | 2026-02-04 |
 | [ADR-012](#adr-012) | Supabase Project: Dedicated (Not Shared with ds-e2e) | Proposed | 2026-02-04 |
-| [ADR-013](#adr-013) | Placeholder Ontologies: Show with Badge | Proposed | 2026-02-04 |
+| [ADR-013](#adr-013) | Placeholder Ontologies: Show with Badge | Accepted | 2026-02-04 |
 
 ---
 
@@ -413,29 +413,41 @@ Decisions that cross enterprise architecture boundaries (e.g., ADR-001 storage a
 
 ## ADR-011
 
-### Cross-Ontology Detection: Namespace Prefix Scanning
+### Cross-Ontology Detection: Two-Pass Namespace Scanning
 
 | Property | Value |
 |----------|-------|
-| Status | **Proposed** |
+| Status | **Accepted** |
 | Date | 2026-02-04 |
-| Decision Maker | Pending |
+| Decision Maker | Solution Architect (AI-assisted) |
 | VSOM Alignment | P1 (Process Excellence) |
 | Source | FEATURE-SPEC-Graph-Rollup-DrillThrough-v1.0.0.md, Feature 3 |
+| Implemented | Phase 1 — `js/multi-loader.js` `detectCrossReferences()` (PR #43) |
 
 **Context:** Cross-ontology relationships need to be detected automatically. The ontologies use namespace prefixes (e.g., `okr:Objective`, `efs:Service`) to reference entities in other ontologies.
 
-**Decision (proposed):** Scan `rangeIncludes` and `crossOntologyReferences` in each ontology's relationship definitions. If a reference uses a namespace prefix registered in `ont-registry-index.json` but belonging to a different ontology, classify it as a cross-ontology edge.
+**Decision:** Two-pass detection algorithm:
+
+1. **Pass 1 — Registry-declared bridges:** Reads `entry.relationships.keyBridges[]` from each registry entry JSON. Parses prefixed references (e.g., `vp:ValueProposition`) and resolves them to namespace-prefixed node IDs in the merged graph.
+2. **Pass 2 — Namespace-prefix scan:** Scans `rangeIncludes` and `domainIncludes` on raw node data. If a reference uses a namespace prefix belonging to a different ontology (verified against `knownPrefixes` set from loaded ontologies), creates a cross-ontology edge.
+
+Cross-ontology edges are rendered as gold dashed lines (width 2.5) with distinct styling from internal edges.
 
 **Rationale:**
+
+- Two-pass approach combines explicit declarations (high confidence) with automatic detection (wider coverage)
 - Namespace prefixes are already consistently used across all 23 ontologies
-- The `namespaceRegistry` in `ont-registry-index.json` maps all 23 prefixes to IRIs
+- The `namespaceRegistry` in `ont-registry-index.json` maps all 24 prefixes to IRIs
 - No manual mapping required — detection is algorithmic
 - Handles future ontologies automatically as long as they follow the namespace convention
+- Edge deduplication via `Set<edgeKey>` prevents duplicate cross-refs from both passes
 
-**Risks:**
-- Implicit references (shared entity names without namespace prefix) may be missed
-- Mitigation: manual bridge node overrides for known cases (RoleContext, Service, OrganizationContext)
+**Consequences:**
+
+- (+) Automatic detection with no manual configuration
+- (+) Registry bridges provide high-confidence edges; prefix scan catches implicit references
+- (-) Implicit references (shared entity names without namespace prefix) may be missed
+- Mitigation: registry `keyBridges` can be manually maintained for known cases
 
 ---
 
@@ -473,25 +485,46 @@ Decisions that cross enterprise architecture boundaries (e.g., ADR-001 storage a
 
 | Property | Value |
 |----------|-------|
-| Status | **Proposed** |
+| Status | **Accepted** |
 | Date | 2026-02-04 |
-| Decision Maker | Pending |
+| Decision Maker | Solution Architect (AI-assisted) |
 | VSOM Alignment | P3 (Compliance) |
 | Source | FEATURE-SPEC-Graph-Rollup-DrillThrough-v1.0.0.md, Open Question Q3 |
+| Implemented | Phase 1 — `js/multi-loader.js` `createPlaceholderRecord()`, `js/graph-renderer.js` `renderMultiGraph()` (PR #43) |
 
-**Context:** 5 of the 23 ontologies are placeholders (KPI, MCSB2, AIR, GDPR, AZALZ) — they have registry entries but no definitions. Should they appear in the rollup view?
+**Context:** 5 of the 23 ontologies are placeholders (KPI, MCSB2, AIR, GDPR, AZALZ) — they have registry entries but no artifact files. Should they appear in the multi-ontology view?
 
-**Decision (proposed):** Yes, show them with a "Placeholder" badge (grey, dashed border). They count toward series totals but not compliance ratios.
+**Decision:** Yes, show placeholders with distinct visual treatment:
+
+- **Shape:** Diamond (vs circle/dot for standard entities)
+- **Colour:** Grey (`#616161`) regardless of series
+- **Border:** Dashed (6px dash, 3px gap) to indicate incomplete status
+- **Sidebar:** Shows "Placeholder" badge, source ontology name, and series membership
+- **Series totals:** Placeholders count toward series counts in the legend
+
+Additionally, ontologies whose artifact files fail to load at runtime are treated as placeholders with a `load-failed` status and the error message preserved.
 
 **Rationale:**
-- Shows the intended scope of the ontology library
-- Makes gaps visible — users can see what's planned but not yet built
-- Compliance ratios remain meaningful (5/6 compliant means "of the 6 defined, 5 pass")
-- Clicking a placeholder node could show a "Not yet defined" panel with the registry entry metadata
 
-**Alternatives:**
-- Hide placeholders: cleaner view but hides planned scope
-- Show as full nodes: misleading — implies definition exists
+- Shows the intended scope of the ontology library (23 ontologies, not just the 18 with definitions)
+- Makes gaps visible — users can see what's planned but not yet built
+- Diamond shape + grey + dashed border provides clear visual distinction from defined ontologies
+- Clicking a placeholder shows registry entry metadata (what exists) rather than empty content
+- Graceful degradation — fetch failures become placeholders rather than breaking the entire load
+
+**Alternatives Considered:**
+
+| Option | Why Not |
+| ------ | ------- |
+| Hide placeholders | Cleaner view but hides planned scope; users wouldn't know 5 ontologies are planned |
+| Show as full nodes | Misleading — implies a definition exists when it doesn't |
+| Block load on failure | Too fragile — one missing artifact would prevent viewing the other 22 ontologies |
+
+**Consequences:**
+
+- (+) Complete view of the ontology library's planned scope
+- (+) Resilient to missing/failed artifact files
+- (-) 5 placeholder diamonds may add visual noise — mitigated by distinct styling that's easy to mentally filter
 
 ---
 
