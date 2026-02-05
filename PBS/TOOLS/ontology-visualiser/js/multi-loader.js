@@ -68,9 +68,9 @@ function extractShortName(nameOrId) {
  * Registry entry paths look like: "../pfc-ontologies/EMC-ONT/pf-EMC-ONT-v1.0.0.jsonld"
  * These are relative to the entries/ directory.
  *
- * Since REGISTRY_BASE_PATH = '../ONTOLOGIES/unified-registry/',
- * the entries dir is at '../ONTOLOGIES/unified-registry/entries/'.
- * An artifact at '../pfc-ontologies/...' resolves to '../ONTOLOGIES/pfc-ontologies/...'.
+ * Since REGISTRY_BASE_PATH = '../../ONTOLOGIES/unified-registry/',
+ * the entries dir is at '../../ONTOLOGIES/unified-registry/entries/'.
+ * An artifact at '../pfc-ontologies/...' resolves to '../../ONTOLOGIES/pfc-ontologies/...'.
  */
 export function resolveArtifactPath(artifactRelPath) {
   if (!artifactRelPath) return null;

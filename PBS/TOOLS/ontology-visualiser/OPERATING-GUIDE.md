@@ -1,7 +1,7 @@
 # OAA Ontology Visualiser — Operating Guide
 
 **Version:** 3.0.0
-**Date:** 2026-02-04
+**Date:** 2026-02-05
 **Audience:** Team members, stakeholders, and contributors
 
 ---
@@ -408,12 +408,12 @@ Click the badge to jump directly to the compliance report.
 
 The visualiser is deployed automatically via GitHub Pages when changes are pushed to `main`:
 
-- **Trigger paths:** `PBS/TOOLS/ontology-visualiser/**`, `PBS/ONTOLOGIES/unified-registry/**`
+- **Trigger paths:** `PBS/TOOLS/ontology-visualiser/**`, `PBS/ONTOLOGIES/unified-registry/**`, `PBS/ONTOLOGIES/pfc-ontologies/**`
 - **Primary URL:** `https://ajrmooreuk.github.io/Azlan-EA-AAA/PBS/TOOLS/ontology-visualiser/browser-viewer.html`
 - **Root redirect:** `https://ajrmooreuk.github.io/Azlan-EA-AAA/` (redirects to primary)
 - **Legacy URL:** `https://ajrmooreuk.github.io/Azlan-EA-AAA/tools/ontology-visualiser/browser-viewer.html` (backwards compatibility)
 
-The workflow also deploys the unified registry (`ont-registry-index.json` + all entries) so the **Load Registry** feature works on the hosted version.
+The workflow also deploys the unified registry (`ont-registry-index.json` + all entries) and ontology artifact files (from `PBS/ONTOLOGIES/pfc-ontologies/`) so the **Load Registry** feature works on the hosted version.
 
 ---
 
