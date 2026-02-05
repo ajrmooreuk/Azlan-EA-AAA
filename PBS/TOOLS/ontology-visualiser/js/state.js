@@ -19,7 +19,15 @@ export const state = {
   loadedOntologies: new Map(),
   mergedGraph: null,
   seriesData: null,
-  viewMode: 'single'  // 'single' | 'multi'
+  viewMode: 'single',  // 'single' | 'multi'
+
+  // Navigation state (Phase 2)
+  currentTier: -1,          // -1 = single, 0 = series, 1 = ontologies, 2 = entities
+  currentSeries: null,      // 'VE-Series' etc. when drilled into a series
+  currentOntology: null,    // namespace when drilled into an ontology
+  navigationStack: [],      // breadcrumb history [{tier, series, ontology, label}]
+  crossEdges: [],           // cross-ontology edges from detectCrossReferences
+  crossSeriesEdges: []      // aggregated series-to-series edges
 };
 
 export const TYPE_COLORS = {
@@ -43,6 +51,11 @@ export const SERIES_COLORS = {
   'Security-Series': '#9C27B0',
   'Orchestration': '#00BCD4',
   'placeholder': '#616161'
+};
+
+export const LINEAGE_CHAINS = {
+  VE: ['VSOM', 'OKR', 'VP', 'PMF', 'EFS'],
+  PE: ['PPM', 'PE', 'EFS', 'EA']
 };
 
 export const DB_NAME = 'OntologyLibrary';

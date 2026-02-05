@@ -1,13 +1,13 @@
 # OAA Ontology Visualiser — Architecture & Deployment
 
-**Version:** 3.0.0
+**Version:** 3.1.0
 **Last Updated:** 2026-02-05
 
 ---
 
 ## Overview
 
-The OAA Ontology Visualiser is a zero-build-step, client-side browser application for interactive graph visualisation of JSON ontologies produced by OAA (Ontology Architect Agent). It supports single-ontology inspection with OAA v6.1.0 compliance validation, and multi-ontology registry loading with cross-reference detection.
+The OAA Ontology Visualiser is a zero-build-step, client-side browser application for interactive graph visualisation of JSON ontologies produced by OAA (Ontology Architect Agent). It supports single-ontology inspection with OAA v6.1.0 compliance validation, multi-ontology registry loading with cross-reference detection, and three-tier progressive disclosure navigation (series rollup → ontology drill-down → entity graph).
 
 No server-side processing, no Node.js, no bundler. The only external dependency is vis-network v9.1.2, loaded via CDN.
 
@@ -58,17 +58,17 @@ graph LR
 All JavaScript is split into native ES modules loaded via `<script type="module">`. No build step, no bundler (see [ADR-009](./ADR-LOG.md#adr-009)).
 
 ```
-browser-viewer.html           <- HTML shell (110 lines)
-├── css/viewer.css             <- All styles
+browser-viewer.html           <- HTML shell (119 lines, includes breadcrumb bar)
+├── css/viewer.css             <- All styles (incl. breadcrumb + tier toggle)
 └── js/
-    ├── app.js                 <- Entry point, event wiring, window bindings
-    ├── state.js               <- Shared state, constants (TYPE_COLORS, SERIES_COLORS, REGISTRY_BASE_PATH)
+    ├── app.js                 <- Entry point, event wiring, navigation orchestration, window bindings
+    ├── state.js               <- Shared state, constants (TYPE_COLORS, SERIES_COLORS, LINEAGE_CHAINS, navigation state)
     ├── ontology-parser.js     <- Format detection + parsing (7 formats)
-    ├── graph-renderer.js      <- vis.js rendering (single + multi mode)
-    ├── multi-loader.js        <- Registry batch loading, merged graph, cross-ref detection
+    ├── graph-renderer.js      <- vis.js rendering (single + multi + Tier 0/1 renderers)
+    ├── multi-loader.js        <- Registry batch loading, merged graph, cross-ref detection, series aggregation
     ├── audit-engine.js        <- OAA v6.1.0 validation gates (G1-G6, 8 gates)
     ├── compliance-reporter.js <- Compliance panel rendering
-    ├── ui-panels.js           <- Sidebar, audit, modals, tabs, provenance display
+    ├── ui-panels.js           <- Sidebar, audit, modals, tabs, provenance display, tier-aware drill buttons
     ├── library-manager.js     <- IndexedDB ontology library (CRUD, versioning, export/import)
     ├── github-loader.js       <- Registry index loading, entry lookup
     └── export.js              <- PNG, audit JSON, ontology download
@@ -108,15 +108,59 @@ Features: OAA v6.1.0 compliance validation (8 gates), entity type colouring, sid
 
 ### Multi-Ontology Mode (`state.viewMode = 'multi'`)
 
-Registry mode showing all 23 ontologies as a merged graph. Triggered by "Load Registry" button.
+Registry mode with three-tier progressive disclosure. Triggered by "Load Registry" button. Uses `state.currentTier` to track the active navigation level.
 
-Features: series-based node colouring (6 series), placeholder diamonds (5 undeveloped ontologies), cross-ontology edges (gold dashed), provenance display in sidebar.
+#### Tier 0 — Series Rollup (Default Entry Point)
+
+6 series super-nodes representing the ontology library at the highest level. This is the default view when "Load Registry" is clicked (see [ADR-010](./ADR-LOG.md#adr-010)).
+
+- **Nodes**: 6 series super-nodes (size 45, multi-line labels with ontology count)
+- **Edges**: Cross-series reference edges (gold dashed, labelled with count)
+- **Interaction**: Double-click a series to drill down to Tier 1
+- **Toggle**: Series (6) / Ontologies (23) toggle in breadcrumb bar
+- **Renderer**: `renderTier0()` in `graph-renderer.js`
+
+#### Tier 1 — Series Drill-Down
+
+Ontology-level nodes within a selected series, with faded context nodes for other series.
+
+- **Nodes**: Ontology nodes for the selected series (size 30) + faded context nodes for other series (30% opacity)
+- **Edges**: Intra-series cross-ontology edges + cross-series edges to context nodes
+- **Interaction**: Double-click an ontology to drill to Tier 2; double-click a faded context series to switch context
+- **Placeholders**: Shown as dashed-border diamonds (not drillable)
+- **Renderer**: `renderTier1()` in `graph-renderer.js`
+
+#### Tier 2 — Entity Graph
+
+Full entity-level graph for a single ontology. Reuses the single-ontology `renderGraph()` renderer with the parsed data from the registry record.
+
+- **Renderer**: Existing `renderGraph()` (same as single-ontology mode)
+- **Context**: Breadcrumb shows full path (Library › Series › Ontology)
+
+#### Breadcrumb Navigation
+
+A breadcrumb bar provides navigation context and back-navigation across all tiers:
+
+```
+Library  ›  VE-Series  ›  VSOM Ontology
+(Tier 0)    (Tier 1)      (Tier 2)
+```
+
+Clickable segments navigate back to the corresponding tier. Home button returns to Tier 0.
+
+#### Navigation State
 
 Key data structures in multi-mode:
 
 - `state.loadedOntologies: Map<namespace, OntologyRecord>` — all loaded ontologies
 - `state.mergedGraph` — combined parsed graph with namespace-prefixed node IDs
 - `state.seriesData` — series metadata with counts and colours
+- `state.currentTier` — active navigation level (-1 = single, 0 = series, 1 = ontologies, 2 = entities)
+- `state.currentSeries` — active series key when at Tier 1+
+- `state.currentOntology` — active namespace when at Tier 2
+- `state.navigationStack` — breadcrumb history array
+- `state.crossEdges` — cross-ontology edges from `detectCrossReferences()`
+- `state.crossSeriesEdges` — aggregated series-to-series edges from `buildCrossSeriesEdges()`
 
 Node IDs are prefixed with namespace (`prefix::nodeId`) to avoid collisions across ontologies.
 
@@ -126,10 +170,14 @@ Node IDs are prefixed with namespace (`prefix::nodeId`) to avoid collisions acro
 
 Two-pass algorithm implemented in `multi-loader.js` `detectCrossReferences()` (see [ADR-011](./ADR-LOG.md#adr-011)):
 
-1. **Pass 1 — Registry bridges:** Reads `entry.relationships.keyBridges[]` from each registry entry
+1. **Pass 1 — Registry bridges:** Reads both `entry.relationships.keyBridges[]` and `entry.relationships.crossOntology[]` from each registry entry (entries use both property names inconsistently)
 2. **Pass 2 — Namespace-prefix scan:** Scans `rangeIncludes`/`domainIncludes` for prefixed references to other ontologies
 
 Edges are deduplicated via `Set<edgeKey>`. Rendered as gold dashed lines (width 2.5).
+
+### Series-Level Edge Aggregation
+
+`buildCrossSeriesEdges()` in `multi-loader.js` aggregates cross-ontology edges into series-to-series edges for Tier 0 rendering. Direction is normalised alphabetically to avoid duplicate edges between the same pair of series. Each aggregated edge carries a count and list of source bridges.
 
 ---
 
@@ -237,11 +285,11 @@ PBS/TOOLS/ontology-visualiser/
 ├── css/
 │   └── viewer.css                   <- All styles
 ├── js/
-│   ├── app.js                       <- Entry point
-│   ├── state.js                     <- Shared state + constants
+│   ├── app.js                       <- Entry point + navigation orchestration
+│   ├── state.js                     <- Shared state + constants + navigation state
 │   ├── ontology-parser.js           <- Format detection + parsing
-│   ├── graph-renderer.js            <- vis.js rendering
-│   ├── multi-loader.js              <- Registry batch loading
+│   ├── graph-renderer.js            <- vis.js rendering (single + Tier 0/1)
+│   ├── multi-loader.js              <- Registry loading + series aggregation
 │   ├── audit-engine.js              <- OAA v6.1.0 validation
 │   ├── compliance-reporter.js       <- Compliance panel
 │   ├── ui-panels.js                 <- Sidebar, modals, tabs
@@ -274,4 +322,4 @@ The original Python tools (`demo.py`, `graph_builder.py`, `visualiser.py`, etc.)
 
 ---
 
-*OAA Ontology Visualiser v3.0.0 — Architecture & Deployment*
+*OAA Ontology Visualiser v3.1.0 — Architecture & Deployment*

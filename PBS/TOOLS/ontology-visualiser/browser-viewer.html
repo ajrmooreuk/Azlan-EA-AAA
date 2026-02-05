@@ -43,6 +43,15 @@
   <button onclick="loadTestDataFile()">+ Test Data</button>
 </div>
 
+<div class="breadcrumb-bar" id="breadcrumb" style="display:none;">
+  <button class="breadcrumb-home" onclick="navigateToTier0()" title="Return to series overview">&#x2302; Home</button>
+  <span id="breadcrumb-path"></span>
+  <div id="tier0-toggle" style="display:none;">
+    <button class="tier-toggle active" onclick="navigateToTier0()">Series (6)</button>
+    <button class="tier-toggle" onclick="showAllOntologies()">Ontologies (23)</button>
+  </div>
+</div>
+
 <div id="graph-container">
   <div id="drop-zone">
     <div class="drop-area" id="drop-area">

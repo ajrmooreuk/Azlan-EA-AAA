@@ -5,9 +5,9 @@
 
 import { state } from './state.js';
 import { parseOntology } from './ontology-parser.js';
-import { renderGraph, renderMultiGraph, focusNode, focusNodes, togglePhysics, changeLayout, fitGraph, resetGraph } from './graph-renderer.js';
+import { renderGraph, renderMultiGraph, renderTier0, renderTier1, focusNode, focusNodes, togglePhysics, changeLayout, fitGraph, resetGraph } from './graph-renderer.js';
 import { exportAuditFile, exportPNG, downloadOntologyForOAA } from './export.js';
-import { loadFullRegistry, buildMergedGraph, detectCrossReferences } from './multi-loader.js';
+import { loadFullRegistry, buildMergedGraph, detectCrossReferences, buildCrossSeriesEdges } from './multi-loader.js';
 import {
   toggleSidebar, toggleAudit, loadTestDataFile, navigateToNode, switchTab,
   runOAAUpgrade, showOAAModal, closeOAAModal, copyOAACommand, copyPath,
@@ -46,6 +46,7 @@ dropArea.addEventListener('drop', e => {
 function loadFile(file) {
   document.getElementById('file-name').textContent = file.name;
   state.viewMode = 'single';
+  resetNavigation();
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
@@ -87,6 +88,7 @@ function loadFromGitHub() {
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
 
   state.viewMode = 'single';
+  resetNavigation();
   document.getElementById('file-name').textContent = `Loading ${filePath}...`;
   fetch(url, { headers: { 'Authorization': `token ${pat}`, 'Accept': 'application/vnd.github.v3.raw' } })
     .then(res => {
@@ -182,6 +184,7 @@ async function loadFromLibrary(id) {
     }
 
     state.viewMode = 'single';
+    resetNavigation();
     state.currentData = ontology.data;
     document.getElementById('file-name').textContent = `${ontology.name} (v${ontology.version})`;
 
@@ -325,7 +328,7 @@ function importLibrary() {
 }
 
 // ========================================
-// MULTI-ONTOLOGY REGISTRY LOADING (Phase 1)
+// MULTI-ONTOLOGY REGISTRY LOADING (Phase 1 + Phase 2)
 // ========================================
 
 async function loadRegistry() {
@@ -349,8 +352,13 @@ async function loadRegistry() {
     state.mergedGraph = mergedGraph;
 
     const crossEdges = detectCrossReferences(loadedOntologies, mergedGraph);
+    state.crossEdges = crossEdges;
 
-    renderMultiGraph(mergedGraph, crossEdges, seriesData);
+    // Build series-level edges for Tier 0
+    state.crossSeriesEdges = buildCrossSeriesEdges(crossEdges, loadedOntologies);
+
+    // Start at Tier 0 (series rollup) instead of flat entity view
+    navigateToTier0();
 
     fileNameEl.textContent = `Unified Registry (${stats.total} ontologies, ${stats.placeholders} placeholders)`;
     dropZone.classList.add('hidden');
@@ -363,6 +371,116 @@ async function loadRegistry() {
     statsEl.textContent = '';
     console.error('Registry load error:', err);
   }
+}
+
+// ========================================
+// TIER NAVIGATION (Phase 2)
+// ========================================
+
+function resetNavigation() {
+  state.currentTier = -1;
+  state.currentSeries = null;
+  state.currentOntology = null;
+  state.navigationStack = [];
+  document.getElementById('breadcrumb').style.display = 'none';
+  const toggle = document.getElementById('tier0-toggle');
+  if (toggle) toggle.style.display = 'none';
+}
+
+function navigateToTier0() {
+  state.currentTier = 0;
+  state.currentSeries = null;
+  state.currentOntology = null;
+  state.viewMode = 'multi';
+  state.navigationStack = [{ tier: 0, label: 'Library' }];
+
+  renderTier0(state.seriesData, state.crossSeriesEdges);
+  updateBreadcrumb();
+
+  document.getElementById('tier0-toggle').style.display = 'inline-flex';
+  document.getElementById('btn-run-oaa').style.display = 'none';
+  document.getElementById('btn-save-library').style.display = 'none';
+  document.getElementById('btn-export-audit').style.display = 'none';
+}
+
+function drillToSeries(seriesKey) {
+  state.currentTier = 1;
+  state.currentSeries = seriesKey;
+  state.currentOntology = null;
+  state.viewMode = 'multi';
+  state.navigationStack = [
+    { tier: 0, label: 'Library' },
+    { tier: 1, series: seriesKey, label: seriesKey }
+  ];
+
+  renderTier1(seriesKey, state.loadedOntologies, state.seriesData);
+  updateBreadcrumb();
+
+  document.getElementById('tier0-toggle').style.display = 'none';
+}
+
+function drillToOntology(namespace) {
+  const record = state.loadedOntologies.get(namespace);
+  if (!record || !record.parsed || record.isPlaceholder) return;
+
+  state.currentTier = 2;
+  state.currentOntology = namespace;
+  state.navigationStack = [
+    { tier: 0, label: 'Library' },
+    { tier: 1, series: state.currentSeries, label: state.currentSeries },
+    { tier: 2, ontology: namespace, label: record.name }
+  ];
+
+  // Use single-ontology renderer for the entity graph
+  state.currentData = record.rawData;
+  state.viewMode = 'single';
+  renderGraph(record.parsed);
+  state.viewMode = 'multi';
+
+  updateBreadcrumb();
+
+  document.getElementById('tier0-toggle').style.display = 'none';
+  document.getElementById('file-name').textContent = record.name;
+}
+
+function navigateBack(targetTier) {
+  if (targetTier === 0) {
+    navigateToTier0();
+  } else if (targetTier === 1 && state.currentSeries) {
+    drillToSeries(state.currentSeries);
+  }
+}
+
+function showAllOntologies() {
+  state.currentTier = 1;
+  state.currentSeries = null;
+  state.viewMode = 'multi';
+  state.navigationStack = [
+    { tier: 0, label: 'Library' },
+    { tier: 1, label: 'All Ontologies' }
+  ];
+
+  renderMultiGraph(state.mergedGraph, state.crossEdges, state.seriesData);
+  updateBreadcrumb();
+
+  document.getElementById('tier0-toggle').style.display = 'none';
+}
+
+function updateBreadcrumb() {
+  const bar = document.getElementById('breadcrumb');
+  bar.style.display = state.navigationStack.length > 0 ? 'flex' : 'none';
+
+  let html = '';
+  state.navigationStack.forEach((item, i) => {
+    const isLast = i === state.navigationStack.length - 1;
+    if (isLast) {
+      html += `<span class="breadcrumb-current">${item.label}</span>`;
+    } else {
+      html += `<span class="breadcrumb-link" onclick="navigateBack(${item.tier})">${item.label}</span>`;
+      html += `<span class="breadcrumb-sep">\u203A</span>`;
+    }
+  });
+  document.getElementById('breadcrumb-path').innerHTML = html;
 }
 
 // ========================================
@@ -402,6 +520,13 @@ window.focusNode = focusNode;
 window.focusNodes = focusNodes;
 window.navigateToNode = navigateToNode;
 window.switchTab = switchTab;
+
+// Tier navigation (Phase 2)
+window.navigateToTier0 = navigateToTier0;
+window.drillToSeries = drillToSeries;
+window.drillToOntology = drillToOntology;
+window.navigateBack = navigateBack;
+window.showAllOntologies = showAllOntologies;
 
 // File loading
 window.loadFromGitHub = loadFromGitHub;

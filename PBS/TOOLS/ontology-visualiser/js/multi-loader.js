@@ -286,7 +286,7 @@ export function buildMergedGraph(loadedOntologies) {
 
 /**
  * Detect cross-ontology edges using two passes:
- * 1. Registry-declared bridges from entry.relationships.keyBridges[]
+ * 1. Registry-declared bridges from entry.relationships (keyBridges or crossOntology)
  * 2. Namespace-prefix scan on node references
  */
 export function detectCrossReferences(loadedOntologies, mergedGraph) {
@@ -297,7 +297,11 @@ export function detectCrossReferences(loadedOntologies, mergedGraph) {
   for (const [ns, record] of loadedOntologies) {
     if (record.isPlaceholder || !record.registryEntry) continue;
 
-    const bridges = record.registryEntry.relationships?.keyBridges || [];
+    // Read both property names — entries use keyBridges (VP) or crossOntology (VSOM, OKR, etc.)
+    const keyBridges = record.registryEntry.relationships?.keyBridges;
+    const crossOntology = record.registryEntry.relationships?.crossOntology;
+    const bridges = (Array.isArray(keyBridges) ? keyBridges : [])
+      .concat(Array.isArray(crossOntology) ? crossOntology : []);
     for (const bridge of bridges) {
       if (!bridge.from || !bridge.to) continue;
 
@@ -425,4 +429,65 @@ function findRawNodeData(node, loadedOntologies) {
     (t['@id'] === node.originalId) ||
     (t.termCode === node.originalId)
   ) || null;
+}
+
+// ========================================
+// SERIES-LEVEL AGGREGATION (Phase 2)
+// ========================================
+
+/**
+ * Aggregate cross-ontology edges into cross-series edges.
+ * Groups by source series → target series and returns counts.
+ */
+export function buildCrossSeriesEdges(crossEdges, loadedOntologies) {
+  const seriesEdgeMap = new Map(); // 'VE-Series->PE-Series' → { count, bridges }
+
+  for (const edge of crossEdges) {
+    // Find source and target series from the node namespaces
+    const fromNs = edge.sourceNamespace;
+    const fromRecord = loadedOntologies.get(fromNs);
+    if (!fromRecord) continue;
+
+    // Determine target namespace from the edge.to ID (prefix::entity)
+    const toPrefix = edge.to.split('::')[0];
+    let toSeries = null;
+    for (const [ns, record] of loadedOntologies) {
+      if (ns.replace(/:$/, '') === toPrefix) {
+        toSeries = record.series;
+        break;
+      }
+    }
+    if (!toSeries) continue;
+
+    const fromSeries = fromRecord.series;
+    if (fromSeries === toSeries) continue; // skip intra-series
+
+    // Normalise edge direction (alphabetical) to avoid A→B and B→A duplicates
+    const key = fromSeries < toSeries
+      ? `${fromSeries}->${toSeries}`
+      : `${toSeries}->${fromSeries}`;
+
+    if (!seriesEdgeMap.has(key)) {
+      const [from, to] = key.split('->');
+      seriesEdgeMap.set(key, { from, to, count: 0, bridges: [] });
+    }
+    const entry = seriesEdgeMap.get(key);
+    entry.count++;
+    entry.bridges.push(edge.label);
+  }
+
+  return Array.from(seriesEdgeMap.values());
+}
+
+/**
+ * Filter loaded ontologies to those belonging to a specific series.
+ */
+export function getOntologiesForSeries(seriesKey, loadedOntologies) {
+  const filtered = new Map();
+  for (const [ns, record] of loadedOntologies) {
+    if (record.series === seriesKey) {
+      filtered.set(ns, record);
+    }
+  }
+  return filtered;
 }
