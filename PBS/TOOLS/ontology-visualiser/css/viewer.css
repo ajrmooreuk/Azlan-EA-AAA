@@ -176,3 +176,17 @@ header .stats { font-size: 13px; color: #888; margin-left: auto; }
 .provenance-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 500; margin-left: 6px; }
 .provenance-badge.series { border: 1px solid currentColor; }
 .provenance-badge.placeholder { background: #616161; color: #ccc; }
+
+/* Breadcrumb Navigation (Phase 2) */
+.breadcrumb-bar { display: flex; align-items: center; gap: 8px; padding: 6px 16px; background: #13151a; border-bottom: 1px solid #2a2d37; font-size: 13px; }
+.breadcrumb-home { background: #1a1d25; border: 1px solid #3a3d47; color: #9dfff5; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+.breadcrumb-home:hover { background: #2a2d35; }
+.breadcrumb-link { color: #9dfff5; cursor: pointer; text-decoration: underline; }
+.breadcrumb-link:hover { color: #fff; }
+.breadcrumb-sep { color: #555; margin: 0 2px; }
+.breadcrumb-current { color: #e0e0e0; font-weight: 500; }
+#tier0-toggle { margin-left: auto; display: inline-flex; gap: 0; }
+.tier-toggle { background: #1a1d25; border: 1px solid #3a3d47; color: #888; padding: 4px 12px; font-size: 12px; cursor: pointer; }
+.tier-toggle:first-child { border-radius: 4px 0 0 4px; }
+.tier-toggle:last-child { border-radius: 0 4px 4px 0; border-left: none; }
+.tier-toggle.active { background: #017c75; color: #fff; border-color: #017c75; }

@@ -79,7 +79,7 @@ export function showNodeDetails(node) {
   detailsHtml += field('Type', node.entityType);
   if (node.description) detailsHtml += field('Description', node.description);
 
-  // Multi-ontology provenance (Phase 1)
+  // Multi-ontology provenance (Phase 1) + drill actions (Phase 2)
   if (state.viewMode === 'multi' && node.sourceNamespace) {
     const seriesColor = SERIES_COLORS[node.series] || SERIES_COLORS.placeholder;
     detailsHtml += field('Source Ontology', node.sourceName || node.sourceNamespace);
@@ -91,6 +91,29 @@ export function showNodeDetails(node) {
     if (node.originalId) {
       detailsHtml += field('Original ID', node.originalId);
     }
+  }
+
+  // Tier-aware drill actions (Phase 2)
+  if (state.viewMode === 'multi' && state.currentTier === 0 && node.entityType === 'series') {
+    detailsHtml += `<div style="margin-top:12px;">
+      <button class="oaa-btn" onclick="drillToSeries('${node.id}')">View Ontologies in this Series</button>
+    </div>`;
+    if (node.ontologies && node.ontologies.length > 0) {
+      detailsHtml += field('Ontologies', node.ontologies.join(', '));
+    }
+  } else if (state.viewMode === 'multi' && state.currentTier === 1 && node.entityType === 'ontology') {
+    if (!node.isPlaceholder) {
+      detailsHtml += `<div style="margin-top:12px;">
+        <button class="oaa-btn" onclick="drillToOntology('${node.id}')">View Entity Graph</button>
+      </div>`;
+    }
+    if (node.entityCount) {
+      detailsHtml += field('Entities', node.entityCount);
+    }
+  } else if (state.viewMode === 'multi' && state.currentTier === 1 && node.entityType === 'series' && node.isContext) {
+    detailsHtml += `<div style="margin-top:12px;">
+      <button class="oaa-btn" onclick="drillToSeries('${node.id}')">Switch to this Series</button>
+    </div>`;
   }
 
   if (node.properties && typeof node.properties === 'object') {
