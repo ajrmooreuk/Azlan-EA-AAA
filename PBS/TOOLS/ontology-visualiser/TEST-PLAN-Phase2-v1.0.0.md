@@ -116,11 +116,11 @@ Single-ontology workflows must remain unaffected by Phase 2 changes.
 
 | ID | Test Case | Steps | Expected Result | Status | Tester | Date |
 |----|-----------|-------|-----------------|--------|--------|------|
-| TC-5.1 | VSOM cross-refs detected | Load Registry, check VSOM cross-ontology edges | Cross-refs from `relationships.crossOntology` are detected | | | |
-| TC-5.2 | VP cross-refs detected | Load Registry, check VP cross-ontology edges | Cross-refs from `relationships.keyBridges` are detected | | | |
-| TC-5.3 | OKR cross-refs detected | Load Registry, check OKR cross-ontology edges | Cross-refs from `relationships.crossOntology` are detected | | | |
-| TC-5.4 | Both property names read | Inspect console logs during Load Registry | `detectCrossReferences()` reads both `keyBridges` and `crossOntology` | | | |
-| TC-5.5 | No duplicate edges | Check cross-ref edges after Load Registry | No duplicate edges between the same ontology pair | | | |
+| TC-5.1 | VSOM cross-refs detected | Load Registry, check VSOM cross-ontology edges | Cross-refs from `relationships.crossOntology` are detected | PASS (auto) | Vitest | 2026-02-05 |
+| TC-5.2 | VP cross-refs detected | Load Registry, check VP cross-ontology edges | Cross-refs from `relationships.keyBridges` are detected | PASS (auto) | Vitest | 2026-02-05 |
+| TC-5.3 | OKR cross-refs detected | Load Registry, check OKR cross-ontology edges | Cross-refs from `relationships.crossOntology` are detected | PASS (auto) | Vitest | 2026-02-05 |
+| TC-5.4 | Both property names read | Inspect console logs during Load Registry | `detectCrossReferences()` reads both `keyBridges` and `crossOntology` | PASS (auto) | Vitest | 2026-02-05 |
+| TC-5.5 | No duplicate edges | Check cross-ref edges after Load Registry | No duplicate edges between the same ontology pair | PASS (auto) | Vitest | 2026-02-05 |
 
 ---
 
@@ -141,10 +141,10 @@ Single-ontology workflows must remain unaffected by Phase 2 changes.
 
 | ID | Test Case | Steps | Expected Result | Status | Tester | Date |
 |----|-----------|-------|-----------------|--------|--------|------|
-| TC-7.1 | Aggregation produces edges | Load Registry, inspect Tier 0 edges | Cross-series edges present between series that share cross-ontology references | | | |
-| TC-7.2 | Edge count labels | Inspect cross-series edge labels | Each edge shows count (e.g., "3 refs") | | | |
-| TC-7.3 | No self-edges | Check series nodes | No series has an edge to itself | | | |
-| TC-7.4 | Direction normalised | Check edge pairs | No duplicate edges between same pair of series (direction normalised alphabetically) | | | |
+| TC-7.1 | Aggregation produces edges | Load Registry, inspect Tier 0 edges | Cross-series edges present between series that share cross-ontology references | PASS (auto) | Vitest | 2026-02-05 |
+| TC-7.2 | Edge count labels | Inspect cross-series edge labels | Each edge shows count (e.g., "3 refs") | PASS (auto) | Vitest | 2026-02-05 |
+| TC-7.3 | No self-edges | Check series nodes | No series has an edge to itself | PASS (auto) | Vitest | 2026-02-05 |
+| TC-7.4 | Direction normalised | Check edge pairs | No duplicate edges between same pair of series (direction normalised alphabetically) | PASS (auto) | Vitest | 2026-02-05 |
 
 ---
 
@@ -161,6 +161,33 @@ Single-ontology workflows must remain unaffected by Phase 2 changes.
 
 ---
 
+## Automated Test Suite
+
+Unit tests for pure logic functions are implemented in Vitest and can be run via `npm test` from the visualiser directory.
+
+**Setup:**
+
+```bash
+cd PBS/TOOLS/ontology-visualiser
+npm install
+npm test
+```
+
+**Test file:** `tests/multi-loader.test.js`
+
+| Suite | Tests | Covers | Status |
+|-------|-------|--------|--------|
+| `buildCrossSeriesEdges` | 7 | TC-7.1–TC-7.4 + edge cases (unknown ns, empty input) | 7/7 PASS |
+| `getOntologiesForSeries` | 6 | Series filtering, unknown series, data preservation | 6/6 PASS |
+| `detectCrossReferences` (bug fix) | 7 | TC-5.1–TC-5.5 + edge cases (non-array crossOntology, missing relationships) | 7/7 PASS |
+| **Total** | **20** | **TC-5, TC-7 fully covered** | **20/20 PASS** |
+
+**Last run:** 2026-02-05 — Vitest v3.2.4, 276ms, 0 failures
+
+**Remaining categories (TC-1 through TC-4, TC-6, TC-8)** require manual browser testing or future Playwright automation.
+
+---
+
 ## Test Environment
 
 | Item | Value |
@@ -169,19 +196,20 @@ Single-ontology workflows must remain unaffected by Phase 2 changes.
 | Deployment | GitHub Pages (hosted) or local HTTP server |
 | Data Source | Unified registry (23 ontologies via `ont-registry-index.json`) |
 | Single-ontology test file | `sample-ontology-with-data.json` |
+| Automated test runner | Vitest v3.2.4 (Node.js, `npm test`) |
 
 ---
 
 ## Pass Criteria
 
-- All TC-1 (regression) tests pass — no single-ontology functionality broken
-- All TC-2 (Tier 0) tests pass — series rollup renders correctly
-- All TC-3 (Tier 1) tests pass — series drill-down works with context nodes
-- All TC-4 (Tier 2) tests pass — entity drill-down reuses single-ontology renderer
-- All TC-5 (bug fix) tests pass — both `keyBridges` and `crossOntology` detected
-- All TC-6 (breadcrumb) tests pass — navigation is consistent and reliable
-- All TC-7 (aggregation) tests pass — series-level edges are correct
-- All TC-8 (visual) tests pass — styling matches design specification
+- All TC-1 (regression) tests pass — no single-ontology functionality broken — **pending manual**
+- All TC-2 (Tier 0) tests pass — series rollup renders correctly — **pending manual**
+- All TC-3 (Tier 1) tests pass — series drill-down works with context nodes — **pending manual**
+- All TC-4 (Tier 2) tests pass — entity drill-down reuses single-ontology renderer — **pending manual**
+- All TC-5 (bug fix) tests pass — both `keyBridges` and `crossOntology` detected — **PASS (automated, 5/5)**
+- All TC-6 (breadcrumb) tests pass — navigation is consistent and reliable — **pending manual**
+- All TC-7 (aggregation) tests pass — series-level edges are correct — **PASS (automated, 4/4)**
+- All TC-8 (visual) tests pass — styling matches design specification — **pending manual**
 
 ---
 
