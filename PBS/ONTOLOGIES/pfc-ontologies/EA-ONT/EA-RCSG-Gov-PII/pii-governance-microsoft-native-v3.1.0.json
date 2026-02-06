@@ -9,7 +9,7 @@
   "@id": "pii:pii-governance-microsoft-native",
   "name": "PII Governance Ontology - Microsoft Native Web Apps",
   "description": "Ontology for PII protection in web applications using Azure SQL Database Graph, Microsoft Graph API, Presidio, and Azure OpenAI. Provides comprehensive data governance framework for UK-based AI systems processing personal data.",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "oaaVersion": "6.1.0",
   "created": "2026-02-03",
   "lastModified": "2026-02-06",
