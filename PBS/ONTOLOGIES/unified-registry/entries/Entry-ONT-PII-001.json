@@ -65,10 +65,12 @@
     ]
   },
   "relationships": {
-    "crossOntology": 3,
+    "crossOntology": 5,
     "keyBridges": [
       { "to": "mcsb2:", "entity": "MCSBv2AIControl", "relationship": "extends" },
-      { "to": "gdpr:", "entity": "ComplianceFramework", "relationship": "implements" },
+      { "to": "gdpr:", "entity": "ComplianceFramework", "relationship": "implementsFramework", "targetEntity": "gdpr:DataProtectionPrinciple" },
+      { "to": "gdpr:", "entity": "PIIEntityType", "relationship": "alignsWith", "targetEntity": "gdpr:SpecialCategoryData" },
+      { "to": "gdpr:", "entity": "PIIProtectionAction", "relationship": "fulfills", "targetEntity": "gdpr:DataSubjectRight" },
       { "to": "org:", "entity": "DataResidencyRegion", "relationship": "references" }
     ]
   },
@@ -78,7 +80,7 @@
     "Entry-ONT-ORG-001"
   ],
   "dependents": [],
-  "layer": "SECURITY-SERIES",
+  "layer": "RCSG-SERIES",
   "domain": "Data Governance & Privacy",
   "maintainer": "PF-Core Security Module",
   "created": "2026-02-03",

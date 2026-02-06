@@ -15,7 +15,7 @@
   "lastModified": "2026-02-06",
   "author": "PF-Core Security Module",
   "schemaOrgAlignment": 0.85,
-  "pfCoreModule": "SECURITY",
+  "pfCoreModule": "RCSG",
   "pfCoreInstances": ["BAIV-SEC", "W4M-RCS", "AIR-GOV"],
 
   "metadata": {
@@ -951,8 +951,16 @@
   ],
 
   "crossOntologyReferences": {
-    "securitySeries": ["mcsb:", "mcsb2:", "gdpr:"],
+    "rcsgSeries": ["mcsb:", "mcsb2:", "gdpr:"],
     "foundationSeries": ["org:", "org-ctx:"],
-    "description": "This ontology bridges security compliance frameworks with organizational governance patterns"
+    "description": "This ontology implements GDPR regulatory requirements using Microsoft-native controls and bridges RCSG frameworks with organizational governance patterns",
+    "gdprAlignment": {
+      "gdpr:DataProtectionPrinciple": "Implemented via pii:ComplianceFramework with mapped GDPR articles",
+      "gdpr:LawfulBasis": "Processing requires documented basis, enforced via pii:PIIProtectionAction gates",
+      "gdpr:DataSubjectRight": "Rights fulfilled through pii:PIIProtectedWorkflow erasure and access steps",
+      "gdpr:SpecialCategoryData": "Maps to pii:PIIEntityType with riskLevel=CRITICAL",
+      "gdpr:TransferMechanism": "Enforced via pii:DataResidencyRegion adequacy decisions",
+      "gdpr:ComplianceObligation": "Mapped to pii:ComplianceMapping UK-GDPR-to-Implementation"
+    }
   }
 }

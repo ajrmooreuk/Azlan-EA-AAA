@@ -5,7 +5,7 @@
   "name": "Azlan Ontology Registry",
   "version": "2.0.0",
   "oaaVersion": "5.0.0",
-  "lastUpdated": "2026-02-02",
+  "lastUpdated": "2026-02-06",
   "description": "Unified registry of all ontologies in the Azlan EA-AAA repository",
   "entries": [
     {
@@ -212,12 +212,14 @@
     },
     {
       "@id": "Entry-ONT-GDPR-001",
-      "name": "GDPR Ontology (General Data Protection Regulation)",
+      "name": "GDPR Regulatory Framework Ontology",
       "namespace": "gdpr:",
-      "status": "placeholder",
-      "gatesPassed": 0,
+      "status": "compliant",
+      "gatesPassed": 8,
       "gatesFailed": 0,
-      "validatedDate": null,
+      "validatedDate": "2026-02-06",
+      "oaaVersion": "6.1.0",
+      "version": "1.0.0",
       "path": "./entries/Entry-ONT-GDPR-001.json"
     },
     {
@@ -293,9 +295,9 @@
       "description": "Execution and process management ontologies",
       "ontologies": ["PPM", "PE", "EFS", "EA", "SA"]
     },
-    "Security-Series": {
-      "name": "Security & Compliance Series",
-      "description": "Security benchmarks and compliance ontologies",
+    "RCSG-Series": {
+      "name": "Risk, Compliance, Security & Governance Series",
+      "description": "Risk management, regulatory compliance, security benchmarks, and governance ontologies",
       "ontologies": ["MCSB", "MCSB2", "GDPR", "AZALZ", "PII"]
     },
     "Foundation": {
@@ -316,25 +318,25 @@
   },
   "statistics": {
     "totalOntologies": 24,
-    "compliant": 18,
+    "compliant": 20,
     "nearCompliance": 0,
     "partialCompliance": 0,
     "pendingReview": 0,
-    "placeholder": 5,
+    "placeholder": 4,
     "deprecated": 0
   },
   "validationSummary": {
-    "validated": 19,
+    "validated": 20,
     "validatedOntologies": [
       "EMC", "ORG", "ORG-CONTEXT", "ORG-MAT",
       "CA", "CL", "GA",
       "VSOM", "OKR", "VP", "RRR", "PMF",
-      "PPM", "PE", "EFS", "MCSB", "EA", "SA", "PII"
+      "PPM", "PE", "EFS", "MCSB", "EA", "SA", "PII", "GDPR"
     ],
-    "placeholders": ["KPI", "MCSB2", "AIR", "GDPR", "AZALZ"],
+    "placeholders": ["KPI", "MCSB2", "AIR", "AZALZ"],
     "oaaVersion": "5.0.0",
-    "oaaVersionNotes": "Base compliance at OAA v5.0.0. VP (v1.2.3) and SA (v1.0.0) upgraded to OAA v6.1.0 with 8-gate validation.",
-    "lastFullValidation": "2026-02-02"
+    "oaaVersionNotes": "Base compliance at OAA v5.0.0. VP, SA, PII, GDPR upgraded to OAA v6.1.0 with 8-gate validation.",
+    "lastFullValidation": "2026-02-06"
   },
   "pfiInstances": [
     {
