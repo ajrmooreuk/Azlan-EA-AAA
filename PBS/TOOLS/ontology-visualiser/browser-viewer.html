@@ -47,8 +47,9 @@
   <button class="breadcrumb-home" onclick="navigateToTier0()" title="Return to series overview">&#x2302; Home</button>
   <span id="breadcrumb-path"></span>
   <div id="tier0-toggle" style="display:none;">
-    <button class="tier-toggle active" onclick="navigateToTier0()">Series (6)</button>
-    <button class="tier-toggle" onclick="showAllOntologies()">Ontologies (23)</button>
+    <button class="tier-toggle active" data-view="series" onclick="navigateToTier0()">Series (6)</button>
+    <button class="tier-toggle" data-view="ontologies" onclick="showAllOntologies()">Ontologies (23)</button>
+    <button class="tier-toggle" data-view="connections" onclick="showConnectionMap()" title="Show ontology-to-ontology dependency graph">Connections</button>
   </div>
 </div>
 
