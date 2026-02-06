@@ -9,7 +9,7 @@
   "@id": "pii:pii-governance-microsoft-native",
   "name": "PII Governance Ontology - Microsoft Native Web Apps",
   "description": "Ontology for PII protection in web applications using Azure SQL Database Graph, Microsoft Graph API, Presidio, and Azure OpenAI. Provides comprehensive data governance framework for UK-based AI systems processing personal data.",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "oaaVersion": "6.1.0",
   "created": "2026-02-03",
   "lastModified": "2026-02-06",
@@ -731,112 +731,112 @@
 
   "relationships": [
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-piitype-triggers-action",
+      "@type": "rdf:Property",
+      "@id": "pii:triggers",
       "name": "triggers",
       "description": "PII entity type detection triggers a protection action based on risk level",
-      "from": "pii:PIIEntityType",
-      "to": "pii:PIIProtectionAction",
-      "cardinality": "many-to-one"
+      "domainIncludes": "pii:PIIEntityType",
+      "rangeIncludes": "pii:PIIProtectionAction",
+      "cardinality": "n:1"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-action-uses-operator",
+      "@type": "rdf:Property",
+      "@id": "pii:usesOperator",
       "name": "usesOperator",
       "description": "Protection action ANONYMIZE uses an anonymization operator",
-      "from": "pii:PIIProtectionAction",
-      "to": "pii:AnonymizationOperator",
-      "cardinality": "one-to-many"
+      "domainIncludes": "pii:PIIProtectionAction",
+      "rangeIncludes": "pii:AnonymizationOperator",
+      "cardinality": "1:n"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-deployment-resides-in-region",
+      "@type": "rdf:Property",
+      "@id": "pii:residesIn",
       "name": "residesIn",
       "description": "Azure OpenAI deployment is located in a specific data residency region",
-      "from": "pii:AzureOpenAIDeployment",
-      "to": "pii:DataResidencyRegion",
-      "cardinality": "many-to-one"
+      "domainIncludes": "pii:AzureOpenAIDeployment",
+      "rangeIncludes": "pii:DataResidencyRegion",
+      "cardinality": "n:1"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-label-determines-action",
+      "@type": "rdf:Property",
+      "@id": "pii:determinesAction",
       "name": "determinesAction",
       "description": "Sensitivity label classification influences PII protection action",
-      "from": "pii:SensitivityLabel",
-      "to": "pii:PIIProtectionAction",
-      "cardinality": "many-to-many"
+      "domainIncludes": "pii:SensitivityLabel",
+      "rangeIncludes": "pii:PIIProtectionAction",
+      "cardinality": "n:m"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-control-implements-framework",
+      "@type": "rdf:Property",
+      "@id": "pii:implements",
       "name": "implements",
       "description": "MCSB control implements requirements from compliance framework",
-      "from": "pii:MCSBv2AIControl",
-      "to": "pii:ComplianceFramework",
-      "cardinality": "many-to-many"
+      "domainIncludes": "pii:MCSBv2AIControl",
+      "rangeIncludes": "pii:ComplianceFramework",
+      "cardinality": "n:m"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-layer-contains-node",
+      "@type": "rdf:Property",
+      "@id": "pii:contains",
       "name": "contains",
       "description": "Architecture layer contains graph node types for storage",
-      "from": "pii:ArchitectureLayer",
-      "to": "pii:AzureSQLGraphNode",
-      "cardinality": "one-to-many"
+      "domainIncludes": "pii:ArchitectureLayer",
+      "rangeIncludes": "pii:AzureSQLGraphNode",
+      "cardinality": "1:n"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-node-connected-by-edge",
+      "@type": "rdf:Property",
+      "@id": "pii:connectedBy",
       "name": "connectedBy",
       "description": "Graph nodes are connected by graph edges",
-      "from": "pii:AzureSQLGraphNode",
-      "to": "pii:AzureSQLGraphEdge",
-      "cardinality": "many-to-many"
+      "domainIncludes": "pii:AzureSQLGraphNode",
+      "rangeIncludes": "pii:AzureSQLGraphEdge",
+      "cardinality": "n:m"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-scope-exposes-pii",
+      "@type": "rdf:Property",
+      "@id": "pii:exposesPII",
       "name": "exposesPII",
       "description": "Microsoft Graph API scope exposes PII of certain entity types",
-      "from": "pii:MicrosoftGraphAPIScope",
-      "to": "pii:PIIEntityType",
-      "cardinality": "many-to-many"
+      "domainIncludes": "pii:MicrosoftGraphAPIScope",
+      "rangeIncludes": "pii:PIIEntityType",
+      "cardinality": "n:m"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-workflow-uses-layer",
+      "@type": "rdf:Property",
+      "@id": "pii:traverses",
       "name": "traverses",
       "description": "PII protected workflow traverses architecture layers",
-      "from": "pii:PIIProtectedWorkflow",
-      "to": "pii:ArchitectureLayer",
-      "cardinality": "one-to-many"
+      "domainIncludes": "pii:PIIProtectedWorkflow",
+      "rangeIncludes": "pii:ArchitectureLayer",
+      "cardinality": "1:n"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-decision-matrix-references-action",
+      "@type": "rdf:Property",
+      "@id": "pii:references",
       "name": "references",
       "description": "Decision matrix references protection actions as outcomes",
-      "from": "pii:PIIDecisionMatrix",
-      "to": "pii:PIIProtectionAction",
-      "cardinality": "one-to-many"
+      "domainIncludes": "pii:PIIDecisionMatrix",
+      "rangeIncludes": "pii:PIIProtectionAction",
+      "cardinality": "1:n"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-integration-requires-scope",
+      "@type": "rdf:Property",
+      "@id": "pii:requiresScope",
       "name": "requiresScope",
       "description": "Integration endpoint requires Microsoft Graph API scopes",
-      "from": "pii:IntegrationEndpoint",
-      "to": "pii:MicrosoftGraphAPIScope",
-      "cardinality": "many-to-many"
+      "domainIncludes": "pii:IntegrationEndpoint",
+      "rangeIncludes": "pii:MicrosoftGraphAPIScope",
+      "cardinality": "n:m"
     },
     {
-      "@type": "Relationship",
-      "@id": "pii:rel-mapping-validates-control",
+      "@type": "rdf:Property",
+      "@id": "pii:validates",
       "name": "validates",
       "description": "Compliance mapping validates MCSB control implementation",
-      "from": "pii:ComplianceMapping",
-      "to": "pii:MCSBv2AIControl",
-      "cardinality": "one-to-many"
+      "domainIncludes": "pii:ComplianceMapping",
+      "rangeIncludes": "pii:MCSBv2AIControl",
+      "cardinality": "1:n"
     }
   ],
 
