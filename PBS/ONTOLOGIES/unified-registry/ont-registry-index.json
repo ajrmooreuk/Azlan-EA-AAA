@@ -241,6 +241,18 @@
       "oaaVersion": "6.1.0",
       "version": "1.0.0",
       "path": "./entries/Entry-ONT-SA-001.json"
+    },
+    {
+      "@id": "Entry-ONT-PII-001",
+      "name": "PII Governance Ontology (Microsoft Native)",
+      "namespace": "pii:",
+      "status": "compliant",
+      "gatesPassed": 8,
+      "gatesFailed": 0,
+      "validatedDate": "2026-02-06",
+      "oaaVersion": "6.1.0",
+      "version": "3.3.0",
+      "path": "./entries/Entry-ONT-PII-001.json"
     }
   ],
   "namespaceRegistry": {
@@ -267,7 +279,8 @@
     "air": "https://platformcore.io/ontology/air/",
     "gdpr": "https://platformcore.io/ontology/gdpr/",
     "azalz": "https://platformcore.io/ontology/azalz/",
-    "sa": "https://platformcore.io/ontology/solution-architecture/"
+    "sa": "https://platformcore.io/ontology/solution-architecture/",
+    "pii": "https://platformcore.io/ontology/pii-governance/"
   },
   "seriesRegistry": {
     "VE-Series": {
@@ -283,7 +296,7 @@
     "Security-Series": {
       "name": "Security & Compliance Series",
       "description": "Security benchmarks and compliance ontologies",
-      "ontologies": ["MCSB", "MCSB2", "GDPR", "AZALZ"]
+      "ontologies": ["MCSB", "MCSB2", "GDPR", "AZALZ", "PII"]
     },
     "Foundation": {
       "name": "Foundation Ontologies",
@@ -302,8 +315,8 @@
     }
   },
   "statistics": {
-    "totalOntologies": 23,
-    "compliant": 17,
+    "totalOntologies": 24,
+    "compliant": 18,
     "nearCompliance": 0,
     "partialCompliance": 0,
     "pendingReview": 0,
@@ -311,12 +324,12 @@
     "deprecated": 0
   },
   "validationSummary": {
-    "validated": 18,
+    "validated": 19,
     "validatedOntologies": [
       "EMC", "ORG", "ORG-CONTEXT", "ORG-MAT",
       "CA", "CL", "GA",
       "VSOM", "OKR", "VP", "RRR", "PMF",
-      "PPM", "PE", "EFS", "MCSB", "EA", "SA"
+      "PPM", "PE", "EFS", "MCSB", "EA", "SA", "PII"
     ],
     "placeholders": ["KPI", "MCSB2", "AIR", "GDPR", "AZALZ"],
     "oaaVersion": "5.0.0",
