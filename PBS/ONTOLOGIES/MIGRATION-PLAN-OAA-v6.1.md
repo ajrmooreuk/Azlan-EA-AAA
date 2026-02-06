@@ -1,8 +1,8 @@
 # Ontology Migration Plan: Consolidate to Azlan under OAA v6.1.0
 
-**Version:** 2.5.0
-**Date:** 2026-02-01
-**Status:** Phases 1-4 Complete | VE-Series-ONT Structure Added
+**Version:** 2.6.0
+**Date:** 2026-02-06
+**Status:** Phases 1-4 Complete | VE-Series-ONT + RCSG-Series Structure Added
 
 ---
 
@@ -94,6 +94,8 @@
 | Low | ALZ-ONT | MCSB registry only | Create Azure Landing Zone ontology |
 | Future | DS-ONT | Not created | Design System ontology from BAIV |
 | ✅ Done | GA-ONT | v1.0.0 Production | Gap Analysis ontology (CGA Agent support) |
+| ✅ Done | GDPR-ONT | v1.0.0 Production | GDPR Regulatory Framework (RCSG-Series) |
+| ✅ Done | PII-ONT | v3.3.0 Production | PII Governance - Microsoft Native (RCSG-Series, implements GDPR) |
 | ON HOLD | EA-ONT | Instance data | PPM-ONT population data (not separate ontology) |
 
 ### VE-Series-ONT (Value Engineering Series)
@@ -134,6 +136,77 @@ VE-Series-ONT/
 ├── VE-PMF-ONT/
 └── archive/          # Legacy VE content
 ```
+
+### RCSG-Series (Risk, Compliance, Security & Governance)
+
+**Location:** `pfc-ontologies/RCSG-ONT/` (regulatory) + `pfc-ontologies/EA-ONT/EA-RCSG-Gov-PII/` (implementation)
+
+RCSG is a **series of 5 interconnected ontologies** covering security, compliance, and governance concerns:
+
+| Order | Ontology | Description | Status | Layer |
+|-------|----------|-------------|--------|-------|
+| 1 | MCSB-ONT | Microsoft Cloud Security Benchmark v1 | ✅ Registry | Security Controls |
+| 2 | MCSB2-ONT | Microsoft Cloud Security Benchmark v2 | Placeholder | Security Controls |
+| 3 | GDPR-ONT | GDPR Regulatory Framework | ✅ v1.0.0 | Regulatory |
+| 4 | AZALZ-ONT | Azure Landing Zone Assessment | Placeholder | Infrastructure |
+| 5 | PII-ONT | PII Governance - Microsoft Native | ✅ v3.3.0 | Implementation |
+
+**RCSG Architecture — Regulatory vs Implementation Layers:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                   REGULATORY LAYER                           │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
+│  │  GDPR-ONT   │  │  MCSB-ONT   │  │  MCSB2-ONT  │          │
+│  │ (Principles,│  │ (Security   │  │ (AI-specific│          │
+│  │  Rights,    │  │  Controls)  │  │  Controls)  │          │
+│  │  Bases)     │  │             │  │             │          │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘          │
+└─────────┼────────────────┼────────────────┼─────────────────┘
+          │ implements     │ extends        │
+          ▼                ▼                ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  IMPLEMENTATION LAYER                        │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │                     PII-ONT v3.3.0                      │ │
+│  │  - PIIEntityType (aligns gdpr:SpecialCategoryData)      │ │
+│  │  - PIIProtectionAction (fulfills gdpr:DataSubjectRight) │ │
+│  │  - ComplianceFramework (implements gdpr:Principle)      │ │
+│  │  - MCSBv2AIControl (extends mcsb2: controls)            │ │
+│  │  - DataResidencyRegion (gdpr:TransferMechanism)         │ │
+│  └────────────────────────────────────────────────────────┘ │
+│                                                              │
+│  ┌────────────────────────────────────────────────────────┐ │
+│  │                   AZALZ-ONT (Future)                    │ │
+│  │  Azure Landing Zone infrastructure security             │ │
+│  └────────────────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**GDPR → PII Cross-Ontology Alignment:**
+
+| GDPR Entity | PII Entity | Relationship |
+|-------------|------------|--------------|
+| gdpr:DataProtectionPrinciple | pii:ComplianceFramework | implementsFramework |
+| gdpr:SpecialCategoryData | pii:PIIEntityType | alignsWith |
+| gdpr:DataSubjectRight | pii:PIIProtectionAction | fulfills |
+| gdpr:TransferMechanism | pii:DataResidencyRegion | enforcesResidency |
+| gdpr:ComplianceObligation | pii:ComplianceMapping | validatesObligation |
+
+**Directory Structure:**
+```
+RCSG-ONT/                    # Regulatory ontologies
+├── GDPR-ONT/
+│   └── gdpr-regulatory-framework-v1.0.0.json  ✅
+├── MCSB-ONT/                # (future)
+├── MCSB2-ONT/               # (future)
+└── AZALZ-ONT/               # (future)
+
+EA-ONT/EA-RCSG-Gov-PII/      # Implementation ontology
+└── pii-governance-microsoft-native-v3.3.0.json  ✅
+```
+
+---
 
 ### RRR-ONT Scope (Roles/RACI/RBAC)
 

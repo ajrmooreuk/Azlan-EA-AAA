@@ -48,7 +48,7 @@ export const SERIES_COLORS = {
   'PE-Series': '#4CAF50',
   'Foundation': '#FF9800',
   'Competitive': '#E91E63',
-  'Security-Series': '#9C27B0',
+  'RCSG-Series': '#9C27B0',
   'Orchestration': '#00BCD4',
   'placeholder': '#616161'
 };

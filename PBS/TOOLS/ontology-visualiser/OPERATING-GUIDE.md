@@ -281,7 +281,7 @@ Click "Load Registry" ──► Batch Load (23 ontologies) ──► Tier 0: Ser
 | PE-Series (Process Engineering) | Green | PPM, PE, EFS, EA, SA |
 | Foundation | Orange | ORG, ORG-CONTEXT, ORG-MAT, AIR |
 | Competitive | Pink | CA, CL, GA |
-| Security-Series | Purple | MCSB, MCSB2, GDPR, AZALZ |
+| RCSG-Series (Risk, Compliance, Security & Governance) | Purple | MCSB, MCSB2, GDPR, AZALZ, PII |
 | Orchestration | Cyan | EMC |
 
 **Returning to Single Mode:**
@@ -388,7 +388,7 @@ Click "Load from GitHub" ──► Enter PAT ──► Enter repo/path ──►
 | Green (#4CAF50) | PE-Series (Process Engineering) |
 | Orange (#FF9800) | Foundation |
 | Pink (#E91E63) | Competitive |
-| Purple (#9C27B0) | Security-Series |
+| Purple (#9C27B0) | RCSG-Series (Risk, Compliance, Security & Governance) |
 | Cyan (#00BCD4) | Orchestration |
 | Grey (#616161) | Placeholder (not yet developed) |
 
