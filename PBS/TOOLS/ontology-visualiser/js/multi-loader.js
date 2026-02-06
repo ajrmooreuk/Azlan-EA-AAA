@@ -491,3 +491,80 @@ export function getOntologiesForSeries(seriesKey, loadedOntologies) {
   }
   return filtered;
 }
+
+// ========================================
+// BRIDGE NODE DETECTION (Phase 4 — Feature #40)
+// ========================================
+
+/**
+ * Detect bridge nodes — entities referenced by 3+ ontologies.
+ * These are critical integration points in the architecture.
+ *
+ * @param {Array} crossEdges - Cross-ontology edges from detectCrossReferences()
+ * @param {Map} loadedOntologies - Loaded ontology records
+ * @param {number} threshold - Minimum referencing ontologies to be a bridge (default: 3)
+ * @returns {Map} entityId → { refCount, referencingOntologies: Set<string>, entityLabel, series }
+ */
+export function detectBridgeNodes(crossEdges, loadedOntologies, threshold = 3) {
+  const entityRefs = new Map(); // entityId → { referencingOntologies: Set, ... }
+
+  // Count incoming references per entity from different ontologies
+  for (const edge of crossEdges) {
+    const targetId = edge.to;
+    const sourceNs = edge.sourceNamespace;
+
+    if (!entityRefs.has(targetId)) {
+      // Extract entity info from target ID (prefix::entity)
+      const parts = targetId.split('::');
+      const prefix = parts[0];
+      const entityName = parts[1] || targetId;
+
+      // Find the target ontology to get series info
+      let targetSeries = null;
+      let targetOntologyName = null;
+      for (const [ns, record] of loadedOntologies) {
+        if (ns.replace(/:$/, '') === prefix) {
+          targetSeries = record.series;
+          targetOntologyName = record.name;
+          break;
+        }
+      }
+
+      entityRefs.set(targetId, {
+        id: targetId,
+        entityLabel: entityName,
+        prefix: prefix,
+        series: targetSeries,
+        ontologyName: targetOntologyName,
+        referencingOntologies: new Set(),
+        referencingNamespaces: new Set(),
+        refCount: 0
+      });
+    }
+
+    const entry = entityRefs.get(targetId);
+    // Only count unique ontologies (not multiple refs from same ontology)
+    if (!entry.referencingNamespaces.has(sourceNs)) {
+      entry.referencingNamespaces.add(sourceNs);
+      // Get ontology name for display
+      const sourceRecord = loadedOntologies.get(sourceNs);
+      const sourceName = sourceRecord?.name?.replace(/\s+Ontology.*$/i, '') || sourceNs;
+      entry.referencingOntologies.add(sourceName);
+      entry.refCount++;
+    }
+  }
+
+  // Filter to only bridge nodes (>= threshold referencing ontologies)
+  const bridgeNodes = new Map();
+  for (const [entityId, data] of entityRefs) {
+    if (data.refCount >= threshold) {
+      bridgeNodes.set(entityId, {
+        ...data,
+        referencingOntologies: Array.from(data.referencingOntologies),
+        referencingNamespaces: Array.from(data.referencingNamespaces)
+      });
+    }
+  }
+
+  return bridgeNodes;
+}

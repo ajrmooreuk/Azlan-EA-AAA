@@ -51,6 +51,11 @@
     <button class="tier-toggle" data-view="ontologies" onclick="showAllOntologies()">Ontologies (23)</button>
     <button class="tier-toggle" data-view="connections" onclick="showConnectionMap()" title="Show ontology-to-ontology dependency graph">Connections</button>
   </div>
+  <div id="bridge-filter" style="display:none; margin-left:auto;">
+    <button id="btn-bridge-filter" class="bridge-filter-btn" onclick="toggleBridgeFilter()" title="Show only bridge nodes (referenced by 3+ ontologies)">
+      &#x1F309; Bridges (<span id="bridge-count">0</span>)
+    </button>
+  </div>
 </div>
 
 <div id="graph-container">

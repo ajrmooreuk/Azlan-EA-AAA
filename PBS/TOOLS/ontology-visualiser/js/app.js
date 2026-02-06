@@ -7,7 +7,7 @@ import { state } from './state.js';
 import { parseOntology } from './ontology-parser.js';
 import { renderGraph, renderMultiGraph, renderTier0, renderTier1, renderConnectionMap, focusNode, focusNodes, togglePhysics, changeLayout, fitGraph, resetGraph } from './graph-renderer.js';
 import { exportAuditFile, exportPNG, downloadOntologyForOAA } from './export.js';
-import { loadFullRegistry, buildMergedGraph, detectCrossReferences, buildCrossSeriesEdges } from './multi-loader.js';
+import { loadFullRegistry, buildMergedGraph, detectCrossReferences, buildCrossSeriesEdges, detectBridgeNodes } from './multi-loader.js';
 import {
   toggleSidebar, toggleAudit, loadTestDataFile, navigateToNode, switchTab,
   runOAAUpgrade, showOAAModal, closeOAAModal, copyOAACommand, copyPath,
@@ -357,6 +357,10 @@ async function loadRegistry() {
     // Build series-level edges for Tier 0
     state.crossSeriesEdges = buildCrossSeriesEdges(crossEdges, loadedOntologies);
 
+    // Detect bridge nodes (entities referenced by 3+ ontologies)
+    state.bridgeNodes = detectBridgeNodes(crossEdges, loadedOntologies, 3);
+    console.log(`Bridge nodes detected: ${state.bridgeNodes.size}`);
+
     // Start at Tier 0 (series rollup) instead of flat entity view
     navigateToTier0();
 
@@ -399,6 +403,7 @@ function navigateToTier0() {
   state.currentSeries = null;
   state.currentOntology = null;
   state.viewMode = 'multi';
+  state.bridgeFilterActive = false;
   state.navigationStack = [{ tier: 0, label: 'Library' }];
 
   renderTier0(state.seriesData, state.crossSeriesEdges);
@@ -406,6 +411,7 @@ function navigateToTier0() {
 
   document.getElementById('tier0-toggle').style.display = 'inline-flex';
   setActiveToggle('series');
+  document.getElementById('bridge-filter').style.display = 'none';
   document.getElementById('btn-run-oaa').style.display = 'none';
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
@@ -463,6 +469,7 @@ function showAllOntologies() {
   state.currentTier = 0;
   state.currentSeries = null;
   state.viewMode = 'multi';
+  state.bridgeFilterActive = false;
   state.navigationStack = [{ tier: 0, label: 'All Ontologies' }];
 
   renderMultiGraph(state.mergedGraph, state.crossEdges, state.seriesData);
@@ -470,6 +477,8 @@ function showAllOntologies() {
 
   document.getElementById('tier0-toggle').style.display = 'inline-flex';
   setActiveToggle('ontologies');
+  updateBridgeFilterUI();
+  document.getElementById('bridge-filter').style.display = 'block';
   document.getElementById('btn-run-oaa').style.display = 'none';
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
@@ -486,9 +495,26 @@ function showConnectionMap() {
 
   document.getElementById('tier0-toggle').style.display = 'inline-flex';
   setActiveToggle('connections');
+  document.getElementById('bridge-filter').style.display = 'none';
   document.getElementById('btn-run-oaa').style.display = 'none';
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
+}
+
+function toggleBridgeFilter() {
+  state.bridgeFilterActive = !state.bridgeFilterActive;
+  updateBridgeFilterUI();
+  // Re-render the graph with the filter applied
+  renderMultiGraph(state.mergedGraph, state.crossEdges, state.seriesData);
+}
+
+function updateBridgeFilterUI() {
+  const btn = document.getElementById('btn-bridge-filter');
+  const countEl = document.getElementById('bridge-count');
+  const bridgeCount = state.bridgeNodes?.size || 0;
+
+  countEl.textContent = bridgeCount;
+  btn.classList.toggle('active', state.bridgeFilterActive);
 }
 
 function updateBreadcrumb() {
@@ -553,6 +579,7 @@ window.drillToOntology = drillToOntology;
 window.navigateBack = navigateBack;
 window.showAllOntologies = showAllOntologies;
 window.showConnectionMap = showConnectionMap;
+window.toggleBridgeFilter = toggleBridgeFilter;
 
 // File loading
 window.loadFromGitHub = loadFromGitHub;
