@@ -21,7 +21,7 @@
   },
   "artifacts": {
     "folder": "../pfc-ontologies/EA-ONT/EA-RCSG-Gov-PII/",
-    "ontology": "pii-governance-microsoft-native-v3.3.0.json",
+    "ontology": "../pfc-ontologies/EA-ONT/EA-RCSG-Gov-PII/pii-governance-microsoft-native-v3.3.0.json",
     "glossary": null,
     "documentation": null,
     "testData": null,
