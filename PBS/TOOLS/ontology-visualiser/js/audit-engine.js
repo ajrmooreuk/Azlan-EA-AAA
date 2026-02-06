@@ -177,6 +177,9 @@ function validateG2BEntityConnectivity(parsed) {
     return { gate: 'G2B: Entity Connectivity', status: 'warn', issues: [], warnings: ['No parsed data'], detail: 'Cannot validate' };
   }
 
+  // Meta-node types that are not domain entities (excluded from connectivity checks)
+  const metaTypes = new Set(['external', 'core', 'layer']);
+
   const entityIds = new Set(parsed.nodes.map(n => n.id));
   const connected = new Set();
 
@@ -186,22 +189,22 @@ function validateG2BEntityConnectivity(parsed) {
   });
 
   const orphaned = parsed.nodes.filter(n =>
-    !connected.has(n.id) && n.entityType !== 'external'
+    !connected.has(n.id) && !metaTypes.has(n.entityType)
   );
 
-  const nonExternalCount = parsed.nodes.filter(n => n.entityType !== 'external').length;
-  const connectedNonExternal = parsed.nodes.filter(n =>
-    connected.has(n.id) && n.entityType !== 'external'
+  const domainNodeCount = parsed.nodes.filter(n => !metaTypes.has(n.entityType)).length;
+  const connectedDomainNodes = parsed.nodes.filter(n =>
+    connected.has(n.id) && !metaTypes.has(n.entityType)
   ).length;
 
-  const pct = nonExternalCount > 0 ? Math.round((connectedNonExternal / nonExternalCount) * 100) : 100;
+  const pct = domainNodeCount > 0 ? Math.round((connectedDomainNodes / domainNodeCount) * 100) : 100;
 
   return {
     gate: 'G2B: Entity Connectivity',
     status: orphaned.length > 0 ? 'fail' : 'pass',
     issues: orphaned.map(n => `${n.label || n.id} (${n.entityType})`),
     warnings: [],
-    detail: `${pct}% entities connected (${connectedNonExternal}/${nonExternalCount})`,
+    detail: `${pct}% entities connected (${connectedDomainNodes}/${domainNodeCount})`,
     orphaned: orphaned.map(n => n.id)
   };
 }
@@ -211,8 +214,11 @@ function validateG2CGraphConnectivity(parsed) {
     return { gate: 'G2C: Graph Connectivity', status: 'warn', issues: [], warnings: ['No parsed data'], detail: 'Cannot validate' };
   }
 
-  const nonExternalNodes = parsed.nodes.filter(n => n.entityType !== 'external');
-  const nodeIds = new Set(nonExternalNodes.map(n => n.id));
+  // Meta-node types that are not domain entities (excluded from connectivity checks)
+  const metaTypes = new Set(['external', 'core', 'layer']);
+
+  const domainNodes = parsed.nodes.filter(n => !metaTypes.has(n.entityType));
+  const nodeIds = new Set(domainNodes.map(n => n.id));
 
   if (nodeIds.size === 0) {
     return { gate: 'G2C: Graph Connectivity', status: 'pass', issues: [], warnings: [], detail: 'No domain entities' };
