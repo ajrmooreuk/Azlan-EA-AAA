@@ -285,9 +285,10 @@ export function buildMergedGraph(loadedOntologies) {
 // ========================================
 
 /**
- * Detect cross-ontology edges using two passes:
+ * Detect cross-ontology edges using three passes:
  * 1. Registry-declared bridges from entry.relationships (keyBridges or crossOntology)
- * 2. Namespace-prefix scan on node references
+ * 2. Namespace-prefix scan on node references (rangeIncludes/domainIncludes)
+ * 3. Registry dependency declarations (entry.dependencies array)
  */
 export function detectCrossReferences(loadedOntologies, mergedGraph) {
   const crossEdges = [];
@@ -375,6 +376,49 @@ export function detectCrossReferences(loadedOntologies, mergedGraph) {
           });
           addedEdgeKeys.add(edgeKey);
         }
+      }
+    }
+  }
+
+  // Pass 3: Generate edges from registry dependency declarations
+  // Build lookup: entry ID (e.g., "Entry-ONT-VSOM-001") → namespace prefix (e.g., "vsom:")
+  const entryIdToNs = new Map();
+  for (const [ns, record] of loadedOntologies) {
+    if (record.registryEntry && record.registryEntry['@id']) {
+      entryIdToNs.set(record.registryEntry['@id'], ns);
+    }
+  }
+
+  for (const [ns, record] of loadedOntologies) {
+    if (record.isPlaceholder || !record.registryEntry) continue;
+
+    const deps = record.registryEntry.dependencies;
+    if (!Array.isArray(deps) || deps.length === 0) continue;
+
+    for (const depEntryId of deps) {
+      const targetNs = entryIdToNs.get(depEntryId);
+      if (!targetNs || targetNs === ns) continue;
+
+      // Create synthetic edge from this ontology to the dependency
+      // Format: sourcePrefix::_dependency → targetPrefix::_dependency
+      const sourcePrefix = ns.replace(/:$/, '');
+      const targetPrefix = targetNs.replace(/:$/, '');
+      const fromId = `${sourcePrefix}::_dependency`;
+      const toId = `${targetPrefix}::_dependency`;
+      const edgeKey = `${ns}->${targetNs}:dependency`;
+
+      if (!addedEdgeKeys.has(edgeKey)) {
+        crossEdges.push({
+          from: fromId,
+          to: toId,
+          label: 'depends-on',
+          edgeType: 'dependency',
+          purpose: 'declared dependency in registry entry',
+          sourceNamespace: ns,
+          targetNamespace: targetNs,
+          isCrossOntology: true
+        });
+        addedEdgeKeys.add(edgeKey);
       }
     }
   }
