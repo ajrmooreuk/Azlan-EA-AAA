@@ -140,6 +140,7 @@ function buildSeriesLegend(seriesData) {
 
 /**
  * Render a merged multi-ontology graph with series-based colouring.
+ * Bridge nodes (referenced by 3+ ontologies) get special styling.
  */
 export function renderMultiGraph(mergedGraph, crossEdges, seriesData) {
   state.lastParsed = mergedGraph;
@@ -148,26 +149,51 @@ export function renderMultiGraph(mergedGraph, crossEdges, seriesData) {
   document.getElementById('compliance-status').style.display = 'none';
   document.getElementById('audit-panel').classList.remove('open');
 
-  const visNodes = mergedGraph.nodes.map(n => {
-    const seriesColor = SERIES_COLORS[n.series] || SERIES_COLORS.placeholder;
-    return {
-      id: n.id,
-      label: n.label,
-      color: {
-        background: n.isPlaceholder ? SERIES_COLORS.placeholder : seriesColor,
-        border: n.isPlaceholder ? '#888' : '#222',
-        highlight: { background: '#9dfff5', border: '#017c75' }
-      },
-      borderWidth: n.isPlaceholder ? 2 : 2,
-      borderWidthSelected: 4,
-      shapeProperties: { borderDashes: n.isPlaceholder ? [6, 3] : false },
-      font: { color: '#e0e0e0', size: 13 },
-      shape: n.isPlaceholder ? 'diamond' : (n.entityType === 'agent' ? 'star' : n.entityType === 'layer' ? 'box' : 'dot'),
-      size: n.isPlaceholder ? 18 : (n.entityType === 'core' ? 25 : 16),
-      title: `${n.sourceName || ''}\n${n.description || n.label}`,
-      _data: n
-    };
-  });
+  // Check for bridge nodes
+  const bridgeNodes = state.bridgeNodes || new Map();
+  const showOnlyBridges = state.bridgeFilterActive || false;
+
+  const visNodes = mergedGraph.nodes
+    .filter(n => !showOnlyBridges || bridgeNodes.has(n.id))
+    .map(n => {
+      const seriesColor = SERIES_COLORS[n.series] || SERIES_COLORS.placeholder;
+      const isBridge = bridgeNodes.has(n.id);
+      const bridgeInfo = isBridge ? bridgeNodes.get(n.id) : null;
+
+      // Bridge nodes: 1.5x size, gold double-border effect, special tooltip
+      const baseSize = n.isPlaceholder ? 18 : (n.entityType === 'core' ? 25 : 16);
+      const nodeSize = isBridge ? Math.round(baseSize * 1.5) : baseSize;
+
+      // Bridge nodes get gold border
+      const borderColor = isBridge ? '#FFD700' : (n.isPlaceholder ? '#888' : '#222');
+      const borderWidth = isBridge ? 4 : 2;
+
+      // Build tooltip
+      let tooltip = `${n.sourceName || ''}\n${n.description || n.label}`;
+      if (isBridge) {
+        tooltip = `🌉 BRIDGE NODE — referenced by ${bridgeInfo.refCount} ontologies:\n` +
+          bridgeInfo.referencingOntologies.join(', ') + '\n\n' + tooltip;
+      }
+
+      return {
+        id: n.id,
+        label: n.label,
+        color: {
+          background: n.isPlaceholder ? SERIES_COLORS.placeholder : seriesColor,
+          border: borderColor,
+          highlight: { background: '#9dfff5', border: isBridge ? '#FFD700' : '#017c75' }
+        },
+        borderWidth: borderWidth,
+        borderWidthSelected: isBridge ? 6 : 4,
+        shapeProperties: { borderDashes: n.isPlaceholder ? [6, 3] : false },
+        font: { color: '#e0e0e0', size: isBridge ? 14 : 13, bold: isBridge },
+        shape: n.isPlaceholder ? 'diamond' : (n.entityType === 'agent' ? 'star' : n.entityType === 'layer' ? 'box' : 'dot'),
+        size: nodeSize,
+        title: tooltip,
+        shadow: isBridge ? { enabled: true, color: '#FFD700', size: 10, x: 0, y: 0 } : false,
+        _data: { ...n, isBridge, bridgeInfo }
+      };
+    });
 
   // Internal edges
   const visEdges = mergedGraph.edges.map(e => ({
@@ -238,8 +264,10 @@ export function renderMultiGraph(mergedGraph, crossEdges, seriesData) {
   });
 
   const totalEdges = mergedGraph.edges.length + crossEdges.length;
+  const bridgeCount = state.bridgeNodes?.size || 0;
+  const filterText = showOnlyBridges ? ' [bridges only]' : '';
   document.getElementById('stats').textContent =
-    `${mergedGraph.nodes.length} nodes | ${totalEdges} edges (${crossEdges.length} cross-ref) | Unified Registry [multi]`;
+    `${visNodes.length} nodes | ${totalEdges} edges | ${bridgeCount} bridge nodes | Unified Registry [multi]${filterText}`;
 
   buildSeriesLegend(seriesData);
 }
