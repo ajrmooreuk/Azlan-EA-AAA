@@ -23,18 +23,18 @@
   "gatesPassed": 6,
   "gatesFailed": 1,
   "artifacts": {
-    "ontology": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/efs-ontology.jsonld",
+    "ontology": "./efs-ontology.jsonld",
     "interfaces": [
-      "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/gtm-interface.jsonld",
-      "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/pmf-interface.jsonld"
+      "./gtm-interface.jsonld",
+      "./pmf-interface.jsonld"
     ],
-    "documentation": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/readme.md",
-    "specification": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/EFS-ONTOLOGY-SPEC.md",
-    "lineageSpec": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/EFS-Lineage-Specification-v3.0.0.md",
-    "lineageDiagrams": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/efs-lineage-diagrams-v3.0.0.md",
-    "architecture": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/efs-architecture.mermaid",
-    "schemaMappings": "../process-mngt-ONT/PPM-ONT/EPICS-FEATURES-STORIES-ont/schema-mappings (1).md",
-    "validationReport": "../unified-registry/validation-reports/EFS-OAA-v5-Validation-Report-v3.0.0.md",
+    "documentation": "./README.MD",
+    "specification": "./EFS-ONTOLOGY-SPEC.md",
+    "lineageSpec": "./EFS-Lineage-Specification-v3.0.0.md",
+    "lineageDiagrams": "./efs-lineage-diagrams-v3.0.0.md",
+    "architecture": "./efs-architecture.mermaid",
+    "schemaMappings": "./schema-mappings (1).md",
+    "validationReport": "./EFS-OAA-v5-Validation-Report-v3.0.0.md",
     "visualGuide": null,
     "glossary": null,
     "testData": null

@@ -1256,5 +1256,194 @@
         ]
       }
     ]
+  },
+
+  "efs:lineageModel": {
+    "@type": "DefinedTerm",
+    "name": "EFS Lineage Model v1.0.0",
+    "description": "Five-layer lineage model connecting strategy to specification",
+    "efs:version": "1.0.0",
+
+    "efs:lineageLayers": [
+      {
+        "@id": "efs:lineage-layer-1",
+        "name": "VSOM/VSEM - Strategy",
+        "description": "Strategic foundation defining organizational direction",
+        "efs:layerOrder": 1,
+        "efs:namespace": "vsom:",
+        "efs:entities": ["Vision", "Strategy", "StrategicObjective", "StrategicMeasure", "StrategicInitiative"],
+        "efs:outputsTo": "efs:lineage-layer-2"
+      },
+      {
+        "@id": "efs:lineage-layer-2",
+        "name": "OKR/KPI - Context",
+        "description": "Bridge between strategy and value providing measurement context",
+        "efs:layerOrder": 2,
+        "efs:namespace": ["okr:", "kpi:"],
+        "efs:entities": ["Objective", "KeyResult", "KPI"],
+        "efs:inputsFrom": "efs:lineage-layer-1",
+        "efs:outputsTo": "efs:lineage-layer-3"
+      },
+      {
+        "@id": "efs:lineage-layer-3",
+        "name": "Value Proposition",
+        "description": "Core value definition derived via OKR and Context",
+        "efs:layerOrder": 3,
+        "efs:namespace": "vp:",
+        "efs:entities": ["ValueProposition", "IdealCustomer", "RRRMetrics", "OrgContext"],
+        "efs:components": {
+          "IC_RRR": {
+            "description": "Ideal Customer and business metrics (Revenue, Retention, Referral)",
+            "entities": ["IdealCustomer", "Revenue", "Retention", "Referral"]
+          },
+          "ORG_Context": {
+            "description": "Organizational alignment maintaining relationship back to VSOM",
+            "entities": ["OrgAlignment", "CapabilityRequirements", "ResourceImplications"],
+            "relatesBackTo": "vsom:StrategicObjective"
+          }
+        },
+        "efs:inputsFrom": "efs:lineage-layer-2",
+        "efs:outputsTo": "efs:lineage-layer-4"
+      },
+      {
+        "@id": "efs:lineage-layer-4",
+        "name": "ICP/Personas/Pains/Gains/Benefits",
+        "description": "Customer definition outputs from Value Proposition",
+        "efs:layerOrder": 4,
+        "efs:namespace": "pmf:",
+        "efs:entities": ["ICP", "Persona", "Pain", "Gain", "Benefit"],
+        "efs:definedBy": "vp:ValueProposition",
+        "efs:inputsFrom": "efs:lineage-layer-3",
+        "efs:outputsTo": "efs:lineage-layer-5"
+      },
+      {
+        "@id": "efs:lineage-layer-5",
+        "name": "EFS - Specification",
+        "description": "Product specification and delivery layer",
+        "efs:layerOrder": 5,
+        "efs:namespace": "efs:",
+        "efs:entities": ["Theme", "Epic", "Feature", "UserStory", "Task"],
+        "efs:inputsFrom": "efs:lineage-layer-4"
+      }
+    ],
+
+    "efs:lineageRelationships": [
+      {
+        "@id": "efs:lineage-rel-vsom-okr",
+        "name": "VSOM to OKR",
+        "efs:sourceLayer": "efs:lineage-layer-1",
+        "efs:targetLayer": "efs:lineage-layer-2",
+        "efs:mappings": [
+          {"source": "vsom:StrategicObjective", "target": "okr:Objective", "relationship": "defines", "cardinality": "1:N"},
+          {"source": "vsom:StrategicMeasure", "target": "kpi:KPI", "relationship": "measuredBy", "cardinality": "1:1"}
+        ]
+      },
+      {
+        "@id": "efs:lineage-rel-okr-vp",
+        "name": "OKR to Value Proposition",
+        "efs:sourceLayer": "efs:lineage-layer-2",
+        "efs:targetLayer": "efs:lineage-layer-3",
+        "efs:mappings": [
+          {"source": "okr:Objective", "target": "vp:ValueProposition", "relationship": "providesContextFor", "cardinality": "N:M"},
+          {"source": "okr:KeyResult", "target": "vp:ValueProposition", "relationship": "validates", "cardinality": "N:M"},
+          {"source": "kpi:KPI", "target": "vp:RRRMetrics", "relationship": "measures", "cardinality": "1:N"}
+        ]
+      },
+      {
+        "@id": "efs:lineage-rel-vp-back-vsom",
+        "name": "ORG Context back to VSOM",
+        "efs:sourceLayer": "efs:lineage-layer-3",
+        "efs:targetLayer": "efs:lineage-layer-1",
+        "efs:direction": "bidirectional",
+        "efs:mappings": [
+          {"source": "vp:OrgContext", "target": "vsom:StrategicObjective", "relationship": "alignsTo", "cardinality": "N:1"}
+        ]
+      },
+      {
+        "@id": "efs:lineage-rel-vp-pmf",
+        "name": "Value Proposition to PMF",
+        "efs:sourceLayer": "efs:lineage-layer-3",
+        "efs:targetLayer": "efs:lineage-layer-4",
+        "efs:mappings": [
+          {"source": "vp:IdealCustomer", "target": "pmf:ICP", "relationship": "defines", "cardinality": "1:1"},
+          {"source": "vp:ValueProposition", "target": "pmf:Pain", "relationship": "identifies", "cardinality": "1:N"},
+          {"source": "vp:ValueProposition", "target": "pmf:Gain", "relationship": "promises", "cardinality": "1:N"},
+          {"source": "vp:ValueProposition", "target": "pmf:Benefit", "relationship": "delivers", "cardinality": "1:N"}
+        ]
+      },
+      {
+        "@id": "efs:lineage-rel-pmf-efs",
+        "name": "PMF to EFS",
+        "efs:sourceLayer": "efs:lineage-layer-4",
+        "efs:targetLayer": "efs:lineage-layer-5",
+        "efs:mappings": [
+          {"source": "pmf:ICP", "target": "efs:Theme", "relationship": "segmentsInto", "cardinality": "1:N"},
+          {"source": "pmf:Pain", "target": "efs:Epic", "relationship": "addressedBy", "cardinality": "N:M"},
+          {"source": "pmf:Gain", "target": "efs:Feature", "relationship": "deliveredBy", "cardinality": "N:M"},
+          {"source": "pmf:Benefit", "target": "efs:UserStory.soThat", "relationship": "realizedIn", "cardinality": "N:M"},
+          {"source": "pmf:Persona", "target": "efs:UserStory.asA", "relationship": "referencedBy", "cardinality": "1:N"}
+        ]
+      }
+    ],
+
+    "efs:lineageValidationRules": [
+      {
+        "@id": "efs:LR-001",
+        "name": "Epic Must Link to Pain",
+        "efs:rule": "IF efs:Epic THEN efs:lineage.addressesPain IS NOT NULL",
+        "efs:severity": "error"
+      },
+      {
+        "@id": "efs:LR-002",
+        "name": "Feature Must Link to Gain",
+        "efs:rule": "IF efs:Feature THEN efs:lineage.deliversGain IS NOT NULL",
+        "efs:severity": "error"
+      },
+      {
+        "@id": "efs:LR-003",
+        "name": "Story Must Reference Persona",
+        "efs:rule": "IF efs:UserStory THEN asA REFERENCES pmf:Persona FROM pmf:ICP",
+        "efs:severity": "error"
+      },
+      {
+        "@id": "efs:LR-004",
+        "name": "Pain Must Trace to Value Proposition",
+        "efs:rule": "IF pmf:Pain THEN TRACES_TO vp:ValueProposition",
+        "efs:severity": "error"
+      },
+      {
+        "@id": "efs:LR-005",
+        "name": "Value Proposition Must Have OKR Context",
+        "efs:rule": "IF vp:ValueProposition THEN HAS_CONTEXT okr:Objective",
+        "efs:severity": "error"
+      },
+      {
+        "@id": "efs:LR-006",
+        "name": "OKR Must Align to VSOM",
+        "efs:rule": "IF okr:Objective THEN ALIGNS_TO vsom:StrategicObjective",
+        "efs:severity": "error"
+      }
+    ],
+
+    "efs:lineageStreams": [
+      {
+        "@id": "efs:stream-strategic-delivery",
+        "name": "Strategic Delivery Stream",
+        "description": "Track strategic intent through delivery",
+        "efs:path": ["Vision", "Objective", "OKR", "ValueProposition", "Pain", "Epic", "Feature", "Story"]
+      },
+      {
+        "@id": "efs:stream-value-realization",
+        "name": "Value Realization Stream",
+        "description": "Measure value delivery against targets",
+        "efs:path": ["StrategicMeasure", "KPI", "RRRMetrics", "Gain", "Feature", "Benefit"]
+      },
+      {
+        "@id": "efs:stream-customer-journey",
+        "name": "Customer Journey Stream",
+        "description": "Trace customer-centric value flow",
+        "efs:path": ["IdealCustomer", "ICP", "Persona", "Pain", "Gain", "Benefit", "UserStory"]
+      }
+    ]
   }
 }
