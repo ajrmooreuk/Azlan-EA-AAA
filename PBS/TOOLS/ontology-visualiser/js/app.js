@@ -5,7 +5,7 @@
 
 import { state } from './state.js';
 import { parseOntology } from './ontology-parser.js';
-import { renderGraph, renderMultiGraph, renderTier0, renderTier1, focusNode, focusNodes, togglePhysics, changeLayout, fitGraph, resetGraph } from './graph-renderer.js';
+import { renderGraph, renderMultiGraph, renderTier0, renderTier1, renderConnectionMap, focusNode, focusNodes, togglePhysics, changeLayout, fitGraph, resetGraph } from './graph-renderer.js';
 import { exportAuditFile, exportPNG, downloadOntologyForOAA } from './export.js';
 import { loadFullRegistry, buildMergedGraph, detectCrossReferences, buildCrossSeriesEdges } from './multi-loader.js';
 import {
@@ -387,6 +387,13 @@ function resetNavigation() {
   if (toggle) toggle.style.display = 'none';
 }
 
+function setActiveToggle(viewName) {
+  const buttons = document.querySelectorAll('#tier0-toggle .tier-toggle');
+  buttons.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === viewName);
+  });
+}
+
 function navigateToTier0() {
   state.currentTier = 0;
   state.currentSeries = null;
@@ -398,6 +405,7 @@ function navigateToTier0() {
   updateBreadcrumb();
 
   document.getElementById('tier0-toggle').style.display = 'inline-flex';
+  setActiveToggle('series');
   document.getElementById('btn-run-oaa').style.display = 'none';
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
@@ -452,18 +460,35 @@ function navigateBack(targetTier) {
 }
 
 function showAllOntologies() {
-  state.currentTier = 1;
+  state.currentTier = 0;
   state.currentSeries = null;
   state.viewMode = 'multi';
-  state.navigationStack = [
-    { tier: 0, label: 'Library' },
-    { tier: 1, label: 'All Ontologies' }
-  ];
+  state.navigationStack = [{ tier: 0, label: 'All Ontologies' }];
 
   renderMultiGraph(state.mergedGraph, state.crossEdges, state.seriesData);
   updateBreadcrumb();
 
-  document.getElementById('tier0-toggle').style.display = 'none';
+  document.getElementById('tier0-toggle').style.display = 'inline-flex';
+  setActiveToggle('ontologies');
+  document.getElementById('btn-run-oaa').style.display = 'none';
+  document.getElementById('btn-save-library').style.display = 'none';
+  document.getElementById('btn-export-audit').style.display = 'none';
+}
+
+function showConnectionMap() {
+  state.currentTier = 0;
+  state.currentSeries = null;
+  state.viewMode = 'multi';
+  state.navigationStack = [{ tier: 0, label: 'Connection Map' }];
+
+  renderConnectionMap(state.loadedOntologies, state.crossEdges, state.seriesData);
+  updateBreadcrumb();
+
+  document.getElementById('tier0-toggle').style.display = 'inline-flex';
+  setActiveToggle('connections');
+  document.getElementById('btn-run-oaa').style.display = 'none';
+  document.getElementById('btn-save-library').style.display = 'none';
+  document.getElementById('btn-export-audit').style.display = 'none';
 }
 
 function updateBreadcrumb() {
@@ -527,6 +552,7 @@ window.drillToSeries = drillToSeries;
 window.drillToOntology = drillToOntology;
 window.navigateBack = navigateBack;
 window.showAllOntologies = showAllOntologies;
+window.showConnectionMap = showConnectionMap;
 
 // File loading
 window.loadFromGitHub = loadFromGitHub;

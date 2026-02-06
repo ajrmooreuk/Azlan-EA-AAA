@@ -566,6 +566,179 @@ export function renderTier1(seriesKey, loadedOntologies, seriesData) {
   buildSeriesLegend(seriesData);
 }
 
+// ========================================
+// CONNECTION MAP MODE (Phase 4 — Feature #41)
+// ========================================
+
+/**
+ * Render a Connection Map showing all ontologies as nodes with
+ * cross-ontology edges weighted by reference count.
+ * Each node is an ontology (not series, not entity).
+ * Edge thickness and labels show cross-reference counts.
+ */
+export function renderConnectionMap(loadedOntologies, crossEdges, seriesData) {
+  // Hide single-ontology panels
+  document.getElementById('compliance-status').style.display = 'none';
+  document.getElementById('audit-panel').classList.remove('open');
+
+  const visNodes = [];
+  const connectionMapNodes = [];
+
+  // Build ontology-to-ontology edge counts
+  const ontologyEdgeCounts = new Map(); // 'fromNs->toNs' => count
+
+  for (const edge of crossEdges) {
+    // Extract source namespace
+    const fromNs = edge.sourceNamespace;
+    if (!fromNs) continue;
+
+    // Extract target namespace from edge.to (prefix::entity)
+    const toPrefix = edge.to.split('::')[0];
+    let toNs = null;
+    for (const [ns] of loadedOntologies) {
+      if (ns.replace(/:$/, '') === toPrefix) {
+        toNs = ns;
+        break;
+      }
+    }
+    if (!toNs || fromNs === toNs) continue;
+
+    // Normalise edge direction (alphabetical) to merge bidirectional refs
+    const key = fromNs < toNs ? `${fromNs}->${toNs}` : `${toNs}->${fromNs}`;
+    ontologyEdgeCounts.set(key, (ontologyEdgeCounts.get(key) || 0) + 1);
+  }
+
+  // Create one node per ontology
+  for (const [ns, record] of loadedOntologies) {
+    const seriesColor = SERIES_COLORS[record.series] || SERIES_COLORS.placeholder;
+    const shortName = record.name
+      .replace(/\s+Ontology.*$/i, '')
+      .replace(/\s*\(.*\)$/, '')
+      .trim();
+
+    const node = {
+      id: ns,
+      label: shortName,
+      color: {
+        background: record.isPlaceholder ? SERIES_COLORS.placeholder : seriesColor,
+        border: record.isPlaceholder ? '#888' : '#222',
+        highlight: { background: '#9dfff5', border: '#017c75' }
+      },
+      borderWidth: 2,
+      borderWidthSelected: 4,
+      shapeProperties: { borderDashes: record.isPlaceholder ? [6, 3] : false },
+      font: { color: '#e0e0e0', size: 12 },
+      shape: record.isPlaceholder ? 'diamond' : 'dot',
+      size: 25,
+      title: `${record.name}\n${record.series}\n${record.parsed?.nodes?.length || 0} entities`,
+      _data: {
+        id: ns,
+        label: shortName,
+        entityType: 'ontology',
+        description: record.registryEntry?.description || record.name,
+        series: record.series,
+        sourceName: record.name,
+        sourceNamespace: ns,
+        isPlaceholder: record.isPlaceholder,
+        entityCount: record.parsed?.nodes?.length || 0
+      }
+    };
+    visNodes.push(node);
+    connectionMapNodes.push(node._data);
+  }
+
+  // Create edges with weighted thickness
+  const visEdges = [];
+  const connectionMapEdges = [];
+  const maxCount = Math.max(...ontologyEdgeCounts.values(), 1);
+
+  for (const [key, count] of ontologyEdgeCounts) {
+    const [fromNs, toNs] = key.split('->');
+
+    // Calculate edge width: 1 to 6 based on count
+    const normalised = count / maxCount;
+    const width = 1 + normalised * 5;
+
+    visEdges.push({
+      from: fromNs,
+      to: toNs,
+      label: `${count}`,
+      color: { color: '#FFD700', highlight: '#FFF176' },
+      font: { color: '#FFD700', size: 11, strokeWidth: 2, strokeColor: '#0f1117' },
+      arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+      dashes: false,
+      width: width,
+      smooth: { type: 'continuous', roundness: 0.4 },
+      title: `${count} cross-reference${count > 1 ? 's' : ''}`
+    });
+
+    connectionMapEdges.push({
+      from: fromNs,
+      to: toNs,
+      label: `${count} refs`,
+      count: count,
+      edgeType: 'crossOntology',
+      isCrossOntology: true
+    });
+  }
+
+  // Set lastParsed for sidebar compatibility
+  state.lastParsed = {
+    nodes: connectionMapNodes,
+    edges: connectionMapEdges,
+    name: 'Connection Map',
+    diagnostics: { format: 'connection-map' }
+  };
+
+  const container = document.getElementById('network');
+  const data = { nodes: new vis.DataSet(visNodes), edges: new vis.DataSet(visEdges) };
+
+  const options = {
+    physics: {
+      enabled: true,
+      stabilization: { iterations: 250 },
+      barnesHut: { gravitationalConstant: -4000, springLength: 220, springConstant: 0.025 }
+    },
+    interaction: { hover: true, tooltipDelay: 200 },
+    nodes: { borderWidth: 2 },
+    edges: { smooth: { type: 'continuous', roundness: 0.3 } },
+    layout: {}
+  };
+
+  state.network = new vis.Network(container, data, options);
+
+  state.network.once('stabilizationIterationsDone', function() {
+    state.network.fit({ animation: true });
+  });
+
+  state.network.on('click', function(params) {
+    if (params.nodes.length > 0) {
+      const nodeId = params.nodes[0];
+      const node = visNodes.find(n => n.id === nodeId);
+      if (node) showNodeDetails(node._data);
+    }
+  });
+
+  state.network.on('doubleClick', function(params) {
+    if (params.nodes.length > 0) {
+      const namespace = params.nodes[0];
+      const record = loadedOntologies.get(namespace);
+      if (record && !record.isPlaceholder) {
+        window.drillToOntology(namespace);
+      }
+    }
+  });
+
+  const ontologyCount = visNodes.length;
+  const edgeCount = visEdges.length;
+  const totalRefs = Array.from(ontologyEdgeCounts.values()).reduce((a, b) => a + b, 0);
+
+  document.getElementById('stats').textContent =
+    `${ontologyCount} ontologies | ${edgeCount} connections (${totalRefs} refs) | Connection Map`;
+
+  buildSeriesLegend(seriesData);
+}
+
 export function togglePhysics() {
   state.physicsEnabled = !state.physicsEnabled;
   document.getElementById('btn-physics').classList.toggle('active');
