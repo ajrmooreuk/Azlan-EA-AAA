@@ -155,7 +155,8 @@ function validateG2RelationshipCardinality(data) {
 
     const cardinality = rel.cardinality || rel['oaa:cardinality'];
     if (cardinality) {
-      const cardPattern = /^(0|1|\*|n)(\.\.(0|1|\*|n))?$/i;
+      // Accept both dot notation (n..1) and colon notation (n:1, n:m, 1:n)
+      const cardPattern = /^(0|1|\*|n|m)((\.\.)|([:]))?(0|1|\*|n|m)?$/i;
       if (!cardPattern.test(cardinality)) {
         warnings.push(`${name}: non-standard cardinality notation "${cardinality}"`);
       }
