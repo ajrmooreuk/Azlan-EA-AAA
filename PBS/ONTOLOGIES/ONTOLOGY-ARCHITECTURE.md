@@ -1,7 +1,7 @@
 # Ontology Architecture Overview
 
-**Version:** 3.0.0
-**Date:** 2026-02-02
+**Version:** 4.0.0
+**Date:** 2026-02-06
 **Status:** Production
 
 ## Directory Structure
@@ -49,8 +49,14 @@ PBS/ONTOLOGIES/
 │   ├── ALZ-ONT/                       # Alzheimer's/MCSB Domain
 │   │   └── MCSB-Ontology-v1.0.0.jsonld
 │   │
+│   ├── RCSG-ONT/                      # Risk, Compliance, Security & Governance
+│   │   └── GDPR-ONT/                  # GDPR Regulatory Framework
+│   │       └── gdpr-regulatory-framework-v1.0.0.json
+│   │
 │   ├── EA-ONT/                        # Enterprise Architecture (instance data)
-│   │   └── ea-portfolio-roadmaps-*.jsonld
+│   │   ├── ea-portfolio-roadmaps-*.jsonld
+│   │   └── EA-RCSG-Gov-PII/           # PII Governance (Microsoft Native)
+│   │       └── pii-governance-microsoft-native-v3.3.0.json
 │   │
 │   ├── PE-Series-ONT/                 # Process Engineering Series
 │   │   ├── README.md
@@ -71,7 +77,8 @@ PBS/ONTOLOGIES/
 │       │   ├── vsom-ontology-v2.1.0-oaa-v5.json
 │       │   └── archive/
 │       ├── VE-OKR-ONT/                # Objectives & Key Results
-│       │   └── PFC-ONT-OKR-v1_0_0.jsonld
+│       │   ├── PFC-ONT-OKR-v1_0_0.jsonld        (legacy v1.0.0)
+│       │   └── okr-ontology-v2.0.0-oaa-v6.json  (current)
 │       ├── VE-RRR-ONT/                # Roles/RACI/RBAC
 │       │   ├── pf-roles-raci-rbac-ontology-v3.1.0.jsonld
 │       │   └── RRR-DATA-csuite-roles-v2.0.0.jsonld
@@ -243,20 +250,26 @@ graph TB
 
         subgraph "VE-Series-ONT"
             VE_VSOM[VE-VSOM-ONT v2.1.0]
-            VE_OKR[VE-OKR-ONT v1.0.0]
+            VE_OKR[VE-OKR-ONT v2.0.0]
             VE_VP[VE-VP-ONT v1.2.0]
             VE_RRR[VE-RRR-ONT v3.1.0]
             VE_PMF[VE-PMF-ONT v1.0.0]
             VE_KPI[VE-KPI-ONT]
         end
 
-        subgraph "Domain-Specific"
-            ALZ[ALZ-ONT/MCSB v1.0.0]
-            CE[CE-ONT]
+        subgraph "RCSG-Series (Risk, Compliance, Security & Governance)"
+            MCSB[MCSB-ONT v1.0.0]
+            MCSB2[MCSB2-ONT]
+            GDPR[GDPR-ONT v1.0.0]
+            PII[PII-GOV-ONT v3.3.0]
+            AZALZ[Az-ALZ-ONT]
+            GDPR -->|regulatoryBasis| PII
+            MCSB -.-> MCSB2
         end
 
         subgraph "Instance Data"
             EA[EA-ONT]
+            CE[CE-ONT]
         end
     end
 
@@ -275,8 +288,8 @@ graph TB
     classDef instance fill:#6a1b9a,stroke:#4a148c,color:#fff
 
     class EMC orchestration
-    class ORG,ORG_CTX,ORG_MAT,CA,CL,GA,PE_PPM,PE_PROC,PE_EFS,VE_VSOM,VE_OKR,VE_VP,VE_RRR,VE_PMF,ALZ production
-    class PE_CAMP,VE_KPI,CE placeholder
+    class ORG,ORG_CTX,ORG_MAT,CA,CL,GA,PE_PPM,PE_PROC,PE_EFS,VE_VSOM,VE_OKR,VE_VP,VE_RRR,VE_PMF,MCSB,GDPR,PII production
+    class PE_CAMP,VE_KPI,CE,MCSB2,AZALZ placeholder
     class EA,PFI_BAIV instance
 ```
 
@@ -545,7 +558,7 @@ flowchart LR
 flowchart TB
     subgraph "VE-Series: Value Engineering"
         VSOM[VE-VSOM-ONT<br/>Vision Strategy]
-        OKR[VE-OKR-ONT<br/>OKRs]
+        OKR[VE-OKR-ONT v2.0.0<br/>OKRs]
         VP[VE-VP-ONT<br/>Value Proposition]
         PMF[VE-PMF-ONT<br/>Product-Market Fit]
         RRR[VE-RRR-ONT<br/>Roles RACI RBAC]
@@ -557,6 +570,13 @@ flowchart TB
         PROC[PE-Process-Engr-ONT<br/>Process Engineering]
         EFS[PE-EFS-ONT<br/>Enterprise Framework Services]
         CAMP[PE-Campaign-Mgr-ONT<br/>Campaign Management]
+    end
+
+    subgraph "RCSG-Series: Risk, Compliance, Security & Governance"
+        RCSG_GDPR[GDPR-ONT<br/>Regulatory Framework]
+        RCSG_PII[PII-GOV-ONT<br/>PII Governance]
+        RCSG_MCSB[MCSB-ONT<br/>Cloud Security Benchmark]
+        RCSG_GDPR -->|regulatoryBasis| RCSG_PII
     end
 
     subgraph "Foundation"
@@ -582,13 +602,18 @@ flowchart TB
     CTX --> PPM
     CTX -.-> RRR
 
+    RCSG_PII -.->|"governs"| ORG
+    RCSG_MCSB -.->|"secures"| EFS
+
     classDef ve fill:#1565c0,color:#fff
     classDef pe fill:#6a1b9a,color:#fff
     classDef foundation fill:#37474f,color:#fff
+    classDef rcsg fill:#9c27b0,color:#fff
 
     class VSOM,OKR,VP,PMF,RRR,KPI ve
     class PPM,PROC,EFS,CAMP pe
     class ORG,CTX foundation
+    class RCSG_GDPR,RCSG_PII,RCSG_MCSB rcsg
 ```
 
 ---
@@ -753,7 +778,7 @@ graph TB
 
     subgraph "Strategic Context Layer (VE-Series)"
         VSOM[("VE-VSOM-ONT v2.1.0<br/>VSOMFramework")]
-        OKR[("VE-OKR-ONT v1.0.0<br/>OKRs")]
+        OKR[("VE-OKR-ONT v2.0.0<br/>OKRs")]
         VP[("VE-VP-ONT v1.2.0<br/>Value Proposition")]
         RRR[("VE-RRR-ONT v3.1.0<br/>Roles/RACI/RBAC")]
         PMF[("VE-PMF-ONT v1.0.0<br/>Product-Market Fit")]
@@ -788,6 +813,13 @@ graph TB
         MAT[("ORG-MAT-ONT v1.0.0<br/>Organization Maturity")]
     end
 
+    subgraph "RCSG Layer (Risk, Compliance, Security & Governance)"
+        GDPR[("GDPR-ONT v1.0.0<br/>Regulatory Framework")]
+        PII_GOV[("PII-GOV-ONT v3.3.0<br/>PII Governance")]
+        MCSB_V1[("MCSB-ONT v1.0.0<br/>Cloud Security Benchmark")]
+        GDPR -->|regulatoryBasis| PII_GOV
+    end
+
     %% EMC Orchestration
     EMC -.->|orchestrates| ORG_CTX
     EMC -.->|orchestrates| VSOM
@@ -806,12 +838,17 @@ graph TB
     PMF -->|executedVia| PPM
     VSOM -.->|alignsTo| CL
 
+    %% RCSG Cross-Layer Connections
+    PII_GOV -.->|governs| ORG
+    MCSB_V1 -.->|secures| EFS
+
     classDef orchestration fill:#9c27b0,stroke:#6a1b9a,color:#fff
     classDef foundation fill:#1a5f7a,stroke:#333,color:#fff
     classDef strategic fill:#57837b,stroke:#333,color:#fff
     classDef competitive fill:#c38154,stroke:#333,color:#fff
     classDef execution fill:#2c3333,stroke:#333,color:#fff
     classDef maturity fill:#6b5b95,stroke:#333,color:#fff
+    classDef rcsg fill:#9c27b0,stroke:#4a148c,color:#fff
 
     class EMC orchestration
     class ORG,ORG_CTX foundation
@@ -819,6 +856,7 @@ graph TB
     class CL,CA,GA competitive
     class PPM,PE,EFS execution
     class MAT maturity
+    class GDPR,PII_GOV,MCSB_V1 rcsg
 ```
 
 ---
@@ -895,7 +933,7 @@ graph LR
 
     subgraph "VE-Series"
         VSOM[VE-VSOM-ONT v2.1.0]
-        OKR[VE-OKR-ONT v1.0.0]
+        OKR[VE-OKR-ONT v2.0.0]
         VP[VE-VP-ONT v1.2.0]
         RRR[VE-RRR-ONT v3.1.0]
         PMF[VE-PMF-ONT v1.0.0]
@@ -915,6 +953,12 @@ graph LR
         PPM[PE-PPM-ONT v3.0.0]
         PE[PE-Process-Engr-ONT v2.0.0]
         EFS[PE-EFS-ONT v1.0.0]
+    end
+
+    subgraph "RCSG-Series"
+        GDPR[GDPR-ONT v1.0.0]
+        PII_G[PII-GOV-ONT v3.3.0]
+        MCSB_S[MCSB-ONT v1.0.0]
     end
 
     EMC -.-> CTX
@@ -937,6 +981,10 @@ graph LR
     PPM --> PE
     PE --> EFS
 
+    GDPR --> PII_G
+    PII_G -.-> ORG
+    MCSB_S -.-> EFS
+
     style EMC fill:#9c27b0,color:#fff
     style ORG fill:#1a5f7a,color:#fff
     style CTX fill:#1a5f7a,color:#fff
@@ -952,6 +1000,9 @@ graph LR
     style PPM fill:#2c3333,color:#fff
     style PE fill:#2c3333,color:#fff
     style EFS fill:#2c3333,color:#fff
+    style GDPR fill:#9c27b0,color:#fff
+    style PII_G fill:#9c27b0,color:#fff
+    style MCSB_S fill:#9c27b0,color:#fff
 ```
 
 ---
@@ -997,7 +1048,7 @@ sequenceDiagram
 | ORG-CONTEXT | GA-ONT | v1.0.0 | ✅ Production | hasGapAnalysis | VE-VSOM-ONT, CL-ONT, PE-PPM-ONT |
 | ORG-CONTEXT | CE-ONT | - | ⏸️ Placeholder | hasCustomerContext (future) | ORG-MAT-ONT |
 | **VE-Series-ONT** | VE-VSOM-ONT | v2.1.0 | ✅ Production | hasStrategicContext | CL-ONT (reviewsLandscape) |
-| VE-Series-ONT | VE-OKR-ONT | v1.0.0 | ✅ Production | - | VE-VSOM-ONT |
+| VE-Series-ONT | VE-OKR-ONT | v2.0.0 | ✅ Production (OAA v6.1.0) | - | VE-VSOM-ONT |
 | VE-Series-ONT | VE-VP-ONT | v1.2.0 | ✅ Production | - | VE-VSOM-ONT, VE-OKR-ONT |
 | VE-Series-ONT | VE-RRR-ONT | v3.1.0 | ✅ Production | hasRoleContext | VE-VSOM-ONT (L0-L4 roles) |
 | VE-Series-ONT | VE-PMF-ONT | v1.0.0 | ✅ Production | hasMarketContext | CL-ONT, VE-VP-ONT |
@@ -1006,7 +1057,11 @@ sequenceDiagram
 | PE-Series-ONT | PE-Process-Engr-ONT | v2.0.0 | ✅ Production | hasProcessContext | ORG-MAT-ONT |
 | PE-Series-ONT | PE-EFS-ONT | v1.0.0 | ✅ Production | - | VE-PMF-ONT, PE-Process-Engr-ONT |
 | PE-Series-ONT | PE-Campaign-Mgr-ONT | - | ⏸️ Placeholder | - | PE-PPM-ONT |
-| **Domain** | ALZ-ONT (MCSB) | v1.0.0 | ✅ Production | - | - |
+| **RCSG-Series** | GDPR-ONT | v1.0.0 | ✅ Production (OAA v6.1.0) | Regulatory Layer | PII-GOV-ONT |
+| RCSG-Series | PII-GOV-ONT | v3.3.0 | ✅ Production (OAA v6.1.0) | implementsFramework | GDPR-ONT, MCSB-ONT, ORG-ONT |
+| RCSG-Series | MCSB-ONT (v1) | v1.0.0 | ✅ Production | secures | PE-EFS-ONT |
+| RCSG-Series | MCSB2-ONT (v2) | - | ⏸️ Placeholder | - | MCSB-ONT |
+| RCSG-Series | Az-ALZ-ONT | - | ⏸️ Placeholder | - | MCSB-ONT |
 | **Instance** | EA-ONT | - | ⏸️ ON HOLD | Instance data for PE-PPM-ONT | - |
 | **pfi-BAIV-AIV-ONT** | AIV-Competitive-ONT | v1.0.0 | ✅ Production | - | CA-ONT, CL-ONT |
 | pfi-BAIV-AIV-ONT | RRR-DATA-BAIV-AIV-roles | v1.0.0 | ✅ Production | - | VE-RRR-ONT |
@@ -1041,6 +1096,9 @@ sequenceDiagram
 | JP-PE-003 | PE-Process-Engr-ONT | PE-EFS-ONT | Process→EFS | Process to framework services |
 | JP-RRR-001 | ORG-CONTEXT | VE-RRR-ONT | Context→Roles | Role context access |
 | JP-RRR-002 | VE-VSOM-ONT | VE-RRR-ONT | VSOM→RRR | Accountability mapping |
+| JP-RCSG-001 | GDPR-ONT | PII-GOV-ONT | GDPR→PII | Regulatory basis for PII governance |
+| JP-RCSG-002 | PII-GOV-ONT | ORG-ONT | PII→ORG | PII governance of org data |
+| JP-RCSG-003 | MCSB-ONT | PE-EFS-ONT | MCSB→EFS | Security controls for framework services |
 
 ---
 
@@ -1048,7 +1106,7 @@ sequenceDiagram
 
 | Symbol | Meaning |
 |--------|---------|
-| ✅ | Production - OAA v5.0.0 compliant |
+| ✅ | Production - OAA v5.0.0 or v6.1.0 compliant |
 | ⚠️ | Development - Docs/Glossary only |
 | ⏸️ | Placeholder - Empty or on hold |
 | → | Direct relationship |
@@ -1058,5 +1116,5 @@ sequenceDiagram
 ---
 
 *Part of PFC Ontologies | Azlan-EA-AAA Repository*
-*OAA Ontology Workbench v1.1.0*
+*OAA Ontology Workbench v1.1.0 | OAA v6.1.0 (8-gate)*
 *EMC-ONT Composition Engine v1.0.0*
