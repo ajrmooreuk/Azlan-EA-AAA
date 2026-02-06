@@ -14,6 +14,17 @@ export function escapeHtml(text) {
   return div.innerHTML;
 }
 
+// Find namespace for a registry entry ID (e.g., "Entry-ONT-GDPR-001" → "gdpr:")
+function findNamespaceForEntry(entryId) {
+  if (!state.loadedOntologies) return null;
+  for (const [ns, record] of state.loadedOntologies) {
+    if (record.registryEntry && record.registryEntry['@id'] === entryId) {
+      return ns;
+    }
+  }
+  return null;
+}
+
 export function field(label, value) {
   return `<div class="field"><div class="field-label">${label}</div><div class="field-value">${value}</div></div>`;
 }
@@ -106,9 +117,30 @@ export function showNodeDetails(node) {
       detailsHtml += `<div style="margin-top:12px;">
         <button class="oaa-btn" onclick="drillToOntology('${node.id}')">View Entity Graph</button>
       </div>`;
+    } else {
+      detailsHtml += `<div style="margin-top:12px;">
+        <button class="oaa-btn oaa-btn-secondary" onclick="showPlaceholderDetails('${node.id}')">View Placeholder Details</button>
+      </div>`;
     }
     if (node.entityCount) {
       detailsHtml += field('Entities', node.entityCount);
+    }
+    // Show dependencies as clickable links
+    const record = state.loadedOntologies?.get(node.id);
+    if (record?.registryEntry?.dependencies?.length > 0) {
+      let depHtml = '<div class="dependency-links">';
+      record.registryEntry.dependencies.forEach(depId => {
+        // Find the namespace for this dependency
+        const depNs = findNamespaceForEntry(depId);
+        const depRecord = depNs ? state.loadedOntologies.get(depNs) : null;
+        const depName = depRecord?.name || depId.replace('Entry-ONT-', '').replace('-001', '');
+        const isPlaceholder = depRecord?.isPlaceholder;
+        depHtml += `<span class="dep-link ${isPlaceholder ? 'placeholder' : ''}"
+          onclick="navigateToOntology('${depNs || depId}')"
+          title="${isPlaceholder ? 'Placeholder' : 'Click to navigate'}">${depName}</span>`;
+      });
+      depHtml += '</div>';
+      detailsHtml += field('Dependencies', depHtml);
     }
   } else if (state.viewMode === 'multi' && state.currentTier === 1 && node.entityType === 'series' && node.isContext) {
     detailsHtml += `<div style="margin-top:12px;">

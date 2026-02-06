@@ -196,3 +196,21 @@ header .stats { font-size: 13px; color: #888; margin-left: auto; }
 .bridge-filter-btn { background: #1a1d25; border: 1px solid #3a3d47; color: #888; padding: 4px 12px; font-size: 12px; cursor: pointer; border-radius: 4px; }
 .bridge-filter-btn:hover { background: #2a2d35; color: #ccc; }
 .bridge-filter-btn.active { background: #856404; border-color: #FFD700; color: #FFD700; }
+
+/* Dependency Links (drill-through navigation) */
+.dependency-links { display: flex; flex-wrap: wrap; gap: 6px; }
+.dep-link { display: inline-block; background: #22252f; border: 1px solid #3a3d47; color: #9dfff5; padding: 3px 10px; border-radius: 12px; font-size: 11px; cursor: pointer; transition: all 0.15s; }
+.dep-link:hover { background: #017c75; border-color: #017c75; color: #fff; }
+.dep-link.placeholder { border-style: dashed; color: #888; }
+.dep-link.placeholder:hover { background: #2a2d37; color: #ccc; border-color: #666; }
+
+/* Placeholder Details Modal */
+.placeholder-details { padding: 8px 0; }
+.placeholder-badge { display: inline-block; background: #553922; color: #FFB48E; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 12px; }
+.placeholder-details h4 { color: #e0e0e0; font-size: 16px; margin-bottom: 12px; }
+.placeholder-desc { color: #888; font-size: 13px; margin-bottom: 16px; line-height: 1.5; }
+.placeholder-section { margin-bottom: 16px; }
+.placeholder-section h5 { color: #9dfff5; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.placeholder-section ul { list-style: none; }
+.placeholder-section li { color: #ccc; font-size: 12px; margin-bottom: 6px; padding-left: 12px; border-left: 2px solid #3a3d47; }
+.placeholder-section li strong { color: #e0e0e0; }

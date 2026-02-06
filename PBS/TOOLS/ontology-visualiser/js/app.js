@@ -465,6 +465,109 @@ function navigateBack(targetTier) {
   }
 }
 
+// Navigate to an ontology by namespace (handles both loaded and placeholder)
+function navigateToOntology(namespace) {
+  if (!state.loadedOntologies) return;
+
+  // Try direct namespace match
+  let record = state.loadedOntologies.get(namespace);
+
+  // If not found, try to find by entry ID
+  if (!record) {
+    for (const [ns, r] of state.loadedOntologies) {
+      if (r.registryEntry && r.registryEntry['@id'] === namespace) {
+        record = r;
+        namespace = ns;
+        break;
+      }
+    }
+  }
+
+  if (!record) {
+    console.warn('Ontology not found:', namespace);
+    return;
+  }
+
+  // Find the series for this ontology
+  const targetSeries = record.series;
+
+  if (record.isPlaceholder) {
+    // Navigate to series then show placeholder details
+    if (targetSeries && targetSeries !== state.currentSeries) {
+      drillToSeries(targetSeries);
+    }
+    setTimeout(() => showPlaceholderDetails(namespace), 100);
+  } else {
+    // Navigate to series first if different
+    if (targetSeries && targetSeries !== state.currentSeries) {
+      state.currentSeries = targetSeries;
+    }
+    drillToOntology(namespace);
+  }
+}
+
+// Show placeholder details in a modal
+function showPlaceholderDetails(namespace) {
+  const record = state.loadedOntologies?.get(namespace);
+  if (!record) return;
+
+  const entry = record.registryEntry || {};
+  const modal = document.getElementById('oaa-modal');
+  const body = document.getElementById('oaa-modal-body');
+
+  let html = `<div class="placeholder-details">`;
+  html += `<div class="placeholder-badge">PLACEHOLDER</div>`;
+  html += `<h4>${entry.name || record.name}</h4>`;
+
+  if (entry.description) {
+    html += `<p class="placeholder-desc">${entry.description}</p>`;
+  }
+
+  if (entry.plannedComponents && Object.keys(entry.plannedComponents).length > 0) {
+    html += `<div class="placeholder-section"><h5>Planned Components</h5><ul>`;
+    for (const [key, value] of Object.entries(entry.plannedComponents)) {
+      html += `<li><strong>${key}:</strong> ${value}</li>`;
+    }
+    html += `</ul></div>`;
+  }
+
+  if (entry.dependencies && entry.dependencies.length > 0) {
+    html += `<div class="placeholder-section"><h5>Dependencies</h5><div class="dependency-links">`;
+    entry.dependencies.forEach(depId => {
+      const depNs = findNamespaceForEntryId(depId);
+      const depRecord = depNs ? state.loadedOntologies.get(depNs) : null;
+      const depName = depRecord?.name || depId.replace('Entry-ONT-', '').replace('-001', '');
+      const isPlaceholder = depRecord?.isPlaceholder;
+      html += `<span class="dep-link ${isPlaceholder ? 'placeholder' : ''}"
+        onclick="closeOAAModal(); navigateToOntology('${depNs || depId}')">${depName}</span>`;
+    });
+    html += `</div></div>`;
+  }
+
+  if (entry.notes) {
+    html += `<div class="placeholder-section"><h5>Notes</h5><p>${entry.notes}</p></div>`;
+  }
+
+  html += `<div class="placeholder-actions">
+    <p style="color:#888; font-size:12px; margin-top:16px;">This ontology is a placeholder. The full ontology files have not yet been created.</p>
+  </div>`;
+  html += `</div>`;
+
+  body.innerHTML = html;
+  modal.style.display = 'flex';
+}
+
+// Helper to find namespace for entry ID
+function findNamespaceForEntryId(entryId) {
+  if (!state.loadedOntologies) return null;
+  for (const [ns, record] of state.loadedOntologies) {
+    if (record.registryEntry && record.registryEntry['@id'] === entryId) {
+      return ns;
+    }
+  }
+  return null;
+}
+
 function showAllOntologies() {
   state.currentTier = 0;
   state.currentSeries = null;
@@ -577,6 +680,8 @@ window.navigateToTier0 = navigateToTier0;
 window.drillToSeries = drillToSeries;
 window.drillToOntology = drillToOntology;
 window.navigateBack = navigateBack;
+window.navigateToOntology = navigateToOntology;
+window.showPlaceholderDetails = showPlaceholderDetails;
 window.showAllOntologies = showAllOntologies;
 window.showConnectionMap = showConnectionMap;
 window.toggleBridgeFilter = toggleBridgeFilter;
