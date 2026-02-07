@@ -4,7 +4,7 @@
  * graph, and detects cross-ontology edges.
  */
 
-import { state, REGISTRY_BASE_PATH, SERIES_COLORS } from './state.js';
+import { state, REGISTRY_BASE_PATH, SERIES_COLORS, LINEAGE_CHAINS } from './state.js';
 import { parseOntology } from './ontology-parser.js';
 import { loadRegistryIndex } from './github-loader.js';
 
@@ -611,4 +611,59 @@ export function detectBridgeNodes(crossEdges, loadedOntologies, threshold = 3) {
   }
 
   return bridgeNodes;
+}
+
+// ========================================
+// LINEAGE CLASSIFICATION (Phase 2/4 — Issue #39)
+// ========================================
+
+/**
+ * Classify a cross-edge as VE lineage, PE lineage, or general cross-ontology.
+ * Accepts namespace strings (e.g., "vsom:", "okr:") and checks if they represent
+ * consecutive steps in VE or PE lineage chains.
+ *
+ * @param {string} fromNs - Source namespace (e.g., "vsom:" or "vsom")
+ * @param {string} toNs - Target namespace (e.g., "okr:" or "okr")
+ * @returns {{ isVE: boolean, isPE: boolean, isConvergence: boolean }}
+ */
+export function classifyLineageEdge(fromNs, toNs) {
+  const fromPrefix = fromNs.replace(/:$/, '').toUpperCase();
+  const toPrefix = toNs.replace(/:$/, '').toUpperCase();
+
+  // Check if from→to is consecutive in VE chain
+  const veIdxFrom = LINEAGE_CHAINS.VE.indexOf(fromPrefix);
+  const isVE = veIdxFrom >= 0 && LINEAGE_CHAINS.VE[veIdxFrom + 1] === toPrefix;
+
+  // Check reverse direction too (to→from)
+  const veIdxTo = LINEAGE_CHAINS.VE.indexOf(toPrefix);
+  const isVEReverse = veIdxTo >= 0 && LINEAGE_CHAINS.VE[veIdxTo + 1] === fromPrefix;
+
+  // Check if from→to is consecutive in PE chain
+  const peIdxFrom = LINEAGE_CHAINS.PE.indexOf(fromPrefix);
+  const isPE = peIdxFrom >= 0 && LINEAGE_CHAINS.PE[peIdxFrom + 1] === toPrefix;
+
+  // Check reverse direction
+  const peIdxTo = LINEAGE_CHAINS.PE.indexOf(toPrefix);
+  const isPEReverse = peIdxTo >= 0 && LINEAGE_CHAINS.PE[peIdxTo + 1] === fromPrefix;
+
+  const veMatch = isVE || isVEReverse;
+  const peMatch = isPE || isPEReverse;
+
+  // EFS is convergence point (appears in both chains)
+  const isConvergence = (fromPrefix === 'EFS' || toPrefix === 'EFS') && (veMatch || peMatch);
+
+  return { isVE: veMatch, isPE: peMatch, isConvergence };
+}
+
+/**
+ * Check if a namespace belongs to a lineage chain.
+ * @param {string} namespace - e.g., "vsom:" or "efs"
+ * @returns {{ inVE: boolean, inPE: boolean, isConvergence: boolean }}
+ */
+export function getNodeLineageRole(namespace) {
+  const prefix = namespace.replace(/:$/, '').toUpperCase();
+  const inVE = LINEAGE_CHAINS.VE.includes(prefix);
+  const inPE = LINEAGE_CHAINS.PE.includes(prefix);
+  const isConvergence = inVE && inPE; // EFS appears in both
+  return { inVE, inPE, isConvergence };
 }

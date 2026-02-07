@@ -51,6 +51,20 @@
     <button class="tier-toggle" data-view="ontologies" onclick="showAllOntologies()">Ontologies (23)</button>
     <button class="tier-toggle" data-view="connections" onclick="showConnectionMap()" title="Show ontology-to-ontology dependency graph">Connections</button>
   </div>
+  <div id="lineage-toggle" style="display:none; margin-left:8px;">
+    <button class="lineage-toggle" data-lineage="VE" onclick="toggleLineage('VE')" title="Highlight VE lineage chain (VSOM→OKR→VP→PMF→EFS)">
+      <span class="lineage-dot ve"></span> VE Chain
+    </button>
+    <button class="lineage-toggle" data-lineage="PE" onclick="toggleLineage('PE')" title="Highlight PE lineage chain (PPM→PE→EFS→EA)">
+      <span class="lineage-dot pe"></span> PE Chain
+    </button>
+    <button class="lineage-toggle" data-lineage="both" onclick="toggleLineage('both')" title="Show both lineage chains with EFS convergence">Both</button>
+  </div>
+  <div id="cross-edge-filter" style="display:none; margin-left:4px;">
+    <button id="btn-cross-edge-filter" class="cross-edge-filter-btn" onclick="toggleCrossEdgeFilter()" title="Show only cross-ontology edges">
+      Cross-refs Only
+    </button>
+  </div>
   <div id="bridge-filter" style="display:none; margin-left:auto;">
     <button id="btn-bridge-filter" class="bridge-filter-btn" onclick="toggleBridgeFilter()" title="Show only bridge nodes (referenced by 3+ ontologies)">
       &#x1F309; Bridges (<span id="bridge-count">0</span>)

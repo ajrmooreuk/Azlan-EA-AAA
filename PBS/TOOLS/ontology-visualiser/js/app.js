@@ -386,9 +386,12 @@ function resetNavigation() {
   state.currentSeries = null;
   state.currentOntology = null;
   state.navigationStack = [];
+  state.lineageHighlight = 'off';
+  state.crossEdgeFilterActive = false;
   document.getElementById('breadcrumb').style.display = 'none';
   const toggle = document.getElementById('tier0-toggle');
   if (toggle) toggle.style.display = 'none';
+  showLineageControls(false);
 }
 
 function setActiveToggle(viewName) {
@@ -415,6 +418,9 @@ function navigateToTier0() {
   document.getElementById('btn-run-oaa').style.display = 'none';
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
+  showLineageControls(true);
+  updateLineageToggleUI();
+  updateCrossEdgeFilterUI();
 }
 
 function drillToSeries(seriesKey) {
@@ -431,6 +437,9 @@ function drillToSeries(seriesKey) {
   updateBreadcrumb();
 
   document.getElementById('tier0-toggle').style.display = 'none';
+  showLineageControls(true);
+  updateLineageToggleUI();
+  updateCrossEdgeFilterUI();
 }
 
 function drillToOntology(namespace) {
@@ -455,6 +464,7 @@ function drillToOntology(namespace) {
 
   document.getElementById('tier0-toggle').style.display = 'none';
   document.getElementById('file-name').textContent = record.name;
+  showLineageControls(false);
 }
 
 function navigateBack(targetTier) {
@@ -585,6 +595,9 @@ function showAllOntologies() {
   document.getElementById('btn-run-oaa').style.display = 'none';
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
+  showLineageControls(true);
+  updateLineageToggleUI();
+  updateCrossEdgeFilterUI();
 }
 
 function showConnectionMap() {
@@ -602,6 +615,9 @@ function showConnectionMap() {
   document.getElementById('btn-run-oaa').style.display = 'none';
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
+  showLineageControls(true);
+  updateLineageToggleUI();
+  updateCrossEdgeFilterUI();
 }
 
 function toggleBridgeFilter() {
@@ -635,6 +651,59 @@ function updateBreadcrumb() {
     }
   });
   document.getElementById('breadcrumb-path').innerHTML = html;
+}
+
+// ========================================
+// LINEAGE CHAIN + CROSS-EDGE FILTER (Phase 2/4)
+// ========================================
+
+function toggleLineage(mode) {
+  // Toggle lineage highlighting: VE, PE, both, or off
+  state.lineageHighlight = (state.lineageHighlight === mode) ? 'off' : mode;
+  updateLineageToggleUI();
+  rerenderCurrentView();
+}
+
+function toggleCrossEdgeFilter() {
+  state.crossEdgeFilterActive = !state.crossEdgeFilterActive;
+  updateCrossEdgeFilterUI();
+  rerenderCurrentView();
+}
+
+function rerenderCurrentView() {
+  if (state.currentTier === 0) {
+    // Check which Tier 0 view is active
+    const activeToggle = document.querySelector('#tier0-toggle .tier-toggle.active');
+    const view = activeToggle?.dataset.view;
+    if (view === 'ontologies') showAllOntologies();
+    else if (view === 'connections') showConnectionMap();
+    else navigateToTier0();
+  } else if (state.currentTier === 1) {
+    drillToSeries(state.currentSeries);
+  }
+  // Tier 2 (entity graph) doesn't have lineage highlighting
+}
+
+function updateLineageToggleUI() {
+  document.querySelectorAll('.lineage-toggle').forEach(btn => {
+    const mode = btn.dataset.lineage;
+    btn.classList.toggle('active',
+      state.lineageHighlight === mode ||
+      (state.lineageHighlight === 'both' && (mode === 'VE' || mode === 'PE'))
+    );
+  });
+}
+
+function updateCrossEdgeFilterUI() {
+  const btn = document.getElementById('btn-cross-edge-filter');
+  if (btn) btn.classList.toggle('active', state.crossEdgeFilterActive);
+}
+
+function showLineageControls(show) {
+  const lineageToggle = document.getElementById('lineage-toggle');
+  const crossEdgeFilter = document.getElementById('cross-edge-filter');
+  if (lineageToggle) lineageToggle.style.display = show ? 'inline-flex' : 'none';
+  if (crossEdgeFilter) crossEdgeFilter.style.display = show ? 'block' : 'none';
 }
 
 // ========================================
@@ -685,6 +754,8 @@ window.showPlaceholderDetails = showPlaceholderDetails;
 window.showAllOntologies = showAllOntologies;
 window.showConnectionMap = showConnectionMap;
 window.toggleBridgeFilter = toggleBridgeFilter;
+window.toggleLineage = toggleLineage;
+window.toggleCrossEdgeFilter = toggleCrossEdgeFilter;
 
 // File loading
 window.loadFromGitHub = loadFromGitHub;

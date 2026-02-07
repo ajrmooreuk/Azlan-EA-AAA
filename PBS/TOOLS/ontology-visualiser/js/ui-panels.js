@@ -74,6 +74,35 @@ export function renderAuditPanel(audit) {
     html += `<div class="audit-section"><div class="audit-item" style="color:#86efac;">Graph is fully connected with no issues.</div></div>`;
   }
 
+  // X.3.6: Cross-ontology dependency counts (only in multi mode)
+  if (state.viewMode === 'multi' && state.crossEdges?.length > 0) {
+    html += `<div class="audit-section"><h4>Cross-Ontology Dependencies</h4>`;
+
+    // Count cross-refs per ontology (outbound)
+    const ontologyCounts = new Map();
+    for (const edge of state.crossEdges) {
+      const fromNs = edge.sourceNamespace;
+      if (fromNs) {
+        ontologyCounts.set(fromNs, (ontologyCounts.get(fromNs) || 0) + 1);
+      }
+    }
+
+    // Sort by count descending
+    const sorted = [...ontologyCounts.entries()].sort((a, b) => b[1] - a[1]);
+
+    for (const [ns, count] of sorted) {
+      const record = state.loadedOntologies?.get(ns);
+      const name = record?.name?.replace(/\s+Ontology.*$/i, '') || ns;
+      html += `<div class="audit-item">${name}: <strong>${count}</strong> outbound cross-refs</div>`;
+    }
+
+    html += `<div class="audit-item" style="color:#FFD700; margin-top:8px;">Total: ${state.crossEdges.length} cross-ontology edges</div>`;
+    if (state.bridgeNodes?.size > 0) {
+      html += `<div class="audit-item" style="color:#FFD700;">Bridge nodes: ${state.bridgeNodes.size} (3+ ontology refs)</div>`;
+    }
+    html += `</div>`;
+  }
+
   el.innerHTML = html;
 }
 

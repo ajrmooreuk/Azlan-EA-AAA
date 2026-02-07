@@ -1,13 +1,13 @@
 # OAA Ontology Visualiser — Architecture & Deployment
 
-**Version:** 3.1.0
-**Last Updated:** 2026-02-05
+**Version:** 3.2.0
+**Last Updated:** 2026-02-06
 
 ---
 
 ## Overview
 
-The OAA Ontology Visualiser is a zero-build-step, client-side browser application for interactive graph visualisation of JSON ontologies produced by OAA (Ontology Architect Agent). It supports single-ontology inspection with OAA v6.1.0 compliance validation, multi-ontology registry loading with cross-reference detection, and three-tier progressive disclosure navigation (series rollup → ontology drill-down → entity graph).
+The OAA Ontology Visualiser is a zero-build-step, client-side browser application for interactive graph visualisation of JSON ontologies produced by OAA (Ontology Architect Agent). It supports single-ontology inspection with OAA v6.1.0 compliance validation, multi-ontology registry loading with cross-reference detection, three-tier progressive disclosure navigation (series rollup → ontology drill-down → entity graph), VE/PE lineage chain highlighting, and cross-ontology edge navigation.
 
 No server-side processing, no Node.js, no bundler. The only external dependency is vis-network v9.1.2, loaded via CDN.
 
@@ -58,17 +58,17 @@ graph LR
 All JavaScript is split into native ES modules loaded via `<script type="module">`. No build step, no bundler (see [ADR-009](./ADR-LOG.md#adr-009)).
 
 ```
-browser-viewer.html           <- HTML shell (119 lines, includes breadcrumb bar)
-├── css/viewer.css             <- All styles (incl. breadcrumb + tier toggle)
+browser-viewer.html           <- HTML shell (140 lines, incl. breadcrumb bar + lineage toggles)
+├── css/viewer.css             <- All styles (incl. breadcrumb, tier toggle, lineage chain, cross-edge filter)
 └── js/
-    ├── app.js                 <- Entry point, event wiring, navigation orchestration, window bindings
-    ├── state.js               <- Shared state, constants (TYPE_COLORS, SERIES_COLORS, LINEAGE_CHAINS, navigation state)
+    ├── app.js                 <- Entry point, event wiring, navigation orchestration, lineage toggles, window bindings
+    ├── state.js               <- Shared state, constants (TYPE_COLORS, SERIES_COLORS, LINEAGE_CHAINS, LINEAGE_COLORS, navigation state)
     ├── ontology-parser.js     <- Format detection + parsing (7 formats)
-    ├── graph-renderer.js      <- vis.js rendering (single + multi + Tier 0/1 renderers)
-    ├── multi-loader.js        <- Registry batch loading, merged graph, cross-ref detection, series aggregation
+    ├── graph-renderer.js      <- vis.js rendering (single + multi + Tier 0/1 renderers + lineage edge styling + edge click handlers)
+    ├── multi-loader.js        <- Registry batch loading, merged graph, cross-ref detection, series aggregation, lineage classification
     ├── audit-engine.js        <- OAA v6.1.0 validation gates (G1-G6, 8 gates)
     ├── compliance-reporter.js <- Compliance panel rendering
-    ├── ui-panels.js           <- Sidebar, audit, modals, tabs, provenance display, tier-aware drill buttons
+    ├── ui-panels.js           <- Sidebar, audit (incl. cross-dependency counts), modals, tabs, provenance display, tier-aware drill buttons
     ├── library-manager.js     <- IndexedDB ontology library (CRUD, versioning, export/import)
     ├── github-loader.js       <- Registry index loading, entry lookup
     └── export.js              <- PNG, audit JSON, ontology download
@@ -80,7 +80,7 @@ browser-viewer.html           <- HTML shell (119 lines, includes breadcrumb bar)
 state.js              <- (all modules import shared state + constants)
 github-loader.js      <- multi-loader.js, app.js
 ontology-parser.js    <- multi-loader.js, app.js
-multi-loader.js       <- app.js
+multi-loader.js       <- graph-renderer.js, app.js
 audit-engine.js       <- graph-renderer.js
 compliance-reporter.js <- graph-renderer.js
 ui-panels.js          <- graph-renderer.js, app.js
@@ -89,7 +89,7 @@ library-manager.js    <- app.js
 export.js             <- app.js
 ```
 
-No circular dependencies. `state.js` is the single shared state module imported by all others.
+No circular dependencies. `state.js` is the single shared state module imported by all others. `graph-renderer.js` imports lineage classification helpers (`classifyLineageEdge`, `getNodeLineageRole`) from `multi-loader.js`.
 
 ---
 
@@ -161,6 +161,10 @@ Key data structures in multi-mode:
 - `state.navigationStack` — breadcrumb history array
 - `state.crossEdges` — cross-ontology edges from `detectCrossReferences()`
 - `state.crossSeriesEdges` — aggregated series-to-series edges from `buildCrossSeriesEdges()`
+- `state.lineageHighlight` — lineage chain highlight mode (`'off'` | `'VE'` | `'PE'` | `'both'`)
+- `state.crossEdgeFilterActive` — when true, only cross-ontology edges are shown (intra-ontology edges hidden)
+- `state.bridgeFilterActive` — bridge node filter toggle
+- `state.bridgeNodes` — `Map` of bridge node IDs (entities referenced by 3+ ontologies)
 
 Node IDs are prefixed with namespace (`prefix::nodeId`) to avoid collisions across ontologies.
 
@@ -173,11 +177,64 @@ Two-pass algorithm implemented in `multi-loader.js` `detectCrossReferences()` (s
 1. **Pass 1 — Registry bridges:** Reads both `entry.relationships.keyBridges[]` and `entry.relationships.crossOntology[]` from each registry entry (entries use both property names inconsistently)
 2. **Pass 2 — Namespace-prefix scan:** Scans `rangeIncludes`/`domainIncludes` for prefixed references to other ontologies
 
-Edges are deduplicated via `Set<edgeKey>`. Rendered as gold dashed lines (width 2.5).
+Edges are deduplicated via `Set<edgeKey>`. Rendered as gold dashed lines (width 2.5) by default, or with lineage-specific styling when lineage highlighting is active.
 
 ### Series-Level Edge Aggregation
 
 `buildCrossSeriesEdges()` in `multi-loader.js` aggregates cross-ontology edges into series-to-series edges for Tier 0 rendering. Direction is normalised alphabetically to avoid duplicate edges between the same pair of series. Each aggregated edge carries a count and list of source bridges.
+
+---
+
+## VE/PE Lineage Chain Highlighting
+
+Two pre-defined lineage chains trace value flow through the ontology library (defined in `state.js` as `LINEAGE_CHAINS`):
+
+- **VE (Value Engineering):** VSOM → OKR → VP → PMF → EFS — gold (#cec528)
+- **PE (Process Engineering):** PPM → PE → EFS → EA — copper (#b87333)
+- **EFS Convergence Point:** EFS appears in both chains — convergence orange (#FF6B35)
+
+### Lineage Classification
+
+`classifyLineageEdge(fromNs, toNs)` in `multi-loader.js` determines whether a cross-ontology edge represents a step in the VE or PE lineage chain. It checks both directions (from→to and to→from) against consecutive entries in `LINEAGE_CHAINS`. Returns `{ isVE, isPE, isConvergence }`.
+
+`getNodeLineageRole(namespace)` returns `{ inVE, inPE, isConvergence }` for a given namespace, used for convergence node styling.
+
+### Edge Styling
+
+| Edge Type | Colour | Width | Dash | When Shown |
+| --------- | ------ | ----- | ---- | ---------- |
+| Intra-ontology | Series colour | 1.2 | Solid | Always |
+| Cross-ontology (general) | Gold #FFD700 | 2.5 | [8,4] dashed | Always in multi mode |
+| VE lineage | Gold #cec528 | 3.5 | Solid | When VE or Both active |
+| PE lineage | Copper #b87333 | 3.5 | Solid | When PE or Both active |
+| Non-lineage (dimmed) | #444 | 1 | [8,4] dashed | When lineage filter active |
+
+### Convergence Node (EFS)
+
+When lineage highlighting is active, the EFS node receives:
+
+- Dual-colour border: gold inner (#cec528) + copper outer (#b87333)
+- 1.3× normal size
+- Shadow glow in convergence colour (#FF6B35)
+- Tooltip: "CONVERGENCE POINT — VE and PE lineage chains meet here"
+
+### Cross-Edge Filter
+
+`state.crossEdgeFilterActive` hides intra-ontology edges, showing only cross-ontology connections. Toggled via the "Cross-refs Only" button in the breadcrumb bar.
+
+### Edge Click Navigation
+
+Clicking a cross-ontology edge navigates to the target ontology (Tier 2). Implemented via a `selectEdge` event handler on the vis.js network that reads the `_crossOntologyTarget` property from the edge data and calls `drillToOntology()`.
+
+### Audit Panel: Cross-Dependency Counts
+
+When in multi-ontology mode with cross-edges detected, the audit panel displays:
+
+- Per-ontology outbound cross-reference counts (sorted descending)
+- Total cross-ontology edge count
+- Bridge node count (entities referenced by 3+ ontologies)
+
+Implemented in `renderAuditPanel()` in `ui-panels.js`.
 
 ---
 
@@ -281,18 +338,18 @@ No npm, no Node.js, no build step, no other external dependencies.
 
 ```
 PBS/TOOLS/ontology-visualiser/
-├── browser-viewer.html              <- HTML shell
+├── browser-viewer.html              <- HTML shell (incl. lineage toggle + cross-edge filter buttons)
 ├── css/
-│   └── viewer.css                   <- All styles
+│   └── viewer.css                   <- All styles (incl. lineage chain + cross-edge filter)
 ├── js/
-│   ├── app.js                       <- Entry point + navigation orchestration
-│   ├── state.js                     <- Shared state + constants + navigation state
+│   ├── app.js                       <- Entry point, navigation, lineage toggles
+│   ├── state.js                     <- Shared state + constants (incl. LINEAGE_COLORS)
 │   ├── ontology-parser.js           <- Format detection + parsing
-│   ├── graph-renderer.js            <- vis.js rendering (single + Tier 0/1)
-│   ├── multi-loader.js              <- Registry loading + series aggregation
+│   ├── graph-renderer.js            <- vis.js rendering (single + Tier 0/1 + lineage styling)
+│   ├── multi-loader.js              <- Registry loading, series aggregation, lineage classification
 │   ├── audit-engine.js              <- OAA v6.1.0 validation
 │   ├── compliance-reporter.js       <- Compliance panel
-│   ├── ui-panels.js                 <- Sidebar, modals, tabs
+│   ├── ui-panels.js                 <- Sidebar, modals, tabs, cross-dependency counts
 │   ├── library-manager.js           <- IndexedDB library
 │   ├── github-loader.js             <- Registry integration
 │   └── export.js                    <- PNG, JSON export
@@ -322,4 +379,4 @@ The original Python tools (`demo.py`, `graph_builder.py`, `visualiser.py`, etc.)
 
 ---
 
-*OAA Ontology Visualiser v3.1.0 — Architecture & Deployment*
+*OAA Ontology Visualiser v3.2.0 — Architecture & Deployment*
