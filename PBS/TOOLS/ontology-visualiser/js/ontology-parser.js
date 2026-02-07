@@ -8,6 +8,7 @@ export function detectFormat(data) {
   if (data.registryEntry) return 'registry-entry';
   if (data.ontologyDefinition) return 'uni-registry';
   if (data.entities && Array.isArray(data.entities)) return 'pf-ontology';
+  if (data.entities && typeof data.entities === 'object' && !Array.isArray(data.entities)) return 'pf-ontology-keyed';
   if (data.hasDefinedTerm && Array.isArray(data.hasDefinedTerm)) return 'jsonld-definedterm';
   if (data.classes || data['@graph']) return 'jsonld';
   return 'generic';
@@ -164,6 +165,53 @@ export function parseOntology(data, source) {
       data.metadata.dependencies.forEach(dep => {
         addNode(dep, dep.replace(/.*:/, ''), 'external', 'Dependency');
         addEdge(rootId, dep, 'depends on', 'binding');
+      });
+    }
+  }
+
+  else if (format === 'pf-ontology-keyed') {
+    // Object-keyed entities: { "Vision": { "@id": "pfc:Vision", ... }, "Strategy": {...} }
+    // Used by OAA v6.2.0+ ontologies (e.g., KPI/Metrics)
+    for (const [key, ent] of Object.entries(data.entities)) {
+      const id = ent['@id'] || ent.id || key;
+      const label = ent['rdfs:label'] || ent.name || ent.label || key;
+      const desc = ent['rdfs:comment'] || ent.description || '';
+      const type = ent.entityType || (ent['@type'] || '').replace(/.*:/, '') || 'class';
+      if (id) addNode(id, label, type.toLowerCase(), desc, ent);
+
+      const subClassOf = ent['rdfs:subClassOf'] || ent.subClassOf;
+      if (subClassOf) {
+        const parentId = typeof subClassOf === 'object' ? (subClassOf['@id'] || subClassOf.id) : subClassOf;
+        if (parentId) {
+          if (!seen.has(parentId)) addNode(parentId, parentId.replace(/.*[:#]/, ''), 'external', 'Parent class');
+          addEdge(id, parentId, 'subClassOf', 'inheritance');
+        }
+      }
+    }
+
+    if (data.relationships && Array.isArray(data.relationships)) {
+      data.relationships.forEach(rel => {
+        const label = rel.name || rel.label || rel['@id'] || rel['rdfs:label'] || '';
+        // Support sourceEntity/targetEntity (OAA v6.2.0) AND domainIncludes/rangeIncludes (OAA v5)
+        const source = rel.sourceEntity || rel.source || rel.domain;
+        const target = rel.targetEntity || rel.target || rel.range;
+        if (source && target) {
+          if (!seen.has(source)) addNode(source, source.replace(/.*[:#]/, ''), 'external', '');
+          if (!seen.has(target)) addNode(target, target.replace(/.*[:#]/, ''), 'external', '');
+          addEdge(source, target, label, rel.linkedOntology ? 'binding' : 'relationship');
+        }
+        // Also handle domainIncludes/rangeIncludes arrays
+        const domains = rel.domainIncludes || rel['oaa:domainIncludes'];
+        const ranges = rel.rangeIncludes || rel['oaa:rangeIncludes'];
+        if (domains && ranges) {
+          (Array.isArray(domains) ? domains : [domains]).forEach(d => {
+            (Array.isArray(ranges) ? ranges : [ranges]).forEach(r => {
+              if (!seen.has(d)) addNode(d, d.replace(/.*:/, ''), 'external', '');
+              if (!seen.has(r)) addNode(r, r.replace(/.*:/, ''), 'external', '');
+              addEdge(d, r, label, 'relationship');
+            });
+          });
+        }
       });
     }
   }

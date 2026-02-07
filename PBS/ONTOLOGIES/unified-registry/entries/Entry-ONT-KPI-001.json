@@ -2,34 +2,112 @@
   "@context": "https://platformcore.io/ontology/registry/",
   "@type": "OntologyRegistryEntry",
   "@id": "Entry-ONT-KPI-001",
-  "name": "KPI Ontology (Key Performance Indicators)",
-  "description": "Key Performance Indicators ontology for defining and tracking performance metrics",
-  "version": null,
-  "oaaVersion": "5.0.0",
+  "name": "KPI Ontology (Metrics & Key Performance Indicators)",
+  "description": "Integrated performance measurement ontology spanning VSOM strategic cascade (Vision→Strategy→Objective→KeyResult→KPI→Metric) and Value Engineering analysis. Bridges strategic planning to measurable execution outcomes.",
+  "version": "1.0.0",
+  "oaaVersion": "6.2.0",
   "namespace": "https://platformcore.io/ontology/kpi/",
   "prefix": "kpi:",
-  "status": "placeholder",
+  "status": "compliant",
   "complianceStatus": {
-    "gate1": "pending",
-    "gate2": "pending",
-    "gate2b": "pending",
-    "gate2c": "pending",
-    "gate3": "pending",
-    "gate4": "pending",
-    "gate5": "pending",
-    "gate6": "pending"
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
   },
+  "validationDate": "2026-02-07",
+  "gatesPassed": 8,
+  "gatesFailed": 0,
   "artifacts": {
-    "ontology": null,
-    "glossary": null,
+    "ontology": "../pfc-ontologies/VE-Series-ONT/VE-Metrics-ONT/PF-CORE-Ontology-Metrics-VE-VSOM-v1.0.0.json",
+    "documentation": "../pfc-ontologies/VE-Series-ONT/VE-Metrics-ONT/PF-CORE-Ontology-Metrics-VE-VSOM-v1.0.0.md",
+    "visualGuide": "../pfc-ontologies/VE-Series-ONT/VE-Metrics-ONT/PF-CORE-Metrics-VSOM-VE-Visual-Guide.md",
+    "glossary": "../unified-registry/unified-glossary-v2.0.0.json",
     "testData": null,
     "validationReport": null
   },
-  "components": {
-    "kpi": "KPI definition and measurement",
-    "target": "KPI targets and thresholds",
-    "measurement": "KPI measurement tracking"
+  "entities": {
+    "count": 10,
+    "list": [
+      "Vision",
+      "Strategy",
+      "StrategicObjective",
+      "Objective",
+      "KeyResult",
+      "KPI",
+      "Metric",
+      "VEAnalysis",
+      "VEFunction",
+      "VECostElement"
+    ]
   },
+  "components": {
+    "VSOMCascade": "Vision→Strategy→StrategicObjective strategic alignment",
+    "OKRFramework": "Objective→KeyResult measurable goal tracking",
+    "KPIMetrics": "KPI→Metric quantitative performance measurement",
+    "ValueEngineering": "VEAnalysis→VEFunction→VECostElement cost-value optimization"
+  },
+  "relationships": {
+    "count": 11,
+    "list": [
+      "defines",
+      "decomposesTo",
+      "cascadesTo",
+      "measuredBy",
+      "trackedVia",
+      "quantifiedBy",
+      "optimizedVia",
+      "analyzes",
+      "evaluates",
+      "delivers",
+      "supports"
+    ],
+    "crossOntology": [
+      {
+        "name": "metricsForVSOM",
+        "from": "kpi:Vision",
+        "to": "vsom:VisionComponent",
+        "purpose": "KPI Vision entity maps to VSOM Vision component"
+      },
+      {
+        "name": "metricsForOKR",
+        "from": "kpi:Objective",
+        "to": "okr:Objective",
+        "purpose": "KPI Objective aligns with OKR Objective entity"
+      },
+      {
+        "name": "kpiTracksKeyResult",
+        "from": "kpi:KPI",
+        "to": "okr:KeyResult",
+        "purpose": "KPIs quantify OKR Key Results"
+      }
+    ]
+  },
+  "businessRules": {
+    "count": 12,
+    "format": "IF-THEN"
+  },
+  "joinPatterns": [
+    {
+      "id": "JP-KPI-001",
+      "name": "VSOM-to-KPI Metrics",
+      "path": "vsom:VSOMFramework → kpi:Vision → kpi:Strategy → kpi:KPI"
+    },
+    {
+      "id": "JP-KPI-002",
+      "name": "OKR-to-KPI Tracking",
+      "path": "okr:Objective → kpi:Objective → kpi:KeyResult → kpi:KPI"
+    },
+    {
+      "id": "JP-KPI-003",
+      "name": "VE Cost-Value Analysis",
+      "path": "kpi:Objective → kpi:VEAnalysis → kpi:VEFunction → kpi:VECostElement"
+    }
+  ],
   "dependencies": [
     "Entry-ONT-VSOM-001",
     "Entry-ONT-OKR-001"
@@ -38,7 +116,14 @@
   "layer": "STRATEGIC LAYER (VE-Series)",
   "domain": "Performance Measurement",
   "maintainer": "Azlan EA-AAA",
-  "created": "2026-02-02",
-  "lastModified": "2026-02-02",
-  "notes": "PLACEHOLDER - Ontology schema to be developed. Will connect metrics from VSOM to detailed KPI tracking."
+  "created": "2026-02-07",
+  "lastModified": "2026-02-07",
+  "versionHistory": [
+    {
+      "version": "1.0.0",
+      "date": "2026-02-07",
+      "changes": "Initial production ontology with 10 entities, 11 relationships, 12 business rules. VSOM-OKR-KPI cascade plus Value Engineering analysis. OAA v6.2.0 compliant, all 6 gates PASS."
+    }
+  ],
+  "notes": "Comprehensive metrics ontology integrating VSOM strategic cascade (Vision→Strategy→SO→Objective→KR→KPI→Metric) with Value Engineering cost-function analysis. Bridges strategic planning to measurable execution. Completes the KPI measurement layer in VE-Series."
 }

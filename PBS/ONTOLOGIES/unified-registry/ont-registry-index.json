@@ -5,7 +5,7 @@
   "name": "Azlan Ontology Registry",
   "version": "2.0.0",
   "oaaVersion": "5.0.0",
-  "lastUpdated": "2026-02-06",
+  "lastUpdated": "2026-02-07",
   "description": "Unified registry of all ontologies in the Azlan EA-AAA repository",
   "entries": [
     {
@@ -134,12 +134,14 @@
     },
     {
       "@id": "Entry-ONT-KPI-001",
-      "name": "KPI Ontology (Key Performance Indicators)",
+      "name": "KPI Ontology (Metrics & Key Performance Indicators)",
       "namespace": "kpi:",
-      "status": "placeholder",
-      "gatesPassed": 0,
+      "status": "compliant",
+      "gatesPassed": 8,
       "gatesFailed": 0,
-      "validatedDate": null,
+      "validatedDate": "2026-02-07",
+      "oaaVersion": "6.2.0",
+      "version": "1.0.0",
       "path": "./entries/Entry-ONT-KPI-001.json"
     },
     {
@@ -307,25 +309,25 @@
   },
   "statistics": {
     "totalOntologies": 23,
-    "compliant": 19,
+    "compliant": 20,
     "nearCompliance": 0,
     "partialCompliance": 0,
     "pendingReview": 0,
-    "placeholder": 4,
+    "placeholder": 3,
     "deprecated": 0
   },
   "validationSummary": {
-    "validated": 19,
+    "validated": 20,
     "validatedOntologies": [
       "EMC", "ORG", "ORG-CONTEXT", "ORG-MAT",
       "CA", "CL", "GA",
-      "VSOM", "OKR", "VP", "RRR", "PMF",
+      "VSOM", "OKR", "VP", "RRR", "PMF", "KPI",
       "PPM", "PE", "EFS", "MCSB", "EA", "PII", "GDPR"
     ],
-    "placeholders": ["KPI", "MCSB2", "AIR", "AZALZ"],
+    "placeholders": ["MCSB2", "AIR", "AZALZ"],
     "oaaVersion": "5.0.0",
-    "oaaVersionNotes": "Base compliance at OAA v5.0.0. VP, PII, GDPR, OKR upgraded to OAA v6.1.0 with 8-gate validation.",
-    "lastFullValidation": "2026-02-06"
+    "oaaVersionNotes": "Base compliance at OAA v5.0.0. VP, PII, GDPR, OKR upgraded to OAA v6.1.0. KPI upgraded to OAA v6.2.0 with 8-gate validation.",
+    "lastFullValidation": "2026-02-07"
   },
   "pfiInstances": [
     {
