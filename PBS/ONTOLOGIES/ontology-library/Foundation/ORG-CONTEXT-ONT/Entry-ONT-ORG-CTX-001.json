@@ -3,9 +3,9 @@
   "@type": "OntologyRegistryEntry",
   "@id": "Entry-ONT-ORG-CTX-001",
   "name": "ORG-CONTEXT Ontology (Context Hub)",
-  "description": "Central context hub that bridges organizational entities to domain-specific ontologies via the bridge pattern",
-  "version": "1.0.1",
-  "oaaVersion": "5.0.0",
+  "description": "Rich organizational context hub bridging ORG entities to domain-specific ontologies. Links products, brands, competitive landscape, market segments, and maturity assessment via the context hub pattern.",
+  "version": "2.0.0",
+  "oaaVersion": "6.1.0",
   "namespace": "https://platformcore.io/ontology/org-context/",
   "prefix": "org-ctx:",
   "status": "compliant",
@@ -19,15 +19,61 @@
     "gate5": "pass",
     "gate6": "pass"
   },
+  "validationDate": "2026-02-07",
+  "gatesPassed": 7,
+  "gatesFailed": 0,
   "artifacts": {
     "ontology": "./org-context-ontology-v1.0.1.json",
     "glossary": "./glossary-v1.0.0.json",
-    "testData": null,
-    "validationReport": null
+    "testData": "./test-data-v1.0.0.json",
+    "validationReport": "./validation-report-v1.0.0.md"
   },
   "components": {
-    "contextHub": "Central hub for domain context connections",
-    "bridgePatterns": "hasStrategicContext, hasCompetitiveLandscape, hasMaturityProfile, hasGapAnalysis, hasProcessContext"
+    "OrganizationContext": "Central hub entity linking all contextual sub-entities for an organization",
+    "Product": "Product or service offered by the organization to target market segments",
+    "Brand": "Brand owned by the organization carrying its own market identity",
+    "ProductPortfolio": "Structured view of complete product and service offerings",
+    "CompetitiveLandscape": "Competitive environment with competitors, forces, and trends",
+    "Competitor": "Named competitor organization with competitive analysis",
+    "CompetitiveForce": "Porter-style competitive force analysing structural market pressure",
+    "Trend": "Macro trend affecting the market landscape (PESTEL)",
+    "MarketContext": "Market segments, geographic scope, and customer needs",
+    "MarketSegment": "Target market segment defined by industry, geography, and priority",
+    "CustomerNeed": "High-level customer need: jobs-to-be-done, pain points, value drivers",
+    "OrganizationMaturity": "Multi-dimensional maturity assessment across size, value, marketing, tech, AI"
+  },
+  "relationships": {
+    "internal": 17,
+    "crossOntology": [
+      {
+        "name": "contextForOrganization",
+        "from": "org:Organization",
+        "to": "org-ctx:OrganizationContext",
+        "cardinality": "1:1",
+        "purpose": "ORG \u2192 ORG-CONTEXT: Organizations receive rich context via bridge pattern"
+      },
+      {
+        "name": "hasValueProposition",
+        "from": "org-ctx:OrganizationContext",
+        "to": "vsom:ValueProposition",
+        "cardinality": "1:n",
+        "purpose": "ORG-CONTEXT \u2192 VSOM: Context references value propositions defined in VSOM"
+      },
+      {
+        "name": "brandValueProposition",
+        "from": "org-ctx:Brand",
+        "to": "vsom:ValueProposition",
+        "cardinality": "n:1",
+        "purpose": "ORG-CONTEXT \u2192 VSOM: Brand-level value proposition reference"
+      },
+      {
+        "name": "productValueProposition",
+        "from": "org-ctx:Product",
+        "to": "vsom:ValueProposition",
+        "cardinality": "n:1",
+        "purpose": "ORG-CONTEXT \u2192 VSOM: Product-level value proposition reference"
+      }
+    ]
   },
   "dependencies": [
     "Entry-ONT-ORG-001"
@@ -43,6 +89,18 @@
   "domain": "Organization Context",
   "maintainer": "Azlan EA-AAA",
   "created": "2026-01-28",
-  "lastModified": "2026-02-02",
-  "notes": "Hub ontology implementing the bridge pattern to connect organizations to all domain contexts."
+  "lastModified": "2026-02-07",
+  "versionHistory": [
+    {
+      "version": "1.0.1",
+      "date": "2026-02-02",
+      "changes": "OAA v5 compliance, bridge pattern implementation, value proposition separation to VSOM"
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-02-07",
+      "changes": "OAA v6.1.0 upgrade: 21 relationships (17 internal + 4 cross-ontology) forming single connected component, 6 business rules with IF-THEN format, crossOntologyReferences with keyBridges for ORG and VSOM bridges, all 12 entities fully connected"
+    }
+  ],
+  "notes": "Hub ontology implementing the bridge pattern to connect organizations to all domain contexts. Value proposition details live in VSOM — this ontology references only."
 }
