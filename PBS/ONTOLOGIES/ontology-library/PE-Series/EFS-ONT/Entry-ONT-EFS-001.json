@@ -4,8 +4,8 @@
   "@id": "Entry-ONT-EFS-001",
   "name": "EFS Ontology (Enterprise Framework Services)",
   "description": "Enterprise Framework Services ontology for agile product development, backlog management, and value delivery specification. End of VE lineage chain: VSOM \u2192 OKR \u2192 VP \u2192 PMF \u2192 EFS",
-  "version": "1.0.0",
-  "oaaVersion": "5.0.0",
+  "version": "2.0.0",
+  "oaaVersion": "6.1.0",
   "namespace": "https://platformcore.io/ontology/efs/",
   "prefix": "efs:",
   "status": "compliant",
@@ -19,7 +19,7 @@
     "gate5": "pass",
     "gate6": "pass"
   },
-  "validationDate": "2026-02-02",
+  "validationDate": "2026-02-07",
   "gatesPassed": 7,
   "gatesFailed": 0,
   "artifacts": {
@@ -38,11 +38,25 @@
     "testData": null
   },
   "components": {
-    "Epic": "Large body of work broken into features",
-    "Feature": "Functionality delivering business value",
-    "UserStory": "Desired functionality from user perspective",
-    "Persona": "Fictional character representing user type",
-    "AcceptanceCriteria": "Story completion conditions"
+    "BacklogItem": "Abstract base class for all specification items in the product backlog hierarchy",
+    "Epic": "Large body of work broken into features, aligned to strategic objectives",
+    "Feature": "Functionality delivering business value within an Epic scope",
+    "UserStory": "Desired functionality from user perspective with acceptance criteria",
+    "Enabler": "Technical infrastructure work enabling future feature delivery",
+    "Task": "Atomic unit of work within a UserStory or Enabler",
+    "AcceptanceCriterion": "Measurable condition defining Story or Feature completion",
+    "Outcome": "Measurable business result achieved through Epic delivery",
+    "Benefit": "Stakeholder-perceived value from an Outcome",
+    "Hypothesis": "Testable assumption linking an Epic to expected Outcomes",
+    "Capability": "Cross-cutting technical or business ability enabled by Features",
+    "Dependency": "Blocking or enabling relationship between BacklogItems",
+    "Risk": "Identified threat to BacklogItem delivery or value realisation",
+    "Persona": "Fictional character representing user type for story authoring",
+    "Theme": "Strategic grouping of Epics aligned to business objectives",
+    "Release": "Time-boxed delivery milestone containing Features",
+    "Sprint": "Iteration cycle for UserStory execution",
+    "Team": "Cross-functional group responsible for Sprint delivery",
+    "Stakeholder": "Individual or group with interest in Benefit realisation"
   },
   "lineageModel": {
     "description": "5-Layer Lineage connecting Strategy to Specification",
@@ -61,30 +75,56 @@
     }
   },
   "relationships": {
+    "internal": 28,
     "crossOntology": [
+      {
+        "name": "receivesFromPPM",
+        "from": "ppm:Project",
+        "to": "efs:Epic",
+        "cardinality": "1:n",
+        "purpose": "PPM \u2192 EFS: Projects decompose into Epics"
+      },
+      {
+        "name": "receivesFromPMF",
+        "from": "pmf:CustomerSegment",
+        "to": "efs:Persona",
+        "cardinality": "1:n",
+        "purpose": "PMF \u2192 EFS: Customer segments inform Persona definitions"
+      },
+      {
+        "name": "alignsToObjective",
+        "from": "efs:Epic",
+        "to": "vsom:StrategicObjective",
+        "cardinality": "n:1",
+        "purpose": "EFS \u2192 VSOM: Epics trace to strategic objectives"
+      },
       {
         "name": "enablesExecution",
         "from": "pmf:ProductMarketFit",
         "to": "efs:Epic",
-        "purpose": "PMF \u2192 EFS lineage"
+        "cardinality": "1:n",
+        "purpose": "PMF \u2192 EFS lineage: validated PMF drives Epic creation"
       },
       {
         "name": "mapsToEpic",
         "from": "vp:Problem",
         "to": "efs:Epic",
-        "purpose": "VP problem to Epic mapping"
+        "cardinality": "1:n",
+        "purpose": "VP \u2192 EFS: Problems map to Epics"
       },
       {
         "name": "manifestsAsPersona",
         "from": "vp:IdealCustomerProfile",
         "to": "efs:Persona",
-        "purpose": "ICP to Persona mapping"
+        "cardinality": "1:1",
+        "purpose": "VP \u2192 EFS: ICP to Persona mapping"
       },
       {
         "name": "realizesInStory",
         "from": "vp:Benefit",
         "to": "efs:UserStory",
-        "purpose": "Benefit to Story mapping"
+        "cardinality": "1:n",
+        "purpose": "VP \u2192 EFS: Benefits realised through UserStories"
       }
     ]
   },
@@ -93,6 +133,7 @@
     "Entry-ONT-OKR-001",
     "Entry-ONT-VP-001",
     "Entry-ONT-PMF-001",
+    "Entry-ONT-PPM-001",
     "Entry-ONT-RRR-001",
     "Entry-ONT-PE-001"
   ],
@@ -101,12 +142,17 @@
   "domain": "Product Development",
   "maintainer": "Azlan EA-AAA",
   "created": "2026-01-28",
-  "lastModified": "2026-02-02",
+  "lastModified": "2026-02-07",
   "versionHistory": [
     {
       "version": "1.0.0",
       "date": "2026-02-02",
       "changes": "Full OAA v5 compliance, VE-PE lineage integration, unified glossary reference"
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-02-07",
+      "changes": "OAA v6.1.0 upgrade: 28 relationships (single connected component), 11 business rules, cross-ontology references for PPM/PMF/VSOM bridges, all 19 entities fully connected"
     }
   ],
   "notes": "End of VE lineage chain. Receives validated requirements from PMF and connects to PE-Process-Engr-ONT for execution."
