@@ -276,17 +276,6 @@ export function buildMergedGraph(loadedOntologies) {
     }
   }
 
-  // Diagnostic: sample nodeIndex entries
-  console.log(`[MergedGraph] Built: ${mergedNodes.length} nodes, ${mergedEdges.length} edges, nodeIndex: ${nodeIndex.size} entries`);
-  // Show a few sample entries to verify the double-prefix pattern
-  let sampleCount = 0;
-  for (const [key, value] of nodeIndex) {
-    if (typeof value === 'string' && sampleCount < 5) {
-      console.log(`[MergedGraph] nodeIndex sample: "${key}" → "${value}"`);
-      sampleCount++;
-    }
-  }
-
   return {
     nodes: mergedNodes,
     edges: mergedEdges,
@@ -310,14 +299,9 @@ export function detectCrossReferences(loadedOntologies, mergedGraph) {
   const crossEdges = [];
   const addedEdgeKeys = new Set();
 
-  console.group('[CrossRef] Detecting cross-ontology references');
-  console.log(`[CrossRef] NodeIndex size: ${mergedGraph.nodeIndex.size} entries`);
-  console.log(`[CrossRef] Loaded ontologies: ${loadedOntologies.size} (keys: ${[...loadedOntologies.keys()].join(', ')})`);
-
   // Pass 1: Registry-declared bridges
   // Include load-failed records — they may have valid registryEntry with bridge data
   // even though their artifact couldn't be loaded
-  let pass1Attempted = 0, pass1Resolved = 0, pass1Failed = 0;
   for (const [ns, record] of loadedOntologies) {
     if (!record.registryEntry) continue;
 
@@ -326,12 +310,8 @@ export function detectCrossReferences(loadedOntologies, mergedGraph) {
     const crossOntology = record.registryEntry.relationships?.crossOntology;
     const bridges = (Array.isArray(keyBridges) ? keyBridges : [])
       .concat(Array.isArray(crossOntology) ? crossOntology : []);
-    if (bridges.length > 0) {
-      console.log(`[CrossRef] Pass 1: ${ns} has ${bridges.length} declared bridges`);
-    }
     for (const bridge of bridges) {
       if (!bridge.from || !bridge.to) continue;
-      pass1Attempted++;
 
       // Parse "vp:ValueProposition" → { prefix: "vp", entity: "ValueProposition" }
       const fromParts = parsePrefixedRef(bridge.from);
@@ -339,7 +319,6 @@ export function detectCrossReferences(loadedOntologies, mergedGraph) {
 
       if (!fromParts || !toParts) {
         console.warn(`[CrossRef] Parse failed: from="${bridge.from}" to="${bridge.to}"`);
-        pass1Failed++;
         continue;
       }
 
@@ -349,11 +328,9 @@ export function detectCrossReferences(loadedOntologies, mergedGraph) {
 
       if (!fromId || !toId) {
         console.warn(`[CrossRef] Resolve failed: "${bridge.from}" → ${fromId || 'NULL'}, "${bridge.to}" → ${toId || 'NULL'} (bridge: ${bridge.name})`);
-        pass1Failed++;
       }
 
       if (fromId && toId) {
-        pass1Resolved++;
         const edgeKey = `${fromId}->${toId}:${bridge.name}`;
         if (!addedEdgeKeys.has(edgeKey)) {
           crossEdges.push({
@@ -370,8 +347,6 @@ export function detectCrossReferences(loadedOntologies, mergedGraph) {
       }
     }
   }
-  console.log(`[CrossRef] Pass 1 result: ${pass1Attempted} attempted, ${pass1Resolved} resolved, ${pass1Failed} failed`);
-
   // Pass 2: Namespace-prefix scan on node IDs that reference other ontologies
   const knownPrefixes = new Set();
   for (const [ns] of loadedOntologies) {
@@ -460,15 +435,6 @@ export function detectCrossReferences(loadedOntologies, mergedGraph) {
       }
     }
   }
-
-  const pass2Count = crossEdges.length - pass1Resolved;
-  console.log(`[CrossRef] Pass 2 (namespace scan): ${pass2Count} additional edges`);
-  console.log(`[CrossRef] Pass 3 (dependencies): checking ${entryIdToNs.size} entries`);
-  console.log(`[CrossRef] TOTAL cross-edges detected: ${crossEdges.length}`);
-  if (crossEdges.length > 0) {
-    console.log('[CrossRef] First 5 edges:', crossEdges.slice(0, 5).map(e => `${e.from} → ${e.to} (${e.label})`));
-  }
-  console.groupEnd();
 
   return crossEdges;
 }
