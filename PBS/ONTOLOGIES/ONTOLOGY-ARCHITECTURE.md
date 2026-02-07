@@ -1,7 +1,7 @@
 # Ontology Architecture Overview
 
-**Version:** 4.0.0
-**Date:** 2026-02-06
+**Version:** 5.0.0
+**Date:** 2026-02-07
 **Status:** Production
 
 ## Directory Structure
@@ -12,95 +12,112 @@ PBS/ONTOLOGIES/
 ├── MIGRATION-PLAN-OAA-v6.1.md
 ├── readme.md
 │
-├── pfc-ontologies/                    # PF-Core Ontologies (Reusable)
-│   ├── README.md
+├── ontology-library/                  # Merged Ontology Library (v3.0.0)
+│   ├── ont-registry-index.json        # Master index (23 ontologies)
+│   ├── unified-glossary-v2.0.0.json   # Shared glossary
+│   ├── validation-reports/            # Shared validation reports
 │   │
-│   ├── EMC-ONT/                       # Enterprise Model Composition
-│   │   └── pf-EMC-ONT-v1.0.0.jsonld
-│   │
-│   ├── ORG-ONT/                       # Organization Foundation
-│   │   ├── org-ontology-v2.1.0-oaa-v5.json
-│   │   ├── glossary-v1.0.0.json
-│   │   ├── registry-entry-v3.0.0.json
-│   │   ├── test-data-v1.0.0.json
-│   │   ├── archive/
-│   │   └── ont-org-ref-files/
-│   │
-│   ├── ORG-CONTEXT/                   # Organization Context Hub
-│   │   ├── org-context-ontology-v1.0.1.json
-│   │   ├── glossary-v1.0.0.json
-│   │   ├── ORG-MAT-ONT/               # Maturity (nested)
-│   │   │   └── org-maturity-v1.0.0-oaa-v5.json
-│   │   └── ont-competitor-ref-files/
-│   │
-│   ├── CA-ONT/                        # Competitive Analysis
-│   │   ├── competitive-analysis-v2.1.0-oaa-v5.json
-│   │   └── archive/
-│   │
-│   ├── CL-ONT/                        # Competitive Landscape
-│   │   ├── competitive-landscape-v1.0.0-oaa-v5.json
-│   │   └── archive/
-│   │
-│   ├── GA-ONT/                        # Gap Analysis
-│   │   └── gap-analysis-v1.0.0-oaa-v5.json
-│   │
-│   ├── CE-ONT/                        # Customer Experience (placeholder)
-│   │
-│   ├── ALZ-ONT/                       # Alzheimer's/MCSB Domain
-│   │   └── MCSB-Ontology-v1.0.0.jsonld
-│   │
-│   ├── RCSG-ONT/                      # Risk, Compliance, Security & Governance
-│   │   └── GDPR-ONT/                  # GDPR Regulatory Framework
-│   │       └── gdpr-regulatory-framework-v1.0.0.json
-│   │
-│   ├── EA-ONT/                        # Enterprise Architecture (instance data)
-│   │   ├── ea-portfolio-roadmaps-*.jsonld
-│   │   └── EA-RCSG-Gov-PII/           # PII Governance (Microsoft Native)
-│   │       └── pii-governance-microsoft-native-v3.3.0.json
-│   │
-│   ├── PE-Series-ONT/                 # Process Engineering Series
+│   ├── VE-Series/                     # Value Engineering Series
 │   │   ├── README.md
-│   │   ├── PE-PPM-ONT/                # Portfolio/Programme/Project
+│   │   ├── VSOM-ONT/                  # Vision-Strategy-Objectives-Metrics
+│   │   │   ├── Entry-ONT-VSOM-001.json
+│   │   │   ├── vsom-ontology-v2.1.0-oaa-v5.json
+│   │   │   └── archive/
+│   │   ├── OKR-ONT/                   # Objectives & Key Results
+│   │   │   ├── Entry-ONT-OKR-001.json
+│   │   │   ├── okr-ontology-v2.0.0-oaa-v6.json
+│   │   │   └── PFC-ONT-OKR-v1_0_0.jsonld  (legacy)
+│   │   ├── VP-ONT/                    # Value Proposition
+│   │   │   ├── Entry-ONT-VP-001.json
+│   │   │   └── vp-ontology-v1.2.0.jsonld
+│   │   ├── RRR-ONT/                   # Roles/RACI/RBAC
+│   │   │   ├── Entry-ONT-RRR-001.json
+│   │   │   ├── pf-roles-raci-rbac-ontology-v3.1.0.jsonld
+│   │   │   └── RRR-DATA-csuite-roles-v2.0.0.jsonld
+│   │   ├── PMF-ONT/                   # Product-Market Fit
+│   │   │   ├── Entry-ONT-PMF-001.json
+│   │   │   └── pmf-ontology-v1.0.0.jsonld
+│   │   └── KPI-ONT/                   # KPIs (OAA v6.2.0)
+│   │       ├── Entry-ONT-KPI-001.json
+│   │       └── kpi-ontology-v1.0.0-oaa-v6.json
+│   │
+│   ├── PE-Series/                     # Process Engineering Series
+│   │   ├── PPM-ONT/                   # Portfolio/Programme/Project
+│   │   │   ├── Entry-ONT-PPM-001.json
 │   │   │   ├── ppm-module-v3.0.0-oaa-v5.json
 │   │   │   └── archive/
-│   │   ├── PE-Process-Engr-ONT/       # Process Engineering
+│   │   ├── PE-ONT/                    # Process Engineering
+│   │   │   ├── Entry-ONT-PE-001.json
 │   │   │   ├── process-engineering-v2.0.0-oaa-v5.json
-│   │   │   ├── ref-ont-pe-files/
-│   │   │   └── archive/
-│   │   ├── PE-EFS-ONT/                # Enterprise Framework Services
+│   │   │   └── ref-ont-pe-files/
+│   │   ├── EFS-ONT/                   # Enterprise Framework Services
+│   │   │   ├── Entry-ONT-EFS-001.json
 │   │   │   └── efs-ontology-v1.0.0.jsonld
-│   │   └── PE-Campaign-Mgr-ONT/       # Campaign Manager (placeholder)
+│   │   └── EA-ONT/                    # Enterprise Architecture
+│   │       ├── Entry-ONT-EA-001.json
+│   │       └── ea-portfolio-roadmaps-*.jsonld
 │   │
-│   └── VE-Series-ONT/                 # Value Engineering Series
-│       ├── README.md
-│       ├── VE-VSOM-ONT/               # Vision-Strategy-Objectives-Metrics
-│       │   ├── vsom-ontology-v2.1.0-oaa-v5.json
-│       │   └── archive/
-│       ├── VE-OKR-ONT/                # Objectives & Key Results
-│       │   ├── PFC-ONT-OKR-v1_0_0.jsonld        (legacy v1.0.0)
-│       │   └── okr-ontology-v2.0.0-oaa-v6.json  (current)
-│       ├── VE-RRR-ONT/                # Roles/RACI/RBAC
-│       │   ├── pf-roles-raci-rbac-ontology-v3.1.0.jsonld
-│       │   └── RRR-DATA-csuite-roles-v2.0.0.jsonld
-│       ├── VE-VP-ONT/                 # Value Proposition
-│       │   └── vp-ontology-v1.2.0.jsonld
-│       ├── VE-PMF-ONT/                # Product-Market Fit
-│       │   └── pmf-ontology-v1.0.0.jsonld
-│       ├── VE-KPI-ONT/                # KPIs (placeholder)
-│       └── archive/
+│   ├── RCSG-Series/                   # Risk, Compliance, Security & Governance
+│   │   ├── MCSB-ONT/                  # Cloud Security Benchmark v1
+│   │   │   ├── Entry-ONT-MCSB-001.json
+│   │   │   └── MCSB-Ontology-v1.0.0.jsonld
+│   │   ├── GDPR-ONT/                  # GDPR Regulatory Framework
+│   │   │   ├── Entry-ONT-GDPR-001.json
+│   │   │   └── gdpr-regulatory-framework-v1.0.0.json
+│   │   ├── PII-ONT/                   # PII Governance
+│   │   │   ├── Entry-ONT-PII-001.json
+│   │   │   └── pii-governance-microsoft-native-v3.3.0.json
+│   │   ├── MCSB2-ONT/                 # Cloud Security Benchmark v2 (placeholder)
+│   │   │   └── Entry-ONT-MCSB2-001.json
+│   │   └── AZALZ-ONT/                 # Azure ALZ (placeholder)
+│   │       └── Entry-ONT-AZALZ-001.json
+│   │
+│   ├── Foundation/                    # Foundation Ontologies
+│   │   ├── ORG-ONT/                   # Organization
+│   │   │   ├── Entry-ONT-ORG-001.json
+│   │   │   ├── org-ontology-v2.1.0-oaa-v5.json
+│   │   │   └── glossary-v1.0.0.json
+│   │   ├── ORG-CONTEXT-ONT/           # Organization Context Hub
+│   │   │   ├── Entry-ONT-ORG-CONTEXT-001.json
+│   │   │   └── org-context-ontology-v1.0.1.json
+│   │   ├── ORG-MAT-ONT/              # Organization Maturity
+│   │   │   ├── Entry-ONT-ORG-MAT-001.json
+│   │   │   └── org-maturity-v1.0.0-oaa-v5.json
+│   │   └── AIR-ONT/                   # AI Readiness (placeholder)
+│   │       └── Entry-ONT-AIR-001.json
+│   │
+│   ├── Competitive/                   # Competitive Ontologies
+│   │   ├── CA-ONT/                    # Competitive Analysis
+│   │   │   ├── Entry-ONT-CA-001.json
+│   │   │   └── competitive-analysis-v2.1.0-oaa-v5.json
+│   │   ├── CL-ONT/                    # Competitive Landscape
+│   │   │   ├── Entry-ONT-CL-001.json
+│   │   │   └── competitive-landscape-v1.0.0-oaa-v5.json
+│   │   └── GA-ONT/                    # Gap Analysis
+│   │       ├── Entry-ONT-GA-001.json
+│   │       └── gap-analysis-v1.0.0-oaa-v5.json
+│   │
+│   ├── Orchestration/                 # Orchestration Layer
+│   │   └── EMC-ONT/                   # Enterprise Model Composition
+│   │       ├── Entry-ONT-EMC-001.json
+│   │       └── pf-EMC-ONT-v1.0.0.jsonld
+│   │
+│   └── _orphans/                      # Unreferenced dirs (for review)
+│       ├── OAA-System-Prompts/
+│       ├── PE-Campaign-Mgr-ONT/
+│       ├── PE-Product-Manager/
+│       ├── PFM-PF-Mngr/
+│       └── RCSG-Security/
 │
 ├── pfi-ontologies/                    # PF-Instance Ontologies (placeholder)
 │   └── readme.md
 │
-├── pfi-BAIV-AIV-ONT/                  # BAIV Instance Ontologies
-│   ├── RRR-DATA-BAIV-AIV-roles-v1.0.0.jsonld
-│   └── AIV-Competitive-ONT/           # AI Visibility Competitive
-│
-└── unified-registry/                  # Ontology Registry
-    ├── ont-registry-index.json
-    ├── entries/
-    └── validation-reports/
+└── pfi-BAIV-AIV-ONT/                  # BAIV Instance Ontologies
+    ├── RRR-DATA-BAIV-AIV-roles-v1.0.0.jsonld
+    └── AIV-Competitive-ONT/           # AI Visibility Competitive
 ```
+
+> **Note:** Registry entries are co-located with their artifacts. Each entry's `artifacts.ontology` uses `./filename.json` (same directory). Shared resources (`unified-glossary`, `validation-reports`) are referenced as `../../unified-glossary-v2.0.0.json` from entry directories.
 
 ---
 
@@ -222,7 +239,7 @@ flowchart LR
 
 ```mermaid
 graph TB
-    subgraph "pfc-ontologies"
+    subgraph "ontology-library"
         subgraph "Orchestration"
             EMC[EMC-ONT v1.0.0]
         end
@@ -231,6 +248,7 @@ graph TB
             ORG[ORG-ONT v2.1.0]
             ORG_CTX[ORG-CONTEXT v1.0.1]
             ORG_MAT[ORG-MAT-ONT v1.0.0]
+            AIR[AIR-ONT]
             ORG --> ORG_CTX
             ORG_CTX --> ORG_MAT
         end
@@ -241,35 +259,30 @@ graph TB
             GA[GA-ONT v1.0.0]
         end
 
-        subgraph "PE-Series-ONT"
-            PE_PPM[PE-PPM-ONT v3.0.0]
-            PE_PROC[PE-Process-Engr-ONT v2.0.0]
-            PE_EFS[PE-EFS-ONT v1.0.0]
-            PE_CAMP[PE-Campaign-Mgr-ONT]
+        subgraph "PE-Series"
+            PE_PPM[PPM-ONT v3.0.0]
+            PE_PROC[PE-ONT v2.0.0]
+            PE_EFS[EFS-ONT v1.0.0]
+            PE_EA[EA-ONT]
         end
 
-        subgraph "VE-Series-ONT"
-            VE_VSOM[VE-VSOM-ONT v2.1.0]
-            VE_OKR[VE-OKR-ONT v2.0.0]
-            VE_VP[VE-VP-ONT v1.2.0]
-            VE_RRR[VE-RRR-ONT v3.1.0]
-            VE_PMF[VE-PMF-ONT v1.0.0]
-            VE_KPI[VE-KPI-ONT]
+        subgraph "VE-Series"
+            VE_VSOM[VSOM-ONT v2.1.0]
+            VE_OKR[OKR-ONT v2.0.0]
+            VE_VP[VP-ONT v1.2.0]
+            VE_RRR[RRR-ONT v3.1.0]
+            VE_PMF[PMF-ONT v1.0.0]
+            VE_KPI[KPI-ONT v1.0.0]
         end
 
         subgraph "RCSG-Series (Risk, Compliance, Security & Governance)"
             MCSB[MCSB-ONT v1.0.0]
             MCSB2[MCSB2-ONT]
             GDPR[GDPR-ONT v1.0.0]
-            PII[PII-GOV-ONT v3.3.0]
-            AZALZ[Az-ALZ-ONT]
+            PII[PII-ONT v3.3.0]
+            AZALZ[AZALZ-ONT]
             GDPR -->|regulatoryBasis| PII
             MCSB -.-> MCSB2
-        end
-
-        subgraph "Instance Data"
-            EA[EA-ONT]
-            CE[CE-ONT]
         end
     end
 
@@ -283,14 +296,13 @@ graph TB
 
     classDef orchestration fill:#9c27b0,stroke:#6a1b9a,color:#fff
     classDef production fill:#2e7d32,stroke:#1b5e20,color:#fff
-    classDef development fill:#1565c0,stroke:#0d47a1,color:#fff
     classDef placeholder fill:#757575,stroke:#424242,color:#fff
     classDef instance fill:#6a1b9a,stroke:#4a148c,color:#fff
 
     class EMC orchestration
-    class ORG,ORG_CTX,ORG_MAT,CA,CL,GA,PE_PPM,PE_PROC,PE_EFS,VE_VSOM,VE_OKR,VE_VP,VE_RRR,VE_PMF,MCSB,GDPR,PII production
-    class PE_CAMP,VE_KPI,CE,MCSB2,AZALZ placeholder
-    class EA,PFI_BAIV instance
+    class ORG,ORG_CTX,ORG_MAT,CA,CL,GA,PE_PPM,PE_PROC,PE_EFS,VE_VSOM,VE_OKR,VE_VP,VE_RRR,VE_PMF,VE_KPI,MCSB,GDPR,PII production
+    class PE_EA,AIR,MCSB2,AZALZ placeholder
+    class PFI_BAIV instance
 ```
 
 ---
@@ -566,10 +578,10 @@ flowchart TB
     end
 
     subgraph "PE-Series: Process Engineering"
-        PPM[PE-PPM-ONT<br/>Portfolio Programme Project]
-        PROC[PE-Process-Engr-ONT<br/>Process Engineering]
-        EFS[PE-EFS-ONT<br/>Enterprise Framework Services]
-        CAMP[PE-Campaign-Mgr-ONT<br/>Campaign Management]
+        PPM[PPM-ONT<br/>Portfolio Programme Project]
+        PROC[PE-ONT<br/>Process Engineering]
+        EFS[EFS-ONT<br/>Enterprise Framework Services]
+        EA_PE[EA-ONT<br/>Enterprise Architecture]
     end
 
     subgraph "RCSG-Series: Risk, Compliance, Security & Governance"
@@ -595,7 +607,7 @@ flowchart TB
 
     PPM --> PROC
     PROC --> EFS
-    EFS -.-> CAMP
+    EFS -.-> EA_PE
 
     ORG --> CTX
     CTX --> VSOM
@@ -611,7 +623,7 @@ flowchart TB
     classDef rcsg fill:#9c27b0,color:#fff
 
     class VSOM,OKR,VP,PMF,RRR,KPI ve
-    class PPM,PROC,EFS,CAMP pe
+    class PPM,PROC,EFS,EA_PE pe
     class ORG,CTX foundation
     class RCSG_GDPR,RCSG_PII,RCSG_MCSB rcsg
 ```
@@ -782,7 +794,7 @@ graph TB
         VP[("VE-VP-ONT v1.2.0<br/>Value Proposition")]
         RRR[("VE-RRR-ONT v3.1.0<br/>Roles/RACI/RBAC")]
         PMF[("VE-PMF-ONT v1.0.0<br/>Product-Market Fit")]
-        KPI[("VE-KPI-ONT<br/>KPIs")]
+        KPI[("KPI-ONT v1.0.0<br/>KPIs")]
 
         VSOM --> OKR
         OKR --> VP
@@ -1037,34 +1049,33 @@ sequenceDiagram
 
 ## Ontology Status Summary
 
-| Series/Context | Ontology | Version | Status | Bridge Pattern | Cross-Ontology Links |
-|----------------|----------|---------|--------|----------------|---------------------|
-| **EMC-ONT** | EMC-ONT | v1.0.0 | ✅ Production | Orchestration Layer | All ontologies |
-| **ORG-ONT** | ORG-ONT | v2.1.0 | ✅ Production | Foundation + Hub | - |
-| **ORG-CONTEXT** | ORG-CONTEXT | v1.0.1 | ✅ Production | Context Hub | All domain ontologies |
-| ORG-CONTEXT | ORG-MAT-ONT | v1.0.0 | ✅ Production | hasMaturityProfile | PE-Process-Engr-ONT, CE-ONT |
-| ORG-CONTEXT | CL-ONT | v1.0.0 | ✅ Production | hasCompetitiveLandscape | VE-VSOM-ONT, CA-ONT |
-| ORG-CONTEXT | CA-ONT | v2.1.0 | ✅ Production | Direct | ORG-ONT, CL-ONT |
-| ORG-CONTEXT | GA-ONT | v1.0.0 | ✅ Production | hasGapAnalysis | VE-VSOM-ONT, CL-ONT, PE-PPM-ONT |
-| ORG-CONTEXT | CE-ONT | - | ⏸️ Placeholder | hasCustomerContext (future) | ORG-MAT-ONT |
-| **VE-Series-ONT** | VE-VSOM-ONT | v2.1.0 | ✅ Production | hasStrategicContext | CL-ONT (reviewsLandscape) |
-| VE-Series-ONT | VE-OKR-ONT | v2.0.0 | ✅ Production (OAA v6.1.0) | - | VE-VSOM-ONT |
-| VE-Series-ONT | VE-VP-ONT | v1.2.0 | ✅ Production | - | VE-VSOM-ONT, VE-OKR-ONT |
-| VE-Series-ONT | VE-RRR-ONT | v3.1.0 | ✅ Production | hasRoleContext | VE-VSOM-ONT (L0-L4 roles) |
-| VE-Series-ONT | VE-PMF-ONT | v1.0.0 | ✅ Production | hasMarketContext | CL-ONT, VE-VP-ONT |
-| VE-Series-ONT | VE-KPI-ONT | - | ⏸️ Placeholder | - | VE-VSOM-ONT |
-| **PE-Series-ONT** | PE-PPM-ONT | v3.0.0 | ✅ Production | Direct | VE-VSOM-ONT |
-| PE-Series-ONT | PE-Process-Engr-ONT | v2.0.0 | ✅ Production | hasProcessContext | ORG-MAT-ONT |
-| PE-Series-ONT | PE-EFS-ONT | v1.0.0 | ✅ Production | - | VE-PMF-ONT, PE-Process-Engr-ONT |
-| PE-Series-ONT | PE-Campaign-Mgr-ONT | - | ⏸️ Placeholder | - | PE-PPM-ONT |
-| **RCSG-Series** | GDPR-ONT | v1.0.0 | ✅ Production (OAA v6.1.0) | Regulatory Layer | PII-GOV-ONT |
-| RCSG-Series | PII-GOV-ONT | v3.3.0 | ✅ Production (OAA v6.1.0) | implementsFramework | GDPR-ONT, MCSB-ONT, ORG-ONT |
-| RCSG-Series | MCSB-ONT (v1) | v1.0.0 | ✅ Production | secures | PE-EFS-ONT |
-| RCSG-Series | MCSB2-ONT (v2) | - | ⏸️ Placeholder | - | MCSB-ONT |
-| RCSG-Series | Az-ALZ-ONT | - | ⏸️ Placeholder | - | MCSB-ONT |
-| **Instance** | EA-ONT | - | ⏸️ ON HOLD | Instance data for PE-PPM-ONT | - |
-| **pfi-BAIV-AIV-ONT** | AIV-Competitive-ONT | v1.0.0 | ✅ Production | - | CA-ONT, CL-ONT |
-| pfi-BAIV-AIV-ONT | RRR-DATA-BAIV-AIV-roles | v1.0.0 | ✅ Production | - | VE-RRR-ONT |
+| Series | Ontology | Version | OAA | Status | Bridge Pattern | Cross-Ontology Links |
+|--------|----------|---------|-----|--------|----------------|---------------------|
+| **Orchestration** | EMC-ONT | v1.0.0 | v5 | ✅ Production | Orchestration Layer | All ontologies |
+| **Foundation** | ORG-ONT | v2.1.0 | v5 | ✅ Production | Foundation + Hub | - |
+| Foundation | ORG-CONTEXT-ONT | v1.0.1 | v5 | ✅ Production | Context Hub | All domain ontologies |
+| Foundation | ORG-MAT-ONT | v1.0.0 | v5 | ✅ Production | hasMaturityProfile | PE-ONT |
+| Foundation | AIR-ONT | - | - | ⏸️ Placeholder | - | - |
+| **Competitive** | CL-ONT | v1.0.0 | v5 | ✅ Production | hasCompetitiveLandscape | VSOM-ONT, CA-ONT |
+| Competitive | CA-ONT | v2.1.0 | v5 | ✅ Production | Direct | ORG-ONT, CL-ONT |
+| Competitive | GA-ONT | v1.0.0 | v5 | ✅ Production | hasGapAnalysis | VSOM-ONT, CL-ONT, PPM-ONT |
+| **VE-Series** | VSOM-ONT | v2.1.0 | v5 | ✅ Production | hasStrategicContext | CL-ONT (reviewsLandscape) |
+| VE-Series | OKR-ONT | v2.0.0 | v6.1 | ✅ Production | - | VSOM-ONT |
+| VE-Series | VP-ONT | v1.2.0 | v5 | ✅ Production | - | VSOM-ONT, OKR-ONT |
+| VE-Series | RRR-ONT | v3.1.0 | v5 | ✅ Production | hasRoleContext | VSOM-ONT (L0-L4 roles) |
+| VE-Series | PMF-ONT | v1.0.0 | v5 | ✅ Production | hasMarketContext | CL-ONT, VP-ONT |
+| VE-Series | KPI-ONT | v1.0.0 | v6.2 | ✅ Production | measuredBy | VSOM-ONT, OKR-ONT |
+| **PE-Series** | PPM-ONT | v3.0.0 | v5 | ✅ Production | Direct | VSOM-ONT |
+| PE-Series | PE-ONT | v2.0.0 | v5 | ✅ Production | hasProcessContext | ORG-MAT-ONT |
+| PE-Series | EFS-ONT | v1.0.0 | v5 | ✅ Production | - | PMF-ONT, PE-ONT |
+| PE-Series | EA-ONT | - | - | ⏸️ Placeholder | Instance data for PPM-ONT | - |
+| **RCSG-Series** | GDPR-ONT | v1.0.0 | v6.1 | ✅ Production | Regulatory Layer | PII-ONT |
+| RCSG-Series | PII-ONT | v3.3.0 | v6.1 | ✅ Production | implementsFramework | GDPR-ONT, MCSB-ONT, ORG-ONT |
+| RCSG-Series | MCSB-ONT | v1.0.0 | v5 | ✅ Production | secures | EFS-ONT |
+| RCSG-Series | MCSB2-ONT | - | - | ⏸️ Placeholder | - | MCSB-ONT |
+| RCSG-Series | AZALZ-ONT | - | - | ⏸️ Placeholder | - | MCSB-ONT |
+| **pfi-BAIV-AIV-ONT** | AIV-Competitive-ONT | v1.0.0 | - | ✅ Production | - | CA-ONT, CL-ONT |
+| pfi-BAIV-AIV-ONT | RRR-DATA-BAIV-AIV-roles | v1.0.0 | - | ✅ Production | - | RRR-ONT |
 
 ---
 
@@ -1106,7 +1117,7 @@ sequenceDiagram
 
 | Symbol | Meaning |
 |--------|---------|
-| ✅ | Production - OAA v5.0.0 or v6.1.0 compliant |
+| ✅ | Production - OAA v5.0.0, v6.1.0, or v6.2.0 compliant |
 | ⚠️ | Development - Docs/Glossary only |
 | ⏸️ | Placeholder - Empty or on hold |
 | → | Direct relationship |
@@ -1115,6 +1126,6 @@ sequenceDiagram
 
 ---
 
-*Part of PFC Ontologies | Azlan-EA-AAA Repository*
-*OAA Ontology Workbench v1.1.0 | OAA v6.1.0 (8-gate)*
+*Part of PFC Ontology Library | Azlan-EA-AAA Repository*
+*OAA Ontology Workbench v1.1.0 | OAA v6.2.0 (8-gate)*
 *EMC-ONT Composition Engine v1.0.0*

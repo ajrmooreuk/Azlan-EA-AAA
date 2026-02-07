@@ -197,16 +197,17 @@ header .stats { font-size: 13px; color: #888; margin-left: auto; }
 .bridge-filter-btn:hover { background: #2a2d35; color: #ccc; }
 .bridge-filter-btn.active { background: #856404; border-color: #FFD700; color: #FFD700; }
 
-/* Lineage Chain Toggle (Phase 2/4 — Issue #39) */
-#lineage-toggle { display: inline-flex; gap: 4px; }
-.lineage-toggle { background: #1a1d25; border: 1px solid #3a3d47; color: #888; padding: 4px 10px; font-size: 12px; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
-.lineage-toggle:hover { background: #2a2d35; color: #ccc; }
-.lineage-toggle.active[data-lineage="VE"] { background: rgba(206,197,40,0.2); border-color: #cec528; color: #cec528; }
-.lineage-toggle.active[data-lineage="PE"] { background: rgba(184,115,51,0.2); border-color: #b87333; color: #b87333; }
-.lineage-toggle.active[data-lineage="both"] { background: rgba(255,107,53,0.15); border-color: #FF6B35; color: #FF6B35; }
-.lineage-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-.lineage-dot.ve { background: #cec528; }
-.lineage-dot.pe { background: #b87333; }
+/* Series Highlight Toggle */
+#series-toggle { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+.series-toggle { background: #1a1d25; border: 1px solid #3a3d47; color: #888; padding: 4px 10px; font-size: 12px; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+.series-toggle:hover { background: #2a2d35; color: #ccc; }
+.series-toggle.active[data-series="VE-Series"] { background: rgba(206,197,40,0.2); border-color: #cec528; color: #cec528; }
+.series-toggle.active[data-series="PE-Series"] { background: rgba(184,115,51,0.2); border-color: #b87333; color: #b87333; }
+.series-toggle.active[data-series="Foundation"] { background: rgba(255,152,0,0.2); border-color: #FF9800; color: #FF9800; }
+.series-toggle.active[data-series="Competitive"] { background: rgba(233,30,99,0.2); border-color: #E91E63; color: #E91E63; }
+.series-toggle.active[data-series="RCSG-Series"] { background: rgba(156,39,176,0.2); border-color: #9C27B0; color: #9C27B0; }
+.series-toggle.active[data-series="Orchestration"] { background: rgba(0,188,212,0.2); border-color: #00BCD4; color: #00BCD4; }
+.series-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 
 /* Cross-Edge Filter (Phase 4 — Issue #37, X.3.5) */
 .cross-edge-filter-btn { background: #1a1d25; border: 1px solid #3a3d47; color: #888; padding: 4px 10px; font-size: 12px; cursor: pointer; border-radius: 4px; }

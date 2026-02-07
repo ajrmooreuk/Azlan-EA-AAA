@@ -692,6 +692,17 @@ export function classifyLineageEdge(fromNs, toNs) {
 }
 
 /**
+ * Look up the series a namespace belongs to.
+ * @param {string} namespace - e.g., "vsom:" or "org:"
+ * @param {Map} loadedOntologies - the loaded ontologies map
+ * @returns {string|null} series key like 'VE-Series' or null
+ */
+export function getNodeSeries(namespace, loadedOntologies) {
+  const record = loadedOntologies?.get(namespace);
+  return record?.series || null;
+}
+
+/**
  * Check if a namespace belongs to a lineage chain.
  * @param {string} namespace - e.g., "vsom:" or "efs"
  * @returns {{ inVE: boolean, inPE: boolean, isConvergence: boolean }}

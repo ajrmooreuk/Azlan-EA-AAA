@@ -36,7 +36,7 @@ vi.mock('../js/github-loader.js', () => ({
 }));
 
 // Now import the functions under test
-const { buildCrossSeriesEdges, getOntologiesForSeries, detectCrossReferences } = await import('../js/multi-loader.js');
+const { buildCrossSeriesEdges, getOntologiesForSeries, detectCrossReferences, getNodeSeries } = await import('../js/multi-loader.js');
 
 
 // ========================================
@@ -473,5 +473,40 @@ describe('detectCrossReferences — cross-ref property bug fix', () => {
     const mergedGraph = { nodes: [], edges: [], nodeIndex: new Map() };
     const result = detectCrossReferences(loadedOntologies, mergedGraph);
     expect(result).toEqual([]);
+  });
+});
+
+
+// ========================================
+// getNodeSeries
+// ========================================
+
+describe('getNodeSeries', () => {
+  let loadedOntologies;
+
+  beforeEach(() => {
+    loadedOntologies = createLoadedOntologies([
+      { namespace: 'vsom:', name: 'VSOM', series: 'VE-Series' },
+      { namespace: 'ppm:', name: 'PPM', series: 'PE-Series' },
+      { namespace: 'org:', name: 'ORG', series: 'Foundation' },
+    ]);
+  });
+
+  it('returns series for known namespace', () => {
+    expect(getNodeSeries('vsom:', loadedOntologies)).toBe('VE-Series');
+    expect(getNodeSeries('ppm:', loadedOntologies)).toBe('PE-Series');
+    expect(getNodeSeries('org:', loadedOntologies)).toBe('Foundation');
+  });
+
+  it('returns null for unknown namespace', () => {
+    expect(getNodeSeries('unknown:', loadedOntologies)).toBeNull();
+  });
+
+  it('returns null when loadedOntologies is null', () => {
+    expect(getNodeSeries('vsom:', null)).toBeNull();
+  });
+
+  it('returns null when loadedOntologies is undefined', () => {
+    expect(getNodeSeries('vsom:', undefined)).toBeNull();
   });
 });
