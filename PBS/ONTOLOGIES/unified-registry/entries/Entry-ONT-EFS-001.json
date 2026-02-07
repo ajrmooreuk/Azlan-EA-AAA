@@ -23,16 +23,16 @@
   "gatesPassed": 7,
   "gatesFailed": 0,
   "artifacts": {
-    "ontology": "../pfc-ontologies/PE-Series-ONT/PE-EFS-ONT/efs-ontology-v1.0.0.jsonld",
+    "ontology": "../pfc-ontologies/PE-Series-ONT/PE-EFS/efs-ontology.jsonld",
     "interfaces": [
-      "../pfc-ontologies/PE-Series-ONT/PE-EFS-ONT/gtm-interface.jsonld",
-      "../pfc-ontologies/PE-Series-ONT/PE-EFS-ONT/pmf-interface.jsonld"
+      "../pfc-ontologies/PE-Series-ONT/PE-EFS/gtm-interface.jsonld",
+      "../pfc-ontologies/PE-Series-ONT/PE-EFS/pmf-interface.jsonld"
     ],
-    "documentation": "../pfc-ontologies/PE-Series-ONT/PE-EFS-ONT/readme.md",
-    "specification": "../pfc-ontologies/PE-Series-ONT/PE-EFS-ONT/EFS-ONTOLOGY-SPEC.md",
-    "lineageSpec": "../pfc-ontologies/PE-Series-ONT/PE-EFS-ONT/EFS-Lineage-Specification-v3.0.0.md",
-    "lineageDiagrams": "../pfc-ontologies/PE-Series-ONT/PE-EFS-ONT/efs-lineage-diagrams-v3.0.0.md",
-    "architecture": "../pfc-ontologies/PE-Series-ONT/PE-EFS-ONT/efs-architecture.mermaid",
+    "documentation": "../pfc-ontologies/PE-Series-ONT/PE-EFS/README.MD",
+    "specification": "../pfc-ontologies/PE-Series-ONT/PE-EFS/EFS-ONTOLOGY-SPEC.md",
+    "lineageSpec": "../pfc-ontologies/PE-Series-ONT/PE-EFS/EFS-Lineage-Specification-v3.0.0.md",
+    "lineageDiagrams": "../pfc-ontologies/PE-Series-ONT/PE-EFS/efs-lineage-diagrams-v3.0.0.md",
+    "architecture": "../pfc-ontologies/PE-Series-ONT/PE-EFS/efs-architecture.mermaid",
     "glossary": "../unified-registry/unified-glossary-v2.0.0.json",
     "validationReport": "../unified-registry/validation-reports/EFS-OAA-v5-Validation-Report-v3.0.0.md",
     "testData": null

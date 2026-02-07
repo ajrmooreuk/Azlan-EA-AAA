@@ -23,13 +23,13 @@
   "gatesPassed": 7,
   "gatesFailed": 0,
   "artifacts": {
-    "ontology": "../pfc-ontologies/ALZ-ONT/MCSB-Ontology-v1.0.0.jsonld",
-    "registryEntry": "../pfc-ontologies/ALZ-ONT/MCSB-Registry-Entry-v1.0.0.json",
-    "glossary": "../pfc-ontologies/ALZ-ONT/MCSB-Glossary-v1.0.0.json",
-    "documentation": "../pfc-ontologies/ALZ-ONT/MCSB-Documentation-v1.0.0.md",
-    "testData": "../pfc-ontologies/ALZ-ONT/MCSB-TestData-v1.0.0.json",
-    "validationReport": "../pfc-ontologies/ALZ-ONT/MCSB-ValidationReport-v1.0.0.json",
-    "changelog": "../pfc-ontologies/ALZ-ONT/MCSB-Changelog-v1.0.0.md"
+    "ontology": "../pfc-ontologies/alz-ont/MCSB-Ontology-v1.0.0.jsonld",
+    "registryEntry": "../pfc-ontologies/alz-ont/MCSB-Registry-Entry-v1.0.0.json",
+    "glossary": "../pfc-ontologies/alz-ont/MCSB-Glossary-v1.0.0.json",
+    "documentation": "../pfc-ontologies/alz-ont/MCSB-Documentation-v1.0.0.md",
+    "testData": "../pfc-ontologies/alz-ont/MCSB-TestData-v1.0.0.json",
+    "validationReport": "../pfc-ontologies/alz-ont/MCSB-ValidationReport-v1.0.0.json",
+    "changelog": "../pfc-ontologies/alz-ont/MCSB-Changelog-v1.0.0.md"
   },
   "entities": {
     "count": 10,

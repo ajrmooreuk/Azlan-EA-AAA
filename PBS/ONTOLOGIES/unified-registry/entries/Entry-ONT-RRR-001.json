@@ -20,7 +20,7 @@
     "gate6": "pass"
   },
   "artifacts": {
-    "ontology": "../pfc-ontologies/VE-Series-ONT/VE-RRR-ONT/pf-roles-raci-rbac-ontology-v3.1.0.jsonld",
+    "ontology": "../pfc-ontologies/VE-Series-ONT/VE-RRR-ONT/pf-RRR-ONT-v3.1.0.jsonld",
     "dataFile": "../pfc-ontologies/VE-Series-ONT/VE-RRR-ONT/RRR-DATA-csuite-roles-v2.0.0.jsonld",
     "documentation": "../pfc-ontologies/VE-Series-ONT/VE-RRR-ONT/README-ROLES-RACI-RBAC-v3.0.0.md",
     "visualGuide": "../pfc-ontologies/VE-Series-ONT/VE-RRR-ONT/RRR_RACI_RBAC_Ontology_Visual_Guide.md",
