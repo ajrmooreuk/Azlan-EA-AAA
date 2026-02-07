@@ -47,7 +47,7 @@ export const EDGE_COLORS = {
   'binding': '#FF9800', 'value_chain': '#2196F3', 'default': '#555'
 };
 
-export const REGISTRY_BASE_PATH = '../../ONTOLOGIES/unified-registry/';
+export const REGISTRY_BASE_PATH = '../../ONTOLOGIES/ontology-library/';
 
 export const SERIES_COLORS = {
   'VE-Series': '#2196F3',
@@ -74,7 +74,7 @@ export const DB_NAME = 'OntologyLibrary';
 export const DB_VERSION = 1;
 
 export const DEFAULT_CATEGORIES = [
-  'pfc-ontologies',
+  'ontology-library',
   'pfi-ontologies',
   'domain-ontologies',
   'custom'

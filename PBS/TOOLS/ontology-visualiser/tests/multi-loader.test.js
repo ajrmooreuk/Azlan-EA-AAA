@@ -15,7 +15,7 @@ vi.mock('../js/state.js', () => ({
     mergedGraph: null,
     seriesData: null,
   },
-  REGISTRY_BASE_PATH: '../../ONTOLOGIES/unified-registry/',
+  REGISTRY_BASE_PATH: '../../ONTOLOGIES/ontology-library/',
   SERIES_COLORS: {
     'VE-Series': '#2196F3',
     'PE-Series': '#4CAF50',

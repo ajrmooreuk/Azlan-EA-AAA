@@ -1,0 +1,47 @@
+{
+  "@context": "https://platformcore.io/ontology/registry/",
+  "@type": "OntologyRegistryEntry",
+  "@id": "Entry-ONT-PE-001",
+  "name": "PE Ontology (Process Engineering)",
+  "description": "Process engineering ontology for defining and managing business processes and workflows",
+  "version": "2.0.0",
+  "oaaVersion": "5.0.0",
+  "namespace": "https://platformcore.io/ontology/pe/",
+  "prefix": "pe:",
+  "status": "compliant",
+  "complianceStatus": {
+    "gate1": "pass",
+    "gate2": "pass",
+    "gate2b": "pass",
+    "gate2c": "pass",
+    "gate3": "pass",
+    "gate4": "pass",
+    "gate5": "pass",
+    "gate6": "pass"
+  },
+  "artifacts": {
+    "ontology": "./process-engineering-v2.0.0-oaa-v5.json",
+    "glossary": null,
+    "testData": null,
+    "validationReport": null
+  },
+  "components": {
+    "process": "Business process definitions",
+    "workflow": "Workflow orchestration",
+    "activity": "Process activity units"
+  },
+  "dependencies": [
+    "Entry-ONT-ORG-CTX-001",
+    "Entry-ONT-PPM-001",
+    "Entry-ONT-ORG-MAT-001"
+  ],
+  "dependents": [
+    "Entry-ONT-EFS-001"
+  ],
+  "layer": "EXECUTION LAYER (PE-Series)",
+  "domain": "Process Engineering",
+  "maintainer": "Azlan EA-AAA",
+  "created": "2026-01-28",
+  "lastModified": "2026-02-02",
+  "notes": "Process definition ontology linked to project execution and maturity assessment."
+}

@@ -62,30 +62,30 @@ function extractShortName(nameOrId) {
 // ========================================
 
 /**
- * Resolve an artifact path (relative to entries/ dir) to a fetch-able URL
- * relative to the visualiser page.
+ * Resolve an artifact path to a fetch-able URL relative to the visualiser page.
  *
- * Registry entry paths look like: "../pfc-ontologies/EMC-ONT/pf-EMC-ONT-v1.0.0.jsonld"
- * These are relative to the entries/ directory.
+ * After the ontology-library merge, entries are co-located with their artifacts.
+ * Artifact paths in entries are relative to the entry's own directory:
+ *   "./vsom-ontology-v2.1.0-oaa-v5.json"     → same dir as entry
+ *   "../../unified-glossary-v2.0.0.json"      → library root
+ *   "../../validation-reports/..."             → library root
  *
- * Since REGISTRY_BASE_PATH = '../../ONTOLOGIES/unified-registry/',
- * the entries dir is at '../../ONTOLOGIES/unified-registry/entries/'.
- * An artifact at '../pfc-ontologies/...' resolves to '../../ONTOLOGIES/pfc-ontologies/...'.
+ * @param {string} artifactRelPath - path from the entry's artifacts object
+ * @param {string} entryPath - the entry's path from the registry index (e.g. "./VE-Series/VSOM-ONT/Entry-ONT-VSOM-001.json")
  */
-export function resolveArtifactPath(artifactRelPath) {
+export function resolveArtifactPath(artifactRelPath, entryPath) {
   if (!artifactRelPath) return null;
 
   // Strip leading './' if present
   let cleaned = artifactRelPath.replace(/^\.\//, '');
 
-  // Artifact paths in registry entries are relative to the unified-registry/
-  // directory (NOT the entries/ subdirectory). For example:
-  //   "../pfc-ontologies/VE-Series-ONT/.../vsom-ontology-v2.1.0-oaa-v5.json"
-  // means: from unified-registry/, go up one level to ONTOLOGIES/, then into pfc-ontologies/.
-  //
-  // REGISTRY_BASE_PATH = '../../ONTOLOGIES/unified-registry/'
-  // Result: '../../ONTOLOGIES/unified-registry/../pfc-ontologies/...'
-  //       → '../../ONTOLOGIES/pfc-ontologies/...'  (browser normalises the ../)
+  // Resolve relative to the entry's directory
+  if (entryPath) {
+    const entryDir = entryPath.replace(/^\.\//, '').replace(/\/[^/]+$/, '');
+    return REGISTRY_BASE_PATH + entryDir + '/' + cleaned;
+  }
+
+  // Fallback: resolve from library root
   return REGISTRY_BASE_PATH + cleaned;
 }
 
@@ -167,7 +167,7 @@ export async function loadFullRegistry(progressCallback) {
       }
 
       // Load the actual ontology artifact
-      const resolvedPath = resolveArtifactPath(artifactPath);
+      const resolvedPath = resolveArtifactPath(artifactPath, entrySummary.path);
       const artResponse = await fetch(resolvedPath);
       if (!artResponse.ok) throw new Error(`Artifact fetch failed: ${artResponse.status} for ${resolvedPath}`);
       const rawData = await artResponse.json();

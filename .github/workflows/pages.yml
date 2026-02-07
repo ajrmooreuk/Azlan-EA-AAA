@@ -5,8 +5,7 @@ on:
     branches: [main]
     paths:
       - 'PBS/TOOLS/ontology-visualiser/**'
-      - 'PBS/ONTOLOGIES/unified-registry/**'
-      - 'PBS/ONTOLOGIES/pfc-ontologies/**'
+      - 'PBS/ONTOLOGIES/ontology-library/**'
       - 'PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/**'
       - 'PBS/AGENTS/oaa-v6/**'
       - '.github/workflows/pages.yml'
@@ -37,8 +36,7 @@ jobs:
         run: |
           mkdir -p _site/tools/ontology-visualiser
           mkdir -p _site/PBS/TOOLS/ontology-visualiser
-          mkdir -p _site/PBS/ONTOLOGIES/unified-registry/entries
-          mkdir -p _site/PBS/ONTOLOGIES/pfc-ontologies
+          mkdir -p _site/PBS/ONTOLOGIES/ontology-library
           mkdir -p _site/PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts
           mkdir -p _site/PBS/AGENTS/oaa-v6
 
@@ -50,12 +48,8 @@ jobs:
           # browser-viewer.html uses relative paths to css/ and js/ modules)
           echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=PBS/TOOLS/ontology-visualiser/browser-viewer.html"><title>OAA Visualiser</title></head><body><a href="PBS/TOOLS/ontology-visualiser/browser-viewer.html">Go to OAA Ontology Visualiser</a></body></html>' > _site/index.html
 
-          # Copy unified registry for local lookups
-          cp PBS/ONTOLOGIES/unified-registry/ont-registry-index.json _site/PBS/ONTOLOGIES/unified-registry/
-          cp -r PBS/ONTOLOGIES/unified-registry/entries/* _site/PBS/ONTOLOGIES/unified-registry/entries/
-
-          # Copy ontology artifacts (needed for Load Registry multi-ontology mode)
-          cp -r PBS/ONTOLOGIES/pfc-ontologies/* _site/PBS/ONTOLOGIES/pfc-ontologies/
+          # Copy merged ontology library (registry entries + artifacts co-located)
+          cp -r PBS/ONTOLOGIES/ontology-library/* _site/PBS/ONTOLOGIES/ontology-library/
 
           # Copy OAA system prompts for reference
           cp -r PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/* _site/PBS/ONTOLOGIES/pfc-foundation-ont/oaa-system-prompts/

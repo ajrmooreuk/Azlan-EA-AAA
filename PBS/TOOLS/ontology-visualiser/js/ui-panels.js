@@ -639,7 +639,7 @@ export function showOAAModal(prompt, outputName) {
 
   const domain = extractOntologyDomain(state.currentData);
   const domainFolder = domain ? domain.toUpperCase().replace(/\s+/g, '-') + '-ONT' : 'DOMAIN-ONT';
-  const suggestedPath = `PBS/ONTOLOGIES/pfc-ontologies/${domainFolder}/${outputName}`;
+  const suggestedPath = `PBS/ONTOLOGIES/ontology-library/{Series}/${domainFolder}/${outputName}`;
 
   const command = `claude -p '${escapedPrompt}' > ${outputName}`;
 
@@ -660,7 +660,7 @@ export function showOAAModal(prompt, outputName) {
         <button class="oaa-btn" style="margin-left:12px; padding:4px 8px; font-size:11px;" onclick="copyPath('${escapeHtml(suggestedPath)}', this)">Copy Path</button>
       </div>
       <p style="color:#666; margin-top:8px; font-size:11px;">
-        Standard pattern: <code style="background:#0d0f12; padding:2px 6px; border-radius:3px;">PBS/ONTOLOGIES/pfc-ontologies/{DOMAIN}-ONT/{filename}</code>
+        Standard pattern: <code style="background:#0d0f12; padding:2px 6px; border-radius:3px;">PBS/ONTOLOGIES/ontology-library/{Series}/{DOMAIN}-ONT/{filename}</code>
       </p>
     </details>
 
@@ -718,7 +718,7 @@ export function showSaveToLibrary() {
 
   let suggestedCategory = 'custom';
   if (baseName.toLowerCase().includes('pfc') || baseName.toLowerCase().includes('platform-foundation')) {
-    suggestedCategory = 'pfc-ontologies';
+    suggestedCategory = 'ontology-library';
   } else if (baseName.toLowerCase().includes('pfi')) {
     suggestedCategory = 'pfi-ontologies';
   }
