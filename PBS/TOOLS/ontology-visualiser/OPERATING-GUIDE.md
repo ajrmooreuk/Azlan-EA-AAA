@@ -1,7 +1,7 @@
 # OAA Ontology Visualiser — Operating Guide
 
-**Version:** 3.1.0
-**Date:** 2026-02-05
+**Version:** 3.2.0
+**Date:** 2026-02-06
 **Audience:** Team members, stakeholders, and contributors
 
 ---
@@ -31,22 +31,22 @@ https://ajrmooreuk.github.io/Azlan-EA-AAA/
 
 ---
 
-## Architecture Overview (v3.1.0)
+## Architecture Overview (v3.2.0)
 
 The visualiser is a zero-build-step browser application using native ES modules:
 
 ```text
-browser-viewer.html          ← HTML shell (119 lines, incl. breadcrumb bar)
-├── css/viewer.css            ← All styles (incl. breadcrumb + tier toggle)
+browser-viewer.html          ← HTML shell (140 lines, incl. breadcrumb bar + lineage toggles)
+├── css/viewer.css            ← All styles (incl. breadcrumb, tier toggle, lineage chain, cross-edge filter)
 └── js/
-    ├── app.js                ← Entry point, navigation orchestration, window bindings
-    ├── state.js              ← Shared state + constants + navigation state
+    ├── app.js                ← Entry point, navigation orchestration, lineage toggles, window bindings
+    ├── state.js              ← Shared state + constants (incl. LINEAGE_COLORS) + navigation state
     ├── ontology-parser.js    ← Format detection + parsing (7 formats)
-    ├── graph-renderer.js     ← vis.js rendering (single + Tier 0/1 renderers)
-    ├── multi-loader.js       ← Registry batch loading + series aggregation
+    ├── graph-renderer.js     ← vis.js rendering (single + Tier 0/1 + lineage styling + edge click handlers)
+    ├── multi-loader.js       ← Registry batch loading, series aggregation, lineage classification
     ├── audit-engine.js       ← OAA v6.1.0 validation gates (G1-G6)
     ├── compliance-reporter.js ← Compliance panel rendering
-    ├── ui-panels.js          ← Sidebar, audit, modals, tabs, tier-aware drill buttons
+    ├── ui-panels.js          ← Sidebar, audit (incl. cross-dependency counts), modals, tabs, tier-aware drill buttons
     ├── library-manager.js    ← IndexedDB ontology library
     ├── github-loader.js      ← Registry integration
     └── export.js             ← PNG, audit JSON, ontology download
@@ -330,6 +330,58 @@ Click "Load from GitHub" ──► Enter PAT ──► Enter repo/path ──►
 
 ---
 
+### Workflow 10: VE/PE Lineage Chain Highlighting
+
+```text
+Load Registry ──► Tier 0/1 View ──► Click "VE Chain" / "PE Chain" / "Both"
+                                              │
+                                     ┌────────┴────────┐
+                                     │ Lineage edges    │
+                                     │ highlighted      │
+                                     │ (gold/copper)    │
+                                     │                  │
+                                     │ EFS convergence  │
+                                     │ point shown      │
+                                     └─────────────────┘
+```
+
+**Steps:**
+
+1. Click **Load Registry** to enter multi-ontology mode
+2. In the breadcrumb bar, three lineage toggle buttons appear:
+   - **VE Chain** — highlights the Value Engineering lineage (VSOM → OKR → VP → PMF → EFS) in gold (#cec528)
+   - **PE Chain** — highlights the Process Engineering lineage (PPM → PE → EFS → EA) in copper (#b87333)
+   - **Both** — shows both chains simultaneously with EFS as the convergence point (#FF6B35)
+3. When a lineage is active:
+   - Lineage edges appear as thick solid lines in gold or copper
+   - Non-lineage cross-ontology edges are dimmed to 30% opacity
+   - The EFS node shows dual-colour convergence styling (when Both is active)
+4. Click the same toggle again to turn off highlighting
+5. Lineage highlighting works at Tier 0 (series view), Tier 1 (ontology drill-down), all-ontologies view, and connection map view
+
+**Cross-Refs Only Filter:**
+
+- Click **Cross-refs Only** button to hide all intra-ontology edges and show only cross-ontology connections
+- Useful for understanding inter-ontology dependencies without visual noise
+- Can be combined with lineage highlighting
+
+---
+
+### Workflow 11: Cross-Ontology Edge Navigation
+
+```text
+Click cross-ontology edge ──► Navigates to target ontology (Tier 2)
+```
+
+**Steps:**
+
+1. In any multi-ontology view (Tier 0, Tier 1, all-ontologies, or connection map), click a cross-ontology edge (gold dashed line)
+2. The visualiser navigates directly to the target ontology's entity graph (Tier 2)
+3. Only edges pointing to loaded (non-placeholder) ontologies are navigable
+4. Use the breadcrumb to navigate back
+
+---
+
 ## Toolbar Reference
 
 | Button | Function |
@@ -348,6 +400,10 @@ Click "Load from GitHub" ──► Enter PAT ──► Enter repo/path ──►
 | **Library** | Browse/load saved ontologies |
 | **Load from GitHub** | Fetch from private GitHub repo |
 | **Load Registry** | Load all 23 ontologies with tiered navigation (series rollup → drill-through) |
+| **VE Chain** | Toggle VE lineage chain highlighting (gold, VSOM→OKR→VP→PMF→EFS) |
+| **PE Chain** | Toggle PE lineage chain highlighting (copper, PPM→PE→EFS→EA) |
+| **Both** | Toggle both lineage chains with EFS convergence point |
+| **Cross-refs Only** | Toggle cross-ontology-edge-only filter (hides intra-ontology edges) |
 | **+ Test Data** | Overlay test data instances |
 
 ---
@@ -362,6 +418,7 @@ Click "Load from GitHub" ──► Enter PAT ──► Enter repo/path ──►
 | **Click node** | Select + show details sidebar |
 | **Double-click node (single mode)** | Focus + drill into connections tab |
 | **Double-click node (multi mode)** | Tier 0: drill into series; Tier 1: drill into ontology/switch series |
+| **Click cross-ontology edge** | Navigate to target ontology (Tier 2) — multi-mode only |
 | **Click away** | Deselect |
 | **Escape** | Close any open modal |
 
@@ -399,6 +456,10 @@ Click "Load from GitHub" ──► Enter PAT ──► Enter repo/path ──►
 | Dashed grey | Inheritance / subClassOf |
 | Solid orange (thick) | Binding |
 | **Gold dashed (thick)** | **Cross-ontology reference (multi-mode only)** |
+| **Gold solid (thick, #cec528)** | **VE lineage chain edge (when VE/Both active)** |
+| **Copper solid (thick, #b87333)** | **PE lineage chain edge (when PE/Both active)** |
+| **Convergence glow (#FF6B35)** | **VE+PE convergence edge at EFS (when Both active)** |
+| Dimmed grey dashed | Non-lineage edge (when lineage highlighting active) |
 
 ### Node Shapes
 | Shape | Meaning |
@@ -410,6 +471,8 @@ Click "Load from GitHub" ──► Enter PAT ──► Enter repo/path ──►
 | Square (box) | Layer |
 | Diamond | Placeholder (multi-mode only) |
 | Faded node (30% opacity) | Context series node (Tier 1 only) |
+| Gold border (thick) | Bridge node (referenced by 3+ ontologies) |
+| Dual gold+copper border | EFS convergence point (when lineage active) |
 
 ### Silo Indicators
 | Visual | Meaning |
@@ -448,6 +511,9 @@ Click the badge to jump directly to the compliance report.
 | Library not loading | IndexedDB may be blocked in private browsing mode |
 | Load Registry shows errors | Some ontology artifact files may not exist yet — placeholders are created for failures |
 | Cross-ref edges not showing | Cross-refs are detected from registry `keyBridges` and namespace prefixes. Ontologies without declared bridges won't show cross-refs |
+| Lineage toggles not visible | Lineage toggles only appear in multi-ontology mode (after Load Registry). They are hidden in single-ontology mode and Tier 2 |
+| Edge click doesn't navigate | Only cross-ontology edges pointing to loaded (non-placeholder) ontologies are navigable. Placeholder ontologies cannot be drilled into |
+| EFS convergence not showing | EFS convergence styling only appears when "Both" lineage mode is active. Individual VE/PE modes show their respective chain only |
 
 ---
 
@@ -487,4 +553,4 @@ Ontology files for the registry are in `PBS/ONTOLOGIES/pfc-ontologies/`.
 
 ---
 
-*OAA Ontology Visualiser v3.1.0 — Operating Guide*
+*OAA Ontology Visualiser v3.2.0 — Operating Guide*
