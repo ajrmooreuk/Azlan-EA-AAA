@@ -2,12 +2,122 @@
  * Graph rendering with vis.js — renderGraph, layout controls, focus/zoom.
  */
 
-import { state, TYPE_COLORS, EDGE_COLORS, SERIES_COLORS, LINEAGE_CHAINS } from './state.js';
+import { state, TYPE_COLORS, EDGE_COLORS, SERIES_COLORS, LINEAGE_CHAINS, LINEAGE_COLORS } from './state.js';
 import { parseOntology } from './ontology-parser.js';
 import { auditGraph, validateOAAv5 } from './audit-engine.js';
 import { renderOAACompliancePanel } from './compliance-reporter.js';
 import { lookupRegistry } from './github-loader.js';
 import { renderAuditPanel, showNodeDetails, switchTab } from './ui-panels.js';
+import { classifyLineageEdge, getNodeLineageRole } from './multi-loader.js';
+
+// ========================================
+// LINEAGE EDGE STYLING HELPERS
+// ========================================
+
+/**
+ * Style a cross-ontology edge based on lineage chain membership.
+ * Returns vis.js edge styling overrides or null for default styling.
+ */
+function getLineageEdgeStyle(fromNs, toNs) {
+  const highlight = state.lineageHighlight;
+  if (highlight === 'off') return null;
+
+  const { isVE, isPE, isConvergence } = classifyLineageEdge(fromNs, toNs);
+
+  if (highlight === 'VE' && isVE) {
+    return {
+      color: { color: LINEAGE_COLORS.VE, highlight: '#e8e05a' },
+      width: 3.5,
+      dashes: false,
+      font: { color: LINEAGE_COLORS.VE }
+    };
+  }
+  if (highlight === 'PE' && isPE) {
+    return {
+      color: { color: LINEAGE_COLORS.PE, highlight: '#d4956a' },
+      width: 3.5,
+      dashes: false,
+      font: { color: LINEAGE_COLORS.PE }
+    };
+  }
+  if (highlight === 'both') {
+    if (isConvergence) {
+      return {
+        color: { color: LINEAGE_COLORS.convergence, highlight: '#ff8f5e' },
+        width: 4,
+        dashes: false,
+        font: { color: LINEAGE_COLORS.convergence }
+      };
+    }
+    if (isVE) {
+      return {
+        color: { color: LINEAGE_COLORS.VE, highlight: '#e8e05a' },
+        width: 3.5,
+        dashes: false,
+        font: { color: LINEAGE_COLORS.VE }
+      };
+    }
+    if (isPE) {
+      return {
+        color: { color: LINEAGE_COLORS.PE, highlight: '#d4956a' },
+        width: 3.5,
+        dashes: false,
+        font: { color: LINEAGE_COLORS.PE }
+      };
+    }
+  }
+
+  // When lineage is active, dim non-lineage cross-ontology edges
+  return {
+    color: { color: '#444', highlight: '#666' },
+    width: 1,
+    dashes: [8, 4],
+    font: { color: '#444' }
+  };
+}
+
+/**
+ * Get convergence node styling for EFS when lineage highlighting is active.
+ * Returns vis.js node styling overrides or null.
+ */
+function getConvergenceNodeStyle(namespace) {
+  if (state.lineageHighlight === 'off') return null;
+  const { isConvergence } = getNodeLineageRole(namespace);
+  if (!isConvergence) return null;
+
+  // Only show convergence styling when 'both' is active or when either chain that passes through EFS is active
+  if (state.lineageHighlight === 'both' || state.lineageHighlight === 'VE' || state.lineageHighlight === 'PE') {
+    return {
+      borderColor: LINEAGE_COLORS.convergence,
+      borderWidth: 4,
+      size: 1.3, // multiplier
+      shadow: { enabled: true, color: LINEAGE_COLORS.convergence, size: 12, x: 0, y: 0 },
+      title: 'CONVERGENCE POINT \u2014 VE and PE lineage chains meet here'
+    };
+  }
+  return null;
+}
+
+/**
+ * Attach a cross-ontology edge click handler to the current network.
+ * Clicking a cross-ontology edge navigates to the target ontology (X.3.7).
+ */
+function attachEdgeClickHandler(visEdges) {
+  if (!state.network) return;
+  state.network.on('selectEdge', function(params) {
+    if (params.edges.length !== 1 || params.nodes.length > 0) return;
+    const edgeId = params.edges[0];
+    const edge = visEdges.find(e => e.id === edgeId);
+    if (!edge || !edge._crossOntologyTarget) return;
+    const targetNs = edge._crossOntologyTarget;
+    if (state.loadedOntologies?.has(targetNs)) {
+      const record = state.loadedOntologies.get(targetNs);
+      if (record && !record.isPlaceholder) {
+        window.drillToOntology(targetNs);
+      }
+    }
+  });
+}
 
 export function focusNode(id) {
   if (state.network) { state.network.selectNodes([id]); state.network.focus(id, { scale: 1.5, animation: true }); }
@@ -129,13 +239,28 @@ export function buildLegend(nodes) {
 function buildSeriesLegend(seriesData) {
   const legend = document.getElementById('legend');
   legend.style.display = 'block';
-  legend.innerHTML = Object.entries(seriesData)
+  let html = Object.entries(seriesData)
     .filter(([, info]) => info.count > 0)
     .map(([key, info]) =>
       `<div class="legend-item"><div class="legend-dot" style="background:${info.color}"></div>${key} (${info.count})</div>`
     ).join('') +
     `<div class="legend-item"><div class="legend-dot legend-dot-placeholder" style="background:${SERIES_COLORS.placeholder}"></div>Placeholder</div>` +
     `<div class="legend-item"><div class="legend-dot legend-dot-crossref" style="background:#FFD700"></div>Cross-ontology</div>`;
+
+  // Add lineage legend items when highlighting is active
+  if (state.lineageHighlight !== 'off') {
+    if (state.lineageHighlight === 'VE' || state.lineageHighlight === 'both') {
+      html += `<div class="legend-item"><div class="legend-dot" style="background:${LINEAGE_COLORS.VE}"></div>VE Lineage</div>`;
+    }
+    if (state.lineageHighlight === 'PE' || state.lineageHighlight === 'both') {
+      html += `<div class="legend-item"><div class="legend-dot" style="background:${LINEAGE_COLORS.PE}"></div>PE Lineage</div>`;
+    }
+    if (state.lineageHighlight === 'both') {
+      html += `<div class="legend-item"><div class="legend-dot" style="background:${LINEAGE_COLORS.convergence}; border:2px solid ${LINEAGE_COLORS.VE}"></div>Convergence (EFS)</div>`;
+    }
+  }
+
+  legend.innerHTML = html;
 }
 
 /**
@@ -195,8 +320,8 @@ export function renderMultiGraph(mergedGraph, crossEdges, seriesData) {
       };
     });
 
-  // Internal edges
-  const visEdges = mergedGraph.edges.map(e => ({
+  // Internal edges (hidden when cross-edge filter is active)
+  const visEdges = state.crossEdgeFilterActive ? [] : mergedGraph.edges.map(e => ({
     from: e.from,
     to: e.to,
     label: e.label,
@@ -208,18 +333,32 @@ export function renderMultiGraph(mergedGraph, crossEdges, seriesData) {
     smooth: { type: 'continuous', roundness: 0.3 }
   }));
 
-  // Cross-ontology edges
+  // Cross-ontology edges (with lineage styling)
   for (const ce of crossEdges) {
+    // Determine source and target namespaces for lineage classification
+    const fromNs = ce.sourceNamespace || '';
+    const toPrefix = ce.to.split('::')[0];
+    const toNs = toPrefix + ':';
+
+    // Apply lineage styling if active
+    const lineageStyle = getLineageEdgeStyle(fromNs, toNs);
+    const edgeColor = lineageStyle?.color || { color: '#FFD700', highlight: '#FFF176' };
+    const edgeWidth = lineageStyle?.width ?? 2.5;
+    const edgeDashes = lineageStyle?.dashes ?? [8, 4];
+    const edgeFontColor = lineageStyle?.font?.color || '#FFD700';
+
     visEdges.push({
+      id: `multi-${ce.from}-${ce.to}`,
       from: ce.from,
       to: ce.to,
       label: ce.label,
-      color: { color: '#FFD700', highlight: '#FFF176' },
-      font: { color: '#FFD700', size: 9, strokeWidth: 2, strokeColor: '#0f1117' },
+      color: edgeColor,
+      font: { color: edgeFontColor, size: 9, strokeWidth: 2, strokeColor: '#0f1117' },
       arrows: 'to',
-      dashes: [8, 4],
-      width: 2.5,
-      smooth: { type: 'continuous', roundness: 0.4 }
+      dashes: edgeDashes,
+      width: edgeWidth,
+      smooth: { type: 'continuous', roundness: 0.4 },
+      _crossOntologyTarget: toNs
     });
   }
 
@@ -263,9 +402,12 @@ export function renderMultiGraph(mergedGraph, crossEdges, seriesData) {
     }
   });
 
+  // Attach edge click handler for cross-ontology navigation (X.3.7)
+  attachEdgeClickHandler(visEdges);
+
   const totalEdges = mergedGraph.edges.length + crossEdges.length;
   const bridgeCount = state.bridgeNodes?.size || 0;
-  const filterText = showOnlyBridges ? ' [bridges only]' : '';
+  const filterText = showOnlyBridges ? ' [bridges only]' : (state.crossEdgeFilterActive ? ' [cross-refs only]' : '');
   document.getElementById('stats').textContent =
     `${visNodes.length} nodes | ${totalEdges} edges | ${bridgeCount} bridge nodes | Unified Registry [multi]${filterText}`;
 
@@ -288,23 +430,58 @@ export function renderTier0(seriesData, crossSeriesEdges) {
   const visNodes = [];
   const tier0Nodes = []; // for state.lastParsed
 
+  // Determine which series are involved in each lineage chain
+  const veSeriesSet = new Set();
+  const peSeriesSet = new Set();
+  if (state.lineageHighlight !== 'off') {
+    // Map lineage chain prefixes to their series
+    for (const [ns, record] of (state.loadedOntologies || new Map())) {
+      const prefix = ns.replace(/:$/, '').toUpperCase();
+      if (LINEAGE_CHAINS.VE.includes(prefix)) veSeriesSet.add(record.series);
+      if (LINEAGE_CHAINS.PE.includes(prefix)) peSeriesSet.add(record.series);
+    }
+  }
+
   for (const [key, info] of Object.entries(seriesData)) {
     if (info.count === 0 && !info.ontologies?.length) continue;
+
+    // Apply lineage border highlighting to series nodes
+    let borderColor = '#222';
+    let borderWidth = 3;
+    let shadow = false;
+    if (state.lineageHighlight !== 'off') {
+      const inVE = veSeriesSet.has(key);
+      const inPE = peSeriesSet.has(key);
+      if (inVE && inPE && (state.lineageHighlight === 'both')) {
+        borderColor = LINEAGE_COLORS.convergence;
+        borderWidth = 5;
+        shadow = { enabled: true, color: LINEAGE_COLORS.convergence, size: 10, x: 0, y: 0 };
+      } else if (inVE && (state.lineageHighlight === 'VE' || state.lineageHighlight === 'both')) {
+        borderColor = LINEAGE_COLORS.VE;
+        borderWidth = 4;
+        shadow = { enabled: true, color: LINEAGE_COLORS.VE, size: 8, x: 0, y: 0 };
+      } else if (inPE && (state.lineageHighlight === 'PE' || state.lineageHighlight === 'both')) {
+        borderColor = LINEAGE_COLORS.PE;
+        borderWidth = 4;
+        shadow = { enabled: true, color: LINEAGE_COLORS.PE, size: 8, x: 0, y: 0 };
+      }
+    }
 
     const node = {
       id: key,
       label: `${info.name}\n${info.count} ontologies`,
       color: {
         background: info.color,
-        border: '#222',
+        border: borderColor,
         highlight: { background: '#9dfff5', border: '#017c75' }
       },
-      borderWidth: 3,
+      borderWidth: borderWidth,
       borderWidthSelected: 5,
       font: { color: '#e0e0e0', size: 16, multi: 'md' },
       shape: 'dot',
       size: 45,
       title: `${info.name}\n${info.description || ''}\n${info.count} ontologies`,
+      shadow: shadow,
       _data: {
         id: key,
         label: info.name,
@@ -322,17 +499,67 @@ export function renderTier0(seriesData, crossSeriesEdges) {
   const visEdges = [];
   const tier0Edges = [];
 
-  // Cross-series edges
+  // Cross-series edges (with lineage styling when active)
   for (const cse of crossSeriesEdges) {
+    // Default cross-series style
+    let edgeColor = { color: '#FFD700', highlight: '#FFF176' };
+    let edgeWidth = 2;
+    let edgeDashes = [8, 4];
+    let edgeFontColor = '#FFD700';
+
+    // Check if any bridges in this cross-series edge are lineage edges
+    if (state.lineageHighlight !== 'off' && cse.bridges) {
+      // Check if any underlying cross-ontology edges between these series are lineage
+      let hasVE = false, hasPE = false;
+      for (const ce of (state.crossEdges || [])) {
+        const fromRecord = state.loadedOntologies?.get(ce.sourceNamespace);
+        if (!fromRecord) continue;
+        const toPrefix = ce.to.split('::')[0];
+        let toRecord = null;
+        for (const [ns, rec] of (state.loadedOntologies || new Map())) {
+          if (ns.replace(/:$/, '') === toPrefix) { toRecord = rec; break; }
+        }
+        if (!toRecord) continue;
+        if ((fromRecord.series === cse.from && toRecord.series === cse.to) ||
+            (fromRecord.series === cse.to && toRecord.series === cse.from)) {
+          const { isVE, isPE } = classifyLineageEdge(ce.sourceNamespace, toPrefix + ':');
+          if (isVE) hasVE = true;
+          if (isPE) hasPE = true;
+        }
+      }
+
+      if (hasVE && hasPE && state.lineageHighlight === 'both') {
+        edgeColor = { color: LINEAGE_COLORS.convergence, highlight: '#ff8f5e' };
+        edgeWidth = 4;
+        edgeDashes = false;
+        edgeFontColor = LINEAGE_COLORS.convergence;
+      } else if (hasVE && (state.lineageHighlight === 'VE' || state.lineageHighlight === 'both')) {
+        edgeColor = { color: LINEAGE_COLORS.VE, highlight: '#e8e05a' };
+        edgeWidth = 3.5;
+        edgeDashes = false;
+        edgeFontColor = LINEAGE_COLORS.VE;
+      } else if (hasPE && (state.lineageHighlight === 'PE' || state.lineageHighlight === 'both')) {
+        edgeColor = { color: LINEAGE_COLORS.PE, highlight: '#d4956a' };
+        edgeWidth = 3.5;
+        edgeDashes = false;
+        edgeFontColor = LINEAGE_COLORS.PE;
+      } else if (state.lineageHighlight !== 'off') {
+        // Dim non-lineage edges
+        edgeColor = { color: '#444', highlight: '#666' };
+        edgeWidth = 1;
+        edgeFontColor = '#444';
+      }
+    }
+
     visEdges.push({
       from: cse.from,
       to: cse.to,
       label: `${cse.count} refs`,
-      color: { color: '#FFD700', highlight: '#FFF176' },
-      font: { color: '#FFD700', size: 11, strokeWidth: 2, strokeColor: '#0f1117' },
+      color: edgeColor,
+      font: { color: edgeFontColor, size: 11, strokeWidth: 2, strokeColor: '#0f1117' },
       arrows: 'to',
-      dashes: [8, 4],
-      width: 2,
+      dashes: edgeDashes,
+      width: edgeWidth,
       smooth: { type: 'continuous', roundness: 0.4 }
     });
     tier0Edges.push({
@@ -417,21 +644,39 @@ export function renderTier1(seriesKey, loadedOntologies, seriesData) {
     if (record.series !== seriesKey) continue;
 
     const shortName = record.name.replace(/\s+Ontology.*$/i, '').replace(/\s*\(.*\)$/, '');
+
+    // Check for convergence point styling
+    const convergenceStyle = getConvergenceNodeStyle(ns);
+    let borderColor = record.isPlaceholder ? '#888' : '#222';
+    let borderWidth = 2;
+    let nodeSize = 30;
+    let shadow = false;
+    let extraTitle = '';
+
+    if (convergenceStyle) {
+      borderColor = convergenceStyle.borderColor;
+      borderWidth = convergenceStyle.borderWidth;
+      nodeSize = Math.round(30 * convergenceStyle.size);
+      shadow = convergenceStyle.shadow;
+      extraTitle = '\n' + convergenceStyle.title;
+    }
+
     const node = {
       id: ns,
       label: shortName,
       color: {
         background: record.isPlaceholder ? SERIES_COLORS.placeholder : seriesInfo.color,
-        border: record.isPlaceholder ? '#888' : '#222',
+        border: borderColor,
         highlight: { background: '#9dfff5', border: '#017c75' }
       },
-      borderWidth: 2,
+      borderWidth: borderWidth,
       borderWidthSelected: 4,
       shapeProperties: { borderDashes: record.isPlaceholder ? [6, 3] : false },
       font: { color: '#e0e0e0', size: 14 },
       shape: record.isPlaceholder ? 'diamond' : 'dot',
-      size: 30,
-      title: `${record.name}\n${record.isPlaceholder ? 'Placeholder' : record.status || 'active'}\n${record.parsed?.nodes?.length || 0} entities`,
+      size: nodeSize,
+      shadow: shadow,
+      title: `${record.name}\n${record.isPlaceholder ? 'Placeholder' : record.status || 'active'}\n${record.parsed?.nodes?.length || 0} entities${extraTitle}`,
       _data: {
         id: ns,
         label: shortName,
@@ -517,16 +762,28 @@ export function renderTier1(seriesKey, loadedOntologies, seriesData) {
     const edgeKey = `${edgeFrom}->${edgeTo}`;
     if (tier1Edges.some(e => `${e.from}->${e.to}` === edgeKey)) continue;
 
+    // Apply lineage styling if active
+    const lineageStyle = getLineageEdgeStyle(fromNs, toNs);
+    const edgeColor = lineageStyle?.color || { color: '#FFD700', highlight: '#FFF176' };
+    const edgeWidth = lineageStyle?.width ?? 2;
+    const edgeDashes = lineageStyle?.dashes ?? [8, 4];
+    const edgeFontColor = lineageStyle?.font?.color || '#FFD700';
+
+    // Resolve target namespace for edge click navigation
+    const targetNs = toInSeries ? toNs : null;
+
     visEdges.push({
+      id: `tier1-${edgeFrom}-${edgeTo}`,
       from: edgeFrom,
       to: edgeTo,
       label: edge.label,
-      color: { color: '#FFD700', highlight: '#FFF176' },
-      font: { color: '#FFD700', size: 9, strokeWidth: 2, strokeColor: '#0f1117' },
+      color: edgeColor,
+      font: { color: edgeFontColor, size: 9, strokeWidth: 2, strokeColor: '#0f1117' },
       arrows: 'to',
-      dashes: [8, 4],
-      width: 2,
-      smooth: { type: 'continuous', roundness: 0.4 }
+      dashes: edgeDashes,
+      width: edgeWidth,
+      smooth: { type: 'continuous', roundness: 0.4 },
+      _crossOntologyTarget: targetNs
     });
     tier1Edges.push({
       from: edgeFrom, to: edgeTo, label: edge.label,
@@ -587,6 +844,9 @@ export function renderTier1(seriesKey, loadedOntologies, seriesData) {
     }
   });
 
+  // Attach edge click handler for cross-ontology navigation (X.3.7)
+  attachEdgeClickHandler(visEdges);
+
   const ontCount = visNodes.filter(n => n._data.entityType === 'ontology').length;
   document.getElementById('stats').textContent =
     `${seriesInfo.name}: ${ontCount} ontologies | ${visEdges.length} cross-ref edges | Unified Registry [series-drill]`;
@@ -644,21 +904,38 @@ export function renderConnectionMap(loadedOntologies, crossEdges, seriesData) {
       .replace(/\s*\(.*\)$/, '')
       .trim();
 
+    // Check for convergence point styling
+    const convergenceStyle = getConvergenceNodeStyle(ns);
+    let borderColor = record.isPlaceholder ? '#888' : '#222';
+    let borderWidth = 2;
+    let nodeSize = 25;
+    let shadow = false;
+    let extraTitle = '';
+
+    if (convergenceStyle) {
+      borderColor = convergenceStyle.borderColor;
+      borderWidth = convergenceStyle.borderWidth;
+      nodeSize = Math.round(25 * convergenceStyle.size);
+      shadow = convergenceStyle.shadow;
+      extraTitle = '\n' + convergenceStyle.title;
+    }
+
     const node = {
       id: ns,
       label: shortName,
       color: {
         background: record.isPlaceholder ? SERIES_COLORS.placeholder : seriesColor,
-        border: record.isPlaceholder ? '#888' : '#222',
+        border: borderColor,
         highlight: { background: '#9dfff5', border: '#017c75' }
       },
-      borderWidth: 2,
+      borderWidth: borderWidth,
       borderWidthSelected: 4,
       shapeProperties: { borderDashes: record.isPlaceholder ? [6, 3] : false },
       font: { color: '#e0e0e0', size: 12 },
       shape: record.isPlaceholder ? 'diamond' : 'dot',
-      size: 25,
-      title: `${record.name}\n${record.series}\n${record.parsed?.nodes?.length || 0} entities`,
+      size: nodeSize,
+      shadow: shadow,
+      title: `${record.name}\n${record.series}\n${record.parsed?.nodes?.length || 0} entities${extraTitle}`,
       _data: {
         id: ns,
         label: shortName,
@@ -685,19 +962,39 @@ export function renderConnectionMap(loadedOntologies, crossEdges, seriesData) {
 
     // Calculate edge width: 1 to 6 based on count
     const normalised = count / maxCount;
-    const width = 1 + normalised * 5;
+    let width = 1 + normalised * 5;
+
+    // Apply lineage styling if active
+    const lineageStyle = getLineageEdgeStyle(fromNs, toNs);
+    let edgeColor = { color: '#FFD700', highlight: '#FFF176' };
+    let edgeFontColor = '#FFD700';
+    let edgeDashes = false;
+
+    if (lineageStyle) {
+      edgeColor = lineageStyle.color;
+      edgeFontColor = lineageStyle.font.color;
+      edgeDashes = lineageStyle.dashes;
+      // Lineage edges use lineage width, non-lineage dimmed ones use min width
+      if (lineageStyle.width > 1) {
+        width = Math.max(width, lineageStyle.width);
+      } else {
+        width = lineageStyle.width;
+      }
+    }
 
     visEdges.push({
+      id: `conn-${fromNs}-${toNs}`,
       from: fromNs,
       to: toNs,
       label: `${count}`,
-      color: { color: '#FFD700', highlight: '#FFF176' },
-      font: { color: '#FFD700', size: 11, strokeWidth: 2, strokeColor: '#0f1117' },
+      color: edgeColor,
+      font: { color: edgeFontColor, size: 11, strokeWidth: 2, strokeColor: '#0f1117' },
       arrows: { to: { enabled: true, scaleFactor: 0.5 } },
-      dashes: false,
+      dashes: edgeDashes,
       width: width,
       smooth: { type: 'continuous', roundness: 0.4 },
-      title: `${count} cross-reference${count > 1 ? 's' : ''}`
+      title: `${count} cross-reference${count > 1 ? 's' : ''}`,
+      _crossOntologyTarget: toNs
     });
 
     connectionMapEdges.push({
@@ -756,6 +1053,9 @@ export function renderConnectionMap(loadedOntologies, crossEdges, seriesData) {
       }
     }
   });
+
+  // Attach edge click handler for cross-ontology navigation (X.3.7)
+  attachEdgeClickHandler(visEdges);
 
   const ontologyCount = visNodes.length;
   const edgeCount = visEdges.length;

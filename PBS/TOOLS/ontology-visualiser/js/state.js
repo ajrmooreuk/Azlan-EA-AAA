@@ -27,7 +27,13 @@ export const state = {
   currentOntology: null,    // namespace when drilled into an ontology
   navigationStack: [],      // breadcrumb history [{tier, series, ontology, label}]
   crossEdges: [],           // cross-ontology edges from detectCrossReferences
-  crossSeriesEdges: []      // aggregated series-to-series edges
+  crossSeriesEdges: [],     // aggregated series-to-series edges
+
+  // Lineage + cross-edge state (Phase 2/4)
+  lineageHighlight: 'off',       // 'off' | 'VE' | 'PE' | 'both'
+  crossEdgeFilterActive: false,  // show only cross-ontology edges
+  bridgeFilterActive: false,     // bridge node filter
+  bridgeNodes: null              // Map of bridge node IDs
 };
 
 export const TYPE_COLORS = {
@@ -56,6 +62,12 @@ export const SERIES_COLORS = {
 export const LINEAGE_CHAINS = {
   VE: ['VSOM', 'OKR', 'VP', 'PMF', 'EFS'],
   PE: ['PPM', 'PE', 'EFS', 'EA']
+};
+
+export const LINEAGE_COLORS = {
+  VE: '#cec528',          // Gold for Value Engineering chain
+  PE: '#b87333',          // Copper for Product Engineering chain
+  convergence: '#FF6B35'  // Orange-red for EFS convergence point
 };
 
 export const DB_NAME = 'OntologyLibrary';

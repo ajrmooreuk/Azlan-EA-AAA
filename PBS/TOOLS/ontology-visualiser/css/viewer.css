@@ -197,6 +197,22 @@ header .stats { font-size: 13px; color: #888; margin-left: auto; }
 .bridge-filter-btn:hover { background: #2a2d35; color: #ccc; }
 .bridge-filter-btn.active { background: #856404; border-color: #FFD700; color: #FFD700; }
 
+/* Lineage Chain Toggle (Phase 2/4 — Issue #39) */
+#lineage-toggle { display: inline-flex; gap: 4px; }
+.lineage-toggle { background: #1a1d25; border: 1px solid #3a3d47; color: #888; padding: 4px 10px; font-size: 12px; cursor: pointer; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+.lineage-toggle:hover { background: #2a2d35; color: #ccc; }
+.lineage-toggle.active[data-lineage="VE"] { background: rgba(206,197,40,0.2); border-color: #cec528; color: #cec528; }
+.lineage-toggle.active[data-lineage="PE"] { background: rgba(184,115,51,0.2); border-color: #b87333; color: #b87333; }
+.lineage-toggle.active[data-lineage="both"] { background: rgba(255,107,53,0.15); border-color: #FF6B35; color: #FF6B35; }
+.lineage-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.lineage-dot.ve { background: #cec528; }
+.lineage-dot.pe { background: #b87333; }
+
+/* Cross-Edge Filter (Phase 4 — Issue #37, X.3.5) */
+.cross-edge-filter-btn { background: #1a1d25; border: 1px solid #3a3d47; color: #888; padding: 4px 10px; font-size: 12px; cursor: pointer; border-radius: 4px; }
+.cross-edge-filter-btn:hover { background: #2a2d35; color: #ccc; }
+.cross-edge-filter-btn.active { background: rgba(33,150,243,0.2); border-color: #2196F3; color: #2196F3; }
+
 /* Dependency Links (drill-through navigation) */
 .dependency-links { display: flex; flex-wrap: wrap; gap: 6px; }
 .dep-link { display: inline-block; background: #22252f; border: 1px solid #3a3d47; color: #9dfff5; padding: 3px 10px; border-radius: 12px; font-size: 11px; cursor: pointer; transition: all 0.15s; }
