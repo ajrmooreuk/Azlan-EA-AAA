@@ -419,7 +419,7 @@ function navigateToTier0() {
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
   showSeriesControls(true);
-  updateLineageToggleUI();
+  updateSeriesToggleUI();
   updateCrossEdgeFilterUI();
 }
 
@@ -438,7 +438,7 @@ function drillToSeries(seriesKey) {
 
   document.getElementById('tier0-toggle').style.display = 'none';
   showSeriesControls(true);
-  updateLineageToggleUI();
+  updateSeriesToggleUI();
   updateCrossEdgeFilterUI();
 }
 
@@ -596,7 +596,7 @@ function showAllOntologies() {
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
   showSeriesControls(true);
-  updateLineageToggleUI();
+  updateSeriesToggleUI();
   updateCrossEdgeFilterUI();
 }
 
@@ -616,7 +616,7 @@ function showConnectionMap() {
   document.getElementById('btn-save-library').style.display = 'none';
   document.getElementById('btn-export-audit').style.display = 'none';
   showSeriesControls(true);
-  updateLineageToggleUI();
+  updateSeriesToggleUI();
   updateCrossEdgeFilterUI();
 }
 
