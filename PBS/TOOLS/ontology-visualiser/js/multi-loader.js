@@ -443,15 +443,28 @@ function parsePrefixedRef(ref) {
 
 /**
  * Resolve a { prefix, entity } to a merged graph node ID.
- * Tries namespace-prefixed ID first, then original ID lookup.
+ * Tries namespace-prefixed ID first, then original ID with prefix,
+ * then case-insensitive fallback.
  */
 function resolveNodeInMergedGraph(parts, nodeIndex) {
+  // Try double-colon prefixed form: "vsom::ObjectivesComponent"
   const prefixedId = `${parts.prefix}::${parts.entity}`;
   if (nodeIndex.has(prefixedId)) return prefixedId;
 
+  // Entity IDs in ontology artifacts often already include the namespace prefix
+  // (e.g., "@id": "vsom:ObjectivesComponent"), so the merged graph node becomes
+  // "vsom::vsom:ObjectivesComponent". Check the original-ID index for "vsom:ObjectivesComponent".
+  const originalRef = `${parts.prefix}:${parts.entity}`;
+  const mapped = nodeIndex.get(originalRef);
+  if (mapped && typeof mapped === 'string') return mapped;
+
   // Try case-insensitive match
-  for (const [key] of nodeIndex) {
-    if (key.toLowerCase() === prefixedId.toLowerCase()) return key;
+  const targetLower = prefixedId.toLowerCase();
+  const originalLower = originalRef.toLowerCase();
+  for (const [key, value] of nodeIndex) {
+    const keyLower = key.toLowerCase();
+    if (keyLower === targetLower) return key;
+    if (keyLower === originalLower && typeof value === 'string') return value;
   }
 
   return null;
