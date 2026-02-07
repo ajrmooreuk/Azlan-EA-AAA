@@ -78,13 +78,15 @@ export function resolveArtifactPath(artifactRelPath) {
   // Strip leading './' if present
   let cleaned = artifactRelPath.replace(/^\.\//, '');
 
-  // The artifact path starts with '../' (relative to entries/ dir).
-  // From the entries/ dir, '../' goes to unified-registry/, and
-  // '../pfc-ontologies' is a sibling of unified-registry.
-  // From the visualiser, we need: REGISTRY_BASE_PATH + 'entries/' + artifactRelPath
-  // But that gives us '../ONTOLOGIES/unified-registry/entries/../pfc-ontologies/...'
-  // which the browser normalises to '../ONTOLOGIES/pfc-ontologies/...'.
-  return REGISTRY_BASE_PATH + 'entries/' + cleaned;
+  // Artifact paths in registry entries are relative to the unified-registry/
+  // directory (NOT the entries/ subdirectory). For example:
+  //   "../pfc-ontologies/VE-Series-ONT/.../vsom-ontology-v2.1.0-oaa-v5.json"
+  // means: from unified-registry/, go up one level to ONTOLOGIES/, then into pfc-ontologies/.
+  //
+  // REGISTRY_BASE_PATH = '../../ONTOLOGIES/unified-registry/'
+  // Result: '../../ONTOLOGIES/unified-registry/../pfc-ontologies/...'
+  //       → '../../ONTOLOGIES/pfc-ontologies/...'  (browser normalises the ../)
+  return REGISTRY_BASE_PATH + cleaned;
 }
 
 // ========================================
@@ -144,12 +146,15 @@ export async function loadFullRegistry(progressCallback) {
     const series = resolveSeriesForOntology(entrySummary.name, seriesRegistry);
     const ns = entrySummary.namespace || entrySummary['@id'];
 
+    // Declare outside try so catch can access the entry data for bridge detection
+    let fullEntry = null;
+
     try {
       // Load the full registry entry JSON
       const entryPath = entrySummary.path?.replace('./', '') || '';
       const entryResponse = await fetch(REGISTRY_BASE_PATH + entryPath);
       if (!entryResponse.ok) throw new Error(`Entry fetch failed: ${entryResponse.status}`);
-      const fullEntry = await entryResponse.json();
+      fullEntry = await entryResponse.json();
 
       // Check if this is a placeholder (no artifact)
       const artifactPath = fullEntry.artifacts?.ontology;
@@ -188,8 +193,8 @@ export async function loadFullRegistry(progressCallback) {
 
     } catch (err) {
       console.warn(`Failed to load ${entrySummary.name}:`, err.message);
-      // Create a placeholder for failed loads
-      const record = createPlaceholderRecord(entrySummary, null, series);
+      // Preserve fullEntry (if loaded) so bridge data is available for cross-ref detection
+      const record = createPlaceholderRecord(entrySummary, fullEntry, series);
       record.status = 'load-failed';
       record.loadError = err.message;
       loadedOntologies.set(ns, record);
@@ -310,9 +315,11 @@ export function detectCrossReferences(loadedOntologies, mergedGraph) {
   console.log(`[CrossRef] Loaded ontologies: ${loadedOntologies.size} (keys: ${[...loadedOntologies.keys()].join(', ')})`);
 
   // Pass 1: Registry-declared bridges
+  // Include load-failed records — they may have valid registryEntry with bridge data
+  // even though their artifact couldn't be loaded
   let pass1Attempted = 0, pass1Resolved = 0, pass1Failed = 0;
   for (const [ns, record] of loadedOntologies) {
-    if (record.isPlaceholder || !record.registryEntry) continue;
+    if (!record.registryEntry) continue;
 
     // Read both property names — entries use keyBridges (VP) or crossOntology (VSOM, OKR, etc.)
     const keyBridges = record.registryEntry.relationships?.keyBridges;
