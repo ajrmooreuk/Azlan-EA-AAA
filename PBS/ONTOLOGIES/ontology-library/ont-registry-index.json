@@ -192,9 +192,10 @@
       "name": "EA Ontology (Enterprise Architecture Portfolio)",
       "namespace": "ea:",
       "status": "compliant",
+      "oaaVersion": "6.1.0",
       "gatesPassed": 7,
       "gatesFailed": 0,
-      "validatedDate": "2026-02-02",
+      "validatedDate": "2026-02-07",
       "path": "./PE-Series/EA-ONT/Entry-ONT-EA-001.json"
     },
     {
@@ -329,7 +330,7 @@
     ],
     "placeholders": ["MCSB2", "AIR", "AZALZ"],
     "oaaVersion": "5.0.0",
-    "oaaVersionNotes": "Base compliance at OAA v5.0.0. VP, PII, GDPR, OKR, EFS, ORG-CONTEXT, GA upgraded to OAA v6.1.0. KPI upgraded to OAA v6.2.0 with 8-gate validation.",
+    "oaaVersionNotes": "Base compliance at OAA v5.0.0. VP, PII, GDPR, OKR, EFS, ORG-CONTEXT, GA, EA upgraded to OAA v6.1.0. KPI upgraded to OAA v6.2.0 with 8-gate validation.",
     "lastFullValidation": "2026-02-07"
   },
   "pfiInstances": [

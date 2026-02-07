@@ -3,9 +3,9 @@
   "@type": "OntologyRegistryEntry",
   "@id": "Entry-ONT-EA-001",
   "name": "EA Ontology (Enterprise Architecture Portfolio)",
-  "description": "Enterprise Architecture portfolio management ontology extending PPM-ONT for initiative tracking, dependency management, strategic pillars, and value realisation across 3-year transformation horizons",
-  "version": "1.0.0",
-  "oaaVersion": "5.0.0",
+  "description": "Enterprise Architecture portfolio management ontology extending PPM for initiative tracking, dependency management, strategic pillar alignment, practice area assignment, benefit and effort metrics, and value realisation across multi-year transformation horizons.",
+  "version": "2.0.0",
+  "oaaVersion": "6.1.0",
   "namespace": "https://platformcore.io/ontology/ea/",
   "prefix": "ea:",
   "status": "compliant",
@@ -19,7 +19,7 @@
     "gate5": "pass",
     "gate6": "pass"
   },
-  "validationDate": "2026-02-02",
+  "validationDate": "2026-02-07",
   "gatesPassed": 7,
   "gatesFailed": 0,
   "artifacts": {
@@ -40,165 +40,76 @@
     "testData": null,
     "validationReport": null
   },
-  "entities": {
-    "count": 10,
-    "list": [
-      "Portfolio",
-      "Programme",
-      "Initiative",
-      "Workstream",
-      "Dependency",
-      "Milestone",
-      "PracticeArea",
-      "BenefitMetric",
-      "EffortMetric",
-      "Risk"
-    ]
-  },
-  "conceptSchemes": [
-    {
-      "name": "Phase",
-      "description": "Initiative phases across 3-year horizon (Foundation, Y1Q2-Q4, Y2Q1-Q4, Y3Q1-Q4)"
-    },
-    {
-      "name": "InitiativeStatus",
-      "description": "Lifecycle status (Proposed, Approved, In Progress, On Hold, Completed, Cancelled)"
-    },
-    {
-      "name": "Priority",
-      "description": "Priority levels (Critical, High, Medium, Low)"
-    },
-    {
-      "name": "DependencyType",
-      "description": "Dependency types (FS, SS, FF, Enables, Blocks, Informed By)"
-    },
-    {
-      "name": "ProgrammeStatus",
-      "description": "Programme status (Defining, Approved, Delivering, Closing, Closed)"
-    }
-  ],
   "components": {
-    "portfolioManagement": "Collection of programmes within investment envelope",
-    "programmeManagement": "Initiative sets aligned to strategic pillars",
-    "initiativeTracking": "Discrete transformation initiatives with outcomes",
-    "dependencyManagement": "Initiative sequencing and enablement relationships",
-    "benefitRealisation": "Value tracking with baseline, target, and actual metrics",
-    "riskManagement": "Delivery risk identification and mitigation"
+    "Portfolio": "Collection of programmes delivering strategic vision within an investment envelope",
+    "Programme": "Coherent set of initiatives delivering benefits aligned to a strategic pillar",
+    "Initiative": "Discrete transformation initiative with defined outcomes and dependencies",
+    "Workstream": "Sub-component of initiative for complex delivery management",
+    "Dependency": "Typed relationship between initiatives for sequencing and enablement",
+    "Milestone": "Significant achievement point with success criteria and target date",
+    "PracticeArea": "Business unit or advisory practice contributing to transformation",
+    "BenefitMetric": "Quantified benefit measurement with baseline, target, and actual values",
+    "EffortMetric": "Resource consumption measurement for capacity planning",
+    "Risk": "Identified risk to initiative delivery with probability and impact"
   },
   "relationships": {
-    "hierarchy": [
-      "Portfolio \u2192 hasProgramme \u2192 Programme",
-      "Programme \u2192 hasInitiative \u2192 Initiative",
-      "Initiative \u2192 hasDependency \u2192 Dependency",
-      "Initiative \u2192 hasMilestone \u2192 Milestone",
-      "Initiative \u2192 hasRisk \u2192 Risk",
-      "Initiative \u2192 tracksBenefit \u2192 BenefitMetric"
-    ],
+    "internal": 14,
     "crossOntology": [
       {
-        "name": "vision",
-        "from": "ea:Portfolio",
+        "name": "alignsToVision",
+        "from": "ppm:Portfolio",
         "to": "vsom:StrategicVision",
-        "purpose": "Portfolio-to-VSOM strategic alignment"
-      },
-      {
-        "name": "benefitsPracticeArea",
-        "from": "ea:Initiative",
-        "to": "org:OrganizationUnit",
-        "purpose": "Initiative benefit distribution"
+        "cardinality": "1:1",
+        "purpose": "EA \u2192 VSOM: Portfolio-to-strategic vision alignment"
       },
       {
         "name": "alignsToStrategicPillar",
-        "from": "ea:Programme",
+        "from": "ppm:Programme",
         "to": "vsom:StrategyComponent",
-        "purpose": "Programme-to-strategy alignment"
+        "cardinality": "n:1",
+        "purpose": "EA \u2192 VSOM: Programme-to-strategy pillar traceability"
+      },
+      {
+        "name": "spawnsFromRecommendation",
+        "from": "ga:Recommendation",
+        "to": "ppm:Initiative",
+        "cardinality": "1:n",
+        "purpose": "GA \u2192 EA: Gap analysis recommendations spawn initiatives"
+      },
+      {
+        "name": "decomposesToEpic",
+        "from": "ppm:Initiative",
+        "to": "efs:Epic",
+        "cardinality": "1:n",
+        "purpose": "EA \u2192 EFS: Initiatives decompose into Epics for agile execution"
       }
     ]
   },
-  "businessRules": {
-    "count": 8,
-    "rules": [
-      {
-        "id": "BR-EA-001",
-        "severity": "error",
-        "description": "Portfolio must have at least one programme"
-      },
-      {
-        "id": "BR-EA-002",
-        "severity": "error",
-        "description": "Programme must belong to exactly one portfolio"
-      },
-      {
-        "id": "BR-EA-003",
-        "severity": "error",
-        "description": "Initiative must belong to exactly one programme"
-      },
-      {
-        "id": "BR-EA-004",
-        "severity": "error",
-        "description": "No circular dependencies allowed"
-      },
-      {
-        "id": "BR-EA-005",
-        "severity": "warning",
-        "description": "Critical path dependencies require dates"
-      },
-      {
-        "id": "BR-EA-006",
-        "severity": "warning",
-        "description": "Completed initiatives cannot have open milestones"
-      },
-      {
-        "id": "BR-EA-007",
-        "severity": "warning",
-        "description": "High impact risks require mitigation"
-      },
-      {
-        "id": "BR-EA-008",
-        "severity": "warning",
-        "description": "Strategic pillar weights should sum to 1.0"
-      }
-    ]
-  },
-  "joinPatterns": [
-    {
-      "id": "JP-EA-001",
-      "name": "Portfolio-to-VSOM Vision",
-      "path": "ea:Portfolio \u2192 ea:vision \u2192 vsom:StrategicVision"
-    },
-    {
-      "id": "JP-EA-002",
-      "name": "Programme-to-Strategy Pillar",
-      "path": "ea:Programme \u2192 ea:alignsToStrategicPillar \u2192 vsom:StrategyComponent"
-    },
-    {
-      "id": "JP-EA-003",
-      "name": "Initiative-to-Benefit Tracking",
-      "path": "ea:Initiative \u2192 ea:tracksBenefit \u2192 ea:BenefitMetric"
-    },
-    {
-      "id": "JP-EA-004",
-      "name": "Dependency Chain",
-      "path": "ea:Initiative \u2192 ea:dependencies \u2192 ea:Dependency \u2192 ea:toInitiative \u2192 ea:Initiative"
-    }
-  ],
   "dependencies": [
     "Entry-ONT-VSOM-001",
-    "Entry-ONT-PPM-001",
+    "Entry-ONT-GA-001",
+    "Entry-ONT-EFS-001",
     "Entry-ONT-ORG-001"
   ],
-  "dependents": [],
+  "dependents": [
+    "Entry-ONT-PE-001"
+  ],
   "layer": "EXECUTION LAYER (PE-Series)",
   "domain": "Enterprise Architecture",
   "maintainer": "Azlan EA-AAA",
   "created": "2026-02-01",
-  "lastModified": "2026-02-02",
+  "lastModified": "2026-02-07",
   "versionHistory": [
     {
       "version": "1.0.0",
       "date": "2026-02-02",
       "changes": "Initial EA ontology consolidating PPM schema extension with strategic framework, advisory portfolio, and initiative data"
+    },
+    {
+      "version": "2.0.0",
+      "date": "2026-02-07",
+      "changes": "OAA v6.1.0 upgrade: 18 relationships (14 internal + 4 cross-ontology) forming single connected component, 8 business rules with IF-THEN format, 10 entities as DefinedTerm with properties, 5 enumerations, crossOntologyReferences with keyBridges for VSOM/GA/EFS bridges"
     }
   ],
-  "notes": "EA-ONT extends PPM-ONT for enterprise architecture transformation portfolios. Includes 9 instance data files with strategic framework, advisory portfolio, dependencies, and initiative batches. Connects to VSOM for strategic alignment."
+  "notes": "EA-ONT extends PPM-ONT for enterprise architecture transformation portfolios. Includes 9 instance data files with strategic framework, advisory portfolio, dependencies, and initiative batches. Bridges VSOM for strategic alignment, GA for recommendations, and EFS for agile decomposition."
 }
