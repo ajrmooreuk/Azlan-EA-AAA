@@ -235,18 +235,6 @@
       "path": "./entries/Entry-ONT-AZALZ-001.json"
     },
     {
-      "@id": "Entry-ONT-SA-001",
-      "name": "SA Ontology (Solution Architecture)",
-      "namespace": "sa:",
-      "status": "compliant",
-      "gatesPassed": 8,
-      "gatesFailed": 0,
-      "validatedDate": "2026-02-02",
-      "oaaVersion": "6.1.0",
-      "version": "1.0.0",
-      "path": "./entries/Entry-ONT-SA-001.json"
-    },
-    {
       "@id": "Entry-ONT-PII-001",
       "name": "PII Governance Ontology (Microsoft Native)",
       "namespace": "pii:",
@@ -283,7 +271,6 @@
     "air": "https://platformcore.io/ontology/air/",
     "gdpr": "https://platformcore.io/ontology/gdpr/",
     "azalz": "https://platformcore.io/ontology/azalz/",
-    "sa": "https://platformcore.io/ontology/solution-architecture/",
     "pii": "https://platformcore.io/ontology/pii-governance/"
   },
   "seriesRegistry": {
@@ -295,7 +282,7 @@
     "PE-Series": {
       "name": "Process Engineering Series",
       "description": "Execution and process management ontologies",
-      "ontologies": ["PPM", "PE", "EFS", "EA", "SA"]
+      "ontologies": ["PPM", "PE", "EFS", "EA"]
     },
     "RCSG-Series": {
       "name": "Risk, Compliance, Security & Governance Series",
@@ -319,8 +306,8 @@
     }
   },
   "statistics": {
-    "totalOntologies": 24,
-    "compliant": 20,
+    "totalOntologies": 23,
+    "compliant": 19,
     "nearCompliance": 0,
     "partialCompliance": 0,
     "pendingReview": 0,
@@ -328,16 +315,16 @@
     "deprecated": 0
   },
   "validationSummary": {
-    "validated": 20,
+    "validated": 19,
     "validatedOntologies": [
       "EMC", "ORG", "ORG-CONTEXT", "ORG-MAT",
       "CA", "CL", "GA",
       "VSOM", "OKR", "VP", "RRR", "PMF",
-      "PPM", "PE", "EFS", "MCSB", "EA", "SA", "PII", "GDPR"
+      "PPM", "PE", "EFS", "MCSB", "EA", "PII", "GDPR"
     ],
     "placeholders": ["KPI", "MCSB2", "AIR", "AZALZ"],
     "oaaVersion": "5.0.0",
-    "oaaVersionNotes": "Base compliance at OAA v5.0.0. VP, SA, PII, GDPR, OKR upgraded to OAA v6.1.0 with 8-gate validation.",
+    "oaaVersionNotes": "Base compliance at OAA v5.0.0. VP, PII, GDPR, OKR upgraded to OAA v6.1.0 with 8-gate validation.",
     "lastFullValidation": "2026-02-06"
   },
   "pfiInstances": [
