@@ -361,11 +361,13 @@ async function loadRegistry() {
     state.bridgeNodes = detectBridgeNodes(crossEdges, loadedOntologies, 3);
     console.log(`Bridge nodes detected: ${state.bridgeNodes.size}`);
 
-    // Start at Tier 0 (series rollup) instead of flat entity view
-    navigateToTier0();
+    // Hide drop zone before navigation so errors don't leave it blocking the graph
+    dropZone.classList.add('hidden');
 
     fileNameEl.textContent = `Unified Registry (${stats.total} ontologies, ${stats.placeholders} placeholders)`;
-    dropZone.classList.add('hidden');
+
+    // Start at Tier 0 (series rollup) instead of flat entity view
+    navigateToTier0();
 
     console.log('Registry loaded:', stats);
 
