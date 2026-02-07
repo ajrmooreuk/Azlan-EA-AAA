@@ -480,6 +480,16 @@ function resolveNodeInMergedGraph(parts, nodeIndex) {
     if (keyLower === originalLower && typeof value === 'string') return value;
   }
 
+  // Fallback: ontology may use a different internal prefix (e.g., pfc:Vision under kpi: namespace).
+  // Scan for any node in the target namespace whose entity name matches.
+  const nsPrefix = parts.prefix + '::';
+  const entitySuffix = ':' + parts.entity;
+  for (const [key] of nodeIndex) {
+    if (key.startsWith(nsPrefix) && (key.endsWith(entitySuffix) || key === nsPrefix + parts.entity)) {
+      return key;
+    }
+  }
+
   return null;
 }
 
