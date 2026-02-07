@@ -51,14 +51,25 @@
     <button class="tier-toggle" data-view="ontologies" onclick="showAllOntologies()">Ontologies (23)</button>
     <button class="tier-toggle" data-view="connections" onclick="showConnectionMap()" title="Show ontology-to-ontology dependency graph">Connections</button>
   </div>
-  <div id="lineage-toggle" style="display:none; margin-left:8px;">
-    <button class="lineage-toggle" data-lineage="VE" onclick="toggleLineage('VE')" title="Highlight VE lineage chain (VSOM→OKR→VP→PMF→EFS)">
-      <span class="lineage-dot ve"></span> VE Chain
+  <div id="series-toggle" style="display:none; margin-left:8px;">
+    <button class="series-toggle" data-series="VE-Series" onclick="toggleSeriesHighlight('VE-Series')" title="Highlight VE-Series (VSOM→OKR→VP→PMF→EFS)">
+      <span class="series-dot" style="background:#cec528"></span> VE
     </button>
-    <button class="lineage-toggle" data-lineage="PE" onclick="toggleLineage('PE')" title="Highlight PE lineage chain (PPM→PE→EFS→EA)">
-      <span class="lineage-dot pe"></span> PE Chain
+    <button class="series-toggle" data-series="PE-Series" onclick="toggleSeriesHighlight('PE-Series')" title="Highlight PE-Series (PPM→PE→EFS→EA)">
+      <span class="series-dot" style="background:#b87333"></span> PE
     </button>
-    <button class="lineage-toggle" data-lineage="both" onclick="toggleLineage('both')" title="Show both lineage chains with EFS convergence">Both</button>
+    <button class="series-toggle" data-series="Foundation" onclick="toggleSeriesHighlight('Foundation')" title="Highlight Foundation ontologies">
+      <span class="series-dot" style="background:#FF9800"></span> Foundation
+    </button>
+    <button class="series-toggle" data-series="Competitive" onclick="toggleSeriesHighlight('Competitive')" title="Highlight Competitive ontologies">
+      <span class="series-dot" style="background:#E91E63"></span> Competitive
+    </button>
+    <button class="series-toggle" data-series="RCSG-Series" onclick="toggleSeriesHighlight('RCSG-Series')" title="Highlight RCSG-Series ontologies">
+      <span class="series-dot" style="background:#9C27B0"></span> RCSG
+    </button>
+    <button class="series-toggle" data-series="Orchestration" onclick="toggleSeriesHighlight('Orchestration')" title="Highlight Orchestration ontologies">
+      <span class="series-dot" style="background:#00BCD4"></span> Orchestration
+    </button>
   </div>
   <div id="cross-edge-filter" style="display:none; margin-left:4px;">
     <button id="btn-cross-edge-filter" class="cross-edge-filter-btn" onclick="toggleCrossEdgeFilter()" title="Show only cross-ontology edges">

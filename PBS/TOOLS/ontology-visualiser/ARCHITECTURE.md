@@ -1,13 +1,13 @@
 # OAA Ontology Visualiser — Architecture & Deployment
 
-**Version:** 3.2.0
-**Last Updated:** 2026-02-06
+**Version:** 4.0.0
+**Last Updated:** 2026-02-07
 
 ---
 
 ## Overview
 
-The OAA Ontology Visualiser is a zero-build-step, client-side browser application for interactive graph visualisation of JSON ontologies produced by OAA (Ontology Architect Agent). It supports single-ontology inspection with OAA v6.1.0 compliance validation, multi-ontology registry loading with cross-reference detection, three-tier progressive disclosure navigation (series rollup → ontology drill-down → entity graph), VE/PE lineage chain highlighting, and cross-ontology edge navigation.
+The OAA Ontology Visualiser is a zero-build-step, client-side browser application for interactive graph visualisation of JSON ontologies produced by OAA (Ontology Architect Agent). It supports single-ontology inspection with OAA v6.1.0 compliance validation, multi-ontology registry loading with cross-reference detection, three-tier progressive disclosure navigation (series rollup → ontology drill-down → entity graph), per-series highlight selectors (all 6 series, with VE/PE lineage chain logic), and cross-ontology edge navigation.
 
 No server-side processing, no Node.js, no bundler. The only external dependency is vis-network v9.1.2, loaded via CDN.
 
@@ -19,8 +19,7 @@ No server-side processing, no Node.js, no bundler. The only external dependency 
 graph LR
     subgraph Source["Source Repository (Azlan-EA-AAA)"]
         A["PBS/TOOLS/ontology-visualiser/"] --> B["GitHub Actions\nWorkflow"]
-        R["PBS/ONTOLOGIES/unified-registry/"] --> B
-        O["PBS/ONTOLOGIES/pfc-ontologies/"] --> B
+        R["PBS/ONTOLOGIES/ontology-library/"] --> B
     end
 
     subgraph Deployment["GitHub Pages"]
@@ -36,7 +35,7 @@ graph LR
     subgraph Input["Data Sources"]
         G["Local JSON Files\n(Drag & Drop)"] -->|"FileReader API"| D
         H["Private GitHub Repos\n(PAT Auth)"] -->|"GitHub Contents API"| D
-        I["Unified Registry\n(23 Ontologies)"] -->|"fetch() from Pages"| D
+        I["Ontology Library\n(23 Ontologies)"] -->|"fetch() from Pages"| D
         J["IndexedDB Library\n(Browser Storage)"] -->|"IDB API"| D
     end
 
@@ -58,13 +57,13 @@ graph LR
 All JavaScript is split into native ES modules loaded via `<script type="module">`. No build step, no bundler (see [ADR-009](./ADR-LOG.md#adr-009)).
 
 ```
-browser-viewer.html           <- HTML shell (140 lines, incl. breadcrumb bar + lineage toggles)
-├── css/viewer.css             <- All styles (incl. breadcrumb, tier toggle, lineage chain, cross-edge filter)
+browser-viewer.html           <- HTML shell (140 lines, incl. breadcrumb bar + series selectors)
+├── css/viewer.css             <- All styles (incl. breadcrumb, tier toggle, series highlight, cross-edge filter)
 └── js/
-    ├── app.js                 <- Entry point, event wiring, navigation orchestration, lineage toggles, window bindings
-    ├── state.js               <- Shared state, constants (TYPE_COLORS, SERIES_COLORS, LINEAGE_CHAINS, LINEAGE_COLORS, navigation state)
+    ├── app.js                 <- Entry point, event wiring, navigation orchestration, series toggles, window bindings
+    ├── state.js               <- Shared state, constants (TYPE_COLORS, SERIES_COLORS, SERIES_HIGHLIGHT_COLORS, LINEAGE_CHAINS, navigation state)
     ├── ontology-parser.js     <- Format detection + parsing (7 formats)
-    ├── graph-renderer.js      <- vis.js rendering (single + multi + Tier 0/1 renderers + lineage edge styling + edge click handlers)
+    ├── graph-renderer.js      <- vis.js rendering (single + multi + Tier 0/1 renderers + series highlight styling + edge click handlers)
     ├── multi-loader.js        <- Registry batch loading, merged graph, cross-ref detection, series aggregation, lineage classification
     ├── audit-engine.js        <- OAA v6.1.0 validation gates (G1-G6, 8 gates)
     ├── compliance-reporter.js <- Compliance panel rendering
@@ -89,7 +88,7 @@ library-manager.js    <- app.js
 export.js             <- app.js
 ```
 
-No circular dependencies. `state.js` is the single shared state module imported by all others. `graph-renderer.js` imports lineage classification helpers (`classifyLineageEdge`, `getNodeLineageRole`) from `multi-loader.js`.
+No circular dependencies. `state.js` is the single shared state module imported by all others. `graph-renderer.js` imports lineage classification helpers (`classifyLineageEdge`, `getNodeLineageRole`, `getNodeSeries`) from `multi-loader.js`.
 
 ---
 
@@ -161,7 +160,7 @@ Key data structures in multi-mode:
 - `state.navigationStack` — breadcrumb history array
 - `state.crossEdges` — cross-ontology edges from `detectCrossReferences()`
 - `state.crossSeriesEdges` — aggregated series-to-series edges from `buildCrossSeriesEdges()`
-- `state.lineageHighlight` — lineage chain highlight mode (`'off'` | `'VE'` | `'PE'` | `'both'`)
+- `state.highlightedSeries` — `Set` of active series keys (e.g., `'VE-Series'`, `'Foundation'`)
 - `state.crossEdgeFilterActive` — when true, only cross-ontology edges are shown (intra-ontology edges hidden)
 - `state.bridgeFilterActive` — bridge node filter toggle
 - `state.bridgeNodes` — `Map` of bridge node IDs (entities referenced by 3+ ontologies)
@@ -177,7 +176,7 @@ Two-pass algorithm implemented in `multi-loader.js` `detectCrossReferences()` (s
 1. **Pass 1 — Registry bridges:** Reads both `entry.relationships.keyBridges[]` and `entry.relationships.crossOntology[]` from each registry entry (entries use both property names inconsistently)
 2. **Pass 2 — Namespace-prefix scan:** Scans `rangeIncludes`/`domainIncludes` for prefixed references to other ontologies
 
-Edges are deduplicated via `Set<edgeKey>`. Rendered as gold dashed lines (width 2.5) by default, or with lineage-specific styling when lineage highlighting is active.
+Edges are deduplicated via `Set<edgeKey>`. Rendered as gold dashed lines (width 2.5) by default, or with series-specific styling when series highlighting is active.
 
 ### Series-Level Edge Aggregation
 
@@ -185,19 +184,28 @@ Edges are deduplicated via `Set<edgeKey>`. Rendered as gold dashed lines (width 
 
 ---
 
-## VE/PE Lineage Chain Highlighting
+## Series Highlight Selectors
 
-Two pre-defined lineage chains trace value flow through the ontology library (defined in `state.js` as `LINEAGE_CHAINS`):
+Six independently-toggleable series selectors let users highlight any combination of the ontology library's series. State is stored as `state.highlightedSeries` (`Set<string>`), with colours defined in `SERIES_HIGHLIGHT_COLORS` in `state.js`.
 
-- **VE (Value Engineering):** VSOM → OKR → VP → PMF → EFS — gold (#cec528)
-- **PE (Process Engineering):** PPM → PE → EFS → EA — copper (#b87333)
-- **EFS Convergence Point:** EFS appears in both chains — convergence orange (#FF6B35)
+| Series | Highlight Colour | Special Behaviour |
+| ------ | --------------- | ----------------- |
+| VE-Series | Gold #cec528 | VE chain logic: consecutive edges (VSOM→OKR→VP→PMF→EFS) get thick solid gold |
+| PE-Series | Copper #b87333 | PE chain logic: consecutive edges (PPM→PE→EFS→EA) get thick solid copper |
+| Foundation | Orange #FF9800 | Member nodes + cross-edges highlighted |
+| Competitive | Pink #E91E63 | Member nodes + cross-edges highlighted |
+| RCSG-Series | Purple #9C27B0 | Member nodes + cross-edges highlighted |
+| Orchestration | Cyan #00BCD4 | Member nodes + cross-edges highlighted |
 
-### Lineage Classification
+**EFS Convergence Point:** When both VE-Series and PE-Series are highlighted, EFS receives convergence styling (#FF6B35) — 1.3× size, shadow glow, and tooltip.
+
+### Lineage Classification (VE/PE)
 
 `classifyLineageEdge(fromNs, toNs)` in `multi-loader.js` determines whether a cross-ontology edge represents a step in the VE or PE lineage chain. It checks both directions (from→to and to→from) against consecutive entries in `LINEAGE_CHAINS`. Returns `{ isVE, isPE, isConvergence }`.
 
 `getNodeLineageRole(namespace)` returns `{ inVE, inPE, isConvergence }` for a given namespace, used for convergence node styling.
+
+`getNodeSeries(namespace, loadedOntologies)` returns the series key for any namespace, used for general series highlighting.
 
 ### Edge Styling
 
@@ -205,18 +213,11 @@ Two pre-defined lineage chains trace value flow through the ontology library (de
 | --------- | ------ | ----- | ---- | ---------- |
 | Intra-ontology | Series colour | 1.2 | Solid | Always |
 | Cross-ontology (general) | Gold #FFD700 | 2.5 | [8,4] dashed | Always in multi mode |
-| VE lineage | Gold #cec528 | 3.5 | Solid | When VE or Both active |
-| PE lineage | Copper #b87333 | 3.5 | Solid | When PE or Both active |
-| Non-lineage (dimmed) | #444 | 1 | [8,4] dashed | When lineage filter active |
-
-### Convergence Node (EFS)
-
-When lineage highlighting is active, the EFS node receives:
-
-- Dual-colour border: gold inner (#cec528) + copper outer (#b87333)
-- 1.3× normal size
-- Shadow glow in convergence colour (#FF6B35)
-- Tooltip: "CONVERGENCE POINT — VE and PE lineage chains meet here"
+| VE chain edge | Gold #cec528 | 3.5 | Solid | When VE-Series highlighted |
+| PE chain edge | Copper #b87333 | 3.5 | Solid | When PE-Series highlighted |
+| Same-series edge | Series highlight colour | 3 | Solid | When both endpoints in a highlighted series |
+| One-endpoint match | Series highlight colour | 2 | [6,3] dashed | When one endpoint in a highlighted series |
+| Non-matching (dimmed) | #444 | 1 | [8,4] dashed | When any series highlighting active |
 
 ### Cross-Edge Filter
 
@@ -240,15 +241,16 @@ Implemented in `renderAuditPanel()` in `ui-panels.js`.
 
 ## Data Sources
 
-### Unified Registry
+### Ontology Library
 
-The unified registry at `PBS/ONTOLOGIES/unified-registry/` contains:
+The merged ontology library at `PBS/ONTOLOGIES/ontology-library/` contains:
 
-- `ont-registry-index.json` — index of 23 entries with `seriesRegistry`, `namespaceRegistry`
-- `entries/` — individual registry entry JSON files
-- Artifact paths in entries are relative to the `entries/` directory (e.g., `../pfc-ontologies/EMC-ONT/...`)
+- `ont-registry-index.json` — master index (v3.0.0) of 23 entries with `seriesRegistry`, `namespaceRegistry`
+- Registry entries co-located with their artifacts in series directories (e.g., `VE-Series/VSOM-ONT/Entry-ONT-VSOM-001.json`)
+- Artifact paths in entries are relative to the entry file (e.g., `./vsom-ontology-v2.1.0-oaa-v5.json`)
+- Shared resources (`unified-glossary-v2.0.0.json`, `validation-reports/`) at the library root
 
-Path resolution: `REGISTRY_BASE_PATH` (`../../ONTOLOGIES/unified-registry/`) is relative to the visualiser's location at `PBS/TOOLS/ontology-visualiser/`.
+Path resolution: `REGISTRY_BASE_PATH` (`../../ONTOLOGIES/ontology-library/`) is relative to the visualiser's location at `PBS/TOOLS/ontology-visualiser/`. `resolveArtifactPath()` resolves artifact paths relative to each entry's directory.
 
 ### IndexedDB Library
 
@@ -257,7 +259,7 @@ Client-side storage via `library-manager.js`:
 - Database: `OntologyLibrary` (IDB v1)
 - Stores: ontologies with version history
 - Operations: save, load, delete, export, import
-- Categories: `pfc-ontologies`, `pfi-ontologies`, `domain-ontologies`, `custom`
+- Categories: `ontology-library`, `pfi-ontologies`, `domain-ontologies`, `custom`
 
 ### GitHub API
 
@@ -293,7 +295,7 @@ Deployed automatically via GitHub Actions on push to `main`.
 | Component | Detail |
 | --------- | ------ |
 | Workflow | `.github/workflows/pages.yml` |
-| Trigger paths | `PBS/TOOLS/ontology-visualiser/**`, `PBS/ONTOLOGIES/unified-registry/**`, `PBS/ONTOLOGIES/pfc-ontologies/**`, `PBS/AGENTS/oaa-v6/**` |
+| Trigger paths | `PBS/TOOLS/ontology-visualiser/**`, `PBS/ONTOLOGIES/ontology-library/**`, `PBS/AGENTS/oaa-v6/**` |
 | Primary URL | `https://ajrmooreuk.github.io/Azlan-EA-AAA/PBS/TOOLS/ontology-visualiser/browser-viewer.html` |
 | Root redirect | `https://ajrmooreuk.github.io/Azlan-EA-AAA/` |
 | Legacy URL | `https://ajrmooreuk.github.io/Azlan-EA-AAA/tools/ontology-visualiser/browser-viewer.html` |
@@ -301,8 +303,7 @@ Deployed automatically via GitHub Actions on push to `main`.
 The workflow deploys:
 
 - Visualiser files (HTML, CSS, JS modules)
-- Unified registry (index + entries)
-- Ontology artifact files (from `pfc-ontologies/`)
+- Ontology library (index, co-located entries + artifacts, glossary, validation reports)
 - OAA system prompts
 - Root `index.html` redirect
 
@@ -338,14 +339,14 @@ No npm, no Node.js, no build step, no other external dependencies.
 
 ```
 PBS/TOOLS/ontology-visualiser/
-├── browser-viewer.html              <- HTML shell (incl. lineage toggle + cross-edge filter buttons)
+├── browser-viewer.html              <- HTML shell (incl. series selectors + cross-edge filter buttons)
 ├── css/
-│   └── viewer.css                   <- All styles (incl. lineage chain + cross-edge filter)
+│   └── viewer.css                   <- All styles (incl. series highlight + cross-edge filter)
 ├── js/
-│   ├── app.js                       <- Entry point, navigation, lineage toggles
-│   ├── state.js                     <- Shared state + constants (incl. LINEAGE_COLORS)
+│   ├── app.js                       <- Entry point, navigation, series toggles
+│   ├── state.js                     <- Shared state + constants (incl. SERIES_HIGHLIGHT_COLORS)
 │   ├── ontology-parser.js           <- Format detection + parsing
-│   ├── graph-renderer.js            <- vis.js rendering (single + Tier 0/1 + lineage styling)
+│   ├── graph-renderer.js            <- vis.js rendering (single + Tier 0/1 + series highlight styling)
 │   ├── multi-loader.js              <- Registry loading, series aggregation, lineage classification
 │   ├── audit-engine.js              <- OAA v6.1.0 validation
 │   ├── compliance-reporter.js       <- Compliance panel
@@ -379,4 +380,4 @@ The original Python tools (`demo.py`, `graph_builder.py`, `visualiser.py`, etc.)
 
 ---
 
-*OAA Ontology Visualiser v3.2.0 — Architecture & Deployment*
+*OAA Ontology Visualiser v4.0.0 — Architecture & Deployment*

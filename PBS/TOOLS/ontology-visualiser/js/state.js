@@ -29,8 +29,8 @@ export const state = {
   crossEdges: [],           // cross-ontology edges from detectCrossReferences
   crossSeriesEdges: [],     // aggregated series-to-series edges
 
-  // Lineage + cross-edge state (Phase 2/4)
-  lineageHighlight: 'off',       // 'off' | 'VE' | 'PE' | 'both'
+  // Series highlight + cross-edge state (Phase 2/4)
+  highlightedSeries: new Set(),  // multi-select: series keys like 'VE-Series'
   crossEdgeFilterActive: false,  // show only cross-ontology edges
   bridgeFilterActive: false,     // bridge node filter
   bridgeNodes: null              // Map of bridge node IDs
@@ -68,6 +68,16 @@ export const LINEAGE_COLORS = {
   VE: '#cec528',          // Gold for Value Engineering chain
   PE: '#b87333',          // Copper for Product Engineering chain
   convergence: '#FF6B35'  // Orange-red for EFS convergence point
+};
+
+export const SERIES_HIGHLIGHT_COLORS = {
+  'VE-Series':     '#cec528',   // Gold (matches VE lineage colour)
+  'PE-Series':     '#b87333',   // Copper (matches PE lineage colour)
+  'Foundation':    '#FF9800',   // Orange
+  'Competitive':   '#E91E63',   // Pink
+  'RCSG-Series':   '#9C27B0',   // Purple
+  'Orchestration': '#00BCD4',   // Cyan
+  'convergence':   '#FF6B35'    // Multi-series overlap
 };
 
 export const DB_NAME = 'OntologyLibrary';
